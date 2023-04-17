@@ -22,11 +22,15 @@ import {
   import { Visibility, VisibilityOff } from '@mui/icons-material';
   import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
   import React, { useEffect, useState } from 'react';
-  import Loading from '../../Loading';
-  import ErrorAlert from '../../Alert/ErrorAlert';
-  import SuccessAlert from '../../Alert/SuccessAlert';
+
+  import ErrorAlert from '../Alert/ErrorAlert';
+  import SuccessAlert from '../Alert/SuccessAlert';
+import ChangePass from './ChangePass';
+import { useNavigate } from 'react-router-dom';
   
   function Profile(props) {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+   
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [disableBtn, setDisable] = useState(false);
@@ -41,6 +45,7 @@ import {
     const [showError, setShowError] = useState(false);
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showChangePassword, setShowChangePassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
   
     function reload() {
@@ -70,10 +75,8 @@ import {
       setShowError(true);
     };
   
-  
-  
     const getDetail = async () => {
-      await axios.get(`https://localhost:7115/api/v1/account/getDetail/${props.staff.accountId}`).then(response => {
+      await axios.get(`https://localhost:7115/api/v1/account/getDetail/${user.id}`).then(response => {
   
   setFullName(response.data.responseSuccess?.fullName)
   setEmail(response.data.responseSuccess?.email)
@@ -84,20 +87,16 @@ import {
       })
   }
   
+
     useEffect(() => {
-      if (props.staff !== null) {
-        getDetail()
-        setFullName(props.staff?.account?.fullName)
-        setEmail(props.staff?.account?.email)
-        setPhoneNumber(props.staff?.account?.phoneNumber)
-  setAddress(props.staff?.account?.address)
-      }
-    }, [props.staff]);
-  
-    console.log(props.staff);
-  
+    
+getDetail()
+       
+      
+    }, []);
+
     const handleUpdateStaff = () => {
-      axios.put(`https://localhost:7115/api/v1/account/update/${props.staff.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${props.staff?.account?.role}`).then((response) => {
+      axios.put(`https://localhost:7115/api/v1/account/update/${user.id}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${user.role}`).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true)
        window.location.reload(false)
@@ -108,8 +107,6 @@ import {
           handleError("Update fail!");
         });
     };
-  
-  
   
     const handleChangeName = (e) => {
       setFullName(e.target.value)
@@ -163,7 +160,7 @@ import {
           <form>
           
             < Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-            <DialogTitle id="alert-dialog-title">Detail Staff</DialogTitle>
+            <DialogTitle id="alert-dialog-title">My Profile</DialogTitle>
             <IconButton style={{marginRight: 6}} onClick={() => handleClose()}>
                 <CloseOutlinedIcon />
               </IconButton>
@@ -200,9 +197,10 @@ import {
                   fullWidth
                   label="Address"
                 />
-                 {/* <FormControl fullWidth variant="outlined">
+                 <FormControl fullWidth variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput
+            readOnly
             value={password}
             onChange={(e) => setPassword(e.target.value)}
               id="outlined-adornment-password"
@@ -222,10 +220,13 @@ import {
               label="Password"
             />
           </FormControl>
-                */}
+               
               </Stack>
             </DialogContent>
             <DialogActions style={{ padding: 20 }}>
+            <Button variant="contained" onClick={() => setShowChangePassword(true)} autoFocus>
+                Change Password
+                </Button>
               {disableBtn ? (
                 <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
                   Save
@@ -258,9 +259,9 @@ import {
             <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Staff Successful!'} />
           <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
           </Dialog>
-          
+       
         </Dialog>
-  
+        <ChangePass show={showChangePassword} close={() => {setShowChangePassword(false)}} email={email}/>
         <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Student Successful!'} />
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       </div>

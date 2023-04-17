@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
+import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover, Button } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
+import Profile from '../../../pages/Header/Profile';
+
 
 // ----------------------------------------------------------------------
 
@@ -17,6 +19,7 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     icon: 'eva:person-fill',
+
   },
   {
     label: 'Settings',
@@ -31,6 +34,7 @@ export default function AccountPopover() {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   const [open, setOpen] = useState(null);
+  const [show, setShow] = useState(false)
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -96,14 +100,9 @@ export default function AccountPopover() {
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Stack>
+        <MenuItem onClick={() => setShow(true)} sx={{ m: 1 }}>
+         Profile
+        </MenuItem>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
@@ -111,6 +110,7 @@ export default function AccountPopover() {
           Logout
         </MenuItem>
       </Popover>
+      <Profile show={show} close ={() => setShow(false)}/>
     </>
   );
 }
