@@ -1,5 +1,18 @@
-import { Alert, Autocomplete, Box, Button, Chip, IconButton, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Autocomplete,
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  MenuItem,
+  Select,
+  Slide,
+  Snackbar,
+  TextField,
+  Typography,
+} from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 import Title from './title';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,7 +26,6 @@ import { Major } from '../../../interfaces/major';
 import CloseIcon from '@mui/icons-material/Close';
 
 import axios from 'axios';
-
 
 const RegisterSchema = Yup.object().shape({
   Program: Yup.string().required('Can you select the program you want register, please ?'),
@@ -52,28 +64,34 @@ const RegisterSchema = Yup.object().shape({
 });
 const RegisterComponent = () => {
   const student = JSON.parse(sessionStorage.getItem('user'));
-
+console.log(student)
   // const [PassportImage, setPassportImage] = React.useState<File[]>([]);
   const [TransferInfomation, setTransferInfomation] = React.useState<File[]>([]);
   const [Program, setProgram] = React.useState(null);
+  const [ProgramForm, setProgramForm] = React.useState(null);
   const [Major, setMajor] = React.useState(null);
   const [DOB, setDOB] = React.useState<Date | null>(null);
   const [ExpirationDate, setExpirationDate] = React.useState<Date | null>(null);
-const [forms, setForm] = React.useState(null)
-const [show, setShow] = useState(false)
-const [showErr, setShowErr] = useState(false)
-
+  const [forms, setForm] = React.useState(null);
+  const [show, setShow] = useState(false);
+  const [showErr, setShowErr] = useState(false);
+  const containerRef = useRef(null);
   const formik = useFormik({
     initialValues: {
       Program: '',
-      FullName: '',
-      RollNumber: '',
+      FullName: student.fullName as string,
+      RollNumber: student.rollNumber as string,
       Major: '',
-      PhoneNumber: '',
+      PhoneNumber: student.phoneNumber as string,
       PassportNumber: '',
       FacebookLink: '',
       DOB: '',
       ExpirationDate: '',
+      contentHeader1: '',
+      contentHeader2: '',
+      contentHeader3: '',
+      contentHeader4: '',
+      contentHeader5: '',
       // PassportImage: '',
       // TransferInfomation: '',
     },
@@ -81,7 +99,7 @@ const [showErr, setShowErr] = useState(false)
     validateOnChange: false,
     validationSchema: RegisterSchema,
     onSubmit: (values, { resetForm }) => {
-      console.log('submit');
+     
       const register = {
         Program: Program,
         FullName: values.FullName,
@@ -92,37 +110,46 @@ const [showErr, setShowErr] = useState(false)
         DOB: DOB,
         ExpirationDate: ExpirationDate,
         FacebookLink: values.FacebookLink,
+        contentHeader1: values.contentHeader1,
+        contentHeader2: values.contentHeader2,
+        contentHeader3: values.contentHeader3,
+        contentHeader4: values.contentHeader4,
+        contentHeader5: values.contentHeader5,
         // PassportImage: PassportImage,
         // TransferInfomation: TransferInfomation,
       };
       console.log(Program);
-      axios.post(`https://localhost:7115/api/v1/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&DateOfBirth=${DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}`).then(response => {
 
-        const data = {
-          "rollNumber": values.RollNumber,
-          
- 
-          "fullName": values.FullName,
-    
-          "majorId": Major.id,
-     
-          "email": student.email,
-          "phoneNumber": values.PhoneNumber,
+      // {ProgramForm && () &&  console.log(2)}
+      // {ProgramForm && (ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(3)}
+      // {ProgramForm && (ProgramForm?.contentHeader4&& ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(4)}
+      
+      
 
-          "status": true
-        }
-        if (response.data.isSuccess) {
-          handleUpdateStudent(data)
-          setShow(true)
-           setTimeout(() => {
-            window.location.reload()
-          }, 4000)
-                  }
-
-      }) .catch((err) => {
-setShowErr(true)
+      axios
+        .post(
+          `https://localhost:7115/api/v1/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&DateOfBirth=${DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
+        )
+        .then((response) => {
+          const data = {
+            rollNumber: values.RollNumber,
+            fullName: values.FullName,
+            majorId: Major.id,
+            email: student.email,
+            phoneNumber: values.PhoneNumber,
+            status: true,
+          };
+          if (response.data.isSuccess) {
+            handleUpdateStudent(data);
+            setShow(true);
+            setTimeout(() => {
+              window.location.reload();
+            }, 4000);
+          }
+        })
+        .catch((err) => {
+          setShowErr(true);
         });
-   
     },
 
     //if register function succesful, redirect to login page
@@ -130,40 +157,56 @@ setShowErr(true)
     //     history.push(`/login`);
     //   });
   });
+
+  const handleRegis = () => {
+    // if(ProgramForm?.contentHeader1){
+    // }
+    // else if(ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1){
+    //   console.log(2)
+    //  }
+    //  }else else if( ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1){
+    //   console.log(3)
+    //  }else if(ProgramForm?.contentHeader4&& ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1){
+    //   console.log(4)
+    //  }else if(ProgramForm?.contentHeader5 && ProgramForm?.contentHeader4&& ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) {
+    //   console.log(5)
+    //  }
+  };
+
   const handleUpdateStudent = (data) => {
     axios
       .put(`https://localhost:7115/api/v1/student/update/${student.id}`, data)
       .then((response) => {
         console.log(response);
         if (response.data.isSuccess) {
-setShow(true)
- setTimeout(() => {
-  window.location.reload()
-}, 4000)
+          setShow(true);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         }
       })
       .catch((err) => {
-
-      console.log(err)
+        console.log(err);
       });
   };
   const getAllForm = async () => {
-   await axios.get(`https://localhost:7115/api/v1/registration/getAllRes`).then((response) =>{
-setForm(response.data.responseSuccess.filter(value => value.project != null ))
-console.log(response)
-    })
-  }
+    await axios.get(`https://localhost:7115/api/v1/registration/getAllRes`).then((response) => {
+      setForm(response.data.responseSuccess.filter((value) => value.project != null));
+      console.log(response);
+    });
+  };
   const getAllMajor = async () => {
-    await axios.get(`https://localhost:7115/api/v1/Major/getAllMajor`).then((response) =>{
- setMajor(response.data.responseSuccess)
+    await axios.get(`https://localhost:7115/api/v1/Major/getAllMajor`).then((response) => {
+      setMajor(response.data.responseSuccess);
+    });
+  };
 
-     })
-   }
-
-
-
-
-
+  const getFormbyPrj = (id) => {
+    axios.get(`https://localhost:7115/api/v1/registration/getDetailbyProjectId/${id}`).then((response) => {
+      setProgramForm(response.data.responseSuccess.filter((form) => !form.student)[0]);
+      console.log(response.data.responseSuccess.filter((form) => !form.student));
+    });
+  };
 
   // const handlePassportImage = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   if (e.target.files) {
@@ -201,205 +244,276 @@ console.log(response)
   // };
 
   useEffect(() => {
-getAllForm()
-getAllMajor()
+    getAllForm();
+    getAllMajor();
   }, []);
+  useEffect(() => {
+    if (Program) {
+      getFormbyPrj(Program.projectId);
+    }
+  }, [Program]);
   return (
-    <>{forms &&    <Box
-      sx={{
-        backgroundColor: 'background.default',
-      }}
-    >
-      <Box
-        sx={{
-          width: '80%',
-          height: '100%',
-          backgroundColor: ' #F8F8F8',
-          margin: '5% auto',
-          borderRadius: '30px',
-          display: 'flex',
-          flexDirection: 'column',
-          boxShadow: '4px 0px 4px rgba(0, 0, 0, 0.25)',
-        }}
-      >
-        <Box
+    <>
+      {forms && (
+          <Slide
+          direction="up"
+          in={true}
+          container={containerRef.current}
+          style={{ transformOrigin: '0 0 0' }}
+          {...(true ? { timeout: 600 } : {})}
+        >
+ <Box
           sx={{
-            height: '200px',
-            width: '100%',
-            borderTopRightRadius: '30px',
-            background: 'url("/images/register-form-bg.png")',
-            backgroundSize: 'cover',
-            backgroundColor: 'primary.main',
-            borderTopLeftRadius: '30px',
-            color: 'primary.contrastText',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            padding: '0 7% 20px',
+            backgroundColor: 'background.default',
           }}
         >
-          <Typography style={{ fontWeight: 'Bold', fontSize: '60px' }}>REGISTER FORM</Typography>
-          <Typography style={{ fontWeight: '400', fontSize: '25px' }}>* Required</Typography>
-        </Box>
-        <Box
-          sx={{
-            padding: ' 0 6% 7% 8%',
-            width: 'auto',
-          }}
-        >
-          <form onSubmit={formik.handleSubmit}>
-            <Title number={'1'} title={'Program *'} />
-            <Autocomplete
-              componentsProps={{
-                paper: {
-                  sx: {
-                    fontWeight: 'bold',
-                  },
-                },
-              }}
-              options={forms}
-          
-              getOptionLabel={(option) => option['project']['projectName']}
-              sx={{ border: 'none !important', fontWeight: 'bold', width: '43%' }}
-              onChange={(event, newValue) => {
-              
-                setProgram(newValue);
-                formik.setFieldValue('Program', newValue !== null ? newValue['id'].toString() : '');
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                  sx={{
-                    borderRadius: '25px',
-                    backgroundColor: '#D9D9D9',
-                    margin: '10px 0 0 20px',
-                    border: 'none !important',
-                    '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                    '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                      border: 'none !important',
-                    },
-                    '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      border: 'none !important',
-                    },
-                    '& .MuiSvgIcon-root': {
-                      color: 'primary.main',
-                    },
-                  }}
-                  placeholder="Select Program"
-                />
-              )}
-              noOptionsText="This program not found"
-            />
-
-            {Boolean(formik.touched.Program && formik.errors.Program) && (
-              <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                <Typography color={'red'} fontSize="14px">
-                  {formik.touched.Program && formik.errors.Program}
-                </Typography>
-              </Box>
-            )}
-
-            <Box sx={{ display: 'flex', width: '100%' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'2'} title={'Full name *'} />
-                <InputBar
-                  inputName="FullName"
-                  width={'90%'}
-                  {...formik.getFieldProps('FullName')}
-                  error={Boolean(formik.touched.FullName && formik.errors.FullName)}
-                  helperText={formik.touched.FullName && formik.errors.FullName}
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'3'} title={'Roll number *'} />
-                <InputBar
-                  inputName="RollNumber"
-                  width={'90%'}
-                  {...formik.getFieldProps('RollNumber')}
-                  error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
-                  helperText={formik.touched.RollNumber && formik.errors.RollNumber}
-                />
-              </Box>
-            </Box>
-            <Title number={'4'} title={'Major *'} />
-            <Autocomplete
-              componentsProps={{
-                paper: {
-                  sx: {
-                    fontWeight: 'bold',
-                  },
-                },
-              }}
-              disablePortal
-              options={Major}
-     
-              getOptionLabel={(option) => option['majorFullName']}
-              sx={{ border: 'none !important', fontWeight: 'bold' }}
-              onChange={(event, newValue) => {
-                setMajor(newValue);
-                formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                  sx={{
-                    width: '93.5%',
-                    borderRadius: '25px',
-                    backgroundColor: '#D9D9D9',
-                    margin: '10px 0 0 20px',
-                    border: 'none !important',
-                    '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                    '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                      border: 'none !important',
-                    },
-                    '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      border: 'none !important',
-                    },
-                    '& .MuiSvgIcon-root': {
-                      color: 'primary.main',
-                    },
-                  }}
-                  placeholder="Select Major"
-                />
-              )}
-              noOptionsText="This major not found"
-            />
-            {Boolean(formik.touched.Major && formik.errors.Major) && (
-              <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                <Typography color={'red'} fontSize="14px">
-                  {formik.touched.Major && formik.errors.Major}
-                </Typography>
-              </Box>
-            )}
+          <Box
+            sx={{
+              width: '80%',
+              height: '100%',
+              backgroundColor: ' #F8F8F8',
+              margin: '5% auto',
+              borderRadius: '30px',
+              display: 'flex',
+              flexDirection: 'column',
+              boxShadow: '4px 0px 4px rgba(0, 0, 0, 0.25)',
+            }}
+          >
             <Box
               sx={{
-                display: 'flex',
+                height: '200px',
                 width: '100%',
-                justifyContent: 'space-between',
+                borderTopRightRadius: '30px',
+                background: 'url("/images/register-form-bg.png")',
+                backgroundSize: 'cover',
+                backgroundColor: 'primary.main',
+                borderTopLeftRadius: '30px',
+                color: 'primary.contrastText',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                padding: '0 7% 20px',
               }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  width: '50%',
-                  flexDirection: 'column',
-                }}
-              >
-                <Title number={'5'} title={'Date of birth'} />
+              <Typography style={{ fontWeight: 'Bold', fontSize: '60px' }}>REGISTER FORM</Typography>
+              <Typography style={{ fontWeight: '400', fontSize: '25px' }}>* Required</Typography>
+            </Box>
+            <Box
+              sx={{
+                padding: ' 0 6% 7% 8%',
+                width: 'auto',
+              }}
+            >
+              <form onSubmit={formik.handleSubmit}>
+                <Title number={'1'} title={'Program *'} />
+                <Autocomplete
+                  componentsProps={{
+                    paper: {
+                      sx: {
+                        fontWeight: 'bold',
+                      },
+                    },
+                  }}
+                  options={forms}
+                  getOptionLabel={(option) => option['project']['projectName']}
+                  sx={{ border: 'none !important', fontWeight: 'bold', width: '43%' }}
+                  onChange={(event, newValue) => {
+                    setProgram(newValue);
+
+                    formik.setFieldValue('Program', newValue !== null ? newValue['id'].toString() : '');
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
+                      sx={{
+                        borderRadius: '25px',
+                        backgroundColor: '#D9D9D9',
+                        margin: '10px 0 0 20px',
+                        border: 'none !important',
+                        '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                        '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                          border: 'none !important',
+                        },
+                        '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          border: 'none !important',
+                        },
+                        '& .MuiSvgIcon-root': {
+                          color: 'primary.main',
+                        },
+                      }}
+                      placeholder="Select Program"
+                    />
+                  )}
+                  noOptionsText="This program not found"
+                />
+
+                {Boolean(formik.touched.Program && formik.errors.Program) && (
+                  <Box sx={{ margin: ' 10px 0 0 20px' }}>
+                    <Typography color={'red'} fontSize="14px">
+                      {formik.touched.Program && formik.errors.Program}
+                    </Typography>
+                  </Box>
+                )}
+
+                <Box sx={{ display: 'flex', width: '100%' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }}
+                  >
+                    <Title number={'2'} title={'Full name *'} />
+                    <InputBar
+                      inputName="FullName"
+                      width={'90%'}
+                      {...formik.getFieldProps('FullName')}
+                      error={Boolean(formik.touched.FullName && formik.errors.FullName)}
+                      helperText={formik.touched.FullName && formik.errors.FullName}
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }}
+                  >
+                    <Title number={'3'} title={'Roll number *'} />
+                    <InputBar
+                      inputName="RollNumber"
+                      width={'90%'}
+                      {...formik.getFieldProps('RollNumber')}
+                      error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
+                      helperText={formik.touched.RollNumber && formik.errors.RollNumber}
+                    />
+                  </Box>
+                </Box>
+                <Title number={'4'} title={'Major *'} />
+                <Autocomplete
+                  componentsProps={{
+                    paper: {
+                      sx: {
+                        fontWeight: 'bold',
+                      },
+                    },
+                  }}
+                  disablePortal
+                  options={Major}
+                  getOptionLabel={(option) => option['majorFullName']}
+                  sx={{ border: 'none !important', fontWeight: 'bold' }}
+                  onChange={(event, newValue) => {
+                    setMajor(newValue);
+                    formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
+                      sx={{
+                        width: '93.5%',
+                        borderRadius: '25px',
+                        backgroundColor: '#D9D9D9',
+                        margin: '10px 0 0 20px',
+                        border: 'none !important',
+                        '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                        '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                          border: 'none !important',
+                        },
+                        '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          border: 'none !important',
+                        },
+                        '& .MuiSvgIcon-root': {
+                          color: 'primary.main',
+                        },
+                      }}
+                      placeholder="Select Major"
+                    />
+                  )}
+                  noOptionsText="This major not found"
+                />
+                {Boolean(formik.touched.Major && formik.errors.Major) && (
+                  <Box sx={{ margin: ' 10px 0 0 20px' }}>
+                    <Typography color={'red'} fontSize="14px">
+                      {formik.touched.Major && formik.errors.Major}
+                    </Typography>
+                  </Box>
+                )}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      width: '50%',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Title number={'5'} title={'Date of birth'} />
+                    <Box height={12}></Box>
+                    <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        sx={{
+                          input: { fontWeight: 'bold' },
+                          margin: '0 0 0 20px',
+                          padding: '0 20px 0 5px',
+                          width: '90%',
+                          borderRadius: '25px',
+                          '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                          '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                            border: 'none !important',
+                          },
+                          '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            border: 'none !important',
+                          },
+                        }}
+                        value={DOB}
+                        onChange={(newValue) => {
+                          setDOB(newValue);
+                          formik.setFieldValue('DOB', newValue);
+                        }}
+                        format="DD/MM/YYYY"
+                      />
+                    </LocalizationProvider>
+                    {Boolean(formik.touched.DOB && formik.errors.DOB) && (
+                      <Box sx={{ margin: ' 10px 0 0 20px' }}>
+                        <Typography color={'red'} fontSize="14px">
+                          {formik.touched.DOB && formik.errors.DOB}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }}
+                  >
+                    <Title number={'6'} title={'Phone number *'} />
+                    <InputBar
+                      inputName="PhoneNumber"
+                      width={'90%'}
+                      {...formik.getFieldProps('PhoneNumber')}
+                      error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
+                      helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
+                    />
+                  </Box>
+                </Box>
+                <Title number={'7'} title={'Passport number *'} />
+                <InputBar
+                  inputName="PassportNumber"
+                  width={'95%'}
+                  {...formik.getFieldProps('PassportNumber')}
+                  error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
+                  helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
+                />
+                <Title number={'8'} title={'Expiration date *'} />
                 <Box height={12}></Box>
                 <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
                   <DatePicker
@@ -407,7 +521,7 @@ getAllMajor()
                       input: { fontWeight: 'bold' },
                       margin: '0 0 0 20px',
                       padding: '0 20px 0 5px',
-                      width: '90%',
+                      width: '93.5%',
                       borderRadius: '25px',
                       '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
                       '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
@@ -417,89 +531,30 @@ getAllMajor()
                         border: 'none !important',
                       },
                     }}
-                    value={DOB}
+                    value={ExpirationDate}
                     onChange={(newValue) => {
-                      setDOB(newValue);
-                      formik.setFieldValue('DOB', newValue);
+                      setExpirationDate(newValue);
+                      formik.setFieldValue('ExpirationDate', newValue);
                     }}
                     format="DD/MM/YYYY"
                   />
                 </LocalizationProvider>
-                {Boolean(formik.touched.DOB && formik.errors.DOB) && (
+                {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
                   <Box sx={{ margin: ' 10px 0 0 20px' }}>
                     <Typography color={'red'} fontSize="14px">
-                      {formik.touched.DOB && formik.errors.DOB}
+                      {formik.touched.ExpirationDate && formik.errors.ExpirationDate}
                     </Typography>
                   </Box>
                 )}
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'6'} title={'Phone number *'} />
+                <Title number={'9'} title={'Personal Facebook link *'} />
                 <InputBar
-                  inputName="PhoneNumber"
-                  width={'90%'}
-                  {...formik.getFieldProps('PhoneNumber')}
-                  error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
-                  helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
+                  inputName="FacebookLink"
+                  width={'95%'}
+                  {...formik.getFieldProps('FacebookLink')}
+                  error={Boolean(formik.touched.FacebookLink && formik.errors.FacebookLink)}
+                  helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
                 />
-              </Box>
-            </Box>
-            <Title number={'7'} title={'Passport number *'} />
-            <InputBar
-              inputName="PassportNumber"
-              width={'95%'}
-              {...formik.getFieldProps('PassportNumber')}
-              error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
-              helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
-            />
-            <Title number={'8'} title={'Expiration date *'} />
-            <Box height={12}></Box>
-            <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
-              <DatePicker
-                sx={{
-                  input: { fontWeight: 'bold' },
-                  margin: '0 0 0 20px',
-                  padding: '0 20px 0 5px',
-                  width: '93.5%',
-                  borderRadius: '25px',
-                  '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                  '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                    border: 'none !important',
-                  },
-                  '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    border: 'none !important',
-                  },
-                }}
-                value={ExpirationDate}
-                onChange={(newValue) => {
-                  setExpirationDate(newValue);
-                  formik.setFieldValue('ExpirationDate', newValue);
-                }}
-                format="DD/MM/YYYY"
-              />
-            </LocalizationProvider>
-            {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
-              <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                <Typography color={'red'} fontSize="14px">
-                  {formik.touched.ExpirationDate && formik.errors.ExpirationDate}
-                </Typography>
-              </Box>
-            )}
-            <Title number={'9'} title={'Personal Facebook link *'} />
-            <InputBar
-              inputName="FacebookLink"
-              width={'95%'}
-              {...formik.getFieldProps('FacebookLink')}
-              error={Boolean(formik.touched.FacebookLink && formik.errors.FacebookLink)}
-              helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
-            />
-            {/* <Title number={'10'} title={'Passport image *'} />
+                {/* <Title number={'10'} title={'Passport image *'} />
             {!PassportImage ||
               (PassportImage.length < 1 && (
                 <Box
@@ -638,105 +693,160 @@ getAllMajor()
                 </Typography>
               </Box>
             )} */}
-           
-          
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: '50px',
-              }}
-            >
-              <Button
-                disableRipple
-                variant="contained"
-                sx={{
-                  fontWeight: '500',
-                  fontSize: '20px',
-                  padding: '10px 50px',
-                  borderRadius: '10px',
-                  backgroundColor: 'primary.main',
-                  color: 'secondary.contrastText',
-                  transition: 'all .5s',
-                  boxShadow: '0 2px 3px #00000085',
 
-                  '&:hover': {
-                    backgroundColor: 'primary.main',
-                    transform: 'translateY(3px)',
-                  },
-                }}
-                type="submit"
-              >
-                SUBMIT
-              </Button>
+                {ProgramForm && ProgramForm?.contentHeader1 && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }}
+                  >
+                    <Title number={'10'} title={ProgramForm?.contentHeader1} />
+                    <InputBar inputName={'contentHeader1'} width={'90%'} {...formik.getFieldProps('contentHeader1')} />
+                  </Box>
+                )}
+                {ProgramForm && ProgramForm?.contentHeader2 && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }}
+                  >
+                    <Title number={'11'} title={ProgramForm?.contentHeader2} />
+                    <InputBar inputName={'contentHeader2'} width={'90%'} {...formik.getFieldProps('contentHeader2')} />
+                  </Box>
+                )}
+                {ProgramForm && ProgramForm?.contentHeader3 && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }}
+                  >
+                    <Title number={'12'} title={ProgramForm?.contentHeader3} />
+                    <InputBar inputName={'contentHeader3'} width={'90%'} {...formik.getFieldProps('contentHeader3')} />
+                  </Box>
+                )}
+                {ProgramForm && ProgramForm?.contentHeader4 && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }}
+                  >
+                    <Title number={'13'} title={ProgramForm?.contentHeader4} />
+                    <InputBar inputName={'contentHeader4'} width={'90%'} {...formik.getFieldProps('contentHeader4')} />
+                  </Box>
+                )}
+                {ProgramForm && ProgramForm?.contentHeader5 && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }}
+                  >
+                    <Title number={'14'} title={ProgramForm?.contentHeader5} />
+                    <InputBar inputName={'contentHeader5'} width={'90%'} {...formik.getFieldProps('contentHeader5')} />
+                  </Box>
+                )}
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '50px',
+                  }}
+                >
+                  <Button
+                    disableRipple
+                    variant="contained"
+                    sx={{
+                      fontWeight: '500',
+                      fontSize: '20px',
+                      padding: '10px 50px',
+                      borderRadius: '10px',
+                      backgroundColor: 'primary.main',
+                      color: 'secondary.contrastText',
+                      transition: 'all .5s',
+                      boxShadow: '0 2px 3px #00000085',
+
+                      '&:hover': {
+                        backgroundColor: 'primary.main',
+                        transform: 'translateY(3px)',
+                      },
+                    }}
+                    type="submit"
+                  >
+                    SUBMIT
+                  </Button>
+                </Box>
+              </form>
             </Box>
-          </form>
-        </Box>
-      </Box>
-      <Snackbar
-        open={show}
-  
-       
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <Alert
-           action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setShow(false);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-         
-          variant="filled"
-        
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-         {'Regis Successful!!'}
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={showErr}
-
-       
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <Alert
-         action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => {
-              setShowErr(false)
+          </Box>
+          <Snackbar
+            open={show}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
             }}
           >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-          variant="filled"
-        
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-         {'Regis fail!!'}
-        </Alert>
-      </Snackbar>
-    </Box>}</>
-
+            <Alert
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setShow(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              variant="filled"
+              severity="success"
+              sx={{ width: '100%' }}
+            >
+              {'Regis Successful!!'}
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={showErr}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            <Alert
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setShowErr(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              variant="filled"
+              severity="error"
+              sx={{ width: '100%' }}
+            >
+              {'Regis fail!!'}
+            </Alert>
+          </Snackbar>
+        </Box>
+        </Slide>
+       
+      )}
+    </>
   );
 };
 

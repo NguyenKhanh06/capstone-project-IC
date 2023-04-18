@@ -53,6 +53,12 @@ const LoginStaff = () => {
       sessionStorage.setItem('staff', JSON.stringify(response.data.responseSuccess));
     });
   };
+  const getdetailStudent = (id) => {
+    axios.get(`https://localhost:7115/api/v1/student/getStudentDetail/${id}`).then((response) => {
+      sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
+      console.log(response.data.responseSuccess[0])
+    });
+  };
   const firebaseConfig = {
     apiKey: 'AIzaSyBzzMrusEf99NJzihK0LjYd5RAGMD75MDI',
     authDomain: 'capstoneic.firebaseapp.com',
@@ -280,7 +286,8 @@ const LoginStaff = () => {
               axios
               .post(`https://localhost:7115/api/v1/student/signin-google/${credentialResponse.credential}`).then(response => {
                 localStorage.setItem('token', response.data.responseSuccess.tokenToken);
-                sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                console.log("login", response.data.responseSuccess)
+                getdetailStudent(response.data.responseSuccess.id)
                 navigate('/landingpage');
               })
             }else{

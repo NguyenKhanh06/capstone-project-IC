@@ -277,7 +277,7 @@ function StudentCertificate(props) {
 
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-            <DataGrid
+           {students && <DataGrid
               autoHeight
               rows={students}
               columns={columns}
@@ -290,7 +290,7 @@ function StudentCertificate(props) {
               }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
-            />
+            />} 
           </Box>
         </Card>
       </Container>

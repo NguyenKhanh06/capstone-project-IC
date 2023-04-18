@@ -68,7 +68,6 @@ function CreateStudent(props) {
     formData.append('majorId', majorName?.id);
     formData.append('majorName', majorName?.name);
     formData.append('batch', batch);
-    formData.append('period', semester);
     formData.append('upStatus', studentStatus);
     formData.append('email', email);
     formData.append('phoneNumber', phoneNumber);

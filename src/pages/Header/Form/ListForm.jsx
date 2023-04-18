@@ -49,7 +49,7 @@ import DetailForm from './DetailForm';
     };
   
     const fetchData = async () => {
-      await axios.get(`https://localhost:7115/api/v1/registration/getAllRes`).then((response) => {
+      await axios.get(`https://localhost:7115/api/v1/registration/getRootRegis`).then((response) => {
         console.log(response.data);
         setForm(response.data.responseSuccess)
       });

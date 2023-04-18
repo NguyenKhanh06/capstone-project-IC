@@ -99,6 +99,8 @@ const [student, setStudent] = useState({})
       setOldRoll(props.student.oldRollNumber);
     }
   }, [props.student]);
+
+
   // const handleUpdateStudent = () => {};
   // console.log(props.student);
   const data = {
@@ -168,21 +170,14 @@ const [student, setStudent] = useState({})
         console.log('response', response);
         if (response.data.isSuccess) {
           handleSuccess('Upload File Successfull!!!');
-          getAllFile().then((res) => {
-            if (res.data.isSuccess) {
-              setListFile(res.data.responseSuccess);
-            }
-          });
+          getAllFile()
 
           // setTimeout(reload(), 3000)
-        } else {
-          handleError('Upload File fail');
-          setLoading(false);
-        }
+        } 
       })
       .catch((err) => {
         console.log('errr', err);
-        handleError(err.response.data.responseSuccess);
+        handleError('Upload File fail!!');
         setLoading(false);
       });
   };

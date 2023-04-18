@@ -21,4 +21,5 @@ export const navigations: Navigation[] = [
     label: 'Profile',
     path: '/landingpage/profile',
   },
+
 ]

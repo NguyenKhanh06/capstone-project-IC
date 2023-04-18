@@ -264,7 +264,7 @@ const handleCreateForm6 = () => {
                     </Select>
                   </FormControl>
              <Typography variant='h6'>Basic Information (You can not change that filed)</Typography>
-             <ol style={{display: "flex", flexDirection: "column", gap: 3}}>
+             <ol style={{display: "flex", flexDirection: "column", gap: 3, marginLeft: "20px", marginBottom: "20px"}}>
                 <li>Student Name</li>
                 <li>Roll Number</li>
                 <li>Major</li>

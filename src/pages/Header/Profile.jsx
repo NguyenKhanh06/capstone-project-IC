@@ -38,9 +38,9 @@ import { useNavigate } from 'react-router-dom';
   const [password, setPassword] = useState(null)
     const [fullName, setFullName] = useState(null);
     const [role, setRole] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [phoneNumber, setPhoneNumber] = useState(null);
-    const [address, setAddress] = useState(null);
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [address, setAddress] = useState('');
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
     const [message, setMessage] = useState('');
@@ -95,6 +95,19 @@ getDetail()
       
     }, []);
 
+    const handleUpdateStaff2 = () => {
+      axios.put(`https://localhost:7115/api/v1/account/update/${user.id}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Status=true&Role=${user.role}`).then((response) => {
+          if (response.data.isSuccess) {
+            setShowSuccess(true)
+       window.location.reload(false)
+          
+          }
+        })
+        .catch((err) => {
+          handleError("Update fail!");
+        });
+    };
+
     const handleUpdateStaff = () => {
       axios.put(`https://localhost:7115/api/v1/account/update/${user.id}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${user.role}`).then((response) => {
           if (response.data.isSuccess) {
@@ -107,7 +120,7 @@ getDetail()
           handleError("Update fail!");
         });
     };
-  
+
     const handleChangeName = (e) => {
       setFullName(e.target.value)
       if(e.target.value){
@@ -256,14 +269,13 @@ getDetail()
                 Accept
               </Button>
             </DialogActions>
-            <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Staff Successful!'} />
+            <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Profile Successful!'} />
           <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
           </Dialog>
        
         </Dialog>
         <ChangePass show={showChangePassword} close={() => {setShowChangePassword(false)}} email={email}/>
-        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Student Successful!'} />
-        <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+       
       </div>
     );
   }

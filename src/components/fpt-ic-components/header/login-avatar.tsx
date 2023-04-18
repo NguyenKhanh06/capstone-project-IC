@@ -18,7 +18,7 @@ const LoginAvatar = () => {
     <div>
       <IconButton {...bindTrigger(popupState)} disableRipple>
         <Avatar
-          src={student?.picture}
+          src={student.picture}
           style={{
             margin: '10px',
             width: '60px',
@@ -37,6 +37,12 @@ const LoginAvatar = () => {
         }}
         MenuListProps={{ sx: { py: 1 } }}
       >
+        {/* <MenuItem onClick={() => LogOut()}>
+          <ListItemIcon>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Profile</ListItemText>
+        </MenuItem> */}
         <MenuItem onClick={() => LogOut()}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />

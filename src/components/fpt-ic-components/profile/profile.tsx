@@ -1,16 +1,40 @@
-import { Box, Container, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Button, Container, Grow, Typography } from '@mui/material';
+
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import BaseBreadCrumbs from '../breadscrumbs/breadcrumbs';
 import RightTitle from './right-title';
 
 const ProfileComponent = () => {
+  const navigate = useNavigate();
+  const student = JSON.parse(sessionStorage.getItem('student'));
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  const [infors, setInfors] = useState(null);
+  const [grading, setGrading] = useState(null);
+  const getRegisInfor = async () => {
+    axios.get(`https://localhost:7115/api/v1/registration/getDetailbyStudentId/${user.id}`).then((response) => {
+      setInfors(response.data.responseSuccess);
+    });
+  };
+  const getGrading = async () => {
+    axios.get(`https://localhost:7115/api/v1/student/GetGradingStudentId/${user.id}`).then((response) => {
+      setGrading(response.data.responseSuccess);
+    });
+  };
+  useEffect(() => {
+    getRegisInfor();
+    getGrading();
+  }, []);
+
+  console.log(user);
   return (
-    <Box sx={{ height: '100vh', width: '100%' }}>
+    <Box sx={{ height: '100%', width: '100%' }}>
       <Container
         sx={{
           height: '100%',
           width: { lg: '70%', sm: '90%', xs: '90%' },
-          paddingTop: '5%',
+          paddingTop: '6%',
         }}
       >
         <BaseBreadCrumbs previousLink={[{ href: 'home', name: 'Homepage' }]} currentLink={'Profile'} />
@@ -25,7 +49,7 @@ const ProfileComponent = () => {
           <Box
             sx={{
               width: { lg: '350px', sm: '100%', xs: '100%' },
-              height: '300px',
+              height: '100%',
               borderRadius: '30px',
               backgroundColor: '#fff',
               boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
@@ -34,6 +58,7 @@ const ProfileComponent = () => {
               justifyContent: 'flex-end',
               alignItems: 'center',
               paddingBottom: '10px',
+              paddingTop: '10px',
             }}
           >
             <Box
@@ -44,18 +69,12 @@ const ProfileComponent = () => {
                 overflow: 'hidden',
               }}
             >
-              <img
-                src={'/images/mentors/jonas-kakaroto-KIPqvvTOC1s-unsplash.jpg'}
-                style={{ objectFit: 'cover' }}
-                width={200}
-                height={200}
-                alt="alt"
-              ></img>
+              <img src={student?.picture} style={{ objectFit: 'cover' }} width={200} height={200} alt="alt"></img>
             </Box>
             <Typography variant="h3" style={{ margin: '10px 0 0 0' }}>
-              NGUYEN CONG KHANH
+              {user?.fullName}
             </Typography>
-            <Typography style={{ margin: '0' }}>khanhncse130305@fpt.edu.vn</Typography>
+            <Typography style={{ margin: '0' }}>{user?.email}</Typography>
             <Box
               sx={{
                 display: 'flex',
@@ -74,7 +93,7 @@ const ProfileComponent = () => {
           <Box
             sx={{
               width: { lg: '35%', sm: '100%', xs: '100%' },
-              height: { lg: '500px', sm: '500px', xs: 'auto' },
+
               borderRadius: '30px',
               backgroundColor: '#fff',
               boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
@@ -90,7 +109,7 @@ const ProfileComponent = () => {
                 fontWeight: 'fontWeightRegular',
               }}
             >
-              <Typography>NGUYEN CONG KHANH</Typography>
+              <Typography>{user?.fullName}</Typography>
             </Typography>
 
             <RightTitle NameText={'Roll number'} />
@@ -99,7 +118,7 @@ const ProfileComponent = () => {
                 fontWeight: 'fontWeightRegular',
               }}
             >
-              <Typography>SE130305</Typography>
+              <Typography>{user?.rollNumber}</Typography>
             </Box>
             <RightTitle NameText={'Main major'} />
             <Box
@@ -107,9 +126,81 @@ const ProfileComponent = () => {
                 fontWeight: 'fontWeightRegular',
               }}
             >
-              <Typography>Digital Art & Design</Typography>
+              <Typography>{user?.majorName}</Typography>
+            </Box>
+            <RightTitle NameText={'Batch'} />
+            <Box
+              sx={{
+                fontWeight: 'fontWeightRegular',
+              }}
+            >
+              <Typography>{user?.batch}</Typography>
+            </Box>
+            <RightTitle NameText={'Phone Number'} />
+            <Box
+              sx={{
+                fontWeight: 'fontWeightRegular',
+              }}
+            >
+              <Typography>{user?.phoneNumber}</Typography>
+            </Box>
+            <RightTitle NameText={'Address'} />
+            <Box
+              sx={{
+                fontWeight: 'fontWeightRegular',
+              }}
+            >
+              <Typography>{user?.address}</Typography>
             </Box>
           </Box>
+        </Box>
+        <Box
+          sx={{
+            width: { lg: '100%', sm: '100%', xs: '100%' },
+
+            borderRadius: '30px',
+            backgroundColor: '#fff',
+            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '20px 0 20px 60px',
+            margin: '20px 0 0 20px',
+          }}
+        >
+          <Typography variant="h3" style={{ margin: '10px 0 0 0' }}>
+            Register Information
+          </Typography>
+          {infors &&
+            infors.map((infor, index) => (
+              <Link key={index} to="/landingpage/register-information" state={infor}>
+                <RightTitle NameText={infor?.project?.projectName} />
+              </Link>
+            ))}
+        </Box>
+        <Box
+          sx={{
+            width: { lg: '100%', sm: '100%', xs: '100%' },
+
+            borderRadius: '30px',
+            backgroundColor: '#fff',
+            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            padding: '20px 0 20px 60px',
+            margin: '20px 0px 40px 20px',
+          }}
+        >
+          <Typography variant="h3" style={{ margin: '10px 0 0 0' }}>
+            Your files
+          </Typography>
+          {grading &&
+            grading.map((grad, index) => (
+              <Button variant="text" key={index} href={grad.gradingUrl}>
+                <RightTitle NameText={grad.fileName} />
+              </Button>
+            ))}
         </Box>
       </Container>
     </Box>

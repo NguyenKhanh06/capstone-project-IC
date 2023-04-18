@@ -39,6 +39,7 @@ import ListPartnerAd from './pages/Admin/Partner/ListPartnerAd';
 import ListDeputy from './pages/Partner/ListDeputy';
 import Role from './pages/Admin/Role';
 import ListMajor from './pages/Header/Major/ListMajor';
+import RegisterInformation from './pages/FPTIC/Information/index'
 
 // ----------------------------------------------------------------------
 
@@ -116,6 +117,8 @@ export default function Router() {
         { element: <Navigate to="/landingpage/home" />, index: true },
         { path: 'home', element: <Home /> },
         { path: 'register', element: <Register /> },
+        { path: 'register-information', element: <RegisterInformation /> },
+   
         { path: 'program', element: <Program /> },
         { path: 'profile', element: <Profile /> },
         { path: 'program/:id', element: <ProgramDetail /> },  
