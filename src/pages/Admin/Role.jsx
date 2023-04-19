@@ -178,11 +178,12 @@ const handleDeleteStaff = () => {
                     <RemoveRedEyeRoundedIcon />
                   </IconButton> 
                 </Tooltip>
-                <Tooltip  title="Delete">
+                {params.row?.account.role === 2 && !params.row.isHeadOfDepartMent ?   <Tooltip  title="Delete">
                   <IconButton onClick={() => handleShowConfirm(params.row?.account?.email)} >
                     <DeleteIcon color="error" />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> : null}
+                
                 {params.row?.account.role === 0 ?   <Tooltip  title="Update to Staff">
                   <IconButton onClick={() => handleShowConfirmChange(params.row?.account?.email)} >
                     <PublishedWithChangesOutlinedIcon color="success" />
@@ -200,10 +201,10 @@ const handleDeleteStaff = () => {
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-              Staff
+             Account
             </Typography>
             <Button onClick={() => setShowCreate(true)} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-              New Staff
+              New Account
             </Button>
           </Stack>
   

@@ -151,11 +151,12 @@ const columns = [
                     <RemoveRedEyeRoundedIcon />
                   </IconButton> 
                 </Tooltip>
-                <Tooltip  title="Delete">
+                {params.row?.account.role === 2 && !params.row.isHeadOfDepartMent ?    <Tooltip  title="Delete">
                   <IconButton onClick={() => handleShowConfirm(params.row?.account.email)} >
                     <DeleteIcon color="error" />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> : null}
+               
               </Stack>
     )
           },

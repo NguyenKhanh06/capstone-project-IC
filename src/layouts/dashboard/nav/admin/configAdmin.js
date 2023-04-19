@@ -29,7 +29,7 @@ const navConfigAdmin= [
     icon: <PeopleAltTwoToneIcon/>,
   },
   {
-    title: 'Staff',
+    title: 'Account',
     path: '/admin/staff',
     icon: < PortraitTwoToneIcon/>,
   },

@@ -231,7 +231,7 @@ window.location.reload()
             </DialogContent>
             <DialogActions style={{ paddingTop: 20, marginRight: 10 }}>
        
-              {disableBtn && regex.test(taskName) ? <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
+              {disableBtn && regex.test(taskName) ? <Button variant="contained" onClick={() => setShowConfirmUpdate(true)} autoFocus>
               Save
             </Button> : <Button disabled variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
               Save

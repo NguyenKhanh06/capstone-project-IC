@@ -146,7 +146,7 @@ setAddress(props.staff?.account?.address)
     }
 
   }
-  console.log(props)
+
 
   return (
     <div>
