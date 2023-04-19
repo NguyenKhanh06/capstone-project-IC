@@ -106,7 +106,7 @@ function ChangePass(props) {
     >
       <form>
         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <DialogTitle id="alert-dialog-title">Detail Category</DialogTitle>
+          <DialogTitle id="alert-dialog-title">Change Password</DialogTitle>
           <IconButton style={{ marginRight: 6 }} onClick={() => handleClose()}>
             <CloseOutlinedIcon />
           </IconButton>

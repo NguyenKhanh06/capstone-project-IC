@@ -74,6 +74,7 @@
     "react-hook-form": "^7.43.1",
     "react-hot-toast": "^2.4.0",
     "react-image-size": "^2.0.2",
+    "react-messenger-chat-plugin": "^3.0.5",
     "react-photo-album": "^2.0.3",
     "react-photo-view": "^1.2.3",
     "react-responsive-carousel": "^3.2.23",

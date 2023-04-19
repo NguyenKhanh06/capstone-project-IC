@@ -117,7 +117,7 @@ const RegisterComponent = () => {
         // PassportImage: PassportImage,
         // TransferInfomation: TransferInfomation,
       };
-      console.log(Program);
+ 
 
       // {ProgramForm && () &&  console.log(2)}
       // {ProgramForm && (ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(3)}
@@ -393,7 +393,7 @@ const RegisterComponent = () => {
                     </Box>
                   </Box>
                   <Title number={'4'} title={'Major *'} />
-                  <Autocomplete
+                {Major && <Autocomplete
                     componentsProps={{
                       paper: {
                         sx: {
@@ -401,7 +401,7 @@ const RegisterComponent = () => {
                         },
                       },
                     }}
-                    defaultValue={student.major}
+                    defaultValue={student?.major}
                     disablePortal
                     options={Major}
                     getOptionLabel={(option) => option['majorFullName']}
@@ -435,7 +435,7 @@ const RegisterComponent = () => {
                       />
                     )}
                     noOptionsText="This major not found"
-                  />
+                  /> }  
                   {Boolean(formik.touched.Major && formik.errors.Major) && (
                     <Box sx={{ margin: ' 10px 0 0 20px' }}>
                       <Typography color={'red'} fontSize="14px">

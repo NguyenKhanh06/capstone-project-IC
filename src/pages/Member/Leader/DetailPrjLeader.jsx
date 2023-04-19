@@ -144,13 +144,13 @@ import {
   
     const fetchDataStaff = async () => {
       await axios.get(`https://localhost:7115/api/v1/staff/getAll`).then((response) => {
-        setStaffs(response.data.responseSuccess.filter((staff) => staff.account.status && staff.account.role === 2));
+        setStaffs(response.data.responseSuccess?.filter((staff) => staff.account.status && staff.account.role === 2));
       });
     };
   
     const fetchDataPartner = async () => {
       await axios.get(`https://localhost:7115/api/v1/partner/getAllPartner`).then((response) => {
-        setPartners(response.data.responseSuccess).find((partner) => partner.id === props.project.partnerId);
+        setPartners(response.data.responseSuccess)?.find((partner) => partner.id === props.project.partnerId);
       });
     };
   

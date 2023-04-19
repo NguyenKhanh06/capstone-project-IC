@@ -48,7 +48,7 @@ function ListCourse(props) {
 
   const fetchData = async () => {
     await axios.get(`https://localhost:7115/api/v1/course/getAllCourse`).then((response) => {
-      console.log(response.data);
+   
       setCourses(response.data.responseSuccess.filter((course) => course.status));
     });
   };
@@ -127,6 +127,8 @@ function ListCourse(props) {
                 sortModel: [{ field: "dateCreated", sort: "desc" }],
                  },
             }}
+          
+            
             pageSizeOptions={[10]}
             disableRowSelectionOnClick
           />

@@ -169,7 +169,7 @@ function DetailProjectNego(props) {
             >
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                 <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                  Import File Contract
+                  Import Course Result
                   <input
                     onChange={onChangeFile}
                     id="input"
@@ -206,7 +206,7 @@ function DetailProjectNego(props) {
           </Stack>
         </DialogActions>
       </Dialog>
-      <CancelProject show={showCancel} close={() => setShowCancel(false)} />
+      <CancelProject show={showCancel} close={() => setShowCancel(false)} id={props.project.id}/>
       <DetailCourseNego course={project?.courseId} show={showDetail} close={() => setShowDetail(false)} />
     </div>
   );

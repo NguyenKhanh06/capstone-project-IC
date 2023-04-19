@@ -19,8 +19,11 @@ import {
   Select,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
@@ -139,7 +142,22 @@ const [student, setStudent] = useState({})
 
   // };
 
+const deleteFile = (name) => {
+  axios.delete(`https://localhost:7115/api/v1/storage/filename?filename=${name}`)   .then((response) => {
+    console.log('response', response);
+    if (response.data.isSuccess) {
+      handleSuccess('Delete File Successfull!!!');
+      getAllFile()
 
+      // setTimeout(reload(), 3000)
+    } 
+  })
+  .catch((err) => {
+    console.log('errr', err);
+    handleError('Delete File fail!!');
+    setLoading(false);
+  });
+}
 
   const getAllFile = () => {
     axios.get(`https://localhost:7115/api/v1/student/GetGradingStudentId/${props.student.id}`).then((response) => {
@@ -453,6 +471,11 @@ console.log(e.target.value)
                   <ListItem key={index} disableGutters divider>
                     <Link href={value.gradingUrl}>{`${index + 1}. ${value.fileName}`}</Link>
                     {/* <ListItemText primary={`${index + 1}. ${value.fileName}`} /> */}
+                    <Tooltip title="Delete">
+                  <IconButton onClick={() => console.log(value)}>
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </Tooltip> 
                   </ListItem>
                 ))}
               </List>
@@ -521,7 +544,7 @@ console.log(e.target.value)
               Accept
             </Button>
           </DialogActions>
-          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Campus Successful!'} />
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Student Successful!'} />
           <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
         </Dialog>
       </Dialog>

@@ -259,9 +259,9 @@ getDetail()
             fullWidth
             maxWidth="sm"
           >
-            <DialogTitle id="alert-dialog-title">Update Staff</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Update Profile</DialogTitle>
             <DialogContent>
-              <DialogContentText id="alert-dialog-description">You Want To Update Staff?</DialogContentText>
+              <DialogContentText id="alert-dialog-description">You Want To Update Profile?</DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseConfirm}>Cancel</Button>

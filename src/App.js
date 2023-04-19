@@ -47,6 +47,7 @@ export default function App() {
             <StyledChart />
             <div className="App">
               <Router />
+          
             </div>
         </ThemeProvider>
       </BrowserRouter>

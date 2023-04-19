@@ -153,7 +153,7 @@ console.log("staff", staff)
       renderCell: (params) => {
         console.log(params.row?.project?.mileStoneProject)
         return (
-          <>{params.row.projectStatus === 2 ? <Chip label='Cancel' color='error'/>  :<>
+          <>{params.row.project.projectStatus === 2 ? <Chip label='Cancel' color='error'/>  :<>
            {dayjs(new Date()).date() - dayjs(params.row?.project.estimateTimeStart).date() >= 0 &&
             dayjs(new Date()).month() - dayjs(params.row?.project.estimateTimeStart).month() >= 0 &&
             dayjs(new Date()).year() - dayjs(params.row?.project.estimateTimeStart).year() >= 0 ? (
@@ -304,13 +304,13 @@ console.log("staff", staff)
   const fetchData = async () => {
     setLoading(true);
     await axios.get(`https://localhost:7115/api/v1/staff/GetProjectByStaffId/${staff[0].id}`).then((response) => {
-  console.log("prj",response.data.responseSuccess)
+
       setProjects(response.data.responseSuccess);
       setLoading(false);
       
     });
   };
-  console.log(staff[0]);
+
   useEffect(() => {
     fetchData().catch((error) => {
       console.log(error);
@@ -326,6 +326,7 @@ console.log("staff", staff)
   }
   return (
     <>
+
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -335,10 +336,11 @@ console.log("staff", staff)
             New Project
           </Button> */}
         </Stack>
-
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-            {projects && <DataGrid
+        {projects.length &&  
+
+         <DataGrid
               autoHeight
               rows={projects}
               columns={columns}
@@ -353,8 +355,10 @@ console.log("staff", staff)
               components={{ NoRowsOverlay }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
-            />}
-          </Box>
+            /> 
+         }
+
+</Box>
         </Card>
       </Container>
 

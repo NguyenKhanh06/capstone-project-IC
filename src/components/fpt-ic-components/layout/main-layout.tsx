@@ -3,9 +3,11 @@ import Box from '@mui/material/Box';
 import { Footer } from '../footer';
 import { Header } from '../header';
 import { ColorMenuContext } from '../../../context/context';
+import Messenger from '../../../pages/FPTIC/Messenger'
 import { ThemeProvider } from '@mui/material';
 import theme from '../../../config/theme';
 import { Outlet } from 'react-router-dom';
+
 
 interface Props {
   children: ReactNode;
@@ -22,6 +24,7 @@ const MainLayout: FC<Props> = () => {
         <Box component="main" bgcolor={'background.default'}>
           <Header />
           <Outlet />
+          <Messenger />
           <Footer />
         </Box>
       </ThemeProvider>

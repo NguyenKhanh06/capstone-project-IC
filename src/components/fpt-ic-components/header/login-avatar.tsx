@@ -16,7 +16,8 @@ const LoginAvatar = () => {
   }
   return (
     <div>
-      <IconButton {...bindTrigger(popupState)} disableRipple>
+    {student ?  <>
+        <IconButton {...bindTrigger(popupState)} disableRipple>
         <Avatar
           src={student.picture}
           style={{
@@ -50,6 +51,10 @@ const LoginAvatar = () => {
           <ListItemText>Logout</ListItemText>
         </MenuItem>
       </Menu>
+      </> : <>
+      <Button>Login</Button>
+      </>}
+     
     </div>
   );
 };

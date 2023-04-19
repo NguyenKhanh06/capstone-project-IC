@@ -76,7 +76,7 @@ const RegisterInformationComponent = () => {
   const [ProgramForm, setProgramForm] = React.useState(null);
   const [Major, setMajor] = React.useState(null);
   const [DOB, setDOB] = React.useState<Date | null>(null);
-  const [ExpirationDate, setExpirationDate] = React.useState(null);
+  const [ExpirationDate, setExpirationDate] = React.useState<Date | null>(null);
   const [forms, setForm] = React.useState(null);
   const [formDetail, setFormDetail] = React.useState(null);
   const [studentDetail, setStudentDetail] = React.useState(null);

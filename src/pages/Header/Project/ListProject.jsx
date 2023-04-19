@@ -53,11 +53,7 @@ function ListProject(props) {
     setShowConfirm(false);
   };
 
-  function sortFunction(a, b) {
-    const dateA = new Date(a.deadLine).getTime();
-    const dateB = new Date(b.deadLine).getTime();
-    return dateA > dateB ? 1 : -1;
-  }
+
 
   const columns = [
     {
@@ -74,6 +70,12 @@ function ListProject(props) {
       },
     },
 
+    {
+      field: 'dateCreated',
+      headerName: 'Date Create',
+      flex: 1,
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
+    },
     {
       field: 'estimateTimeStart',
       headerName: 'Start Date',
@@ -301,21 +303,27 @@ function ListProject(props) {
 
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-            <DataGrid
+           {projects?.length &&  <DataGrid
               autoHeight
               rows={projects}
               columns={columns}
+           
+            
               initialState={{
                 pagination: {
                   paginationModel: {
                     pageSize: 10,
                   },
                 },
+                sorting: {
+                  sortModel: [{ field: "dateCreated", sort: "desc" }],
+                   },
+              
               }}
               components={{ NoRowsOverlay }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
-            />
+            />}
           </Box>
         </Card>
       </Container>

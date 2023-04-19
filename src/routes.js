@@ -49,7 +49,7 @@ export default function Router() {
       path: '/header',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/header/app" />, index: true },
+        { element: <Navigate to="/header/project" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'negotiation', element: <ListProjectNego /> },
         { path: 'partner', element: <ListPartner /> },
@@ -73,7 +73,7 @@ export default function Router() {
       path: '/partner',
       element: <DashboardLayoutPartner />,
       children: [
-        { element: <Navigate to="/partner/app" />, index: true },
+        { element: <Navigate to="/partner/project" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'project', element: <ListProjectNegoPartner/> },
         { path: 'campus', element: <ListCampus/> },
@@ -86,7 +86,7 @@ export default function Router() {
       path: '/staff',
       element: <DashboardLayoutMember />,
       children: [
-        { element: <Navigate to="/staff/app" />, index: true },
+        { element: <Navigate to="/staff/projects" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'projects', element: <ListProjectMember/> },
         { path: 'member/list-task', element: <ListTaskMember />},
@@ -100,13 +100,14 @@ export default function Router() {
       path: '/admin',
       element: <DashboardLayoutAdmin />,
       children: [
-        { element: <Navigate to="/admin/app" />, index: true },
+        { element: <Navigate to="/admin/partner" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'partner', element: <ListPartnerAd /> },
         { path: 'staff', element: <Role /> },
       ],
     },
     {
+      
       path: '/',
       element: <LoginPage />,
     },
@@ -118,7 +119,6 @@ export default function Router() {
         { path: 'home', element: <Home /> },
         { path: 'register', element: <Register /> },
         { path: 'register-information', element: <RegisterInformation /> },
-   
         { path: 'program', element: <Program /> },
         { path: 'profile', element: <Profile /> },
         { path: 'program/:id', element: <ProgramDetail /> },  

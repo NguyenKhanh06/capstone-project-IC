@@ -67,7 +67,6 @@ function TaskPlanning(props) {
   }
   const handleDeleteTask = () => {
     axios.put(`https://localhost:7115/api/v1/task/DisableTask/${id}`).then((response) => {
-
     if (response.data.isSuccess) {
    setShowSuccess(true)
       setTimeout(() => {

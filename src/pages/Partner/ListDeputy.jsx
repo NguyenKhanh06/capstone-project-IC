@@ -12,7 +12,7 @@ import ErrorAlert from '../Alert/ErrorAlert';
 
 function ListDeputy(props) {
   const deputy = JSON.parse(sessionStorage.getItem('deputy'));
-  console.log("dep", deputy)
+
   const [deputies, setDeputies] = useState([]);
   const [id, setId] = useState('');
   const [email, setEmail] = useState('');
