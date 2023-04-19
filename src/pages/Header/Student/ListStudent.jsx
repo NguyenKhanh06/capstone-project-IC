@@ -35,6 +35,7 @@ import DetailStudent from './DetailStudent';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import DetailStudentRegister from './DetailStudentRegister';
+import ListFormStudent from './ListForm';
 
 function StudentCertificate(props) {
   const [order, setOrder] = useState('asc');
@@ -317,7 +318,7 @@ function StudentCertificate(props) {
       <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       <DetailStudent show={showDetail} close={() => setShowDetail(false)} student={student} />
-<DetailStudentRegister show={showRegis} close={() => setShowRegis(false)} studentID = {student.id}/>
+<ListFormStudent show={showRegis} close={() => setShowRegis(false)} studentID = {student}/>
       <CreateStudent show={showCreate} close={() => setShowCreate(false)} />
       <Loading show={loading} />
     </>

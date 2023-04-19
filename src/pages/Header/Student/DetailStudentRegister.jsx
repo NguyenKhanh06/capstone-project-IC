@@ -85,9 +85,9 @@ function DetailStudentRegister(props) {
 
   const getDetail = async () => {
     await axios
-      .get(`https://localhost:7115/api/v1/registration/getDetailbyStudentId/${props.studentID}`)
+      .get(`https://localhost:7115/api/v1/registration/GetDetailResId/${props.studentID}`)
       .then((response) => {
-        console.log(response.data.responseSuccess[0]);
+        console.log(response.data.responseSuccess);
         setStudent(response.data.responseSuccess[0]);
         if (response.data.responseSuccess[0]?.contentHeader1 !== 'null') {
           setContent1(response.data.responseSuccess[0].content1);
@@ -108,7 +108,7 @@ function DetailStudentRegister(props) {
         setDate(response.data.responseSuccess[0]?.dateExpired);
         setNumber(response.data.responseSuccess[0]?.numberPassPort);
         setLink(response.data.responseSuccess[0]?.scocialLink);
-        setProject(response.data.responseSuccess[0]?.project.id);
+        setProject(response.data.responseSuccess[0]?.project?.id);
       });
   };
   const onSelectFile = (e) => {
@@ -174,7 +174,7 @@ function DetailStudentRegister(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://localhost:7115/api/v1/registration/updateRegisByStudentId/${props.studentID}?FullName=${student.student.fullName}&MajorId=${student?.student?.majorId}&memberCode=${student?.student?.memberCode}&PhoneNumber=${student.student.phoneNumber}&NumberPassPort=${numberPassPort}&RollNumber=${student.student?.rollNumber}&RollNumber=${student.student?.rollNumber}&YourEmail=${student.student?.email}&ScocialLink=${socialLink}&DateExpired=${dateExpired}&ProjectId=${project}&Content1=${content1}&Content2=${content2}&Content3=${content3}&Content4=${content4}&Content5=${content5}`,
+      url: `https://localhost:7115/api/v1/registration/UpdateRegisId/${student.id}?FullName=${student.student.fullName}&MajorId=${student?.student?.majorId}&memberCode=${student?.student?.memberCode}&PhoneNumber=${student.student.phoneNumber}&NumberPassPort=${numberPassPort}&RollNumber=${student.student?.rollNumber}&RollNumber=${student.student?.rollNumber}&YourEmail=${student.student?.email}&ScocialLink=${socialLink}&DateExpired=${dateExpired}&ProjectId=${project}&Content1=${content1}&Content2=${content2}&Content3=${content3}&Content4=${content4}&Content5=${content5}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -199,7 +199,7 @@ function DetailStudentRegister(props) {
   const MOBILE_ITEM_HEIGHT = 58;
   const ITEM_PADDING_TOP = 18;
   const MENU_ITEMS = 6;
-  console.log(student);
+
   return (
     <Dialog
       fullWidth
@@ -235,16 +235,16 @@ function DetailStudentRegister(props) {
           <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
             <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
               <Typography variant="body1">Full Name:</Typography>
-              <Typography variant="h6">{student?.student.fullName}</Typography>
+              <Typography variant="h6">{student?.student?.fullName}</Typography>
             </Stack>
 
             <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
               <Typography variant="body1">Email:</Typography>
-              <Typography variant="h6">{student?.student.email}</Typography>
+              <Typography variant="h6">{student?.student?.email}</Typography>
             </Stack>
             <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
               <Typography variant="body1">Phone Number:</Typography>
-              <Typography variant="h6">{student?.student.phoneNumber}</Typography>
+              <Typography variant="h6">{student?.student?.phoneNumber}</Typography>
             </Stack>
           </Stack>
           <Divider variant="middle" sx={{ marginBottom: 6, marginTop: 4 }} />
@@ -262,7 +262,7 @@ function DetailStudentRegister(props) {
             />
             <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
               <DatePicker
-                disablePast
+       
                 sx={{ width: '100%' }}
                 label="Date Expired"
                 value={dayjs(dateExpired)}
@@ -314,9 +314,9 @@ function DetailStudentRegister(props) {
                   <MenuItem
                     style={{ display: 'flex', justifyContent: 'space-between', direction: 'row' }}
                     key={index}
-                    value={project.project.id}
+                    value={project?.project?.id}
                   >
-                    {project.project.projectName}
+                    {project?.project?.projectName}
                   </MenuItem>
                 ))}
               </Select>

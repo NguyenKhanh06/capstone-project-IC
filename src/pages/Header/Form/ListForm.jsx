@@ -120,7 +120,7 @@ import DetailForm from './DetailForm';
           </Stack>
   
           <Card>
-            <DataGrid
+            {form && <DataGrid
               autoHeight
               rows={form}
               columns={columns}
@@ -133,7 +133,7 @@ import DetailForm from './DetailForm';
               }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
-            />
+            />}
           </Card>
         </Container>
   <DetailForm show={showDetail} close={() => setShowDetail(false)} form={formDetail} />

@@ -39,7 +39,7 @@ function DetailForm(props) {
         {
           field: 'email',
           headerName: 'Email',
-          flex: 1,
+          flex: 2,
           valueGetter: (params) => {
        
             return params.row.student.email

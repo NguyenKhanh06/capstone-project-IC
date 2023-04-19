@@ -76,27 +76,30 @@ const RegisterInformationComponent = () => {
   const [ProgramForm, setProgramForm] = React.useState(null);
   const [Major, setMajor] = React.useState(null);
   const [DOB, setDOB] = React.useState<Date | null>(null);
-  const [ExpirationDate, setExpirationDate] = React.useState<Date | null>(null);
+  const [ExpirationDate, setExpirationDate] = React.useState(null);
   const [forms, setForm] = React.useState(null);
+  const [formDetail, setFormDetail] = React.useState(null);
+  const [studentDetail, setStudentDetail] = React.useState(null);
   const [show, setShow] = useState(false);
   const [showErr, setShowErr] = useState(false);
   const containerRef = useRef(null);
+
   const formik = useFormik({
     initialValues: {
       // Program: data.project as string,
-      FullName: data.student.fullName as string,
-      RollNumber: data.student.rollNumber as string,
+      FullName: studentDetail?.fullName as string,
+      RollNumber:  studentDetail?.rollNumber as string,
       Major: '',
-      PhoneNumber: data.student.phoneNumber as string,
-      PassportNumber: data.numberPassPort as string,
-      FacebookLink: data.scocialLink as string,
+      PhoneNumber:  studentDetail?.phoneNumber as string,
+      PassportNumber: formDetail?.numberPassPort as string,
+      FacebookLink: formDetail?.scocialLink as string,
       DOB: '',
       ExpirationDate: '',
-      contentHeader1: data?.content1 as string,
-      contentHeader2: data?.content2 as string,
-      contentHeader3: data?.content3 as string,
-      contentHeader4: data?.content4 as string,
-      contentHeader5: data?.content5 as string,
+      contentHeader1: formDetail?.content1 as string,
+      contentHeader2: formDetail?.content2 as string,
+      contentHeader3: formDetail?.content3 as string,
+      contentHeader4: formDetail?.content4 as string,
+      contentHeader5: formDetail?.content5 as string,
       PassportImage: '',
       TransferInfomation: '',
     },
@@ -135,13 +138,19 @@ const RegisterInformationComponent = () => {
       axios({
         method: 'PUT',
         data: formData,
-        url: `https://localhost:7115/api/v1/registration/updateRegisByStudentId/${student.id}?FullName=${values.FullName}&MajorId=${Major.id}&memberCode=${data?.student?.memberCode}&PhoneNumber=${values.PhoneNumber}&DateOfBirth=${values.DOB}&NumberPassPort=${values.PassportNumber}&RollNumber=${values.RollNumber}&YourEmail=${data?.student?.email}&ScocialLink=${values.FacebookLink}&DateExpired=${values.ExpirationDate}&ProjectId=${data?.projectId}&Content1=${values?.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}`,
+        url: `https://localhost:7115/api/v1/registration/UpdateRegisId/${data.id}?FullName=${values.FullName}&MajorId=${Major.id}&memberCode=${data?.student?.memberCode}&PhoneNumber=${values.PhoneNumber}&DateOfBirth=${values.DOB}&NumberPassPort=${values.PassportNumber}&RollNumber=${values.RollNumber}&YourEmail=${data?.student?.email}&ScocialLink=${values.FacebookLink}&DateExpired=${values.ExpirationDate}&ProjectId=${data?.projectId}&Content1=${values?.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })
         .then((response) => {
           const datas = {
+            memberCode: student.memberCode,
+            oldRollNumber: student.oldRollNumber,
+            batch:student.batch,
+            semeter: student.semeter,
+            upStatus: student.studentStatus,
+            address: student.address,
                   rollNumber: values.RollNumber,
                   fullName: values.FullName,
                   majorId: Major.id,
@@ -151,10 +160,14 @@ const RegisterInformationComponent = () => {
                 };
           if (response.data.isSuccess) {
             setShow(true);
+            getDetail()
+            getDetailStudent()
             handleUpdateStudent(datas);
             setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+              setShow(false);
+                    }, 2000);
+            
+       
           }
         })
         .catch((err) => {
@@ -192,17 +205,31 @@ const RegisterInformationComponent = () => {
     //   });
   });
 
+const getDetail = async () => {
+await axios.get(`https://localhost:7115/api/v1/registration/GetDetailResId/${data.id}`).then(response => {
+setFormDetail(response.data.responseSuccess[0])
+})
+}
 
-  const handleUpdateStudent = (data) => {
+
+const getDetailStudent = async () => {
+await axios.get(`https://localhost:7115/api/v1/student/getStudentDetail/${student.id}`).then(response => {
+setStudentDetail(response.data.responseSuccess[0])
+})
+}
+
+  const handleUpdateStudent = (dataUpdate) => {
     axios
-      .put(`https://localhost:7115/api/v1/student/update/${student.id}`, data)
+      .put(`https://localhost:7115/api/v1/student/update/${student.id}`, dataUpdate)
       .then((response) => {
         console.log(response);
         if (response.data.isSuccess) {
           setShow(true);
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+        getDetail()
+        getDetailStudent()
+        setTimeout(() => {
+          setShow(false);
+                }, 3000);
         }
       })
       .catch((err) => {
@@ -266,6 +293,8 @@ const RegisterInformationComponent = () => {
   useEffect(() => {
     getAllForm();
     getAllMajor();
+    getDetail()
+    getDetailStudent()
   }, []);
   useEffect(() => {
     if (Program) {
@@ -414,7 +443,7 @@ const RegisterInformationComponent = () => {
                     </Box>
                   </Box>
                   <Title number={'4'} title={'Major *'} />
-                  <Autocomplete
+                  {Major && <Autocomplete
                     componentsProps={{
                       paper: {
                         sx: {
@@ -424,7 +453,7 @@ const RegisterInformationComponent = () => {
                     }}
                     disablePortal
                     options={Major}
-                    defaultValue={data.student?.major}
+                    defaultValue={ studentDetail.major}
                     getOptionLabel={(option) => option['majorFullName']}
                     sx={{ border: 'none !important', fontWeight: 'bold' }}
                     onChange={(event, newValue) => {
@@ -456,7 +485,7 @@ const RegisterInformationComponent = () => {
                       />
                     )}
                     noOptionsText="This major not found"
-                  />
+                  />}
                   {Boolean(formik.touched.Major && formik.errors.Major) && (
                     <Box sx={{ margin: ' 10px 0 0 20px' }}>
                       <Typography color={'red'} fontSize="14px">
@@ -563,13 +592,13 @@ const RegisterInformationComponent = () => {
                       format="DD/MM/YYYY"
                     />
                   </LocalizationProvider>
-                  {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
+                  {/* {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
                     <Box sx={{ margin: ' 10px 0 0 20px' }}>
                       <Typography color={'red'} fontSize="14px">
                         {formik.touched.ExpirationDate && formik.errors.ExpirationDate}
                       </Typography>
                     </Box>
-                  )}
+                  )} */}
                   <Title number={'9'} title={'Personal Facebook link *'} />
                   <InputBar
                     inputName="FacebookLink"
@@ -579,7 +608,7 @@ const RegisterInformationComponent = () => {
                     helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
                   />
                   <Title number={'10'} title={'Passport image *'} />
-                  {data?.passportImageUrl && <img src={data.passportImageUrl} style={{maxWidth: "50%", margin: "10px 0 20px 0"}} alt='alt' />}
+                  {data?.passportImageUrl ? <img src={formDetail?.passportImageUrl} style={{maxWidth: "50%", margin: "10px 0 20px 0"}} alt='alt' /> : <>
                   {!PassportImage ||
                     (PassportImage.length < 1 && (
                       <Box
@@ -606,6 +635,8 @@ const RegisterInformationComponent = () => {
                         </Box>
                       </Box>
                     ))}
+                  </>}
+                
                   {PassportImage.length > 0 && (
                     <>
                       <Box height={24}></Box>
@@ -641,17 +672,19 @@ const RegisterInformationComponent = () => {
                       </Box>
                     </>
                   )}
-                  {/* {Boolean(formik.touched.PassportImage && formik.errors.PassportImage) && (
+                 {/* {!data?.urlImageBill  ?<>
+                  {Boolean(formik.touched.PassportImage && formik.errors.PassportImage) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
                   {formik.touched.PassportImage && formik.errors.PassportImage}
                 </Typography>
               </Box>
-            )} */}
+            )}
+                 </> : null }  */}
                      
                   <Title number={'11'} title={'Transfer information *'} />
-                  {data?.urlImageBill && <img src={data.urlImageBill} alt='alt' style={{maxWidth: "50%", margin: "10px 0 20px 0"}} />}
-                  {!TransferInfomation ||
+                  {data?.urlImageBill ? <img src={formDetail?.urlImageBill} alt='alt' style={{maxWidth: "50%", margin: "10px 0 20px 0"}} /> : <>
+            {!TransferInfomation ||
                     (TransferInfomation.length < 1 && (
                       <Box
                         sx={{
@@ -677,6 +710,8 @@ const RegisterInformationComponent = () => {
                         </Box>
                       </Box>
                     ))}
+           </>}
+
                   {TransferInfomation.length > 0 && (
                     <>
                       <Box height={24}></Box>
@@ -713,13 +748,15 @@ const RegisterInformationComponent = () => {
                       </Box>
                     </>
                   )}
-                  {/* {Boolean(formik.touched.TransferInfomation && formik.errors.TransferInfomation) && (
+                 {/* {data?.urlImageBill ? null : <>
+                  {Boolean(formik.touched.TransferInfomation && formik.errors.TransferInfomation) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
                   {formik.touched.TransferInfomation && formik.errors.TransferInfomation}
                 </Typography>
               </Box>
-            )} */}
+            )}
+                 </>}  */}
 
                   {data?.contentHeader1 !== 'null' && (
                     <Box
