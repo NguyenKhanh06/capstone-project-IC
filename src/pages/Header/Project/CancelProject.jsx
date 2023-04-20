@@ -52,7 +52,7 @@ function CancelProject(props) {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    })
+    }).then(res => console.log(res))
      
   }
 
@@ -77,7 +77,7 @@ function CancelProject(props) {
 changeStatus()
           setShowSuccess(true);
           setLoading(false);
-          setTimeout(reload(), 3000);
+          // setTimeout(reload(), 3000);
         }
       })
       .catch((err) => {
@@ -85,6 +85,7 @@ changeStatus()
         setLoading(false);
       });
   };
+  console.log(props)
 
   return (
     <div>
