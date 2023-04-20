@@ -32,7 +32,7 @@ function CreateCampus(props) {
   const handleCreateCampus = () => {
     axios
       .post(
-        `https://localhost:7115/api/v1/campus/create?Name=${name}&Address=${address}&PartnerId=${props.PartnerID}`
+        `https://api.ic-fpt.click/api/v1/campus/create?Name=${name}&Address=${address}&PartnerId=${props.PartnerID}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

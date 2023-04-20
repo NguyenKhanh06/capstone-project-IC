@@ -32,7 +32,7 @@ import Loading from '../../Loading';
 import DetailCancel from './DetailCancel';
 
 function ListProject(props) {
-  const regexMailFu = /[\w.-]+fptu@gmail\.com$/
+  const regexMailFu = /[\w.-]+fptu@gmail\.com$/;
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -53,7 +53,20 @@ function ListProject(props) {
     setShowConfirm(false);
   };
 
-
+  const updateMilstone = (id, state) => {
+    const formData = new FormData();
+    formData.append('ProjectId', id);
+    formData.append('Status', state);
+    axios({
+      method: 'POST',
+      data: formData,
+      url: `https://api.ic-fpt.click/api/v1/project/changeStatus`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+     
+  };
 
   const columns = [
     {
@@ -100,64 +113,74 @@ function ListProject(props) {
     },
 
     {
-      field: 'Status',
+      field: 'projectStatus',
       headerName: 'Milestone',
       flex: 1,
-      renderCell: (params) => {
-        return (
-        
-          <>
-            {params.row.projectStatus === 2 ? <Chip label='Cancel' color='error'/> : <> {dayjs(new Date()).date() - dayjs(params.row?.estimateTimeStart).date() >= 0 &&
-            dayjs(new Date()).month() - dayjs(params.row?.estimateTimeStart).month() >= 0 &&
-            dayjs(new Date()).year() - dayjs(params.row?.estimateTimeStart).year() >= 0 ? (
-              <Chip label="Initiation" />
-            ) : dayjs(new Date()).date() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).date() >=
+      renderCell: (params) => (
+     
+        <>
+          {params.row.projectStatus === 2 ? (
+            <Chip label="Cancel" color="error" />
+          ) : params.row.projectStatus === 3 ? (
+            <Chip label="Initiation" />
+          ) : params.row.projectStatus === 4 ? (
+            <Chip label="Planning" color="primary" />
+          ) : params.row.projectStatus === 5 ? (
+            <Chip label="Execution" color="secondary" />
+          ) : params.row.projectStatus === 6 ? (
+            <Chip label="Monitoring" color="warning" />
+          ) : params.row.projectStatus === 7 ? (
+            <Chip label="Closing" color="success" />
+          ) : null}
+
+          {dayjs(new Date()).date() - dayjs(params.row?.estimateTimeStart).date() === 0 &&
+          dayjs(new Date()).month() - dayjs(params.row?.estimateTimeStart).month() === 0 &&
+          dayjs(new Date()).year() - dayjs(params.row?.estimateTimeStart).year() === 0
+            ? updateMilstone(params.row.id, 3)
+            : dayjs(new Date()).date() -
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).month() >=
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).month() ===
                 0 &&
               dayjs(new Date()).year() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).year() >=
-                0 ? (
-              <Chip label="Planning" color="primary" />
-            ) : dayjs(new Date()).date() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).date() >=
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).year() ===
+                0
+            ? updateMilstone(params.row.id, 4)
+            
+            : dayjs(new Date()).date() -
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).month() >=
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).month() ===
                 0 &&
               dayjs(new Date()).year() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).year() >=
-                0 ? (
-              <Chip label="Execution" color="secondary" />
-            ) : dayjs(new Date()).date() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).date() >=
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).year() ===
+                0
+            ? updateMilstone(params.row.id, 5)
+            : dayjs(new Date()).date() -
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).month() >=
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).month() ===
                 0 &&
               dayjs(new Date()).year() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).year() >=
-                0 ? (
-              <Chip label="Monitoring" color="warning" />
-            ) : dayjs(new Date()).date() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).date() >=
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).year() ===
+                0
+            ? updateMilstone(params.row.id, 6)
+            : dayjs(new Date()).date() -
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).month() >=
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).month() ===
                 0 &&
               dayjs(new Date()).year() -
-                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).year() >=
-                0 ? (
-              <Chip label="Closing" color="success" />
-            ) : (
-              <Chip label="Initiation" />
-            )}</>}
-           
-          </>
-        );
-      },
+                dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).year() ===
+                0
+            ? updateMilstone(params.row.id, 7)
+            : null}
+        </>
+      ),
     },
 
     {
@@ -168,73 +191,80 @@ function ListProject(props) {
       disableClickEventBubbling: true,
 
       renderCell: (params) => (
-    
-          <Stack direction="row" justifyContent="center" alignItems="center" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
-            {
-              params.row.projectStatus !== 2 ?   <Tooltip title="View Detail">
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
+          divider={<Divider orientation="vertical" flexItem />}
+        >
+          {params.row.projectStatus !== 2 ? (
+            <Tooltip title="View Detail">
               <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
                 <RemoveRedEyeRoundedIcon />
               </IconButton>
             </Tooltip>
-:   <Tooltip title="View Detail">
-<IconButton onClick={() => handleViewDetailCancel(params.row)} aria-label="delete">
-  <RemoveRedEyeRoundedIcon />
-</IconButton>
-</Tooltip>
+          ) : (
+            <Tooltip title="View Detail">
+              <IconButton onClick={() => handleViewDetailCancel(params.row)} aria-label="delete">
+                <RemoveRedEyeRoundedIcon />
+              </IconButton>
+            </Tooltip>
+          )}
 
-            }
-          
-            {params.row?.tasks?.length && params.row.projectStatus !== 2 ? (
-              <>
-                {' '}
-                {dayjs(new Date()).month() + 1 - (dayjs(params.row?.tasks[0]?.deadLine).month() + 1) === 0 && 
-                dayjs(params.row?.tasks[0]?.deadLine).date() - dayjs(new Date()).date() <= 3 && dayjs(params.row?.tasks[0]?.deadLine).year() - dayjs(new Date()).year() >= 0 ? (
-                  <Tooltip title="Task List - Have task need do complete">
-                    <IconButton
-                      color="error"
-                     
-                      onClick={() => {
-                        navigate('/header/list-task', { state: params.row });
-                      }}
-                    >
-                      <AssignmentLateTwoToneIcon />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Task List">
-                    <IconButton
-                      onClick={() => {
-                        navigate('/header/list-task', { state: params.row });
-                      }}
-                    >
-                      <AssignmentLateTwoToneIcon />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </>
-            ) : params.row.projectStatus === 2 ? (
-              <>
-                <Tooltip title="Task List - canceled">
+          {params.row?.tasks?.length && params.row.projectStatus !== 2 ? (
+            <>
+              {' '}
+              {dayjs(new Date()).month() + 1 - (dayjs(params.row?.tasks[0]?.deadLine).month() + 1) === 0 &&
+              dayjs(params.row?.tasks[0]?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
+              dayjs(params.row?.tasks[0]?.deadLine).year() - dayjs(new Date()).year() >= 0 ? (
+                <Tooltip title="Task List - Have task need do complete">
                   <IconButton
+                    color="error"
                     onClick={() => {
-                      navigate('/header/list-task-cancel', { state: params.row });
+                      navigate('/header/list-task', { state: params.row });
                     }}
                   >
                     <AssignmentLateTwoToneIcon />
                   </IconButton>
                 </Tooltip>
-              </>
-            ) : <Tooltip title="Task List">
-            <IconButton
-              onClick={() => {
-                navigate('/header/list-task', { state: params.row });
-              }}
-            >
-              <AssignmentLateTwoToneIcon />
-            </IconButton>
-          </Tooltip>}
+              ) : (
+                <Tooltip title="Task List">
+                  <IconButton
+                    onClick={() => {
+                      navigate('/header/list-task', { state: params.row });
+                    }}
+                  >
+                    <AssignmentLateTwoToneIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </>
+          ) : params.row.projectStatus === 2 ? (
+            <>
+              <Tooltip title="Task List - canceled">
+                <IconButton
+                  onClick={() => {
+                    navigate('/header/list-task-cancel', { state: params.row });
+                  }}
+                >
+                  <AssignmentLateTwoToneIcon />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : (
+            <Tooltip title="Task List">
+              <IconButton
+                onClick={() => {
+                  navigate('/header/list-task', { state: params.row });
+                }}
+              >
+                <AssignmentLateTwoToneIcon />
+              </IconButton>
+            </Tooltip>
+          )}
 
-            {/* {params.row?.projectStatus === 4 ? (
+          {/* {params.row?.projectStatus === 4 ? (
               <Tooltip title="Delete">
                 <IconButton onClick={() => handleShowConfirm(params.row.id)}>
                   <DeleteIcon color="error" />
@@ -247,13 +277,12 @@ function ListProject(props) {
                 </IconButton>
               </Tooltip>
             )} */}
-            
-          </Stack>
-        ),
+        </Stack>
+      ),
     },
   ];
   const handleDeleteProject = () => {
-    axios.put(`https://localhost:7115/api/v1/project/disable/${id}`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/project/disable/${id}`).then((response) => {
       console.log(response);
     });
   };
@@ -268,7 +297,7 @@ function ListProject(props) {
   };
   const fetchData = async () => {
     setLoading(true);
-    await axios.get(`https://localhost:7115/api/v1/project/getAllProject`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
       console.log('responseProject', response.data);
       setProjects(response.data.responseSuccess);
       setLoading(false);
@@ -303,32 +332,31 @@ function ListProject(props) {
 
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-           {projects?.length &&  <DataGrid
-              autoHeight
-              rows={projects}
-              columns={columns}
-           
-            
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 10,
+            {projects?.length && (
+              <DataGrid
+                autoHeight
+                rows={projects}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 10,
+                    },
                   },
-                },
-                sorting: {
-                  sortModel: [{ field: "dateCreated", sort: "desc" }],
-                   },
-              
-              }}
-              components={{ NoRowsOverlay }}
-              pageSizeOptions={[10]}
-              disableRowSelectionOnClick
-            />}
+                  sorting: {
+                    sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+                  },
+                }}
+                components={{ NoRowsOverlay }}
+                pageSizeOptions={[10]}
+                disableRowSelectionOnClick
+              />
+            )}
           </Box>
         </Card>
       </Container>
 
-<DetailCancel show={showDetailCancel} close={() => setShowDetailCancel(false)}  project={project}/>
+      <DetailCancel show={showDetailCancel} close={() => setShowDetailCancel(false)} project={project} />
       <DetailProject show={showDetail} close={() => setShowDetail(false)} project={project} />
       <CreateProject show={showCreate} close={() => setShowCreate(false)} />
 

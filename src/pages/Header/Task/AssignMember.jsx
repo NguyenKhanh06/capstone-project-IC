@@ -68,7 +68,7 @@ const handleClose = () => {
 
 
   const fetchData = async () =>{
-   await axios.get(`https://localhost:7115/api/v1/project/getJoin/${props.project}`).then((response) => {
+   await axios.get(`https://api.ic-fpt.click/api/v1/project/getJoin/${props.project}`).then((response) => {
      
 setStaffs(response.data.responseSuccess)
 

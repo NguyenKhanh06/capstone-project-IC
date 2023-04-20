@@ -9,6 +9,7 @@ import AssignmentLateTwoToneIcon from '@mui/icons-material/AssignmentLateTwoTone
 import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone';
 import PortraitTwoToneIcon from '@mui/icons-material/PortraitTwoTone';
 import DashboardTwoToneIcon from '@mui/icons-material/DashboardTwoTone';
+import HistoryTwoToneIcon from '@mui/icons-material/HistoryTwoTone';
 import SvgColor from '../../../../components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -35,9 +36,9 @@ const navConfigAdmin= [
   },
  
   {
-    title: 'History',
-    path: '/admin/history',
-    icon: < PortraitTwoToneIcon/>,
+    title: 'Change Log',
+    path: '/admin/changelog',
+    icon: <HistoryTwoToneIcon/>,
   },
  
  

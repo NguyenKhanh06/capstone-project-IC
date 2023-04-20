@@ -49,7 +49,7 @@ console.log(props)
   const handleCreateTask = () => {
     axios
       .post(
-        `https://localhost:7115/api/v1/task/create?TaskName=${taskName}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.projectid}&MileStoneId=${props.mileStoneId}`
+        `https://api.ic-fpt.click/api/v1/task/create?TaskName=${taskName}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.projectid}&MileStoneId=${props.mileStoneId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

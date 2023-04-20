@@ -66,7 +66,7 @@ function TaskExecuting(props) {
     window.location.reload(false);
   }
   const handleDeleteTask = () => {
-    axios.put(`https://localhost:7115/api/v1/task/DisableTask/${id}`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/task/DisableTask/${id}`).then((response) => {
 
     if (response.data.isSuccess) {
    setShowSuccess(true)
@@ -81,7 +81,7 @@ function TaskExecuting(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/task/getRootsTask`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/task/getRootsTask`).then((response) => {
       setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.mileStoneId === 3).filter((task) => task.status!== 5));
      
       

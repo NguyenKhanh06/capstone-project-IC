@@ -44,7 +44,7 @@ function DetailMajor(props) {
         "majorFullName": activity,
         "status": true
       }
-    axios.put(`https://localhost:7115/api/v1/Major/update/${props.major.id}`, data).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/Major/update/${props.major.id}`, data).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(() => {

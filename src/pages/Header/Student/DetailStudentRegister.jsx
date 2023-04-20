@@ -77,7 +77,7 @@ function DetailStudentRegister(props) {
   };
 
   const fetchDataPrj = async () => {
-    await axios.get(`https://localhost:7115/api/v1/registration/getAllRes`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/registration/getAllRes`).then((response) => {
       setProjects(response.data.responseSuccess);
 
     });
@@ -85,7 +85,7 @@ function DetailStudentRegister(props) {
 
   const getDetail = async () => {
     await axios
-      .get(`https://localhost:7115/api/v1/registration/GetDetailResId/${props.studentID}`)
+      .get(`https://api.ic-fpt.click/api/v1/registration/GetDetailResId/${props.studentID}`)
       .then((response) => {
         console.log(response.data.responseSuccess);
         setStudent(response.data.responseSuccess[0]);
@@ -174,7 +174,7 @@ function DetailStudentRegister(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://localhost:7115/api/v1/registration/UpdateRegisId/${student.id}?FullName=${student.student.fullName}&MajorId=${student?.student?.majorId}&memberCode=${student?.student?.memberCode}&PhoneNumber=${student.student.phoneNumber}&NumberPassPort=${numberPassPort}&RollNumber=${student.student?.rollNumber}&RollNumber=${student.student?.rollNumber}&YourEmail=${student.student?.email}&ScocialLink=${socialLink}&DateExpired=${dateExpired}&ProjectId=${project}&Content1=${content1}&Content2=${content2}&Content3=${content3}&Content4=${content4}&Content5=${content5}`,
+      url: `https://api.ic-fpt.click/api/v1/registration/UpdateRegisId/${student.id}?FullName=${student.student.fullName}&MajorId=${student?.student?.majorId}&memberCode=${student?.student?.memberCode}&PhoneNumber=${student.student.phoneNumber}&NumberPassPort=${numberPassPort}&RollNumber=${student.student?.rollNumber}&RollNumber=${student.student?.rollNumber}&YourEmail=${student.student?.email}&ScocialLink=${socialLink}&DateExpired=${dateExpired}&ProjectId=${project}&Content1=${content1}&Content2=${content2}&Content3=${content3}&Content4=${content4}&Content5=${content5}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

@@ -39,7 +39,7 @@ function CreateCategory(props) {
   };
 
   const handleCreateCategory = () => {
-    axios.post(`https://localhost:7115/api/v1/categoryProject/create?Name=${cateName}&Status=true`).then((response) => {
+    axios.post(`https://api.ic-fpt.click/api/v1/categoryProject/create?Name=${cateName}&Status=true`).then((response) => {
 
       setCateName('');
       props.getAll();

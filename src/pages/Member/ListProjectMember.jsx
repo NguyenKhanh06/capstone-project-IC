@@ -324,7 +324,7 @@ console.log("staff", staff)
   
   const fetchData = async () => {
     setLoading(true);
-    await axios.get(`https://localhost:7115/api/v1/staff/GetProjectByStaffId/${staff[0].id}`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/staff/GetProjectByStaffId/${staff[0].id}`).then((response) => {
 
       setProjects(response.data.responseSuccess);
       setLoading(false);

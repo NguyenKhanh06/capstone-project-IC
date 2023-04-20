@@ -49,7 +49,7 @@ setSkillName(e.target.value)
  }
     axios
       .post(
-        `https://localhost:7115/api/v1/Major/create`, data
+        `https://api.ic-fpt.click/api/v1/Major/create`, data
       )
       .then((response) => {
         if (response.data.isSuccess) {

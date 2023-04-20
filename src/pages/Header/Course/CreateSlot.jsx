@@ -49,7 +49,7 @@ function CreateSlot(props) {
   const handleCreateSlot = () => {
     axios
       .post(
-        `https://localhost:7115/api/v1/slot/create?Name=${topic}&Detail=${detail}&TimeAllocation=${timeAllocation}&Type=${learningType}&SyllabusId=${props.syllabusID}`
+        `https://api.ic-fpt.click/api/v1/slot/create?Name=${topic}&Detail=${detail}&TimeAllocation=${timeAllocation}&Type=${learningType}&SyllabusId=${props.syllabusID}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

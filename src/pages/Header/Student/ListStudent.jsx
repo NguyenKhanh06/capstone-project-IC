@@ -145,7 +145,7 @@ function StudentCertificate(props) {
     setShowConfirm(false);
   };
   const handleDeleteStudent = () => {
-    axios.delete(`https://localhost:7115/api/v1/student/delete/${id}`).then((response) => {
+    axios.delete(`https://api.ic-fpt.click/api/v1/student/delete/${id}`).then((response) => {
       window.location.reload(false);
     });
   };
@@ -161,7 +161,7 @@ function StudentCertificate(props) {
   };
   const fetchData = async () => {
     setLoading(true)
-    await axios.get(`https://localhost:7115/api/v1/student/getAllStudent`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/student/getAllStudent`).then((response) => {
       setStudents(response.data.responseSuccess);
       setLoading(false)
     });
@@ -180,7 +180,7 @@ function StudentCertificate(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/student/importStudent',
+      url: 'https://api.ic-fpt.click/api/v1/student/importStudent',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -206,7 +206,7 @@ function StudentCertificate(props) {
 
   const handleExportFile = () => {
     axios
-      .get(`https://localhost:7115/api/v1/student/exportExcel`, {
+      .get(`https://api.ic-fpt.click/api/v1/student/exportExcel`, {
         responseType: 'blob',
       })
       .then((response) => {

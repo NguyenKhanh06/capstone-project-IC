@@ -110,7 +110,7 @@ function DetailTask(props) {
 
   const fetchData = async () => {
     console.log("check")
-  await axios.get(`https://localhost:7115/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
+  await axios.get(`https://api.ic-fpt.click/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
  
       setTask(response.data.responseSuccess[0]);
       setStaff(response.data.responseSuccess[0].assignTasks[0]?.staffs);
@@ -141,7 +141,7 @@ function DetailTask(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://localhost:7115/api/v1/task/update/${props.task.id}`,
+      url: `https://api.ic-fpt.click/api/v1/task/update/${props.task.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -168,7 +168,7 @@ function DetailTask(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/comment/createCommentTask',
+      url: 'https://api.ic-fpt.click/api/v1/comment/createCommentTask',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -180,7 +180,7 @@ function DetailTask(props) {
   };
   const fetchDataComment = async () => {
 
-    await axios.get(`https://localhost:7115/api/v1/comment/GetCommentByTaskId/${props.task.id}`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/comment/GetCommentByTaskId/${props.task.id}`).then((response) => {
 
       setcmtTask(response.data.responseSuccess);
     });
@@ -194,12 +194,12 @@ function DetailTask(props) {
 
   const handleUpdateStatus = () => {
     axios
-      .post(`https://localhost:7115/api/v1/task/changeStatus/${props.task.id}`, data)
+      .post(`https://api.ic-fpt.click/api/v1/task/changeStatus/${props.task.id}`, data)
      
   };
 
   const handleDeleteComment = () => {
-    axios.delete(`https://localhost:7115/api/v1/comment/delete/${id}`).then((response) => {
+    axios.delete(`https://api.ic-fpt.click/api/v1/comment/delete/${id}`).then((response) => {
       if (response.data.isSuccess) {
     
         setTimeout(() => {
@@ -215,7 +215,7 @@ function DetailTask(props) {
   }
   const handleDelete = (id) => {
     axios
-      .post(`https://localhost:7115/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
+      .post(`https://api.ic-fpt.click/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
       .then((response) => {
         handleUpdateStatus();
         if (response.data.isSuccess) {

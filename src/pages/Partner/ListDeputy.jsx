@@ -43,7 +43,7 @@ function ListDeputy(props) {
     setShowSuccess(true);
   };
   const getDeputy = async () => {
-   await axios.get(`https://localhost:7115/api/v1/deputy/getAll`).then((response) => {
+   await axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
       setDeputies(response.data.responseSuccess.filter((dep) => dep.partnerId === deputy.partnerId && dep.accountId !== deputy.accountId));
      
     });
@@ -57,7 +57,7 @@ function ListDeputy(props) {
   };
   const ChangeStatus = () => {
     axios
-      .put(`https://localhost:7115/api/v1/account/changeStatusAccount/${email}?Status=${status}`)
+      .put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${email}?Status=${status}`)
       .then((response) => {
         if (response.data.isSuccess) {
           getDeputy()

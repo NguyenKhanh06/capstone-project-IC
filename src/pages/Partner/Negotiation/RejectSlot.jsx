@@ -37,7 +37,7 @@ const [loading, setLoading] = useState(false)
 
         axios 
           .put(
-            `https://localhost:7115/api/v1/slot/updateStatus/${props.slotID}?Status=2`
+            `https://api.ic-fpt.click/api/v1/slot/updateStatus/${props.slotID}?Status=2`
           ).  then((response) => {
             if (response.data.isSuccess) {
               CreateReason()
@@ -64,7 +64,7 @@ const [loading, setLoading] = useState(false)
         axios({
           method: "POST",
           data: formData,
-          url: "https://localhost:7115/api/v1/reason/create",
+          url: "https://api.ic-fpt.click/api/v1/reason/create",
           headers: {
             "Content-Type": "multipart/form-data",
           },

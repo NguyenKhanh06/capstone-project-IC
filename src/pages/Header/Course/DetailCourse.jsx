@@ -98,7 +98,7 @@ function DetailCourse(props) {
   };
 
   const getDetail = () => {
-    axios.get(`https://localhost:7115/api/v1/course/getDetail/${props.course.id}`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/course/getDetail/${props.course.id}`).then((response) => {
       setCourse(response.data.responseSuccess[0]);
       setSyllabuses(response.data.responseSuccess[0]?.syllabus);
     });
@@ -117,11 +117,11 @@ function DetailCourse(props) {
 
   const handleUpdate = () => {
     console.log(
-      `https://localhost:7115/api/v1/course/update/${props.course.id}?Activity=${activity}&Content=${content}&CourseName=${skillName}`
+      `https://api.ic-fpt.click/api/v1/course/update/${props.course.id}?Activity=${activity}&Content=${content}&CourseName=${skillName}`
     );
     axios
       .put(
-        `https://localhost:7115/api/v1/course/update/${props.course.id}?Activity=${activity}&Content=${courseContent}&CourseName=${skillName}&Status=true&DateCreate=${props.course.dateCreated}`
+        `https://api.ic-fpt.click/api/v1/course/update/${props.course.id}?Activity=${activity}&Content=${courseContent}&CourseName=${skillName}&Status=true&DateCreate=${props.course.dateCreated}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -139,7 +139,7 @@ function DetailCourse(props) {
     axios
       .put(
         `
-https://localhost:7115/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${status}`
+https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${status}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -159,7 +159,7 @@ https://localhost:7115/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${statu
 //     axios
 //       .put(
 //         `
-// https://localhost:7115/api/v1/syllabus/changeStatusSyllabus/${id}?Status=false`
+// https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=false`
 //       )
 //       .then(getDetail());
 //   };

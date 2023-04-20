@@ -64,7 +64,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
       "staffCode": staff.email,
       "accountId": staff.accountId
     }
-    axios.post(`https://localhost:7115/api/v1/staff/create`, data).then((response) => {
+    axios.post(`https://api.ic-fpt.click/api/v1/staff/create`, data).then((response) => {
       if (response.data.isSuccess) {
         setShowSuccess(true);
         setTimeout(reload(), 5000);
@@ -74,7 +74,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
     })
   }
     const handleCreateStaff = () => {
-        axios.post(`https://localhost:7115/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=0
+        axios.post(`https://api.ic-fpt.click/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=0
         `).then((response) => {
             if (response.data.isSuccess) {
               createStaff(response.data.responseSuccess)

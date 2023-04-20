@@ -42,7 +42,7 @@ function CreateBlog(props) {
   const handleCreateCourse = () => {
     // axios
     //   .post(
-    //     `https://localhost:7115/api/v1/course/create?Activity=${activity}&Content=${content}&SkillName=${skillName}`
+    //     `https://api.ic-fpt.click/api/v1/course/create?Activity=${activity}&Content=${content}&SkillName=${skillName}`
     //   )
     //   .then((response) => {
     //     window.location.reload(false);
@@ -126,7 +126,7 @@ function CreateBlog(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/post/create',
+      url: 'https://api.ic-fpt.click/api/v1/post/create',
       headers: {
         'Content-Type': 'multipart/form-data',
       },

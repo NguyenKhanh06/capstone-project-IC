@@ -47,7 +47,7 @@ function ListCourse(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/course/getAllCourse`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/course/getAllCourse`).then((response) => {
    
       setCourses(response.data.responseSuccess.filter((course) => course.status));
     });
@@ -58,7 +58,7 @@ function ListCourse(props) {
   }, []);
 
   const handleDeleteCourse = () => {
-    axios.put(`https://localhost:7115/api/v1/course/delete/${id}`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`).then((response) => {
       window.location.reload(false);
     });
   };

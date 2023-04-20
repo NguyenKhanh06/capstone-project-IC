@@ -87,7 +87,7 @@ function DetailCmt(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://localhost:7115/api/v1/comment/updateTaskComment/${props.cmt.id}`,
+      url: `https://api.ic-fpt.click/api/v1/comment/updateTaskComment/${props.cmt.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

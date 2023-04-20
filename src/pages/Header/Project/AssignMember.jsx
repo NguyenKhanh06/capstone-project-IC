@@ -73,13 +73,13 @@ import ErrorAlert from '../../Alert/ErrorAlert';
   
    
     const fetchData = async () =>{
-     await axios.get(`https://localhost:7115/api/v1/staff/getAll`).then((response) => {
+     await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
   setStaffs(response.data.responseSuccess.filter(staff => staff.account.status&& regexMailFu.test(staff.account.email)).filter(staflead => staflead.id !== props.project.leaderId))
       })
     }
 
     const fetchJoin = async () => {
-     await axios.get(`https://localhost:7115/api/v1/project/getJoin/${props.project.id}`).then((response) => {
+     await axios.get(`https://api.ic-fpt.click/api/v1/project/getJoin/${props.project.id}`).then((response) => {
         setJoinPrj(response.data.responseSuccess)
     
       })
@@ -104,7 +104,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
       axios({
         method: 'POST',
         data: formData,
-        url: `https://localhost:7115/api/v1/project/assign/${props.project.id}`,
+        url: `https://api.ic-fpt.click/api/v1/project/assign/${props.project.id}`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },

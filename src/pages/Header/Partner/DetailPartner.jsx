@@ -172,7 +172,7 @@ function DetailPartner(props) {
 
   const handleDeleteCampus = () => {
     axios
-      .put(`https://localhost:7115/api/v1/campus/disable/${id}`)
+      .put(`https://api.ic-fpt.click/api/v1/campus/disable/${id}`)
       .then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Delete Campus Successful!!!');
@@ -189,7 +189,7 @@ function DetailPartner(props) {
   const handleUpdatePartner = () => {
     axios
       .put(
-        `https://localhost:7115/api/v1/partner/update/${props.partner.id}?Name=${name}&Local=${local}&Note=${note}&Status=true`
+        `https://api.ic-fpt.click/api/v1/partner/update/${props.partner.id}?Name=${name}&Local=${local}&Note=${note}&Status=true`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -207,7 +207,7 @@ function DetailPartner(props) {
   };
   const fetchData = async () => {
 
-    await axios.get(`https://localhost:7115/api/v1/partner/getDetail/${props.partner.id}`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getDetail/${props.partner.id}`).then((response) => {
       
       setPartner(response.data.responseSuccess[0]);
       setCampuses(response.data.responseSuccess[0]?.campuses.filter(camp => camp.status));
@@ -220,7 +220,7 @@ function DetailPartner(props) {
     });
   };
   const getDeputy = () => {
-    axios.get(`https://localhost:7115/api/v1/deputy/getAll`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
       setDeputies(
         response.data.responseSuccess.filter((dep) => dep.partnerId === props.partner.id && dep.account.status)
       );
@@ -228,7 +228,7 @@ function DetailPartner(props) {
   };
   const disableDeputy = () => {
     axios
-      .put(`https://localhost:7115/api/v1/account/disable/${email}`)
+      .put(`https://api.ic-fpt.click/api/v1/account/disable/${email}`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowConfirmDeleteDep(false);

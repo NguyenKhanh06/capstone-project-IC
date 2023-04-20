@@ -49,7 +49,7 @@ function CreateSyllabus(props) {
 
 
   const fetchDataPartner = async () => {
-    await axios.get(`https://localhost:7115/api/v1/partner/getAllPartner`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
       setPartners(response.data.responseSuccess);
     });
   };
@@ -59,7 +59,7 @@ function CreateSyllabus(props) {
     setLoading(true);
     axios
       .post(
-        `https://localhost:7115/api/v1/syllabus/create?Content=${content}&Description=${description}&CourseId=${props.courseID}&PartnerId=${partner}`
+        `https://api.ic-fpt.click/api/v1/syllabus/create?Content=${content}&Description=${description}&CourseId=${props.courseID}&PartnerId=${partner}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

@@ -19,7 +19,7 @@ function CreateDateMil(props) {
             "dateBegin": fromDateInit,
             "dateEnd":toDateInit
         }
-        axios.put(`https://localhost:7115/api/v1/milestone/changeMileStoneDate/1`, data).then((response) => {
+        axios.put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/1`, data).then((response) => {
             console.log(response)
         })
     }

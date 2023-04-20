@@ -74,7 +74,7 @@ function CreateForm(props) {
   };
   const fetchDataPrj = async () => {
     setLoading(true);
-    await axios.get(`https://localhost:7115/api/v1/project/getAllProject`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
    
       setProjects(response.data.responseSuccess);
       setLoading(false);
@@ -86,7 +86,7 @@ function CreateForm(props) {
     // free memory when ever this component is unmounted
   }, []);
 const handleCreateForm2 = () => {
-    axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}`).then((response) => {
+    axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}`).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true);
             setTimeout(reload(), 5000);
@@ -101,7 +101,7 @@ const handleCreateForm2 = () => {
   
 }
 const handleCreateForm3 = () => {
-  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}`).then((response) => {
+  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(reload(), 5000);
@@ -116,7 +116,7 @@ const handleCreateForm3 = () => {
 
 }
 const handleCreateForm4 = () => {
-  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}`).then((response) => {
+  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(reload(), 5000);
@@ -131,7 +131,7 @@ const handleCreateForm4 = () => {
 
 }
 const handleCreateForm5 = () => {
-  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}`).then((response) => {
+  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(reload(), 5000);
@@ -146,7 +146,7 @@ const handleCreateForm5 = () => {
 
 }
 const handleCreateForm6 = () => {
-  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}&ContentHeader5=${inputList[4].title}`).then((response) => {
+  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}&ContentHeader5=${inputList[4].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(reload(), 5000);
@@ -162,7 +162,7 @@ const handleCreateForm6 = () => {
 }
   const handleCreateForm = () => {
     console.log(inputList)
-    axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}
+    axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}
     `).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true);
@@ -178,7 +178,7 @@ const handleCreateForm6 = () => {
     // setLoading(true);
     // axios
     //   .post(
-    //     `https://localhost:7115/api/v1/syllabus/create?Content=${content}&Description=${description}&CourseId=${props.courseID}`
+    //     `https://api.ic-fpt.click/api/v1/syllabus/create?Content=${content}&Description=${description}&CourseId=${props.courseID}`
     //   )
     //   .then((response) => {
     //     if (response.data.isSuccess) {

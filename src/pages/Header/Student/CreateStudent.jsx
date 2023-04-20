@@ -78,7 +78,7 @@ function CreateStudent(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/student/create',
+      url: 'https://api.ic-fpt.click/api/v1/student/create',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -110,7 +110,7 @@ function CreateStudent(props) {
   //   "status": true,
   // };
   // const handleCreateStudent = () => {
-  //   axios.post(`https://localhost:7115/api/v1/student/create`, data).then((response) => {
+  //   axios.post(`https://api.ic-fpt.click/api/v1/student/create`, data).then((response) => {
   //     if (response.data.isSuccess) {
   //       setShowSuccess(true);
   //       setTimeout(reload(), 2000);
@@ -128,7 +128,7 @@ function CreateStudent(props) {
     }
   };
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/Major/getAllMajor`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/Major/getAllMajor`).then((response) => {
      
       setMajors(response.data.responseSuccess.filter((course) => course.status));
     });

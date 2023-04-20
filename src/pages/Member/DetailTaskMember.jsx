@@ -97,7 +97,7 @@ function DetailTaskMember(props) {
     setCmt(data);
   };
   const handleDeleteComment = () => {
-    axios.delete(`https://localhost:7115/api/v1/comment/delete/${id}`).then((response) => {
+    axios.delete(`https://api.ic-fpt.click/api/v1/comment/delete/${id}`).then((response) => {
       if (response.data.isSuccess) {
         setShowConfirmDelete(false)
         handleSuccess('Delete successfull!!!');
@@ -110,7 +110,7 @@ function DetailTaskMember(props) {
   }
   const fetchData = () => {
 
-    axios.get(`https://localhost:7115/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
       console.log("task", response)
       setTask(response.data.responseSuccess[0]);
       setTaskName(response.data.responseSuccess[0].taskName);
@@ -140,7 +140,7 @@ function DetailTaskMember(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: `https://localhost:7115/api/v1/task/changeStatus`,
+      url: `https://api.ic-fpt.click/api/v1/task/changeStatus`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -166,7 +166,7 @@ function DetailTaskMember(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/comment/createCommentTask',
+      url: 'https://api.ic-fpt.click/api/v1/comment/createCommentTask',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -177,7 +177,7 @@ function DetailTaskMember(props) {
     })
   };
   const fetchDataComment = async () => {
-    await axios.get(`https://localhost:7115/api/v1/comment/GetCommentInTask`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/comment/GetCommentInTask`).then((response) => {
       console.log("cmt", response)
       setcmtTask(response.data.responseSuccess.filter(cmt => cmt.tasksId === props.task.id) );
     });

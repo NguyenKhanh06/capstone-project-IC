@@ -46,13 +46,13 @@ import {
       setTask(data);
     };
     const handleDeleteTask = () => {
-      axios.put(`https://localhost:7115/api/v1/course/delete/${id}`).then((response) => {
+      axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`).then((response) => {
         window.location.reload(false);
       });
     };
   
     const fetchData = async () => {
-      await axios.get(`https://localhost:7115/api/v1/task/getRootsTask`).then((response) => {
+      await axios.get(`https://api.ic-fpt.click/api/v1/task/getRootsTask`).then((response) => {
         setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.mileStoneId === 4).filter((task) => task.status!== 5));
         
         console.log(response)

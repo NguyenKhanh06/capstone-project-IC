@@ -51,7 +51,7 @@ function CreateSubTask(props) {
   const handleCreateSubTask = () => {
     axios
       .post(
-        `https://localhost:7115/api/v1/task/create?TaskName=${taskName}&ParentTaskId=${props.taskID}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.project.id}&MileStoneId=${props.mileStoneID}&StaffId=${member.staffId}`
+        `https://api.ic-fpt.click/api/v1/task/create?TaskName=${taskName}&ParentTaskId=${props.taskID}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.project.id}&MileStoneId=${props.mileStoneID}&StaffId=${member.staffId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -74,7 +74,7 @@ function CreateSubTask(props) {
   const handleCreateSubTask2 = () => {
     axios
       .post(
-        `https://localhost:7115/api/v1/task/create?TaskName=${taskName}&ParentTaskId=${props.taskID}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.project.id}&MileStoneId=${props.mileStoneID}`
+        `https://api.ic-fpt.click/api/v1/task/create?TaskName=${taskName}&ParentTaskId=${props.taskID}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.project.id}&MileStoneId=${props.mileStoneID}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

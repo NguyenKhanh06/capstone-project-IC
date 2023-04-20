@@ -65,7 +65,7 @@ function CreateAccountPartner(props) {
     setLoading(true)
     axios
       .post(
-        `https://localhost:7115/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=4
+        `https://api.ic-fpt.click/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=4
         `
       )
       .then((response) => {
@@ -81,7 +81,7 @@ function CreateAccountPartner(props) {
   const CreateDeputy = (id) => {
     axios
       .post(
-        `https://localhost:7115/api/v1/deputy/create?AccountId=${id}&PartnerId=${props.partnerId}`
+        `https://api.ic-fpt.click/api/v1/deputy/create?AccountId=${id}&PartnerId=${props.partnerId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

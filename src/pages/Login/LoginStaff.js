@@ -49,12 +49,12 @@ const LoginStaff = () => {
   });
 
   const getdetailStaff = (id) => {
-    axios.get(`https://localhost:7115/api/v1/staff/getStaffAccountId/${id}`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/staff/getStaffAccountId/${id}`).then((response) => {
       sessionStorage.setItem('staff', JSON.stringify(response.data.responseSuccess));
     });
   };
   const getdetailStudent = (id) => {
-    axios.get(`https://localhost:7115/api/v1/student/getStudentDetail/${id}`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/student/getStudentDetail/${id}`).then((response) => {
       sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
       console.log(response.data.responseSuccess[0])
     });
@@ -92,7 +92,7 @@ const LoginStaff = () => {
     });
   }
   const getDeputy = (id) => {
-    axios.get(`https://localhost:7115/api/v1/deputy/getAll`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
       sessionStorage.setItem(
         'deputy',
         JSON.stringify(response.data.responseSuccess.filter((dep) => dep.accountId === id)[0])
@@ -127,7 +127,7 @@ const LoginStaff = () => {
                 password: values.password,
               };
               axios
-                .post(`https://localhost:7115/api/v1/authen/login`, data)
+                .post(`https://api.ic-fpt.click/api/v1/authen/login`, data)
                 .then((response) => {
                   console.log(response);
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
@@ -249,7 +249,7 @@ const LoginStaff = () => {
       
             if(regexMailFu.test(decoded.email)){
               axios
-              .post(`https://localhost:7115/api/v1/authen/signin-google/${credentialResponse.credential}`)
+              .post(`https://api.ic-fpt.click/api/v1/authen/signin-google/${credentialResponse.credential}`)
               .then((response) => {
        
                 getdetailStaff(response.data.responseSuccess.id);
@@ -284,7 +284,7 @@ const LoginStaff = () => {
               });
             }else if(regexMail.test(decoded.email)){
               axios
-              .post(`https://localhost:7115/api/v1/student/signin-google/${credentialResponse.credential}`).then(response => {
+              .post(`https://api.ic-fpt.click/api/v1/student/signin-google/${credentialResponse.credential}`).then(response => {
                 localStorage.setItem('token', response.data.responseSuccess.tokenToken);
                 console.log("login", response.data.responseSuccess)
                 getdetailStudent(response.data.responseSuccess.id)

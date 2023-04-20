@@ -129,31 +129,31 @@ const handleShowCate = (id) => {
   };
 
   const fetchDataCampus = async () => {
-    await axios.get(`https://localhost:7115/api/v1/campus/getAll`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/campus/getAll`).then((response) => {
       setCampuses(response.data.responseSuccess.filter((camp) => camp.partnerId === partner && camp.status));
     });
   };
   const fetchDataStaff = async () => {
-    await axios.get(`https://localhost:7115/api/v1/staff/getAll`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
       setStaffs(response.data.responseSuccess.filter(staff => staff.account.status && staff.account.role === 2 && regexMailFu.test(staff.account.email)));
       setLeader(response.data.responseSuccess.filter(staff => staff.account.status).find(staff => staff.id === user.staff.id).id)
     });
   };
 
   const fetchDataPartner = async () => {
-    await axios.get(`https://localhost:7115/api/v1/partner/getAllPartner`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
       setPartners(response.data.responseSuccess.filter(partner => partner.status));
     });
   };
 
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/course/getAllCourse`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/course/getAllCourse`).then((response) => {
       setCourses(response.data.responseSuccess.filter((course) => course.status));
     });
   };
 
   const fetchDataCate = async () => {
-    await axios.get(`https://localhost:7115/api/v1/categoryProject/getAllCate`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/categoryProject/getAllCate`).then((response) => {
       setCates(response.data.responseSuccess.filter((cate) => cate.status));
     });
   };
@@ -213,7 +213,7 @@ const handleShowCate = (id) => {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/project/create',
+      url: 'https://api.ic-fpt.click/api/v1/project/create',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -232,7 +232,7 @@ const handleShowCate = (id) => {
       });
   };
   const handleDeleteCate = () => {
-axios.put(`https://localhost:7115/api/v1/categoryProject/disable/${idCate}`).then((response) => {
+axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).then((response) => {
 
   if (response.data.isSuccess) {
     setShowSuccessCate(true);

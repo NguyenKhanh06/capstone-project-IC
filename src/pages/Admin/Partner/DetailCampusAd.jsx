@@ -44,7 +44,7 @@ function DetailCampusAd(props) {
   const handleUpdateCampus = () => {
     axios
       .put(
-        `https://localhost:7115/api/v1/campus/update/${props.campus.id}?Name=${name}&Address=${address}&Status=true&PartnerId=${props.campus.partnerId}`
+        `https://api.ic-fpt.click/api/v1/campus/update/${props.campus.id}?Name=${name}&Address=${address}&Status=true&PartnerId=${props.campus.partnerId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -59,7 +59,7 @@ function DetailCampusAd(props) {
       })
   };
 //   const fetchData = async () => {
-//     await axios.get(`https://localhost:7115/api/v1/campus/getDetail/${props.campus.id}`).then((response) => {
+//     await axios.get(`https://api.ic-fpt.click/api/v1/campus/getDetail/${props.campus.id}`).then((response) => {
 //      setCampus(response.data.responseSuccess)
 //      setName(response.data.responseSuccess[0].name)
 //      setAddress(response.data.responseSuccess[0].address)

@@ -67,7 +67,7 @@ const handleShowDetail = (data) => {
 }
 
 const handleChange = () => {
-    axios.put(`https://localhost:7115/api/v1/account/ChangeRole/${mail}?roleEnum=2`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/account/ChangeRole/${mail}?roleEnum=2`).then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Update Successful!!!!!')
           setTimeout(reload(), 5000);
@@ -78,7 +78,7 @@ const handleChange = () => {
 }
 
 const handleDeleteStaff = () => {
-    axios.put(`https://localhost:7115/api/v1/account/changeStatusAccount/${id}?Status=false`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=false`).then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Delete Successful!!!!!')
           setTimeout(() =>{
@@ -91,7 +91,7 @@ const handleDeleteStaff = () => {
 }
 
     const fetchData = async () => {
-       await axios.get(`https://localhost:7115/api/v1/staff/getAll`).then((response) => {
+       await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
     
             setStaffs(response.data.responseSuccess.filter(staff => staff.account.role !== 4  && staff.account.status && regexMailFu.test(staff.account.email)))
         })

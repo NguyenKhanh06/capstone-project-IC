@@ -19,7 +19,7 @@ function ListFormStudent(props) {
       console.log(props.studentID?.id)
     const getDetail = async () => {
         await axios
-          .get(`https://localhost:7115/api/v1/registration/getDetailbyStudentId/${props?.studentID?.id}`)
+          .get(`https://api.ic-fpt.click/api/v1/registration/getDetailbyStudentId/${props?.studentID?.id}`)
           .then((response) => {
          
             setStudents(response.data.responseSuccess);

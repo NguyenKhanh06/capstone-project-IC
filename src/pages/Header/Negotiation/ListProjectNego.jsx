@@ -133,7 +133,7 @@ function ListProjectNego(props) {
   setID(data)
   };
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/project/getAllProject`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
       console.log(response.data);
       setProjects(response.data.responseSuccess);
     });

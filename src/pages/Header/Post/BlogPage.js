@@ -27,7 +27,7 @@ export default function BlogPage() {
   const [posts, setPost] = useState([])
 
   const getPost = async () => {
-    await axios.get(`https://localhost:7115/api/v1/post/getAllPost`).then(response => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/post/getAllPost`).then(response => {
       setPost(response.data.responseSuccess)
     })
   }

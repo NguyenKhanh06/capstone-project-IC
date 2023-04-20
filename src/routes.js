@@ -109,7 +109,7 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'partner', element: <ListPartnerAd /> },
         { path: 'staff', element: <Role /> },
-        { path: 'history', element: <History /> },
+        { path: 'changelog', element: <History /> },
       ],
     },
     {

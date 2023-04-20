@@ -86,7 +86,7 @@ function DetailCourseNegoPartner(props) {
 
   const fetchData = async () => {
     await axios
-      .get(`https://localhost:7115/api/v1/syllabus/GetListSyllabusPartner/${props.id.partnerId}`)
+      .get(`https://api.ic-fpt.click/api/v1/syllabus/GetListSyllabusPartner/${props.id.partnerId}`)
       .then((response) => {
         console.log(
           response.data.responseSuccess
@@ -124,7 +124,7 @@ function DetailCourseNegoPartner(props) {
     }
   }, [props.id]);
   const handleApproveSlot = (id) => {
-    axios.put(`https://localhost:7115/api/v1/slot/updateStatus/${id}?Status=1`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/slot/updateStatus/${id}?Status=1`).then((response) => {
       if (response.data.isSuccess) {
         setShowSuccess(true);
         fetchData();

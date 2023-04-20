@@ -50,7 +50,7 @@ const handleShowDetail = (data) => {
 }
 
 const handleDeleteStaff = () => {
-    axios.put(`https://localhost:7115/api/v1/account/changeStatusAccount/${id}?Status=false`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=false`).then((response) => {
       console.log(response)
         if (response.data.isSuccess) {
           setShowSuccess(true);
@@ -64,7 +64,7 @@ const handleDeleteStaff = () => {
 }
 
 const fetchData = async () => {
-  await axios.get(`https://localhost:7115/api/v1/staff/getAll`).then((response) => {
+  await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
 
        setStaffs(response.data.responseSuccess.filter(staff => staff.account.role !== 4  && staff.account.status && staff.account.role !== 1 && regexMailFu.test(staff.account.email)))
    })

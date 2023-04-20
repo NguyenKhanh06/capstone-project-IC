@@ -79,7 +79,7 @@ function ChangePass(props) {
   const handleChange = () => {
     axios
       .post(
-        `https://localhost:7115/api/v1/account/changePassword?Email=${user.email}&OldPassword=${password}&NewPassword=${newPass}&ConfirmPassword=${confirmPass}`
+        `https://api.ic-fpt.click/api/v1/account/changePassword?Email=${user.email}&OldPassword=${password}&NewPassword=${newPass}&ConfirmPassword=${confirmPass}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

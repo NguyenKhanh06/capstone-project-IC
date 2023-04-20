@@ -123,7 +123,7 @@ const [student, setStudent] = useState({})
   }
   const handleUpdateStudent = () => {
     axios
-      .put(`https://localhost:7115/api/v1/student/update/${props.student.id}`, data)
+      .put(`https://api.ic-fpt.click/api/v1/student/update/${props.student.id}`, data)
       .then((response) => {
         console.log(response);
         if (response.data.isSuccess) {
@@ -143,7 +143,7 @@ const [student, setStudent] = useState({})
   // };
 
 const deleteFile = (name) => {
-  axios.delete(`https://localhost:7115/api/v1/storage/filename?filename=${name}`)   .then((response) => {
+  axios.delete(`https://api.ic-fpt.click/api/v1/storage/filename?filename=${name}`)   .then((response) => {
     console.log('response', response);
     if (response.data.isSuccess) {
       handleSuccess('Delete File Successfull!!!');
@@ -160,7 +160,7 @@ const deleteFile = (name) => {
 }
 
   const getAllFile = () => {
-    axios.get(`https://localhost:7115/api/v1/student/GetGradingStudentId/${props.student.id}`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/student/GetGradingStudentId/${props.student.id}`).then((response) => {
       setListFile(response.data.responseSuccess);
     });
   };
@@ -179,7 +179,7 @@ const deleteFile = (name) => {
     axios({
       method: 'POST',
       data: formData,
-      url: `https://localhost:7115/api/v1/student/upload/${id}`,
+      url: `https://api.ic-fpt.click/api/v1/student/upload/${id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -201,7 +201,7 @@ const deleteFile = (name) => {
   };
 
   // const getListFile = async () => {
-  //  await axios.get(`https://localhost:7115/api/v1/storage/Get`).then((response) => {
+  //  await axios.get(`https://api.ic-fpt.click/api/v1/storage/Get`).then((response) => {
   //     setListFile(response.data)
   //     console.log("file",response)
   //   })
@@ -300,7 +300,7 @@ console.log(e.target.value)
     }
   };
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/Major/getAllMajor`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/Major/getAllMajor`).then((response) => {
      
       setMajors(response.data.responseSuccess.filter((course) => course.status));
     });

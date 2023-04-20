@@ -50,7 +50,7 @@ import DetailForm from './DetailForm';
     };
   
     const fetchData = async () => {
-      await axios.get(`https://localhost:7115/api/v1/registration/getRootRegis`).then((response) => {
+      await axios.get(`https://api.ic-fpt.click/api/v1/registration/getRootRegis`).then((response) => {
         console.log(response.data);
         setForm(response.data.responseSuccess)
       });
@@ -61,7 +61,7 @@ import DetailForm from './DetailForm';
     }, []);
   
     const handleDeleteCourse = () => {
-      axios.put(`https://localhost:7115/api/v1/course/delete/${id}`).then((response) => {
+      axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`).then((response) => {
         window.location.reload(false);
       });
     };

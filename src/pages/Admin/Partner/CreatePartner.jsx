@@ -28,7 +28,7 @@ function CreatePartner(props) {
 
   const handleCreatePartner = () => {
     axios
-      .post(`https://localhost:7115/api/v1/partner/create?Name=${name}&Local=${local}&Note=${note}&Status=true`)
+      .post(`https://api.ic-fpt.click/api/v1/partner/create?Name=${name}&Local=${local}&Note=${note}&Status=true`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);

@@ -43,7 +43,7 @@ function AssignMemberDetailTask(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/project/getJoin/${props.project}`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/project/getJoin/${props.project}`).then((response) => {
       console.log('response', response.data.responseSuccess);
       setStaffs(response.data.responseSuccess);
       //   const result = Object.values(response.data.responseSuccess).map(
@@ -67,7 +67,7 @@ function AssignMemberDetailTask(props) {
 
   const handleAssignTask = (id) => {
     axios
-      .post(`https://localhost:7115/api/v1/task/assignTask/${props.taskId}?StaffId=${id}`)
+      .post(`https://api.ic-fpt.click/api/v1/task/assignTask/${props.taskId}?StaffId=${id}`)
       
       .then((response) => {
         if (response.data.isSuccess) {

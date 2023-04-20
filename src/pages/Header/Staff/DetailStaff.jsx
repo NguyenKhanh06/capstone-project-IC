@@ -73,7 +73,7 @@ const [password, setPassword] = useState(null)
 
 
   const getDetail = async () => {
-    await axios.get(`https://localhost:7115/api/v1/account/getDetail/${props.staff.accountId}`).then(response => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/account/getDetail/${props.staff.accountId}`).then(response => {
 
 setFullName(response.data.responseSuccess?.fullName)
 setEmail(response.data.responseSuccess?.email)
@@ -97,7 +97,7 @@ setAddress(props.staff?.account?.address)
   console.log(props.staff);
 
   const handleUpdateStaff = () => {
-    axios.put(`https://localhost:7115/api/v1/account/update/${props.staff.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${props.staff?.account?.role}`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/account/update/${props.staff.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${props.staff?.account?.role}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true)
      window.location.reload(false)

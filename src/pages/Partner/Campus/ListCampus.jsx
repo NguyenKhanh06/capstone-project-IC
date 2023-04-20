@@ -98,7 +98,7 @@ function ListCampus(props) {
 
   const handleDeleteCampus = () => {
     axios
-      .put(`https://localhost:7115/api/v1/campus/disable/${id}`)
+      .put(`https://api.ic-fpt.click/api/v1/campus/disable/${id}`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
@@ -112,7 +112,7 @@ function ListCampus(props) {
       });
   };
   const getCampus = async () => {
-    await axios.get(`https://localhost:7115/api/v1/campus/getAll`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/campus/getAll`).then((response) => {
       setCampuses(response.data.responseSuccess.filter((campus) => campus.partnerId === deputy.partnerId && campus.status));
     });
   };

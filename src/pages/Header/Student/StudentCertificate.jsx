@@ -58,7 +58,7 @@ import {
       setShowConfirm(false)
     };
     const handleDeleteStudent = () => {
-      axios.delete(`https://localhost:7115/api/v1/student/delete/${id}`).then((response) => {
+      axios.delete(`https://api.ic-fpt.click/api/v1/student/delete/${id}`).then((response) => {
         window.location.reload(false);
       });
     };
@@ -166,7 +166,7 @@ import {
     };
   
     const fetchData = async () => {
-      await axios.get(`https://localhost:7115/api/v1/student/getAllStudent`).then((response) => {
+      await axios.get(`https://api.ic-fpt.click/api/v1/student/getAllStudent`).then((response) => {
         setStudents(response.data.responseSuccess);
         console.log(response.data.responseSuccess);
       });
@@ -182,7 +182,7 @@ import {
       axios({
         method: 'POST',
         data: formData,
-        url: 'https://localhost:7115/api/v1/student/importStudent',
+        url: 'https://api.ic-fpt.click/api/v1/student/importStudent',
         headers: {
           'Content-Type': 'multipart/form-data',
         },

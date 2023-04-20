@@ -40,7 +40,7 @@ function ListPartnerAd(props) {
       setPartner(data);
     };
     const fetchData = async () => {
-        await axios.get(`https://localhost:7115/api/v1/partner/getAllPartner`).then((response) => {
+        await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
           
           setPartners(response.data.responseSuccess.filter(partner => partner.status))
        
@@ -53,7 +53,7 @@ function ListPartnerAd(props) {
       }, []);
 
       const handleDeletePartner = () => {
-        axios.post(`https://localhost:7115/api/v1/partner/disable/${id}`).then((response) => {
+        axios.post(`https://api.ic-fpt.click/api/v1/partner/disable/${id}`).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true);
             setTimeout(reload(), 5000);

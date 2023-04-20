@@ -190,7 +190,7 @@ setIdDep(id)
   }
   const handleDeleteCampus = () => {
     axios
-      .put(`https://localhost:7115/api/v1/campus/disable/${id}`)
+      .put(`https://api.ic-fpt.click/api/v1/campus/disable/${id}`)
       .then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Delete Campus Successful!!!');
@@ -205,7 +205,7 @@ setIdDep(id)
   const handleUpdatePartner = () => {
     axios
       .put(
-        `https://localhost:7115/api/v1/partner/update/${props.partner.id}?Name=${name}&Local=${local}&Note=${note}&Status=true`
+        `https://api.ic-fpt.click/api/v1/partner/update/${props.partner.id}?Name=${name}&Local=${local}&Note=${note}&Status=true`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -218,7 +218,7 @@ setIdDep(id)
       });
   };
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/partner/getDetail/${props.partner.id}`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getDetail/${props.partner.id}`).then((response) => {
       setPartner(response.data.responseSuccess[0]);
       setCampuses(response.data.responseSuccess[0]?.campuses.filter(camp => camp.status));
       setName(response.data.responseSuccess[0].name);
@@ -230,7 +230,7 @@ setIdDep(id)
   };
 
   const DeActive = async (mail) => {
-   await axios.put(`https://localhost:7115/api/v1/account/changeStatusAccount/${mail}?Status=fasle`)  .then((response) => {
+   await axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${mail}?Status=fasle`)  .then((response) => {
       if (response.data.isSuccess) {
         handleSuccess('Update Successful!!!');
        setTimeout(window.location.reload(false), 3000)
@@ -242,7 +242,7 @@ setIdDep(id)
     });
   }
 const Active = async (mail) => {
- await axios.put(`https://localhost:7115/api/v1/account/changeStatusAccount/${mail}?Status=true`)  .then((response) => {
+ await axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${mail}?Status=true`)  .then((response) => {
     if (response.data.isSuccess) {
       handleSuccess('Update Successful!!!');
       setTimeout(window.location.reload(false), 3000)
@@ -255,7 +255,7 @@ const Active = async (mail) => {
 }
 
   const getDeputy = () => {
-    axios.get(`https://localhost:7115/api/v1/deputy/getAll`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
       setDeputies(
         response.data.responseSuccess.filter((dep) => dep.partnerId === props.partner.id)
       );
@@ -263,7 +263,7 @@ const Active = async (mail) => {
   };
   const disableDeputy = () => {
     axios
-      .put(`https://localhost:7115/api/v1/account/disable/${email}`)
+      .put(`https://api.ic-fpt.click/api/v1/account/disable/${email}`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowConfirmDeleteDep(false);

@@ -64,7 +64,7 @@ function DetailSlot(props) {
   const handleUpdateSlot = () => {
     axios
       .put(
-        `https://localhost:7115/api/v1/slot/update/${props.slot.id}?Name=${topic}&Detail=${detail}&TimeAllocation=${timeAllocation}&Type=${learningType}&SyllabusId=${props.slot.syllabusId}`
+        `https://api.ic-fpt.click/api/v1/slot/update/${props.slot.id}?Name=${topic}&Detail=${detail}&TimeAllocation=${timeAllocation}&Type=${learningType}&SyllabusId=${props.slot.syllabusId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

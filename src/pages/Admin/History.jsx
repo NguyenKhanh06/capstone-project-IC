@@ -1,4 +1,4 @@
-import { Card, Container } from '@mui/material';
+import { Card, Container, Stack, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -66,7 +66,7 @@ function History(props) {
       ];
 
     const fetchData = () => {
-        axios.get(`https://localhost:7115/api/v1/changelog/getAllChangelog`).then(response => {
+        axios.get(`https://api.ic-fpt.click/api/v1/changelog/getAllChangelog`).then(response => {
             console.log(response.data.responseSuccess)
             setHistory(response.data.responseSuccess)
         })
@@ -78,7 +78,14 @@ function History(props) {
     return (
         <>
         <Container>
-      
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Typography variant="h4" gutterBottom>
+           Change Log
+          </Typography>
+          {/* <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => setShowCreate(true)}>
+            New Project
+          </Button> */}
+        </Stack>
   
           <Card>
             {history?.length && <DataGrid
@@ -91,6 +98,9 @@ function History(props) {
                     pageSize: 10,
                   },
                 },
+                sorting: {
+                    sortModel: [{ field: "dateTime", sort: "desc" }],
+                     },
               }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick

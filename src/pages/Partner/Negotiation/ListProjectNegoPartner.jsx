@@ -136,14 +136,14 @@ console.log("user", user)
   };
 
   const fetchData = async (id) => {
-    await axios.get(`https://localhost:7115/api/v1/project/getAllProject`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
       
       setProjects(response.data.responseSuccess.filter((project) => project.partnerId === id));
 
     });
   };
   const fetchDataDeputy = async () => {
-    await axios.get(`https://localhost:7115/api/v1/deputy/getAll`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
 
       fetchData(response.data.responseSuccess.find(dep => dep.accountId === user.id).partnerId)
       setDeputy(response.data.responseSuccess.find(dep => dep.accountId === user.id));

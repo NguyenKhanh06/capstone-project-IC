@@ -48,7 +48,7 @@ function CancelProject(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/project/changeStatus',
+      url: 'https://api.ic-fpt.click/api/v1/project/changeStatus',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -66,7 +66,7 @@ function CancelProject(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/cancel/create',
+      url: 'https://api.ic-fpt.click/api/v1/cancel/create',
       headers: {
         'Content-Type': 'multipart/form-data',
       },

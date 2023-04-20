@@ -331,7 +331,7 @@ import axios from 'axios';
     };
   
     const fetchData = async () =>{
-      await axios.get(`https://localhost:7115/api/v1/partner/getAllPartner`).then((response) => {
+      await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
          setPartners(response.data.responseSuccess.filter(partner => partner.status))
 
        })

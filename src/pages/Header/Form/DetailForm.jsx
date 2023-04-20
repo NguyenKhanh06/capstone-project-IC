@@ -111,7 +111,7 @@ const updateDate = () => {
   axios({
     method: 'PUT',
  
-    url: `https://localhost:7115/api/v1/registration/UpdateRegisId/${props.form?.id}?DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ProjectId=${props.form?.project?.id}`,
+    url: `https://api.ic-fpt.click/api/v1/registration/UpdateRegisId/${props.form?.id}?DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ProjectId=${props.form?.project?.id}`,
     headers: {
       'Content-Type': 'multipart/form-data',
     },

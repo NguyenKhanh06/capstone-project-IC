@@ -163,7 +163,7 @@ function ListSubTask(props) {
     window.location.reload(false);
   }
 const handleDeleteTask = () => {
-  axios.put(`https://localhost:7115/api/v1/task/DisableTask/${id}`).then((response) => {
+  axios.put(`https://api.ic-fpt.click/api/v1/task/DisableTask/${id}`).then((response) => {
 
     if (response.data.isSuccess) {
    setShowSuccess(true)
@@ -214,7 +214,7 @@ setTimeout(() => {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://localhost:7115/api/v1/task/update/${props.state.id}`,
+      url: `https://api.ic-fpt.click/api/v1/task/update/${props.state.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -237,7 +237,7 @@ setTimeout(() => {
       });
 
     // const handleDelete = (id) => {
-    //   axios.post(`https://localhost:7115/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
+    //   axios.post(`https://api.ic-fpt.click/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
     // }
 
     const handleDelete = () => {

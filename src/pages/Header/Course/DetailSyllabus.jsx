@@ -108,7 +108,7 @@ function DetailSyllabus(props) {
   const handleDeleteSlot = (id) => {
     axios
       .put(
-        `https://localhost:7115/api/v1/slot/disable/${id}
+        `https://api.ic-fpt.click/api/v1/slot/disable/${id}
   `
       )
       .then((response) => {
@@ -117,14 +117,14 @@ function DetailSyllabus(props) {
       });
   };
 const getDetail= async () => {
- await axios.get(`https://localhost:7115/api/v1/syllabus/getDetail/${props.syllabus.id}`).then(response => {
+ await axios.get(`https://api.ic-fpt.click/api/v1/syllabus/getDetail/${props.syllabus.id}`).then(response => {
     setSlot(response.data.responseSuccess[0].slots.filter((slot) => slot.status))
   })
 }
   const handleUpdate = () => {
     axios
       .put(
-        `https://localhost:7115/api/v1/syllabus/update/${props.syllabus.id}?Content=${content}&Description=${description}&Status=true&CourseId=${props.syllabus.courseId}`
+        `https://api.ic-fpt.click/api/v1/syllabus/update/${props.syllabus.id}?Content=${content}&Description=${description}&Status=true&CourseId=${props.syllabus.courseId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

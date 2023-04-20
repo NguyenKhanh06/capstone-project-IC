@@ -84,7 +84,7 @@ import Iconify from '../../components/iconify/Iconify';
 //       setLoading(true)
 //       axios
 //         .post(
-//           `https://localhost:7115/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=4
+//           `https://api.ic-fpt.click/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=4
 //           `
 //         )
 //         .then((response) => {
@@ -100,7 +100,7 @@ import Iconify from '../../components/iconify/Iconify';
 //     const CreateDeputy = (id) => {
 //       axios
 //         .post(
-//           `https://localhost:7115/api/v1/deputy/create?AccountId=${id}&PartnerId=${props.partnerId}`
+//           `https://api.ic-fpt.click/api/v1/deputy/create?AccountId=${id}&PartnerId=${props.partnerId}`
 //         )
 //         .then((response) => {
 //           if (response.data.isSuccess) {
@@ -126,7 +126,7 @@ import Iconify from '../../components/iconify/Iconify';
 
 
 const handleUpdateDeputy = () => {
-    axios.put(`https://localhost:7115/api/v1/account/update/${props.id.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Status=true&Role=4`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/account/update/${props.id.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Status=true&Role=4`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true)
      window.location.reload(false)
@@ -139,7 +139,7 @@ const handleUpdateDeputy = () => {
     
 }
     const getDetail = async () => {
-        await axios.get(`https://localhost:7115/api/v1/account/getDetail/${props.id.accountId}`).then(response => {
+        await axios.get(`https://api.ic-fpt.click/api/v1/account/getDetail/${props.id.accountId}`).then(response => {
 setDeputy(response.data.responseSuccess)
 setFullName(response.data.responseSuccess.fullName)
 setEmail(response.data.responseSuccess.email)

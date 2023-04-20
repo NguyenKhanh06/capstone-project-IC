@@ -40,7 +40,7 @@ function DetailProjectNegoPartner(props) {
 
  
   const getdetailProject = () => {
-    axios.get(`https://localhost:7115/api/v1/project/getDetail/${props.project.id}`).then((response) => {
+    axios.get(`https://api.ic-fpt.click/api/v1/project/getDetail/${props.project.id}`).then((response) => {
       setProject(response.data.responseSuccess[0])
       console.log("detail prj", response.data)
     })
@@ -74,7 +74,7 @@ function DetailProjectNegoPartner(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/document',
+      url: 'https://api.ic-fpt.click/api/v1/document',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
