@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     Card,
+    Chip,
     Container,
     Dialog,
     DialogActions,
@@ -79,6 +80,19 @@ import DetailForm from './DetailForm';
         field: 'creator',
         headerName: 'Creater',
         flex: 1,
+      },
+  
+      {
+        field: 'status',
+        headerName: 'Status',
+        flex: 1,
+        renderCell: (params) => {
+          return (
+            <>
+            {params.row.status ? <Chip label="Active" color='success'/> : <Chip label='Deactive' color='error'/>}
+            </>
+          );
+        },
       },
   
     

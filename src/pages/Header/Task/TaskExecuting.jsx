@@ -66,7 +66,7 @@ function TaskExecuting(props) {
     window.location.reload(false);
   }
   const handleDeleteTask = () => {
-    axios.put(`https://localhost:7115/api/v1/task/delete/${id}`).then((response) => {
+    axios.put(`https://localhost:7115/api/v1/task/DisableTask/${id}`).then((response) => {
 
     if (response.data.isSuccess) {
    setShowSuccess(true)

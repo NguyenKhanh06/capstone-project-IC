@@ -110,7 +110,15 @@ console.log("staff", staff)
     // },
 
 
-  
+    {
+      field: 'dateCreated',
+      headerName: 'Date Create',
+      flex: 1,
+      valueGetter: (params) => {
+       
+        return dayjs(params.row.project.dateCreated).format("DD/MM/YYYY")
+      },
+    },
       
     {
       field: 'estimateTimeStart',
@@ -230,7 +238,7 @@ console.log("staff", staff)
                 <RemoveRedEyeRoundedIcon />
               </IconButton>
             </Tooltip>
-            {params.row?.project?.tasks?.length ? (
+            {params.row?.project?.tasks?.length && params.row.project.projectStatus !== 2 ? (
           
               <>
              
@@ -268,7 +276,19 @@ console.log("staff", staff)
             </Tooltip>
                 )}
               </>
-            ) : (
+            ) : params.row.project.projectStatus === 2 ? (
+              <>
+                <Tooltip title="Task List - canceled">
+                  <IconButton
+                    onClick={() => {
+                      navigate('/staff/list-task-cancel', { state: params.row.project  });
+                    }}
+                  >
+                    <AssignmentLateTwoToneIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )  :  (
               <>
               <Tooltip title="Task List ">
               <IconButton
@@ -285,7 +305,7 @@ console.log("staff", staff)
               </IconButton>
             </Tooltip>
               </>
-            )}
+            ) }
            
           </Stack>
         );
@@ -301,12 +321,14 @@ console.log("staff", staff)
     setShowDetailMember(true);
     setProject(data);
   };
+  
   const fetchData = async () => {
     setLoading(true);
     await axios.get(`https://localhost:7115/api/v1/staff/GetProjectByStaffId/${staff[0].id}`).then((response) => {
 
       setProjects(response.data.responseSuccess);
       setLoading(false);
+     
       
     });
   };
@@ -315,6 +337,7 @@ console.log("staff", staff)
     fetchData().catch((error) => {
       console.log(error);
     });
+  
   }, []);
 
   function NoRowsOverlay() {
@@ -338,9 +361,7 @@ console.log("staff", staff)
         </Stack>
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-        {projects.length &&  
-
-         <DataGrid
+            {projects?.length &&  <DataGrid
               autoHeight
               rows={projects}
               columns={columns}
@@ -350,13 +371,16 @@ console.log("staff", staff)
                     pageSize: 10,
                   },
                 }, 
+                sorting: {
+                  sortModel: [{ field: "dateCreated", sort: "desc" }],
+                   },
               
               }}
               components={{ NoRowsOverlay }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
-            /> 
-         }
+            /> }
+         
 
 </Box>
         </Card>

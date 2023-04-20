@@ -1,15 +1,29 @@
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { DataGrid } from '@mui/x-data-grid';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import DetailStudentRegister from '../Student/DetailStudentRegister';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import SuccessAlert from '../../Alert/SuccessAlert';
+import ErrorAlert from '../../Alert/ErrorAlert';
+import axios from 'axios';
 
 function DetailForm(props) {
+  const [disableBtn, setDisable] = useState(false);
+  const [disableBtn1, setDisable1] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [message, setMessage] = useState('');
     
     const [open, setOpen] = useState(false);
   const [showRegis, setShowRegis] = useState(false);
   const [student, setStudent] = useState([]);
+  const [openRegis, setOpenRegis] = useState(null)
+  const [closeRegis, setCloseRegis] = useState(null)
 
     const handleClose = () => {
         setOpen(props.close);
@@ -82,11 +96,50 @@ function DetailForm(props) {
             ),
         },
       ]
-
+      const handleError = (data) => {
+        setShowError(true);
+        setMessage(data);
+      };
       const handleClickOpenDetailRegis = (data) => {
         setShowRegis(true);
         setStudent(data);
       };
+      const handleCloseConfirm = (data) => {
+        setShowConfirm(false);
+      };
+const updateDate = () => {
+  axios({
+    method: 'PUT',
+ 
+    url: `https://localhost:7115/api/v1/registration/UpdateRegisId/${props.form?.id}?DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ProjectId=${props.form?.project?.id}`,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }).then((response) => {
+    if (response.data.isSuccess) {
+      setShowSuccess(true);
+
+      setTimeout(() => {
+    window.location.reload()
+
+      }, 1000)
+  
+
+    }
+  })
+  .catch((err) => {
+    handleError('Delete fail!!!!');
+
+  });
+}
+console.log(props.form)
+useEffect(() => {
+  if (props.form) {
+    setOpenRegis(dayjs(props.form?.dateOpenRegis))
+    setCloseRegis(dayjs(props.form?.dateCloseRegis))
+  }
+}, [props.form]);
+
     return (
         <Dialog
         open={props.show}
@@ -104,7 +157,36 @@ function DetailForm(props) {
         </Stack>
         <Divider variant="middle" />
         <DialogContent>
+        <Stack  sx={{ marginBottom: 4}} direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      disablePast
+                      format="DD/MM/YYYY"
+                      sx={{ width: '50%' }}
+                      label="Date Open"
+                      value={openRegis}
+                      onChange={(newValue) => {
+                        setOpenRegis(newValue);
+                        setDisable(true)
+                      }}
+                    />
+                  </LocalizationProvider>
 
+                  <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      disablePast
+                      minDate={dayjs(closeRegis)}
+                      sx={{ width: '50%' }}
+                      label="Date Close"
+                      value={closeRegis}
+                      onChange={(newValue) => {
+                        setCloseRegis(newValue);
+                        setDisable1(true)
+                      }}
+                      format="DD/MM/YYYY"
+                    />
+                  </LocalizationProvider>
+                </Stack>
             <Stack direction={'column'} justifyContent="space-evenly" alignItems="flex-start" spacing={2} flexWrap="wrap">
             <Stack direction={'row'} justifyContent="space-evenly" alignItems="flex-start" spacing={2} flexWrap="wrap">
             <Typography variant='h5'>Project: </Typography>
@@ -159,6 +241,31 @@ function DetailForm(props) {
               disableRowSelectionOnClick
             />}
         </DialogContent>
+        <DialogActions>
+          {disableBtn ||  disableBtn1 ? <Button variant='contained' onClick={() => setShowConfirm(true)}>Save</Button> : <Button disabled variant='contained'>Save</Button>}
+        </DialogActions>
+        <Dialog
+        open={showConfirm}
+        onClose={handleCloseConfirm}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle id="alert-dialog-title">Update Form</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">You Want To Update Form?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirm}>Cancel</Button>
+          <Button variant="contained" onClick={() => updateDate()} autoFocus>
+            Accept
+          </Button>
+        </DialogActions>
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Form Successful!'} />
+        <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+    
+      </Dialog>
         <DetailStudentRegister show={showRegis} close={() => setShowRegis(false)} studentID = {student.id}/>
       </Dialog>
     );

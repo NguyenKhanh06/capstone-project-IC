@@ -7,6 +7,7 @@ import Messenger from '../../../pages/FPTIC/Messenger'
 import { ThemeProvider } from '@mui/material';
 import theme from '../../../config/theme';
 import { Outlet } from 'react-router-dom';
+import Home from 'src/pages/FPTIC/Home';
 
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
 }
 
 const MainLayout: FC<Props> = () => {
+  const student = JSON.parse(sessionStorage.getItem("student"));
+
   const [colorMenu, setColorMenu] = useState('primary');
   useEffect(() => {
     window.history.scrollRestoration = 'manual';

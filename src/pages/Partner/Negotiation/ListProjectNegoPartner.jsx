@@ -69,6 +69,12 @@ console.log("user", user)
     },
 
     {
+      field: 'dateCreated',
+      headerName: 'Date Create',
+      flex: 1,
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
+    },
+    {
       field: 'estimateTimeStart',
       headerName: 'Start Date',
       flex: 1,
@@ -128,10 +134,12 @@ console.log("user", user)
     setShowDetail(true);
     setProject(data);
   };
+
   const fetchData = async (id) => {
     await axios.get(`https://localhost:7115/api/v1/project/getAllProject`).then((response) => {
       
       setProjects(response.data.responseSuccess.filter((project) => project.partnerId === id));
+
     });
   };
   const fetchDataDeputy = async () => {
@@ -175,6 +183,9 @@ console.log("user", user)
                     pageSize: 10,
                   },
                 },
+                sorting: {
+                  sortModel: [{ field: "dateCreated", sort: "desc" }],
+                   },
               }}
               components={{ NoRowsOverlay }}
               pageSizeOptions={[10]}

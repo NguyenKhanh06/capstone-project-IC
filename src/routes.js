@@ -40,10 +40,13 @@ import ListDeputy from './pages/Partner/ListDeputy';
 import Role from './pages/Admin/Role';
 import ListMajor from './pages/Header/Major/ListMajor';
 import RegisterInformation from './pages/FPTIC/Information/index'
+import History from './pages/Admin/History';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const student = JSON.parse(sessionStorage.getItem("student"));
+
   const routes = useRoutes([
     {
       path: '/header',
@@ -88,6 +91,8 @@ export default function Router() {
       children: [
         { element: <Navigate to="/staff/projects" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
+        { path: 'list-task-cancel', element: <ListTaskCancel />},
+
         { path: 'projects', element: <ListProjectMember/> },
         { path: 'member/list-task', element: <ListTaskMember />},
         { path: 'leader/list-task', element: <ListTask />},
@@ -104,6 +109,7 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'partner', element: <ListPartnerAd /> },
         { path: 'staff', element: <Role /> },
+        { path: 'history', element: <History /> },
       ],
     },
     {
@@ -111,6 +117,7 @@ export default function Router() {
       path: '/',
       element: <LoginPage />,
     },
+
     {
       path: '/landingpage',
       element: <MainLayout/>,

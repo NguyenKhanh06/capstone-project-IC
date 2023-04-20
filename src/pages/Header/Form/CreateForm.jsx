@@ -22,8 +22,13 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import Loading from '../../Loading';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 function CreateForm(props) {
+  const [openRegis, setOpenRegis] = useState(null)
+  const [closeRegis, setCLoseRegis] = useState(null)
     const [inputList, setInputList] = useState([]);
     const [projects, setProjects] = useState([])
     const [project, setProject] = useState([])
@@ -81,7 +86,7 @@ function CreateForm(props) {
     // free memory when ever this component is unmounted
   }, []);
 const handleCreateForm2 = () => {
-    axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&ContentHeader1=${inputList[0].title}`).then((response) => {
+    axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}`).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true);
             setTimeout(reload(), 5000);
@@ -96,7 +101,7 @@ const handleCreateForm2 = () => {
   
 }
 const handleCreateForm3 = () => {
-  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}`).then((response) => {
+  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(reload(), 5000);
@@ -111,7 +116,7 @@ const handleCreateForm3 = () => {
 
 }
 const handleCreateForm4 = () => {
-  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}`).then((response) => {
+  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(reload(), 5000);
@@ -126,7 +131,7 @@ const handleCreateForm4 = () => {
 
 }
 const handleCreateForm5 = () => {
-  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}`).then((response) => {
+  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(reload(), 5000);
@@ -141,7 +146,7 @@ const handleCreateForm5 = () => {
 
 }
 const handleCreateForm6 = () => {
-  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}&ContentHeader5=${inputList[4].title}`).then((response) => {
+  axios.post(`https://localhost:7115/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}&ContentHeader5=${inputList[4].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(reload(), 5000);
@@ -228,9 +233,7 @@ const handleCreateForm6 = () => {
         <Divider variant="middle" />
 
         <DialogContent>
-          <Paper>
-            <Stack direction={'column'} justifyContent="space-evenly" alignItems="flex-start" spacing={2} flexWrap="wrap">
-            <FormControl fullWidth>
+        <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-autowidth-label">Project</InputLabel>
                     <Select
                       labelId="demo-simple-select-autowidth-label"
@@ -263,6 +266,39 @@ const handleCreateForm6 = () => {
                       ))}
                     </Select>
                   </FormControl>
+                  <Stack  sx={{ marginBottom: 4, marginTop: 4}} direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      disablePast
+                      format="DD/MM/YYYY"
+                      sx={{ width: '50%' }}
+                      label="Date Open"
+                      value={openRegis}
+                      onChange={(newValue) => {
+                        setOpenRegis(newValue);
+                  
+                      }}
+                    />
+                  </LocalizationProvider>
+
+                  <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      disablePast
+                      minDate={dayjs(closeRegis)}
+                      sx={{ width: '50%' }}
+                      label="Date Close"
+                      value={closeRegis}
+                      onChange={(newValue) => {
+                        setCLoseRegis(newValue);
+                   
+                      }}
+                      format="DD/MM/YYYY"
+                    />
+                  </LocalizationProvider>
+                </Stack>
+          <Paper>
+            <Stack direction={'column'} justifyContent="space-evenly" alignItems="flex-start" spacing={2} flexWrap="wrap">
+         
              <Typography variant='h6'>Basic Information (You can not change that filed)</Typography>
              <ol style={{display: "flex", flexDirection: "column", gap: 3, marginLeft: "20px", marginBottom: "20px"}}>
                 <li>Student Name</li>
@@ -310,7 +346,7 @@ const handleCreateForm6 = () => {
         {/* <Button variant="contained" onClick={() => handleCreate()} autoFocus>
               Create Form
             </Button> */}
-          { project.length ? (
+          { project.length && openRegis && closeRegis ? (
             <Button variant="contained"  onClick={() => handleCreate()} autoFocus>
               Create Form
             </Button>

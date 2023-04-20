@@ -16,11 +16,11 @@ import SvgColor from '../../../../components/svg-color';
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const navConfigAdmin= [
-  {
-    title: 'dashboard',
-    path: '/admin/app',
-    icon: <DashboardTwoToneIcon/>,
-  },
+  // {
+  //   title: 'dashboard',
+  //   path: '/admin/app',
+  //   icon: <DashboardTwoToneIcon/>,
+  // },
  
 
   {
@@ -34,6 +34,11 @@ const navConfigAdmin= [
     icon: < PortraitTwoToneIcon/>,
   },
  
+  {
+    title: 'History',
+    path: '/admin/history',
+    icon: < PortraitTwoToneIcon/>,
+  },
  
  
 ];

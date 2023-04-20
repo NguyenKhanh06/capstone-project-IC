@@ -32,7 +32,7 @@ function Messenger(props) {
                     console.log("onMessengerLoad");
                 }}
             />
-            ,
+            
         </div>
     );
 }
