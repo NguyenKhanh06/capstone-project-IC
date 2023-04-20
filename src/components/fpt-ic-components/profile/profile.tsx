@@ -3,6 +3,7 @@ import { Box, Button, Container, Grow, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from 'src/config/apiUrl/apis-url';
 import BaseBreadCrumbs from '../breadscrumbs/breadcrumbs';
 import RightTitle from './right-title';
 
@@ -13,12 +14,12 @@ const ProfileComponent = () => {
   const [infors, setInfors] = useState(null);
   const [grading, setGrading] = useState(null);
   const getRegisInfor = async () => {
-    axios.get(`https://localhost:7115/api/v1/registration/getDetailbyStudentId/${user.id}`).then((response) => {
+    axios.get(`${API_URL}/registration/getDetailbyStudentId/${user.id}`).then((response) => {
       setInfors(response.data.responseSuccess);
     });
   };
   const getGrading = async () => {
-    axios.get(`https://localhost:7115/api/v1/student/GetGradingStudentId/${user.id}`).then((response) => {
+    axios.get(`${API_URL}/student/GetGradingStudentId/${user.id}`).then((response) => {
       setGrading(response.data.responseSuccess);
     });
   };

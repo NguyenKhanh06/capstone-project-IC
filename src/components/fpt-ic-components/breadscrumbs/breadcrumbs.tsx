@@ -16,7 +16,7 @@ function BaseBreadCrumbs({ previousLink, currentLink }: Props) {
       sx={{ my: 3 }}
     >
       {previousLink.map((e, index) => (
-        <Link key={index} to={`/landingpage/${e.href}`}>
+        <Link key={index} to={`${e.href}`}>
           <Typography color="text.primary" fontWeight={'600'}>
             {e.name}
           </Typography>

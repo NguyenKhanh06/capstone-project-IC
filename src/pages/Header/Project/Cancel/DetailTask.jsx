@@ -1,13 +1,8 @@
 import {
-  Autocomplete,
-  Avatar,
   Box,
-  Button,
   Chip,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   FormControl,
@@ -28,17 +23,11 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect, useState } from 'react';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { deepOrange } from '@mui/material/colors';
 import dayjs from 'dayjs';
 
 import DetailCmt from './DetailCmt';
 
 function DetailTask(props) {
-  const user = JSON.parse(sessionStorage.getItem("user"));
-  const staffcheck = JSON.parse(sessionStorage.getItem("staff"));
 
   const regex = /^[\w\s]*$/
   const [open, setOpen] = useState(false);
@@ -106,7 +95,7 @@ function DetailTask(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
+    await axios.get(`${API_URL}/task/getTaskDetaul/${props.task.id}`).then((response) => {
       setTask(response.data.responseSuccess[0]);
       setStaff(response.data.responseSuccess[0].assignTasks[0]?.staffs);
       setTaskName(response.data.responseSuccess[0].taskName);
@@ -136,7 +125,7 @@ function DetailTask(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://localhost:7115/api/v1/task/update/${props.task.id}`,
+      url: `${API_URL}/task/update/${props.task.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -163,7 +152,7 @@ function DetailTask(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://localhost:7115/api/v1/comment/createCommentTask',
+      url: `${API_URL}/comment/createCommentTask`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -174,7 +163,7 @@ function DetailTask(props) {
     })
   };
   const fetchDataComment = async () => {
-    await axios.get(`https://localhost:7115/api/v1/comment/GetCommentInTask`).then((response) => {
+    await axios.get(`${API_URL}/comment/GetCommentInTask`).then((response) => {
       console.log("cmt", response)
       setcmtTask(response.data.responseSuccess.filter(cmt => cmt.tasksId === props.task.id) );
     });
@@ -188,12 +177,12 @@ function DetailTask(props) {
 
   const handleUpdateStatus = () => {
     axios
-      .post(`https://localhost:7115/api/v1/task/changeStatus/${props.task.id}`, data)
+      .post(`${API_URL}/task/changeStatus/${props.task.id}`, data)
      
   };
 
   const handleDeleteComment = () => {
-    axios.delete(`https://localhost:7115/api/v1/comment/delete/${id}`).then((response) => {
+    axios.delete(`${API_URL}/comment/delete/${id}`).then((response) => {
       if (response.data.isSuccess) {
         setShowConfirmDelete(false)
         handleSuccess('Delete successfull!!!');
@@ -206,7 +195,7 @@ function DetailTask(props) {
   }
   const handleDelete = (id) => {
     axios
-      .post(`https://localhost:7115/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
+      .post(`${API_URL}/task/unassign/${props.task.id}?staffId=${id}`)
       .then((response) => {
         handleUpdateStatus();
         if (response.data.isSuccess) {

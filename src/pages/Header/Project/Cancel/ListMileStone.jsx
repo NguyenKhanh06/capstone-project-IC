@@ -6,7 +6,7 @@ function ListMileStone(props) {
     const { state } = useLocation();
     console.log(state)
     const fetchData = async () =>{
-        await axios.get(`https://localhost:7115/api/v1/milestone/getAllMileStone`).then((response) => {
+        await axios.get(`${API_URL}/milestone/getAllMileStone`).then((response) => {
           
   console.log(response.data.responseSuccess.filter(mil => mil.projectId === state))
          })

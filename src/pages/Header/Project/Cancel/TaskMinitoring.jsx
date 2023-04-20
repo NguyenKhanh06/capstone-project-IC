@@ -61,7 +61,7 @@ function TaskPlanning(props) {
     window.location.reload(false);
   }
   const handleDeleteTask = () => {
-    axios.put(`https://localhost:7115/api/v1/task/DisableTask/${id}`).then((response) => {
+    axios.put(`${API_URL}/task/DisableTask/${id}`).then((response) => {
 
     if (response.data.isSuccess) {
    setShowSuccess(true)
@@ -76,7 +76,7 @@ function TaskPlanning(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://localhost:7115/api/v1/task/getRootsTask`).then((response) => {
+    await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
       setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.mileStoneId === 4).filter((task) => task.status!== 5));
      
       

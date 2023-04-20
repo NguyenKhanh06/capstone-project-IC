@@ -6,17 +6,19 @@ import { Container, Fade, Grid, Slide } from '@mui/material';
 import BaseBreadCrumbs from '../../breadscrumbs/breadcrumbs';
 import AlbumImageView from '../../photo_view/album-photo-view';
 import SinglePhotoView from '../../photo_view/single-photo-view';
+import { Post } from 'src/interfaces/post';
 
 export const myLoader = ({ src }: { src: string }) => {
   return src;
 };
 
 interface Props {
-  item: Program;
+  item: Post;
 }
 
 const ProgramDetailComponent: FC<Props> = ({ item }) => {
   const containerRef = useRef(null);
+
   return (
     <Box
       id={`program-detail-${item.id}`}
@@ -38,12 +40,12 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
             { href: 'home', name: 'Homepage' },
             { href: 'program', name: 'Programs' },
           ]}
-          currentLink={item.programName}
+          currentLink={item.title}
         />
         <Grid container columnGap={10}>
           <Fade in={true} style={{ transformOrigin: '0 0 0' }} {...(true ? { timeout: 1000 } : {})}>
             <Grid item lg={5} xs={12} justifyContent={'center'}>
-              <SinglePhotoView image={item.detailImageUrl ?? (item.imageUrl as string)}></SinglePhotoView>
+              <SinglePhotoView image={item.posterUrl}></SinglePhotoView>
             </Grid>
           </Fade>
           <Grid item lg={6} xs={12} justifyContent={'center'}>
@@ -62,7 +64,7 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
                     fontWeight: 'bold',
                   }}
                 >
-                  {item.programName.toUpperCase()}
+                  {item.title.toUpperCase()}
                 </Typography>
               </Slide>
               <Slide
@@ -79,7 +81,7 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
                     fontSize: { lg: '60px', sm: '60px' },
                   }}
                 >
-                  {item.date}
+                  {item.dateCreated.slice(0, 10)}
                 </Typography>
               </Slide>
               <Box height={24}></Box>
@@ -149,14 +151,18 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
             </Box>
           </Grid>
         </Grid>
-        {item.albumImageUrl && (
+        {item.postImages && item.postImages.length > 0 && (
           <>
             <Typography variant="h1" my={5}>
               Photos of event
             </Typography>
             <Fade in={true} style={{ transformOrigin: '4 0 0' }} {...(true ? { timeout: 1500 } : {})}>
               <Box sx={{ width: '100%' }}>
-                <AlbumImageView listImage={item.albumImageUrl.map((e) => e)}></AlbumImageView>
+                <AlbumImageView
+                  listImage={item.postImages.map((e) => {
+                    return { src: e.postImageUrl };
+                  })}
+                ></AlbumImageView>
               </Box>
             </Fade>
           </>

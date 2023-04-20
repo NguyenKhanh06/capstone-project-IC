@@ -76,7 +76,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
   
   
     // const fetchData = async () => {
-    //  await axios.get(`https://localhost:7115/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
+    //  await axios.get(`${API_URL}/task/getTaskDetaul/${props.task.id}`).then((response) => {
     //     setTask(response.data.responseSuccess[0]);
     //     setStaff(response.data.responseSuccess[0].assignTasks[0]?.staffs);
     //     setTaskName(response.data.responseSuccess[0].taskName);
@@ -111,7 +111,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
       axios({
         method: 'PUT',
         data: formData,
-        url: `https://localhost:7115/api/v1/task/update/${props.task.id}`,
+        url: `${API_URL}/task/update/${props.task.id}`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -130,7 +130,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
         });
   
       // const handleDelete = (id) => {
-      //   axios.post(`https://localhost:7115/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
+      //   axios.post(`${API_URL}/task/unassign/${props.task.id}?staffId=${id}`)
       // }
   
       const handleDelete = () => {

@@ -26,6 +26,7 @@ import { Major } from '../../../interfaces/major';
 import CloseIcon from '@mui/icons-material/Close';
 
 import axios from 'axios';
+import { API_URL } from 'src/config/apiUrl/apis-url';
 
 const RegisterSchema = Yup.object().shape({
   Program: Yup.string().required('Can you select the program you want register, please ?'),
@@ -117,7 +118,6 @@ const RegisterComponent = () => {
         // PassportImage: PassportImage,
         // TransferInfomation: TransferInfomation,
       };
- 
 
       // {ProgramForm && () &&  console.log(2)}
       // {ProgramForm && (ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(3)}
@@ -125,13 +125,13 @@ const RegisterComponent = () => {
 
       axios
         .post(
-          `https://localhost:7115/api/v1/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&DateOfBirth=${DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
+          `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&DateOfBirth=${DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
         )
         .then((response) => {
           const data = {
             memberCode: student.memberCode,
             oldRollNumber: student.oldRollNumber,
-            batch:student.batch,
+            batch: student.batch,
             semeter: student.semeter,
             upStatus: student.studentStatus,
             address: student.address,
@@ -178,7 +178,7 @@ const RegisterComponent = () => {
 
   const handleUpdateStudent = (data) => {
     axios
-      .put(`https://localhost:7115/api/v1/student/update/${student.id}`, data)
+      .put(`${API_URL}/student/update/${student.id}`, data)
       .then((response) => {
         console.log(response);
         if (response.data.isSuccess) {
@@ -193,18 +193,18 @@ const RegisterComponent = () => {
       });
   };
   const getAllForm = async () => {
-    await axios.get(`https://localhost:7115/api/v1/registration/getRootRegis`).then((response) => {
+    await axios.get(`${API_URL}/registration/getRootRegis`).then((response) => {
       setForm(response.data.responseSuccess.filter((value) => value.status));
     });
   };
   const getAllMajor = async () => {
-    await axios.get(`https://localhost:7115/api/v1/Major/getAllMajor`).then((response) => {
+    await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
       setMajor(response.data.responseSuccess);
     });
   };
 
   // const getFormbyPrj = (id) => {
-  //   axios.get(`https://localhost:7115/api/v1/registration/getDetailbyProjectId/${id}`).then((response) => {
+  //   axios.get(`${API_URL}/registration/getDetailbyProjectId/${id}`).then((response) => {
   //     setProgramForm(response.data.responseSuccess.filter((form) => !form.student)[0]);
   //     console.log(response.data.responseSuccess.filter((form) => !form.student));
   //   });
@@ -393,49 +393,51 @@ const RegisterComponent = () => {
                     </Box>
                   </Box>
                   <Title number={'4'} title={'Major *'} />
-                {Major && <Autocomplete
-                    componentsProps={{
-                      paper: {
-                        sx: {
-                          fontWeight: 'bold',
+                  {Major && (
+                    <Autocomplete
+                      componentsProps={{
+                        paper: {
+                          sx: {
+                            fontWeight: 'bold',
+                          },
                         },
-                      },
-                    }}
-                    defaultValue={student?.major}
-                    disablePortal
-                    options={Major}
-                    getOptionLabel={(option) => option['majorFullName']}
-                    sx={{ border: 'none !important', fontWeight: 'bold' }}
-                    onChange={(event, newValue) => {
-                      setMajor(newValue);
-                      formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                        sx={{
-                          width: '93.5%',
-                          borderRadius: '25px',
-                          backgroundColor: '#D9D9D9',
-                          margin: '10px 0 0 20px',
-                          border: 'none !important',
-                          '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                          '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                      }}
+                      defaultValue={student?.major}
+                      disablePortal
+                      options={Major}
+                      getOptionLabel={(option) => option['majorFullName']}
+                      sx={{ border: 'none !important', fontWeight: 'bold' }}
+                      onChange={(event, newValue) => {
+                        setMajor(newValue);
+                        formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
+                          sx={{
+                            width: '93.5%',
+                            borderRadius: '25px',
+                            backgroundColor: '#D9D9D9',
+                            margin: '10px 0 0 20px',
                             border: 'none !important',
-                          },
-                          '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            border: 'none !important',
-                          },
-                          '& .MuiSvgIcon-root': {
-                            color: 'primary.main',
-                          },
-                        }}
-                        placeholder="Select Major"
-                      />
-                    )}
-                    noOptionsText="This major not found"
-                  /> }  
+                            '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                            '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                              border: 'none !important',
+                            },
+                            '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              border: 'none !important',
+                            },
+                            '& .MuiSvgIcon-root': {
+                              color: 'primary.main',
+                            },
+                          }}
+                          placeholder="Select Major"
+                        />
+                      )}
+                      noOptionsText="This major not found"
+                    />
+                  )}
                   {Boolean(formik.touched.Major && formik.errors.Major) && (
                     <Box sx={{ margin: ' 10px 0 0 20px' }}>
                       <Typography color={'red'} fontSize="14px">
@@ -710,7 +712,6 @@ const RegisterComponent = () => {
                         inputName={'contentHeader1'}
                         width={'90%'}
                         {...formik.getFieldProps('contentHeader1')}
-                   
                       />
                     </Box>
                   )}
@@ -727,7 +728,6 @@ const RegisterComponent = () => {
                         inputName={'contentHeader2'}
                         width={'90%'}
                         {...formik.getFieldProps('contentHeader2')}
-                  
                       />
                     </Box>
                   )}
@@ -744,7 +744,6 @@ const RegisterComponent = () => {
                         inputName={'contentHeader3'}
                         width={'90%'}
                         {...formik.getFieldProps('contentHeader3')}
-            
                       />
                     </Box>
                   )}
@@ -761,7 +760,6 @@ const RegisterComponent = () => {
                         inputName={'contentHeader4'}
                         width={'90%'}
                         {...formik.getFieldProps('contentHeader4')}
-      
                       />
                     </Box>
                   )}

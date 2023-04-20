@@ -140,7 +140,7 @@ function ListSubTaskCancel(props) {
     window.location.reload(false);
   }
 const handleDeleteTask = () => {
-  axios.put(`https://localhost:7115/api/v1/task/DisableTask/${id}`).then((response) => {
+  axios.put(`${API_URL}/task/DisableTask/${id}`).then((response) => {
 
     if (response.data.isSuccess) {
    setShowSuccess(true)

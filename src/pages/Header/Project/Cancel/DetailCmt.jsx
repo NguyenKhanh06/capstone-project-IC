@@ -86,7 +86,7 @@ function DetailCmt(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://localhost:7115/api/v1/comment/updateTaskComment/${props.cmt.id}`,
+      url: `${API_URL}/comment/updateTaskComment/${props.cmt.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

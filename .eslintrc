@@ -25,6 +25,7 @@
     }
   },
   "rules": {
+    "no-unneeded-ternary": 0,
     "dot-notation": 0,
     "import/no-named-as-default-member":0,
     "import/no-named-as-default": 0,

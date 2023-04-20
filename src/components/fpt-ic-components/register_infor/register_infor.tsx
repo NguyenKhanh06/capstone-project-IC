@@ -21,7 +21,6 @@ import InputBar from './input-bar';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import 'react-day-picker/dist/style.css';
-import { programData, majorData } from './register.data';
 import { Program } from '../../../interfaces/program';
 import { Major } from '../../../interfaces/major';
 import CloseIcon from '@mui/icons-material/Close';
@@ -29,6 +28,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
+import { API_URL } from 'src/config/apiUrl/apis-url';
 
 const RegisterSchema = Yup.object().shape({
   // Program: Yup.string().required('Can you select the program you want register, please ?'),
@@ -88,9 +88,9 @@ const RegisterInformationComponent = () => {
     initialValues: {
       // Program: data.project as string,
       FullName: studentDetail?.fullName as string,
-      RollNumber:  studentDetail?.rollNumber as string,
+      RollNumber: studentDetail?.rollNumber as string,
       Major: '',
-      PhoneNumber:  studentDetail?.phoneNumber as string,
+      PhoneNumber: studentDetail?.phoneNumber as string,
       PassportNumber: formDetail?.numberPassPort as string,
       FacebookLink: formDetail?.scocialLink as string,
       DOB: '',
@@ -138,7 +138,7 @@ const RegisterInformationComponent = () => {
       axios({
         method: 'PUT',
         data: formData,
-        url: `https://localhost:7115/api/v1/registration/UpdateRegisId/${data.id}?FullName=${values.FullName}&MajorId=${Major.id}&memberCode=${data?.student?.memberCode}&PhoneNumber=${values.PhoneNumber}&DateOfBirth=${values.DOB}&NumberPassPort=${values.PassportNumber}&RollNumber=${values.RollNumber}&YourEmail=${data?.student?.email}&ScocialLink=${values.FacebookLink}&DateExpired=${values.ExpirationDate}&ProjectId=${data?.projectId}&Content1=${values?.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}`,
+        url: `${API_URL}/registration/UpdateRegisId/${data.id}?FullName=${values.FullName}&MajorId=${Major.id}&memberCode=${data?.student?.memberCode}&PhoneNumber=${values.PhoneNumber}&DateOfBirth=${values.DOB}&NumberPassPort=${values.PassportNumber}&RollNumber=${values.RollNumber}&YourEmail=${data?.student?.email}&ScocialLink=${values.FacebookLink}&DateExpired=${values.ExpirationDate}&ProjectId=${data?.projectId}&Content1=${values?.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -147,27 +147,25 @@ const RegisterInformationComponent = () => {
           const datas = {
             memberCode: student.memberCode,
             oldRollNumber: student.oldRollNumber,
-            batch:student.batch,
+            batch: student.batch,
             semeter: student.semeter,
             upStatus: student.studentStatus,
             address: student.address,
-                  rollNumber: values.RollNumber,
-                  fullName: values.FullName,
-                  majorId: Major.id,
-                  email: data.student.email,
-                  phoneNumber: values.PhoneNumber,
-                  status: true,
-                };
+            rollNumber: values.RollNumber,
+            fullName: values.FullName,
+            majorId: Major.id,
+            email: data.student.email,
+            phoneNumber: values.PhoneNumber,
+            status: true,
+          };
           if (response.data.isSuccess) {
             setShow(true);
-            getDetail()
-            getDetailStudent()
+            getDetail();
+            getDetailStudent();
             handleUpdateStudent(datas);
             setTimeout(() => {
               setShow(false);
-                    }, 2000);
-            
-       
+            }, 2000);
           }
         })
         .catch((err) => {
@@ -175,7 +173,7 @@ const RegisterInformationComponent = () => {
         });
       // axios
       //   .put(
-      //     `https://localhost:7115/api/v1/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&DateOfBirth=${DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
+      //     `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&DateOfBirth=${DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
       //   )
       //   .then((response) => {
       //     const data = {
@@ -205,31 +203,30 @@ const RegisterInformationComponent = () => {
     //   });
   });
 
-const getDetail = async () => {
-await axios.get(`https://localhost:7115/api/v1/registration/GetDetailResId/${data.id}`).then(response => {
-setFormDetail(response.data.responseSuccess[0])
-})
-}
+  const getDetail = async () => {
+    await axios.get(`${API_URL}/registration/GetDetailResId/${data.id}`).then((response) => {
+      setFormDetail(response.data.responseSuccess[0]);
+    });
+  };
 
-
-const getDetailStudent = async () => {
-await axios.get(`https://localhost:7115/api/v1/student/getStudentDetail/${student.id}`).then(response => {
-setStudentDetail(response.data.responseSuccess[0])
-})
-}
+  const getDetailStudent = async () => {
+    await axios.get(`${API_URL}/student/getStudentDetail/${student.id}`).then((response) => {
+      setStudentDetail(response.data.responseSuccess[0]);
+    });
+  };
 
   const handleUpdateStudent = (dataUpdate) => {
     axios
-      .put(`https://localhost:7115/api/v1/student/update/${student.id}`, dataUpdate)
+      .put(`${API_URL}/student/update/${student.id}`, dataUpdate)
       .then((response) => {
         console.log(response);
         if (response.data.isSuccess) {
           setShow(true);
-        getDetail()
-        getDetailStudent()
-        setTimeout(() => {
-          setShow(false);
-                }, 3000);
+          getDetail();
+          getDetailStudent();
+          setTimeout(() => {
+            setShow(false);
+          }, 3000);
         }
       })
       .catch((err) => {
@@ -237,19 +234,19 @@ setStudentDetail(response.data.responseSuccess[0])
       });
   };
   const getAllForm = async () => {
-    await axios.get(`https://localhost:7115/api/v1/registration/getAllRes`).then((response) => {
+    await axios.get(`${API_URL}/registration/getAllRes`).then((response) => {
       setForm(response.data.responseSuccess.filter((value) => value.project != null));
       console.log(response);
     });
   };
   const getAllMajor = async () => {
-    await axios.get(`https://localhost:7115/api/v1/Major/getAllMajor`).then((response) => {
+    await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
       setMajor(response.data.responseSuccess);
     });
   };
 
   const getFormbyPrj = (id) => {
-    axios.get(`https://localhost:7115/api/v1/registration/getDetailbyProjectId/${id}`).then((response) => {
+    axios.get(`${API_URL}/registration/getDetailbyProjectId/${id}`).then((response) => {
       setProgramForm(response.data.responseSuccess.filter((form) => !form.student)[0]);
       console.log(response.data.responseSuccess.filter((form) => !form.student));
     });
@@ -293,8 +290,8 @@ setStudentDetail(response.data.responseSuccess[0])
   useEffect(() => {
     getAllForm();
     getAllMajor();
-    getDetail()
-    getDetailStudent()
+    getDetail();
+    getDetailStudent();
   }, []);
   useEffect(() => {
     if (Program) {
@@ -443,49 +440,51 @@ setStudentDetail(response.data.responseSuccess[0])
                     </Box>
                   </Box>
                   <Title number={'4'} title={'Major *'} />
-                  {Major && <Autocomplete
-                    componentsProps={{
-                      paper: {
-                        sx: {
-                          fontWeight: 'bold',
+                  {Major && (
+                    <Autocomplete
+                      componentsProps={{
+                        paper: {
+                          sx: {
+                            fontWeight: 'bold',
+                          },
                         },
-                      },
-                    }}
-                    disablePortal
-                    options={Major}
-                    defaultValue={ studentDetail.major}
-                    getOptionLabel={(option) => option['majorFullName']}
-                    sx={{ border: 'none !important', fontWeight: 'bold' }}
-                    onChange={(event, newValue) => {
-                      setMajor(newValue);
-                      formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                        sx={{
-                          width: '93.5%',
-                          borderRadius: '25px',
-                          backgroundColor: '#D9D9D9',
-                          margin: '10px 0 0 20px',
-                          border: 'none !important',
-                          '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                          '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                      }}
+                      disablePortal
+                      options={Major}
+                      defaultValue={studentDetail.major}
+                      getOptionLabel={(option) => option['majorFullName']}
+                      sx={{ border: 'none !important', fontWeight: 'bold' }}
+                      onChange={(event, newValue) => {
+                        setMajor(newValue);
+                        formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
+                          sx={{
+                            width: '93.5%',
+                            borderRadius: '25px',
+                            backgroundColor: '#D9D9D9',
+                            margin: '10px 0 0 20px',
                             border: 'none !important',
-                          },
-                          '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            border: 'none !important',
-                          },
-                          '& .MuiSvgIcon-root': {
-                            color: 'primary.main',
-                          },
-                        }}
-                        placeholder="Select Major"
-                      />
-                    )}
-                    noOptionsText="This major not found"
-                  />}
+                            '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                            '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                              border: 'none !important',
+                            },
+                            '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              border: 'none !important',
+                            },
+                            '& .MuiSvgIcon-root': {
+                              color: 'primary.main',
+                            },
+                          }}
+                          placeholder="Select Major"
+                        />
+                      )}
+                      noOptionsText="This major not found"
+                    />
+                  )}
                   {Boolean(formik.touched.Major && formik.errors.Major) && (
                     <Box sx={{ margin: ' 10px 0 0 20px' }}>
                       <Typography color={'red'} fontSize="14px">
@@ -608,35 +607,43 @@ setStudentDetail(response.data.responseSuccess[0])
                     helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
                   />
                   <Title number={'10'} title={'Passport image *'} />
-                  {data?.passportImageUrl ? <img src={formDetail?.passportImageUrl} style={{maxWidth: "50%", margin: "10px 0 20px 0"}} alt='alt' /> : <>
-                  {!PassportImage ||
-                    (PassportImage.length < 1 && (
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: '20px',
-                          margin: '10px 0 0 20px',
-                        }}
-                      >
-                        <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
-                        <Box
-                          component="label"
-                          sx={{
-                            fontWeight: '500',
-                            fontSize: '18px',
-                            cursor: 'pointer',
-                            '&:hover': { color: 'primary.main' },
-                          }}
-                        >
-                          Upload your file here
-                          <input type="file" hidden onChange={handlePassportImage} />
-                        </Box>
-                      </Box>
-                    ))}
-                  </>}
-                
+                  {data?.passportImageUrl ? (
+                    <img
+                      src={formDetail?.passportImageUrl}
+                      style={{ maxWidth: '50%', margin: '10px 0 20px 0' }}
+                      alt="alt"
+                    />
+                  ) : (
+                    <>
+                      {!PassportImage ||
+                        (PassportImage.length < 1 && (
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              gap: '20px',
+                              margin: '10px 0 0 20px',
+                            }}
+                          >
+                            <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
+                            <Box
+                              component="label"
+                              sx={{
+                                fontWeight: '500',
+                                fontSize: '18px',
+                                cursor: 'pointer',
+                                '&:hover': { color: 'primary.main' },
+                              }}
+                            >
+                              Upload your file here
+                              <input type="file" hidden onChange={handlePassportImage} />
+                            </Box>
+                          </Box>
+                        ))}
+                    </>
+                  )}
+
                   {PassportImage.length > 0 && (
                     <>
                       <Box height={24}></Box>
@@ -672,7 +679,7 @@ setStudentDetail(response.data.responseSuccess[0])
                       </Box>
                     </>
                   )}
-                 {/* {!data?.urlImageBill  ?<>
+                  {/* {!data?.urlImageBill  ?<>
                   {Boolean(formik.touched.PassportImage && formik.errors.PassportImage) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
@@ -681,36 +688,44 @@ setStudentDetail(response.data.responseSuccess[0])
               </Box>
             )}
                  </> : null }  */}
-                     
+
                   <Title number={'11'} title={'Transfer information *'} />
-                  {data?.urlImageBill ? <img src={formDetail?.urlImageBill} alt='alt' style={{maxWidth: "50%", margin: "10px 0 20px 0"}} /> : <>
-            {!TransferInfomation ||
-                    (TransferInfomation.length < 1 && (
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: '20px',
-                          margin: '10px 0 0 20px',
-                        }}
-                      >
-                        <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
-                        <Box
-                          component="label"
-                          sx={{
-                            fontWeight: '500',
-                            fontSize: '18px',
-                            cursor: 'pointer',
-                            '&:hover': { color: 'primary.main' },
-                          }}
-                        >
-                          Upload your file here
-                          <input type="file" hidden onChange={handleTransferInformation} />
-                        </Box>
-                      </Box>
-                    ))}
-           </>}
+                  {data?.urlImageBill ? (
+                    <img
+                      src={formDetail?.urlImageBill}
+                      alt="alt"
+                      style={{ maxWidth: '50%', margin: '10px 0 20px 0' }}
+                    />
+                  ) : (
+                    <>
+                      {!TransferInfomation ||
+                        (TransferInfomation.length < 1 && (
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              gap: '20px',
+                              margin: '10px 0 0 20px',
+                            }}
+                          >
+                            <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
+                            <Box
+                              component="label"
+                              sx={{
+                                fontWeight: '500',
+                                fontSize: '18px',
+                                cursor: 'pointer',
+                                '&:hover': { color: 'primary.main' },
+                              }}
+                            >
+                              Upload your file here
+                              <input type="file" hidden onChange={handleTransferInformation} />
+                            </Box>
+                          </Box>
+                        ))}
+                    </>
+                  )}
 
                   {TransferInfomation.length > 0 && (
                     <>
@@ -748,7 +763,7 @@ setStudentDetail(response.data.responseSuccess[0])
                       </Box>
                     </>
                   )}
-                 {/* {data?.urlImageBill ? null : <>
+                  {/* {data?.urlImageBill ? null : <>
                   {Boolean(formik.touched.TransferInfomation && formik.errors.TransferInfomation) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">

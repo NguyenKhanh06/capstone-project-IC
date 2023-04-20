@@ -41,7 +41,7 @@ import Role from './pages/Admin/Role';
 import ListMajor from './pages/Header/Major/ListMajor';
 import RegisterInformation from './pages/FPTIC/Information/index'
 import History from './pages/Admin/History';
-
+import AuthGuard from './components/fpt-ic-components/guards/auth-guard';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -92,7 +92,6 @@ export default function Router() {
         { element: <Navigate to="/staff/projects" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'list-task-cancel', element: <ListTaskCancel />},
-
         { path: 'projects', element: <ListProjectMember/> },
         { path: 'member/list-task', element: <ListTaskMember />},
         { path: 'leader/list-task', element: <ListTask />},
@@ -113,21 +112,20 @@ export default function Router() {
       ],
     },
     {
-      
-      path: '/',
+      path: '/login',
       element: <LoginPage />,
     },
 
     {
-      path: '/landingpage',
+      path: '/',
       element: <MainLayout/>,
       children: [
-        { element: <Navigate to="/landingpage/home" />, index: true },
+        { element: <Navigate to="/home" />, index: true },
         { path: 'home', element: <Home /> },
-        { path: 'register', element: <Register /> },
+        { path: 'register', element: <AuthGuard><Register /></AuthGuard> },
         { path: 'register-information', element: <RegisterInformation /> },
         { path: 'program', element: <Program /> },
-        { path: 'profile', element: <Profile /> },
+        { path: 'profile', element: <AuthGuard><Profile /></AuthGuard>},
         { path: 'program/:id', element: <ProgramDetail /> },  
       ]
     },

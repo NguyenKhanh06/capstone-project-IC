@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
@@ -27,7 +27,7 @@ const LoginStaff = () => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState('');
   const [deputies, setDeputies] = useState([]);
-
+  const { state } = useLocation();
   const handleErr = (message) => {
     setShowAl(true);
     setMessage(message);
@@ -132,12 +132,8 @@ const LoginStaff = () => {
                   console.log(response);
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
                   if (response.data.responseSuccess.role === 2 && response.data.responseSuccess.staff.isHeadOfDepartMent) {
-
-               
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
-
                     navigate('/header');
-
                     requestPermission();
                   } else if (
                     response.data.responseSuccess.role === 2 &&
@@ -145,12 +141,9 @@ const LoginStaff = () => {
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                     getdetailStaff(response.data.responseSuccess.id);
-
                     navigate('/staff');
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 4 && response.data.responseSuccess.status) {
-
-                    
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                     getDeputy(response.data.responseSuccess.id);
                     navigate('/partner');
@@ -159,7 +152,6 @@ const LoginStaff = () => {
                     handleErr('Your account can not login!!!!');
                   }else if (response.data.responseSuccess.role === 1) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
-                   
                     navigate('/admin');
                     requestPermission();
                   }else if (response.data.responseSuccess.role === 0) {
@@ -244,16 +236,12 @@ const LoginStaff = () => {
           text="signin_with"
           onSuccess={(credentialResponse) => {
             const decoded = jwt_decode(credentialResponse.credential);
-       
             sessionStorage.setItem('student', JSON.stringify(decoded));
-      
             if(regexMailFu.test(decoded.email)){
               axios
               .post(`https://api.ic-fpt.click/api/v1/authen/signin-google/${credentialResponse.credential}`)
               .then((response) => {
-       
                 getdetailStaff(response.data.responseSuccess.id);
-
                 localStorage.setItem('token', response.data.responseSuccess.accountToken);
                 if (
                   response.data.responseSuccess.role === 2 &&
@@ -288,7 +276,7 @@ const LoginStaff = () => {
                 localStorage.setItem('token', response.data.responseSuccess.tokenToken);
                 console.log("login", response.data.responseSuccess)
                 getdetailStudent(response.data.responseSuccess.id)
-                navigate('/landingpage');
+                navigate(state?.path || "/");
               })
             }else{
               handleErr('Your email can not login!!')

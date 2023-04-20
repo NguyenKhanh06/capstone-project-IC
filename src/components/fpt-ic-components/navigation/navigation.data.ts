@@ -3,23 +3,23 @@ import type { Navigation } from '../../../interfaces/navigation'
 export const navigations: Navigation[] = [
   {
     label: 'Logo',
-    path: '/landingpage/logo', // '/' or '/home',
+    path: '/logo', // '/' or '/home',
   },
   {
     label: 'Home',
-    path: '/landingpage/home', // '/' or '/home',
+    path: '/home', // '/' or '/home',
   },
   {
     label: 'Register',
-    path: '/landingpage/register',
+    path: '/register',
   },
   {
     label: 'Program',
-    path: '/landingpage/program',
+    path: '/program',
   },
   {
     label: 'Profile',
-    path: '/landingpage/profile',
+    path: '/profile',
   },
 
 ]
