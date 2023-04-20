@@ -52,7 +52,9 @@ function CancelProject(props) {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    }).then(res => console.log(res))
+    }).then(res =>      setTimeout(() =>{
+     window.location.reload()
+    }, 1000))
      
   }
 

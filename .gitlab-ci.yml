@@ -1,0 +1,21 @@
+stages:
+  - pipeline
+
+variables:
+  NAME: fe
+  GROUP: ec
+  IMAGE_NAME: ec34/fpt-ec-fe
+  SERVICE_NAME: $GROUP-${NAME}
+
+ci-dev:
+  stage: pipeline
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "dev-khanh"
+  trigger:
+    include: ci/$CI_COMMIT_REF_NAME.yml
+    strategy: depend
+  variables:
+    ENV_DEPLOY: $ENV_DEV
+    ENV: dev
+    TAG: latest
+    CONTAINER_REGISTRY: registry.gitlab.com
