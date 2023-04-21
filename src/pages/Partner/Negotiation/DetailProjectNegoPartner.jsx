@@ -33,6 +33,8 @@ function DetailProjectNegoPartner(props) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [message, setMessage] = useState('');
+  const [doc, setDoc] = useState(null);
+
   const handleError = (data) => {
     setShowError(true);
     setMessage(data);
@@ -45,10 +47,21 @@ function DetailProjectNegoPartner(props) {
       console.log("detail prj", response.data)
     })
   }
-
+  console.log(props)
+  const fetchDataDoc = async () => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
+      console.log(
+        'doc',
+        response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id)
+      );
+      setDoc(response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id));
+    });
+  };
+  console.log(props)
   useEffect(() => {
    if(props.project != null ){
     getdetailProject()
+    fetchDataDoc()
    }
   }, [props.project]);
   const handleClickOpen = () => {
@@ -64,11 +77,11 @@ function DetailProjectNegoPartner(props) {
     setFileStudent(e.target.files[0]);
     console.log('file', e.target.files[0]);
   };
-
+  
   const handleImportFile = (file) => {
     const formData = new FormData();
     formData.append('formFile', fileStudent);
-    formData.append('DateCreated', `2023-03-26T10:32:09.713405`);
+    formData.append('DateCreated', new Date());
     formData.append('Status', true);
     formData.append('ProjectId', props.project.id);
     axios({
@@ -81,12 +94,42 @@ function DetailProjectNegoPartner(props) {
     }).then((response) => {
       if (response.data.isSuccess) {
         setShowSuccess(true);
-      
+        setTimeout(() => {
+       window.location.reload()
+        }, 1000);
       } 
     }).catch((err) => {
-      handleError(err.response.data.responseSuccess);
+      setTimeout(() => {
+        window.location.reload()
+         }, 1000);
+      handleError('Upload fail!');
     })
   };
+  const handleExportFile = (documentPrj) => {
+    axios({
+      url: `https://api.ic-fpt.click/api/v1/document/content/${documentPrj.id}`,
+      method: 'GET',
+      responseType: 'blob', // important
+    }).then((response) => {
+      console.log(response);
+      const blob = new Blob([response.data], { type: response.data.type });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const contentDisposition = response.headers['content-disposition: attachment'];
+      let fileName = documentPrj.fileName;
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (fileNameMatch.length === 2) fileName = fileNameMatch[1];
+      }
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    });
+  };
+
 
   useEffect(() => {
     if (fileStudent != null) {
@@ -153,7 +196,22 @@ function DetailProjectNegoPartner(props) {
                {project?.description}
               </Typography>
             </Box>
-            
+            <Box sx={{ padding: '0 44px 44px 44px', maxWidth: '100%' }}>
+            <b>Project's Files:</b>
+            <Stack direction="column" alignItems="flex-start" spacing={3}>
+            {doc && doc.map((document, index) => (
+                      <Button
+                   
+                      variant="text"
+                     
+                      onClick={() => handleExportFile(document)}
+                    >
+                      {document.fileName}
+                    </Button>
+                ))
+                }
+            </Stack>
+            </Box>
           </Paper>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
@@ -166,7 +224,7 @@ function DetailProjectNegoPartner(props) {
               >
                 Download File Contract
               </Button>  */}
-            <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+              {props.project?.projectStatus === 1 ?   <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
                 Import Mark For Student
                 <input
                   onChange={onChangeFile}
@@ -175,7 +233,17 @@ function DetailProjectNegoPartner(props) {
                  
                   type="file"
                 />
-              </Button>
+              </Button> :   <Button disabled color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+                Import Mark For Student
+                <input
+                  onChange={onChangeFile}
+                  id="input"
+                  hidden
+                 
+                  type="file"
+                />
+              </Button>}
+          
 {/* 
             <Button onClick={() => setShowCancel(true)} color="error" variant="contained">
               Cancel Project

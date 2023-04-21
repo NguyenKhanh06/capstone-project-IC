@@ -131,7 +131,7 @@ function ListProject(props) {
             <Chip label="Monitoring" color="warning" />
           ) : params.row.projectStatus === 7 ? (
             <Chip label="Closing" color="success" />
-          ) : null}
+          ): null}
 
           {dayjs(new Date()).date() - dayjs(params.row?.estimateTimeStart).date() === 0 &&
           dayjs(new Date()).month() - dayjs(params.row?.estimateTimeStart).month() === 0 &&

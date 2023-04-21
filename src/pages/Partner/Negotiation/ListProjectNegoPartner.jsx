@@ -10,8 +10,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
-
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -111,10 +109,6 @@ console.log("user", user)
              
              <DoNotDisturbOnOutlinedIcon color='error' />
 
-         </Tooltip>:params.row.projectStatus === 1 ? <Tooltip title="Completing the neogotiation">
-             
-             <CheckCircleOutlineTwoToneIcon color='success' />
-
          </Tooltip>: <>
          <Tooltip title="View Detail">
               <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
@@ -141,9 +135,9 @@ console.log("user", user)
     setProject(data);
   };
 
-  const fetchData = async (id) => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
-      
+  const fetchData =  (id) => {
+   axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
+      console.log(response)
       setProjects(response.data.responseSuccess.filter((project) => project.partnerId === id));
 
     });
@@ -151,7 +145,7 @@ console.log("user", user)
   const fetchDataDeputy = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
 
-      fetchData(response.data.responseSuccess.find(dep => dep.accountId === user.id).partnerId)
+      fetchData(response.data.responseSuccess.find(dep => dep.accountId === user.id)?.partnerId)
       setDeputy(response.data.responseSuccess.find(dep => dep.accountId === user.id));
     });
   };
@@ -189,7 +183,7 @@ console.log("user", user)
                     pageSize: 10,
                   },
                 },
-                sorting: {
+                  sorting: {
                   sortModel: [{ field: "dateCreated", sort: "desc" }],
                    },
               }}

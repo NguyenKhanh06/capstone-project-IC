@@ -74,7 +74,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
    
     const fetchData = async () =>{
      await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
-  setStaffs(response.data.responseSuccess.filter(staff => staff.account.status&& regexMailFu.test(staff.account.email)).filter(staflead => staflead.id !== props.project.leaderId))
+  setStaffs(response.data.responseSuccess.filter(staff => staff.account.status && staff.account.role !== 0  && regexMailFu.test(staff.account.email)).filter(staflead => staflead.id !== props.project.leaderId))
       })
     }
 

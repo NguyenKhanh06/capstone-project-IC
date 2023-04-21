@@ -84,14 +84,14 @@ function ListProjectNego(props) {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setLoading(false);
-          setTimeout(() => {
-           window.location.reload()
-          }, 1000)
+          window.location.reload()
         }
       })
       .catch((err) => {
-        handleError("Create fail!!!!");
+        handleError("Update fail!!!!");
         setLoading(false);
+        window.location.reload()
+
       });
        
     }
@@ -145,11 +145,24 @@ function ListProjectNego(props) {
              
              <DoNotDisturbOnOutlinedIcon color='error' />
 
-         </Tooltip> : params.row.projectStatus === 1 ? <Tooltip title="Completing the neogotiation">
-             
-             <CheckCircleOutlineTwoToneIcon  color='success' />
+         </Tooltip> : params.row.projectStatus === 1   ? 
+         
+         <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
+            <Tooltip title="View Detail">
+           <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
+             <RemoveRedEyeRoundedIcon />
+           </IconButton>
+         </Tooltip> 
+        
+           <Tooltip title="Neogotiation is completed">
+           <IconButton onClick={() => handleViewNego(params.row)} aria-label="delete">
+       <CheckCircleOutlineTwoToneIcon  color='success' />
+           </IconButton>
+            
 
-         </Tooltip>  : <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
+         </Tooltip> 
+         </Stack>
+        : <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
          <Tooltip title="View Detail">
            <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
              <RemoveRedEyeRoundedIcon />

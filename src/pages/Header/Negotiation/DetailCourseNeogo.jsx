@@ -59,20 +59,24 @@ function DetailCourseNego(props) {
   const handleClose = () => {
     setOpen(props.close);
   };
-
+console.log(props)
   const fetchData = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/syllabus/GetListSyllabusPartner/${props.id.partnerId}`).then((response) => {
-      console.log("deal", response.data.responseSuccess)
-      setSyllabus(response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0])
-      setCourse(response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0].course);
-      setSlots(response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0].slots.filter(slot => slot.status))
-      setSlotsApprove(
-        response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0]
-          .slots.filter((slot) => slot.status && slot.slotStatus === 1)
-      );
-      setSlotsReject(
-        response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0].slots.filter((slot) => slot.status && slot.slotStatus === 2)
-      );
+      console.log("deal", response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId))
+ 
+
+        setSyllabus(response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0])
+     
+        setSlots(response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0]?.slots.filter(slot => slot.status))
+        setSlotsApprove(
+          response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0]
+            .slots.filter((slot) => slot.status && slot.slotStatus === 1)
+        );
+        setSlotsReject(
+          response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0].slots.filter((slot) => slot.status && slot.slotStatus === 2)
+        );
+      
+     
       // fetchDetailSyllabus(response.data.responseSuccess[0].syllabus.filter((syllabus) => syllabus.status)[0].id)
  
     
@@ -80,6 +84,11 @@ function DetailCourseNego(props) {
   };
 
 console.log(props)
+  useEffect(() => {
+    if (props.id) {
+      fetchData();
+    }
+  }, [props.id]);
   useEffect(() => {
     if (props.id) {
       fetchData();
@@ -173,15 +182,15 @@ console.log(props)
             >
               <Box>
                 <b>Skill Name:</b>
-                <Typography>{course?.courseName}</Typography>
+                <Typography>{props?.id?.course?.courseName}</Typography>
               </Box>
               <Box>
                 <b>Activity:</b>
-                <Typography>{course?.activity}</Typography>
+                <Typography>{props?.id?.course?.activity}</Typography>
               </Box>
               <Box>
                 <b>Course Content:</b>
-                <Typography>{course?.content}</Typography>
+                <Typography>{props?.id?.course?.content}</Typography>
               </Box>
             </Stack>
           </Paper>

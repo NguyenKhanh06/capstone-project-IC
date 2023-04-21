@@ -296,12 +296,12 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                 />
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-autowidth-label">Category</InputLabel>
+                    <InputLabel id="demo-simple-select-autowidth-label">Category *</InputLabel>
                     <Select
                       labelId="demo-simple-select-autowidth-label"
                       id="demo-simple-select-autowidth"
                       displayEmpty
-                      label="Category"
+                      label="Category *"
                       value={cate}
                       name="cate"
                       onChange={handleOnChangeCate}
@@ -358,14 +358,14 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                     </Select>
                   </FormControl>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-autowidth-label">Course</InputLabel>
+                    <InputLabel id="demo-simple-select-autowidth-label">Course *</InputLabel>
                     <Select
                       labelId="demo-simple-select-autowidth-label"
                       id="demo-simple-select-autowidth"
                       displayEmpty
                       label="Course"
                       value={course}
-                      name="course"
+                      name="course *"
                       onChange={handleOnChangeCourse}
                       MenuProps={{
                         PaperProps: {
@@ -448,7 +448,7 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                     <DatePicker
                       disablePast
                       sx={{ width: '50%' }}
-                      label="Estimate time start"
+                      label="Estimate time start *"
                       value={estimateStart}
                       onChange={(newValue) => {
                         setEstimateStart(newValue);
@@ -462,7 +462,7 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                       disablePast
                       minDate={dayjs(estimateStart).add(7, 'day')}
                       sx={{ width: '50%' }}
-                      label="Estimate time end"
+                      label="Estimate time end *"
                       value={estimateEnd}
                       onChange={(newValue) => {
                         setEstimateEnd(newValue);
@@ -501,12 +501,12 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                 </Stack> */}
                 <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Partner</InputLabel>
+                    <InputLabel id="demo-simple-select-label">Partner *</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={partner}
-                      label="Partner"
+                      label="Partner *"
                       onChange={handleOnChangePartner}
                       MenuProps={{
                         PaperProps: {
@@ -527,12 +527,12 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                     </Select>
                   </FormControl>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Campus</InputLabel>
+                    <InputLabel id="demo-simple-select-label">Campus *</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={campus}
-                      label="Campus"
+                      label="Campus *"
                       onChange={handleOnChangeCampus}
                       MenuProps={{
                         PaperProps: {
@@ -589,12 +589,12 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                       renderInput={(params) => <TextField {...params} label="Leader" placeholder="Leader" />}
                     /> */}
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Leader</InputLabel>
+                      <InputLabel id="demo-simple-select-label">Leader *</InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={leader}
-                        label="Leader"
+                        label="Leader *"
                      
                         onChange={handleOnChangeLeader}
                         MenuProps={{
