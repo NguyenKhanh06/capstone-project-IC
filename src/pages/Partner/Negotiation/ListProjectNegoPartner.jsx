@@ -10,6 +10,8 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
+
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -108,6 +110,10 @@ console.log("user", user)
             {params.row.projectStatus === 2 ? <Tooltip title="Project is canceled">
              
              <DoNotDisturbOnOutlinedIcon color='error' />
+
+         </Tooltip>:params.row.projectStatus === 1 ? <Tooltip title="Completing the neogotiation">
+             
+             <CheckCircleOutlineTwoToneIcon color='success' />
 
          </Tooltip>: <>
          <Tooltip title="View Detail">
