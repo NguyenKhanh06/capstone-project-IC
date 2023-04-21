@@ -76,7 +76,7 @@ function CreateForm(props) {
     setLoading(true);
     await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
    
-      setProjects(response.data.responseSuccess);
+      setProjects(response.data.responseSuccess.filter(prj => prj.projectStatus === 1));
       setLoading(false);
     });
   };
@@ -203,7 +203,7 @@ const handleCreateForm6 = () => {
     }else if(inputList.length === 3){
       handleCreateForm4()
     }else if(inputList.length === 4){
-      handleCreateForm4()
+      handleCreateForm5()
     }else if(inputList.length === 5){
       handleCreateForm6()
     }else {

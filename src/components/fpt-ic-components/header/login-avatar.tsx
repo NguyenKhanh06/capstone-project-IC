@@ -2,7 +2,7 @@ import { Avatar, Button, IconButton, ListItemIcon, ListItemText, Menu, MenuItem 
 import React from 'react';
 import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginAvatar = () => {
   const student = JSON.parse(sessionStorage.getItem("student"));
@@ -52,7 +52,11 @@ const LoginAvatar = () => {
         </MenuItem>
       </Menu>
       </> : <>
-      <Button>Login</Button>
+<Link to={'/login'}>
+  <Button>
+  Login
+  </Button>
+  </Link>
       </>}
      
     </div>

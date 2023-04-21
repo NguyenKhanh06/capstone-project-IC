@@ -160,7 +160,7 @@ const LoginStaff = () => {
                 })
                 .catch((err) => {
                   console.log(err)
-                  handleErr(err.response.data.responseFailed);
+                  handleErr('Wrong email or password!');
                 });
               setSubmitting(false);
             }, 400);

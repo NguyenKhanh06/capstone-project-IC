@@ -17,6 +17,8 @@ import {
   } from '@mui/material';
   import axios from 'axios';
   import dayjs from 'dayjs';
+  import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
+import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
   import { DataGrid } from '@mui/x-data-grid';
   import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
   import DeleteIcon from '@mui/icons-material/Delete';
@@ -24,6 +26,8 @@ import {
   import Iconify from '../../../components/iconify/Iconify';
 import CreateForm from './CreateForm';
 import DetailForm from './DetailForm';
+import SuccessAlert from '../../Alert/SuccessAlert';
+import ErrorAlert from '../../Alert/ErrorAlert';
 
   
   function ListForm(props) {
@@ -33,15 +37,25 @@ import DetailForm from './DetailForm';
     const [form, setForm] = useState([]);
     const [formDetail, setFormDetail] = useState([]);
     const [showConfirm, setShowConfirm] = useState(false);
+    const [status, setStatus] = useState(null)
+    const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
     const [id, setID] = useState('');
-  
-    const handleShowConfirm = (data) => {
-      setID(data);
-      setShowConfirm(true);
-    };
-  
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [message, setMessage] = useState('');
+
     const handleCloseConfirm = (data) => {
       setShowConfirm(false);
+    };
+
+    const handleShowConfirmUpdate = (data, status) => {
+      setID(data);
+      setStatus(status)
+      setShowConfirmUpdate(true);
+    };
+  
+    const handleCloseConfirmUpdate = (data) => {
+      setShowConfirmUpdate(false);
     };
   
     const handleViewDetail = (data) => {
@@ -65,7 +79,22 @@ import DetailForm from './DetailForm';
         window.location.reload(false);
       });
     };
-  
+  const handleChangeForm = () => {
+    axios.put(`https://api.ic-fpt.click/api/v1/registration/UpdateRegisStatus/${id}?status=${status}`).then((response) => {
+      if (response.data.isSuccess) {
+        setShowSuccess(true);
+        setTimeout(() => {
+ window.location.reload()
+        }, 1000)
+      }
+      setLoading(false);
+    })
+    .catch((err) => {
+      setLoading(false);
+
+    setShowError(true)
+    });
+  }
     const columns = [
       {
         field: 'project',
@@ -111,6 +140,16 @@ import DetailForm from './DetailForm';
                   <RemoveRedEyeRoundedIcon />
                 </IconButton>
               </Tooltip>
+
+              {params.row.status ? (<Tooltip title="Deactive form">
+           <IconButton onClick={() => handleShowConfirmUpdate(params.row.id, false)} aria-label="delete">
+             <DoNotDisturbOnOutlinedIcon color='error'/>
+           </IconButton>
+         </Tooltip>) : (<Tooltip title="Active form">
+           <IconButton onClick={() => handleShowConfirmUpdate(params.row.id, true)} aria-label="delete">
+             <CheckCircleOutlineTwoToneIcon color='success'/>
+           </IconButton>
+         </Tooltip>)}
               {/* <Tooltip title="Delete">
                 <IconButton onClick={() => handleShowConfirm(params.row.id)}>
                   <DeleteIcon color="error" />
@@ -170,6 +209,27 @@ import DetailForm from './DetailForm';
               Delete
             </Button>
           </DialogActions>
+        </Dialog>
+        <Dialog
+          open={showConfirmUpdate}
+          onClose={handleCloseConfirmUpdate}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          fullWidth
+          maxWidth="sm"
+        >
+          <DialogTitle id="alert-dialog-title">Change Status Form</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">You want to change status form?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseConfirmUpdate}>Cancel</Button>
+            <Button variant="contained" onClick={() => handleChangeForm()} autoFocus>
+            Accept
+            </Button>
+          </DialogActions>
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Successful!'} />
+          <ErrorAlert show={showError} close={() => setShowError(false)} message={'Update Fail!!!'} />
         </Dialog>
       </>
     );

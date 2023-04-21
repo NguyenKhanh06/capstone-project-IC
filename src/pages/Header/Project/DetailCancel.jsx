@@ -18,6 +18,8 @@ import {
   import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
   import axios from 'axios';
   import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import SuccessAlert from '../../Alert/SuccessAlert';
+import ErrorAlert from '../../Alert/ErrorAlert';
 
   
   function DetailCancel(props) {
@@ -28,6 +30,10 @@ import {
     const [project, setProject] = useState(null);
     const [cancel, setCancel] = useState(null)
     const [doc, setDoc] = useState(null);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [message, setMessage] = useState('');
+
   
     const handleClickOpen = () => {
       setOpen(true);
@@ -35,7 +41,7 @@ import {
 
     const getCancel = async  () => {
         await axios.get(`https://api.ic-fpt.click/api/v1/cancel/getProjectCancel/${props.project.id}`).then(response => {
-            console.log("cancel", response)
+      
 setCancel(response.data.responseSuccess[0])
         })
     }
@@ -95,6 +101,31 @@ setCancel(response.data.responseSuccess[0])
     //     window.URL.revokeObjectURL(url);
     //   });
     // };
+    const handleDownload = () => {
+      axios
+        .get(`https://api.ic-fpt.click/api/v1/cancel/content/${cancel?.id}`, {
+          responseType: 'blob',
+        })
+        .then((response) => {
+          console.log(response);
+  
+          if (response.status === 200) {
+setShowSuccess(true)
+          
+          }
+          let filename = 'cancelFile.pdf';
+          filename = decodeURI(filename);
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+  
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          window.URL.revokeObjectURL(url);
+          link.remove();
+        });
+    };
     return (
       <div>
         <Dialog
@@ -168,10 +199,14 @@ setCancel(response.data.responseSuccess[0])
                 <b>Cancel Reason: </b>
                 <Typography variant='caption'>{`Date cancel: ${dayjs(cancel?.dateCreated).format("DD/MM/YYYY")}`}</Typography>
                 <Typography>{cancel?.description}</Typography>
-                
+                <Button onClick={() => handleDownload()} color="warning" variant="contained" startIcon={<FileDownloadOutlinedIcon />}>
+               Download file Reason
+              </Button>
               </Stack>
             </Paper>
           </DialogContent>
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Download Successful!'} />
+          <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
           {/* <DialogActions style={{ padding: 20 }}>
             <Stack direction="row" alignItems="center" spacing={3}>
               <Stack

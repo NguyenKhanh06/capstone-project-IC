@@ -18,7 +18,7 @@ import {
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
-
+import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AssignmentLateTwoToneIcon from '@mui/icons-material/AssignmentLateTwoTone';
 import { useEffect, useState } from 'react';
@@ -30,6 +30,8 @@ import { useNavigate } from 'react-router-dom';
 import Iconify from '../../../components/iconify/Iconify';
 import DetailProjectNego from './DetailProjectNego';
 import DetailCourseNego from './DetailCourseNeogo';
+import SuccessAlert from '../../Alert/SuccessAlert';
+import ErrorAlert from '../../Alert/ErrorAlert';
 
 
 function ListProjectNego(props) {
@@ -42,7 +44,18 @@ function ListProjectNego(props) {
   const [course, setCourse] = useState()
   const [showConfirm, setShowConfirm] = useState(false);
   const [showNego, setShowNego] = useState(false)
+ 
+  const [viewMember, setViewMember] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [message, setMessage] = useState('');
     const [id, setID] = useState('');
+    const [idPrj, setIDPrj] = useState('');
+  
+    const handleShowConfirmChange = (data) => {
+      setShowConfirm(true);
+      setIDPrj(data)
+    };
   
     const handleShowConfirm = (data) => {
       setID(data);
@@ -53,6 +66,36 @@ function ListProjectNego(props) {
       setShowConfirm(false)
     };
 
+    const changeStatus = () => {
+      const formData = new FormData();
+      formData.append("Status", 1)
+      formData.append("ProjectId", idPrj)
+      
+  
+      axios({
+        method: 'POST',
+        data: formData,
+        url: 'https://api.ic-fpt.click/api/v1/project/changeStatus',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }) .then((response) => {
+
+        if (response.data.isSuccess) {
+          setShowSuccess(true);
+          setLoading(false);
+          setTimeout(() => {
+           window.location.reload()
+          }, 1000)
+        }
+      })
+      .catch((err) => {
+        handleError("Create fail!!!!");
+        setLoading(false);
+      });
+       
+    }
+  
   const columns = [
     {
       field: 'projectName',
@@ -102,7 +145,11 @@ function ListProjectNego(props) {
              
              <DoNotDisturbOnOutlinedIcon color='error' />
 
-         </Tooltip>: <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
+         </Tooltip> : params.row.projectStatus === 1 ? <Tooltip title="Completing the neogotiation">
+             
+             <CheckCircleOutlineTwoToneIcon  color='success' />
+
+         </Tooltip>  : <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
          <Tooltip title="View Detail">
            <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
              <RemoveRedEyeRoundedIcon />
@@ -112,6 +159,11 @@ function ListProjectNego(props) {
          <Tooltip title="Neogotiation">
            <IconButton onClick={() => handleViewNego(params.row)} aria-label="delete">
              <HandshakeOutlinedIcon/>
+           </IconButton>
+         </Tooltip>
+         <Tooltip title="Complete">
+           <IconButton onClick={() => handleShowConfirmChange(params.row.id)} aria-label="delete">
+             <CheckCircleOutlineTwoToneIcon  color='success'/>
            </IconButton>
          </Tooltip>
        </Stack>}
@@ -182,6 +234,27 @@ function ListProjectNego(props) {
           </Box>
         </Card>
       </Container>
+      <Dialog
+          open={showConfirm}
+          onClose={handleCloseConfirm}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          fullWidth
+          maxWidth="sm"
+        >
+          <DialogTitle id="alert-dialog-title">Complete the neogotiation</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">You Want To Complete the Neogotiation?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseConfirm}>Cancel</Button>
+            <Button onClick={() => changeStatus()} variant="contained" autoFocus>
+              Accept
+            </Button>
+          </DialogActions>
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Successful!'} />
+          <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+        </Dialog>
 <DetailCourseNego show={showNego} close={() => setShowNego(false)} id={id}/>
       <DetailProjectNego show={showDetail} close={() => setShowDetail(false)} project={project} />
 

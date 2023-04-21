@@ -192,7 +192,7 @@ getDetail()
                 </Stack>
   
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                  <TextField value={email} onChange={handleChangeEmail} required fullWidth label="Email" />
+                  <TextField readOnly value={email} fullWidth label="Email" />
                   <TextField
                     value={phoneNumber}
                     onChange={handleChangePhone}

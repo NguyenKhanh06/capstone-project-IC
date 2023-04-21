@@ -158,61 +158,71 @@ console.log("staff", staff)
       field: 'projectStatus',
       headerName: 'MileStone',
       flex: 1,
-      renderCell: (params) => {
-        console.log(params.row?.project?.mileStoneProject)
-        return (
-          <>{params.row.project.projectStatus === 2 ? <Chip label='Cancel' color='error'/>  :<>
-           {dayjs(new Date()).date() - dayjs(params.row?.project.estimateTimeStart).date() >= 0 &&
-            dayjs(new Date()).month() - dayjs(params.row?.project.estimateTimeStart).month() >= 0 &&
-            dayjs(new Date()).year() - dayjs(params.row?.project.estimateTimeStart).year() >= 0 ? (
-              <Chip label="Initiation" />
-            ) : dayjs(new Date()).date() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).date()>=
+      renderCell: (params) => (
+     
+        <>
+          {params.row.project.projectStatus === 2 ? (
+            <Chip label="Cancel" color="error" />
+          ) : params.row.project.projectStatus === 3 ? (
+            <Chip label="Initiation" />
+          ) : params.row.project.projectStatus === 4 ? (
+            <Chip label="Planning" color="primary" />
+          ) : params.row.project.projectStatus === 5 ? (
+            <Chip label="Execution" color="secondary" />
+          ) : params.row.project.projectStatus === 6 ? (
+            <Chip label="Monitoring" color="warning" />
+          ) : params.row.project.projectStatus === 7 ? (
+            <Chip label="Closing" color="success" />
+          ) : null}
+
+          {dayjs(new Date()).date() - dayjs(params.row.project?.estimateTimeStart).date() === 0 &&
+          dayjs(new Date()).month() - dayjs(params.row.project?.estimateTimeStart).month() === 0 &&
+          dayjs(new Date()).year() - dayjs(params.row.project?.estimateTimeStart).year() === 0
+            ? updateMilstone(params.row.project.id, 3)
+            : dayjs(new Date()).date() -
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).month() >=
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).month() ===
                 0 &&
               dayjs(new Date()).year() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).year() >=
-                0 ? (
-              <Chip label="Planning" color="primary" />
-            ) : dayjs(new Date()).date() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).date() >=
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).year() ===
+                0
+            ? updateMilstone(params.row.project.id, 4)
+            
+            : dayjs(new Date()).date() -
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).month() >=
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).month() ===
                 0 &&
               dayjs(new Date()).year() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).year() >=
-                0 ? (
-              <Chip label="Executing" color="secondary" />
-            ) : dayjs(new Date()).date() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).date() >=
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).year() ===
+                0
+            ? updateMilstone(params.row.project.id, 5)
+            : dayjs(new Date()).date() -
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).month() >=
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).month() ===
                 0 &&
               dayjs(new Date()).year() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).year() >=
-                0 ? (
-              <Chip label="Monitoring" color="warning" />
-            ) : dayjs(new Date()).date() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).date() >=
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).year() ===
+                0
+            ? updateMilstone(params.row.project.id, 6)
+            : dayjs(new Date()).date() -
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).month() >=
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).month() ===
                 0 &&
               dayjs(new Date()).year() -
-                dayjs(params.row?.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).year() >=
-                0 ? (
-              <Chip label="Closing" color="success" />
-            ) : (
-              <Chip label="Initiation" />
-            )}</>}</>
-          
-        
-        );
-      },
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).year() ===
+                0
+            ? updateMilstone(params.row.project.id, 7)
+            : null}
+        </>
+      ),
     },
 
     {

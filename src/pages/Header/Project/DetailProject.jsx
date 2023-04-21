@@ -954,9 +954,7 @@ function DetailProject(props) {
               <Button onClick={() => setShowCancel(true)} color="error" variant="contained">
                 Cancel Project
               </Button>
-              <Button color="warning" variant="contained" startIcon={<FileDownloadOutlinedIcon />}>
-                Export File
-              </Button>
+              
               {disableBtn && regex.test(projectName) ? (
                 <Button onClick={() => handleShowConfirm()} variant="contained">
                   Save

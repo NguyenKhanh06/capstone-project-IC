@@ -121,8 +121,8 @@ changeStatus()
               />
 
               <Button sx={{ marginTop: 5 }} variant="outlined" component="label">
-                File Cancel
-                <input hidden type="file" onChange={(e) => setFile(e.target.files[0])} />
+                File Cancel (Just accept file pdf)
+                <input hidden type="file" accept='.pdf' onChange={(e) => setFile(e.target.files[0])} />
               </Button>
               {file && <p>{file.name}</p>}
             </DialogContent>
