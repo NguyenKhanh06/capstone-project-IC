@@ -153,7 +153,7 @@ const handleDeleteStaff = () => {
                     ) : params.row?.account.role === 3 ? (
                       <Chip label="Collaborator" color="warning" />
                     ): params.row?.account.role === 2 && params.row?.isHeadOfDepartMent ? (
-                        <Chip label="Header" color="info" />
+                        <Chip label="Header Of Department" color="info" />
                       ): null}
                      
                   </>

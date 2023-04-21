@@ -72,7 +72,7 @@ function ListProject(props) {
     {
       field: 'projectName',
       headerName: 'Project Name',
-      flex: 1,
+      flex: 2,
     },
     {
       field: 'categoryProject',
@@ -115,7 +115,7 @@ function ListProject(props) {
     {
       field: 'projectStatus',
       headerName: 'Milestone',
-      flex: 1,
+
       renderCell: (params) => (
      
         <>
@@ -186,7 +186,7 @@ function ListProject(props) {
     {
       field: 'action',
       headerName: 'Action',
-      flex: 1,
+   
 
       disableClickEventBubbling: true,
 

@@ -92,7 +92,7 @@ const columns = [
    {
      field: 'email',
      headerName: 'Email',
-     flex: 1,
+     flex: 2,
        valueGetter: (params) => {
   
    return params.row?.account?.email
@@ -126,7 +126,7 @@ const columns = [
                ) : params.row?.account.role === 3 ? (
                  <Chip label="Collaborator" color="warning" />
                ): params.row?.account.role === 2 && params.row?.isHeadOfDepartMent ? (
-                   <Chip label="Header" color="info" />
+                   <Chip label="Header Of Department" color="info" />
                  ): null}
                 
              </>

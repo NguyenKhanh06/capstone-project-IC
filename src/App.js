@@ -18,8 +18,7 @@ import ScrollToTop from './components/scroll-to-top';
 
 const token = localStorage.getItem('token');
 const user= sessionStorage.getItem('user');
-console.log("token", token)
-console.log("token", user)
+
 // ----------------------------------------------------------------------
 if (token) {
   axios.interceptors.request.use(

@@ -100,7 +100,7 @@ function ListProjectNego(props) {
     {
       field: 'projectName',
       headerName: 'Project Name',
-      flex: 1,
+      flex: 2,
     },
 
     {
@@ -129,7 +129,7 @@ function ListProjectNego(props) {
     {
       field: 'action',
       headerName: 'Action',
-      flex: 1,
+
 
       disableClickEventBubbling: true,
 

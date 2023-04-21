@@ -124,6 +124,7 @@ function ListSubTask(props) {
   const [id, setID] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [state, setState] = useState(null);
+  const [childTask, setChildTask] = useState(null)
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [disableBtn, setDisable] = useState(false);
@@ -182,17 +183,24 @@ setTimeout(() => {
     handleError('Delete fail!');
   });
 }
+const getChildTask = async () => {
+ await axios.get(`https://api.ic-fpt.click/api/v1/task/GetChildTask/${props.state.id}`).then(response => {
+ 
+
+    setChildTask(response.data.responseSuccess).filter(task => task.status !== 5)
+  })
+}
 
   useEffect(() => {
     if (props.state != null) {
-      // fetchData();
+     getChildTask()
       setTaskName(props.state.taskName);
       setDeadline(dayjs(props.state.deadLine));
       setDescription(props.state.description);
       setState(props.state.state);
     }
   }, [props.state]);
-  console.log(props)
+
   const handleUpdate = () => {
     const formData = new FormData();
     formData.append('TaskName', taskName);
@@ -309,7 +317,7 @@ setTimeout(() => {
                 </LocalizationProvider>
                 <FormControl style={{ width: '50%' }}>
                   <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                  <Select
+                  {props.state.state ===  2 ?<Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={state}
@@ -317,11 +325,26 @@ setTimeout(() => {
                     onChange={(e) => {setState(e.target.value); setDisable(true)}}
                     defaultValue={props.state.state}
                   >
+                    
+                    <MenuItem style={{ display: 'none' }} value={0}>To Do</MenuItem>
+                    <MenuItem style={{ display: 'none' }} value={1}>Process</MenuItem>
+                    <MenuItem style={{ display: 'none' }} value={2}>Done</MenuItem>
+
+                  </Select> :  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={state}
+                    label="Status"
+                    onChange={(e) => {setState(e.target.value); setDisable(true)}}
+                    defaultValue={props.state.state}
+                  >
+                    
                     <MenuItem value={0}>To Do</MenuItem>
                     <MenuItem value={1}>Process</MenuItem>
                     <MenuItem value={2}>Done</MenuItem>
 
-                  </Select>
+                  </Select>}
+                 
                 </FormControl>
                 <TextField
                   value={description}
@@ -349,10 +372,10 @@ setTimeout(() => {
             <Container>
                       
               <Card>
-                {props.state?.childrenTask?.filter(task => task.status !== 5) ? (
+                {childTask ? (
                   <DataGrid
                     autoHeight
-                    rows={props.state?.childrenTask?.filter(task => task.status !== 5)}
+                    rows={childTask}
                     columns={columns}
                     initialState={{
                       pagination: {
