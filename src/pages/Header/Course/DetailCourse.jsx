@@ -97,10 +97,13 @@ function DetailCourse(props) {
     setOpen(props.close);
   };
 
+console.log(syllabuses)
+
   const getDetail = () => {
     axios.get(`https://api.ic-fpt.click/api/v1/course/getDetail/${props.course.id}`).then((response) => {
       setCourse(response.data.responseSuccess[0]);
       setSyllabuses(response.data.responseSuccess[0]?.syllabus);
+
     });
   };
 
@@ -168,6 +171,15 @@ https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${sta
       field: 'content',
       headerName: 'Syllabus Name',
       flex: 1,
+    },
+    {
+      field: 'name',
+      headerName: 'Partner',
+      flex: 1,
+      valueGetter: (params) => {
+       
+        return params.row.partner?.name
+      },
     },
 
     {

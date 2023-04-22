@@ -118,7 +118,7 @@ function DetailSyllabus(props) {
   };
 const getDetail= async () => {
  await axios.get(`https://api.ic-fpt.click/api/v1/syllabus/getDetail/${props.syllabus.id}`).then(response => {
-    setSlot(response.data.responseSuccess[0].slots.filter((slot) => slot.status))
+    setSlot(response.data.responseSuccess[0]?.slots?.filter((slot) => slot.status))
   })
 }
   const handleUpdate = () => {
