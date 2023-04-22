@@ -333,18 +333,18 @@ console.log("staff", staff)
   };
   
   const fetchData = async () => {
+    setLoading(true);
     await axios.get(`https://api.ic-fpt.click/api/v1/staff/GetProjectByStaffId/${staff[0].id}`).then((response) => {
-console.log("prj", response)
-
       setProjects(response.data.responseSuccess);
-setLoading(false)
+      setLoading(false)
+
      
       
     });
   };
 
   useEffect(() => {
-    setLoading(true);
+
     fetchData()
    
   
@@ -371,7 +371,7 @@ setLoading(false)
         </Stack>
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-            {projects?.length ? <DataGrid
+          <DataGrid
               autoHeight
               rows={projects}
               columns={columns}
@@ -389,7 +389,7 @@ setLoading(false)
               components={{ NoRowsOverlay }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
-            /> : <></>}
+            />
          
 
 </Box>

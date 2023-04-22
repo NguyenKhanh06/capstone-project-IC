@@ -82,6 +82,15 @@ const getDetail = async () => {
     if (props.slot != null) {
   
    getDetail()
+ 
+   setTopic(props.slot?.name);
+   setTime(props.slot?.timeAllocation);
+   setType(props.slot?.type);
+   if(props.slot?.detail === 'null'){
+     setDetail('');
+   }else{
+     setDetail(props.slot?.detail);
+   }
     }
   }, [props.slot]);
 
@@ -214,8 +223,9 @@ const getDetail = async () => {
                 label="Detail Slot"
               />
             </Stack>
-            <DialogTitle>Reject Reason</DialogTitle>
             <Divider variant="middle" />
+
+          {slot?.reasons?.length ? <DialogTitle>Reject Reason</DialogTitle> : <></>}  
             {slot?.reasons?.length ? (
              slot?.reasons?.map((reason, index) => (
                 <Stack

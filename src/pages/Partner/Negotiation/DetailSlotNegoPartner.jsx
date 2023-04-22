@@ -83,7 +83,10 @@ function DetailSlotNegoPartner(props) {
   }
     useEffect(() => {
       if (props.slot != null) {
-    
+        setTopic(props.slot?.name);
+        setTime(props.slot?.timeAllocation);
+        setType(props.slot?.type);
+        setDetail(props.slot?.detail);
      getDetail()
       }
     }, [props.slot]);
@@ -117,7 +120,7 @@ function DetailSlotNegoPartner(props) {
               {slot?.detail === 'null' ? <></> :    <Typography>{slot?.detail}</Typography>}
            
             </Stack>
-            <DialogTitle>Reject Reason</DialogTitle>
+           {slot?.reasons?.length ? <DialogTitle>Reject Reason</DialogTitle> : <></>} 
             <Divider variant="middle" />
 
             {slot?.reasons?.length ? (

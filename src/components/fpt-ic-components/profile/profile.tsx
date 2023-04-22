@@ -72,7 +72,7 @@ const ProfileComponent = () => {
             >
               <img src={student?.picture} style={{ objectFit: 'cover' }} width={200} height={200} alt="alt"></img>
             </Box>
-            <Typography variant="h3" style={{ margin: '10px 0 0 0' }}>
+            <Typography variant="h6" style={{ margin: '10px 0 0 0' }}>
               {user?.fullName}
             </Typography>
             <Typography style={{ margin: '0' }}>{user?.email}</Typography>
@@ -87,8 +87,8 @@ const ProfileComponent = () => {
                 color: 'text.secondary',
               }}
             >
-              <Typography>Edit</Typography>
-              <img src={'/images/edit.svg'} width={15} height={15} alt="alt" />
+              {/* <Typography>Edit</Typography>
+              <img src={'/images/edit.svg'} width={15} height={15} alt="alt" /> */}
             </Box>
           </Box>
           <Box
@@ -173,7 +173,7 @@ const ProfileComponent = () => {
           </Typography>
           {infors &&
             infors.map((infor, index) => (
-              <Link key={index} to="/landingpage/register-information" state={infor}>
+              <Link key={index} to="/register-information" state={infor}>
                 <RightTitle NameText={infor?.project?.projectName} />
               </Link>
             ))}

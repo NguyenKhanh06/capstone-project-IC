@@ -13,9 +13,9 @@ const Home = () => {
       <FadeInSection>
         <JoinNow />
       </FadeInSection>
-      <FadeInSection>
+      {/* <FadeInSection>
         <ReferancesInter />
-      </FadeInSection>
+      </FadeInSection> */}
     </>
   );
 };

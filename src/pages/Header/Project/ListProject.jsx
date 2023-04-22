@@ -187,6 +187,7 @@ function ListProject(props) {
       field: 'action',
       headerName: 'Action',
    
+      flex: 1,
 
       disableClickEventBubbling: true,
 

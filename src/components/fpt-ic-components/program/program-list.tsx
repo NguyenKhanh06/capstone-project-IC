@@ -35,6 +35,7 @@ const ProgramList: FC = () => {
     <Box
       id="programs"
       sx={{
+
         pt: {
           xs: 6,
           md: 15,
@@ -60,13 +61,14 @@ const ProgramList: FC = () => {
               <ProgramCardItem key={String(item.id)} item={item} index={index} />
             </Grid>
           ))}
-          <Pagination
-            count={Math.ceil(data.length / pageSize)}
+         
+        </Grid>
+        <Pagination
+            count={Math.ceil(posts.length / pageSize)}
             color="primary"
             sx={{ mx: 'auto' }}
             onChange={(_, index) => setPageIndex(index)}
           />
-        </Grid>
       </Container>
     </Box>
   );

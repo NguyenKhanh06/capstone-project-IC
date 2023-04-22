@@ -1,10 +1,10 @@
 import type { Navigation } from '../../../interfaces/navigation'
 
 export const navigations: Navigation[] = [
-  {
-    label: 'Logo',
-    path: '/logo', // '/' or '/home',
-  },
+  // {
+  //   label: 'Logo',
+  //   path: '/logo', // '/' or '/home',
+  // },
   {
     label: 'Home',
     path: '/home', // '/' or '/home',

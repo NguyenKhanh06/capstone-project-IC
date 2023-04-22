@@ -40,7 +40,7 @@ const RegisterSchema = Yup.object().shape({
     .required('Can you input your roll number, please ?')
     .matches(/^[A-Za-z]{2}[0-9]{6}$/, 'Incorrect roll number. Example: SE123456'),
 
-  Major: Yup.string().required('Can you input your major, please ?'),
+  // Major: Yup.string().required('Can you input your major, please ?'),
 
   PhoneNumber: Yup.string().matches(/^[0-9]{8,10}$/, 'Invalid phone number, please check again!'),
 
@@ -65,7 +65,7 @@ const RegisterSchema = Yup.object().shape({
 });
 const RegisterComponent = () => {
   const student = JSON.parse(sessionStorage.getItem('user'));
-  console.log(student);
+  console.log("ses", student);
   // const [PassportImage, setPassportImage] = React.useState<File[]>([]);
   const [TransferInfomation, setTransferInfomation] = React.useState<File[]>([]);
   const [Program, setProgram] = React.useState(null);
@@ -80,10 +80,10 @@ const RegisterComponent = () => {
   const formik = useFormik({
     initialValues: {
       Program: '',
-      FullName: student.fullName as string,
-      RollNumber: student.rollNumber as string,
+      FullName: student?.fullName as string,
+      RollNumber: student?.rollNumber as string,
       Major: '',
-      PhoneNumber: student.phoneNumber as string,
+      PhoneNumber: student?.phoneNumber as string,
       PassportNumber: '',
       FacebookLink: '',
       DOB: '',
@@ -248,6 +248,7 @@ const RegisterComponent = () => {
   useEffect(() => {
     getAllForm();
     getAllMajor();
+    setMajor(student?.major)
   }, []);
   useEffect(() => {
     if (Program) {
@@ -266,11 +267,13 @@ const RegisterComponent = () => {
         >
           <Box
             sx={{
+              mt: 25,
               backgroundColor: 'background.default',
             }}
           >
             <Box
               sx={{
+            
                 width: '80%',
                 height: '100%',
                 backgroundColor: ' #F8F8F8',
@@ -283,6 +286,7 @@ const RegisterComponent = () => {
             >
               <Box
                 sx={{
+                  
                   height: '200px',
                   width: '100%',
                   borderTopRightRadius: '30px',

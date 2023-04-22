@@ -87,6 +87,13 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
               fontWeight: 'fontWeightBold',
               margin: '0',
               color: 'primary.contrastText',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              lineClamp: 2,
+              marginRight: 8
             }}
           >
             {textTilte}
@@ -107,11 +114,21 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
           <Typography
             sx={{
               margin: '0',
+
               fontSize: { lg: '20px', sm: '15px', xs: '15px' },
               fontWeight: 'fontWeightBold',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 4,
+              WebkitBoxOrient: 'vertical',
+              lineClamp: 4,
+              marginRight: 8
             }}
+         
           >
             {textDetail}
+      
           </Typography>
           {/* set link see detail */}
 
@@ -128,7 +145,7 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
           >
             <img src="/images/arrow.svg" width={250} height={30} alt="alt" />
             <Link
-              to={`/landingpage/program/${id}`}
+              to={`/program/${id}`}
               onClick={() => setColorMenu('primary')}
               style={{
                 fontWeight: 'fontWeightRegular',
@@ -150,6 +167,7 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
           marginTop: { lg: 0, sm: '20px', xs: '20px' },
           textAlign: 'center',
           height: '100%',
+
           justifyContent: 'center',
         }}
       >

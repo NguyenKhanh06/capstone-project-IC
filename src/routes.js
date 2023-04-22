@@ -52,7 +52,7 @@ export default function Router() {
       path: '/header',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/header/project" />, index: true },
+        { element: <Navigate to="/header/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'negotiation', element: <ListProjectNego /> },
         { path: 'partner', element: <ListPartner /> },
@@ -76,7 +76,7 @@ export default function Router() {
       path: '/partner',
       element: <DashboardLayoutPartner />,
       children: [
-        { element: <Navigate to="/partner/project" />, index: true },
+        { element: <Navigate to="/partner/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'project', element: <ListProjectNegoPartner/> },
         { path: 'campus', element: <ListCampus/> },
@@ -89,7 +89,7 @@ export default function Router() {
       path: '/staff',
       element: <DashboardLayoutMember />,
       children: [
-        { element: <Navigate to="/staff/projects" />, index: true },
+        { element: <Navigate to="/staff/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'list-task-cancel', element: <ListTaskCancel />},
         { path: 'projects', element: <ListProjectMember/> },
@@ -104,7 +104,7 @@ export default function Router() {
       path: '/admin',
       element: <DashboardLayoutAdmin />,
       children: [
-        { element: <Navigate to="/admin/partner" />, index: true },
+        { element: <Navigate to="/admin/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'partner', element: <ListPartnerAd /> },
         { path: 'staff', element: <Role /> },

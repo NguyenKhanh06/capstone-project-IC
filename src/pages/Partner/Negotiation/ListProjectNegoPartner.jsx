@@ -173,7 +173,7 @@ console.log("user", user)
 
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-           {projects?.length &&  <DataGrid
+          <DataGrid
               autoHeight
               rows={projects}
               columns={columns}
@@ -190,7 +190,7 @@ console.log("user", user)
               components={{ NoRowsOverlay }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
-            />}
+            />
           </Box>
         </Card>
       </Container>

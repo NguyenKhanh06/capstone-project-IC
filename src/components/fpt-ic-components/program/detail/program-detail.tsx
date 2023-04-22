@@ -59,7 +59,7 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
               >
                 <Typography
                   sx={{
-                    fontSize: { lg: '60px', sm: '40px' },
+                    fontSize: { lg: '50px', sm: '40px' },
                     color: 'primary.main',
                     fontWeight: 'bold',
                   }}
@@ -75,10 +75,11 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
                 {...(true ? { timeout: 700 } : {})}
               >
                 <Typography
+            
                   sx={{
                     color: 'text.primary',
                     fontWeight: '500',
-                    fontSize: { lg: '60px', sm: '60px' },
+                    fontSize: { lg: '20px', sm: '60px' },
                   }}
                 >
                   {item.dateCreated.slice(0, 10)}
@@ -99,9 +100,7 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
                     fontWeight: '500',
                   }}
                 >
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex esse alias, reprehenderit, iure fugiat
-                  dignissimos facilis voluptates voluptatibus officiis quis voluptatum suscipit obcaecati rem explicabo
-                  necessitatibus recusandae ut error totam.
+              {item.subTitle}
                 </Typography>
               </Slide>
               <Box height={24}></Box>
@@ -119,15 +118,11 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
                     fontWeight: '500',
                   }}
                 >
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae quaerat temporibus repellendus
-                  dolor officia reprehenderit rem similique excepturi ex eligendi reiciendis, ab repellat fuga natus
-                  nemo velit rerum aut placeat. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum in hic
-                  vero, quod doloribus voluptate rerum labore, necessitatibus autem sequi aliquid ducimus commodi,
-                  maiores vitae excepturi nisi reprehenderit. Perferendis, esse!
+              {item.content}
                 </Typography>
               </Slide>
               <Box height={24}></Box>
-              <Slide
+              {/* <Slide
                 direction="up"
                 in={true}
                 container={containerRef.current}
@@ -147,7 +142,7 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
                   vero, quod doloribus voluptate rerum labore, necessitatibus autem sequi aliquid ducimus commodi,
                   maiores vitae excepturi nisi reprehenderit. Perferendis, esse!
                 </Typography>
-              </Slide>
+              </Slide> */}
             </Box>
           </Grid>
         </Grid>

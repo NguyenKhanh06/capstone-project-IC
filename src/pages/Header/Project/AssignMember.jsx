@@ -61,6 +61,10 @@ import ErrorAlert from '../../Alert/ErrorAlert';
     setShowError(true);
     setMessage(data);
   };
+  const handleSuccess = (data) => {
+    setShowSuccess(true);
+    setMessage(data);
+  };
 
   function reload() {
     window.location.reload(false);
@@ -71,7 +75,22 @@ import ErrorAlert from '../../Alert/ErrorAlert';
       setOpen(props.close);
     };
   
-   
+   const unAssign = (staffId) =>{
+    axios.post(`https://api.ic-fpt.click/api/v1/project/unassign/${props.project.id}?staffId=${staffId}`).then((response) => {
+      if (response.data.isSuccess) {
+        handleSuccess('Unassign successful!')
+        setTimeout(() =>{
+          fetchData()
+          fetchJoin()
+          handleClose()
+        }, 1000);
+      }
+    })
+    .catch((err) => {
+      handleError('Unassign fail!');
+      
+    });
+   }
     const fetchData = async () =>{
      await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
   setStaffs(response.data.responseSuccess.filter(staff => staff.account.status && staff.account.role !== 0  && regexMailFu.test(staff.account.email)).filter(staflead => staflead.id !== props.project.leaderId))
@@ -111,7 +130,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
       })
         .then((response) => {
           if (response.data.isSuccess) {
-            setShowSuccess(true);
+            handleSuccess('Assign successful!')
             setTimeout(() =>{
               fetchData()
               fetchJoin()
@@ -120,7 +139,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
           }
         })
         .catch((err) => {
-          handleError(err.response.data.responseSuccess);
+          handleError('Assign fail!');
           
         });
     };
@@ -136,28 +155,28 @@ import ErrorAlert from '../../Alert/ErrorAlert';
   
       
   
-      // {
-      //   headerName: 'Action',
-      //   flex: 1,
-      //   sortable: false,
-      //   disableClickEventBubbling: true,
-      //   renderCell: (params) => {
-      //     return (
-      //       <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
-      //         <Tooltip title="View Detail">
-      //           <IconButton  aria-label="delete">
-      //             <RemoveRedEyeRoundedIcon />
-      //           </IconButton>
-      //         </Tooltip>
-      //         <Tooltip title="Delete">
-      //           <IconButton >
-      //             <DeleteIcon color="error" />
-      //           </IconButton>
-      //         </Tooltip>
-      //       </Stack>
-      //     );
-      //   },
-      // },
+      {
+        headerName: 'Action',
+        flex: 1,
+        sortable: false,
+        disableClickEventBubbling: true,
+        renderCell: (params) => {
+          return (
+            <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
+              {/* <Tooltip title="View Detail">
+                <IconButton  aria-label="delete">
+                  <RemoveRedEyeRoundedIcon />
+                </IconButton>
+              </Tooltip> */}
+              <Tooltip title="Unassign">
+                <IconButton onClick={() => unAssign(params.row.staffId)} >
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </Tooltip>
+            </Stack>
+          );
+        },
+      },
     ];
     return (
         <Dialog

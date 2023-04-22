@@ -16,7 +16,7 @@ function Navigation({ onClick }: { onClick: VoidFunction }) {
       }}
     >
       {navigations.map(({ path: destination, label }) => (
-        <Link key={destination} to={destination === '/landingpage/logo' ? '/landingpage/home' : destination}>
+        <Link key={destination} to={destination === '/logo' ? '/home' : destination}>
           <Button
             onClick={onClick}
             key={destination}
@@ -35,7 +35,7 @@ function Navigation({ onClick }: { onClick: VoidFunction }) {
               ...(destination === location.pathname && {
                 fontWeight: 'bold',
               }),
-              ...(destination === '/landingpage/logo' && {
+              ...(destination === '/logo' && {
                 fontSize: '1.5rem',
                 fontWeight: 'bold',
               }),

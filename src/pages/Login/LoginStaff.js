@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
@@ -56,7 +56,7 @@ const LoginStaff = () => {
   const getdetailStudent = (id) => {
     axios.get(`https://api.ic-fpt.click/api/v1/student/getStudentDetail/${id}`).then((response) => {
       sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
-      console.log(response.data.responseSuccess[0])
+
     });
   };
   const firebaseConfig = {
@@ -105,8 +105,9 @@ const LoginStaff = () => {
   };
   return (
     <>
-      <Stack spacing={3}>
+      <Stack  spacing={3}>
         <Formik
+
           initialValues={{ email: '', password: '' }}
           validate={(values) => {
             const errors = {};
@@ -228,7 +229,7 @@ const LoginStaff = () => {
           OR
         </Typography>
       </Divider>
-      <Box sx={{ marginLeft: '30%' }}>
+      <Box sx={{ margin: "20px auto" }}>
         <GoogleLogin
           size="large"
           width="100px"
@@ -274,7 +275,7 @@ const LoginStaff = () => {
               axios
               .post(`https://api.ic-fpt.click/api/v1/student/signin-google/${credentialResponse.credential}`).then(response => {
                 localStorage.setItem('token', response.data.responseSuccess.tokenToken);
-                console.log("login", response.data.responseSuccess)
+     
                 getdetailStudent(response.data.responseSuccess.id)
                 navigate(state?.path || "/");
               })
@@ -287,7 +288,7 @@ const LoginStaff = () => {
             console.log('Login Failed');
           }}
         />
-      </Box>
+      </Box> 
       <ErrorAlert show={showAl} close={() => setShowAl(false)} message={message} />
       <SuccessAlert show = {show} close={() => setShow(false)} message={message}/>
 

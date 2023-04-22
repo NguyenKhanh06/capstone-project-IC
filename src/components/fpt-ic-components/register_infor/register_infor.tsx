@@ -5,7 +5,9 @@ import {
   Button,
   Chip,
   Fade,
+  FormControl,
   IconButton,
+  InputLabel,
   MenuItem,
   Select,
   Slide,
@@ -42,7 +44,7 @@ const RegisterSchema = Yup.object().shape({
     .required('Can you input your roll number, please ?')
     .matches(/^[A-Za-z]{2}[0-9]{6}$/, 'Incorrect roll number. Example: SE123456'),
 
-  Major: Yup.string().required('Can you input your major, please ?'),
+  // Major: Yup.string().required('Can you input your major, please ?'),
 
   PhoneNumber: Yup.string().matches(/^[0-9]{8,10}$/, 'Invalid phone number, please check again!'),
 
@@ -57,9 +59,9 @@ const RegisterSchema = Yup.object().shape({
     )
     .required('Can you input your facebook link, please ?'),
 
-  DOB: Yup.date().required('Can you input your date of birth, please ?'),
+  // DOB: Yup.date().required('Can you input your date of birth, please ?'),
 
-  ExpirationDate: Yup.date().required('Can you input your expiration date, please ?'),
+  // ExpirationDate: Yup.date().required('Can you input your expiration date, please ?'),
 
   // PassportImage: Yup.array().required('Can you upload your passport image, please ?'),
 
@@ -69,20 +71,26 @@ const RegisterInformationComponent = () => {
   const student = JSON.parse(sessionStorage.getItem('user'));
   const location = useLocation();
   const data = location.state;
-  console.log(data);
+
   const [PassportImage, setPassportImage] = React.useState<File[]>([]);
   const [TransferInfomation, setTransferInfomation] = React.useState<File[]>([]);
   const [Program, setProgram] = React.useState(null);
   const [ProgramForm, setProgramForm] = React.useState(null);
   const [Major, setMajor] = React.useState(null);
-  const [DOB, setDOB] = React.useState<Date | null>(null);
-  const [ExpirationDate, setExpirationDate] = React.useState<Date | null>(null);
+  const [Majors, setMajors] = React.useState(null);
+  const [DOB, setDOB] = React.useState(dayjs(new Date(data['dateOfBirth'])));
+  const [ExpirationDate, setExpirationDate] = React.useState(dayjs(new Date(data['dateExpired'])));
   const [forms, setForm] = React.useState(null);
   const [formDetail, setFormDetail] = React.useState(null);
   const [studentDetail, setStudentDetail] = React.useState(null);
   const [show, setShow] = useState(false);
   const [showErr, setShowErr] = useState(false);
   const containerRef = useRef(null);
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -125,7 +133,7 @@ const RegisterInformationComponent = () => {
         PassportImage: PassportImage,
         TransferInfomation: TransferInfomation,
       };
-      console.log(Program);
+    
 
       // {ProgramForm && () &&  console.log(2)}
       // {ProgramForm && (ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(3)}
@@ -138,7 +146,7 @@ const RegisterInformationComponent = () => {
       axios({
         method: 'PUT',
         data: formData,
-        url: `${API_URL}/registration/UpdateRegisId/${data.id}?FullName=${values.FullName}&MajorId=${Major.id}&memberCode=${data?.student?.memberCode}&PhoneNumber=${values.PhoneNumber}&DateOfBirth=${values.DOB}&NumberPassPort=${values.PassportNumber}&RollNumber=${values.RollNumber}&YourEmail=${data?.student?.email}&ScocialLink=${values.FacebookLink}&DateExpired=${values.ExpirationDate}&ProjectId=${data?.projectId}&Content1=${values?.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}`,
+        url: `${API_URL}/registration/UpdateRegisId/${data.id}?FullName=${values.FullName}&MajorId=${Major.id}&memberCode=${data?.student?.memberCode}&PhoneNumber=${values.PhoneNumber}&DateOfBirth=${DOB}&NumberPassPort=${values.PassportNumber}&RollNumber=${values.RollNumber}&YourEmail=${data?.student?.email}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&ProjectId=${data?.projectId}&Content1=${values?.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -171,30 +179,30 @@ const RegisterInformationComponent = () => {
         .catch((err) => {
           setShowErr(true);
         });
-      // axios
-      //   .put(
-      //     `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&DateOfBirth=${DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
-      //   )
-      //   .then((response) => {
-      //     const data = {
-      //       rollNumber: values.RollNumber,
-      //       fullName: values.FullName,
-      //       majorId: Major.id,
-      //       email: student.email,
-      //       phoneNumber: values.PhoneNumber,
-      //       status: true,
-      //     };
-      //     if (response.data.isSuccess) {
-      //       handleUpdateStudent(data);
-      //       setShow(true);
-      //       setTimeout(() => {
-      //         window.location.reload();
-      //       }, 4000);
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     setShowErr(true);
-      //   });
+      axios
+        .put(
+          `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${values.ExpirationDate}&DateOfBirth=${values.DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
+        )
+        .then((response) => {
+          const data = {
+            rollNumber: values.RollNumber,
+            fullName: values.FullName,
+            majorId: Major.id,
+            email: student.email,
+            phoneNumber: values.PhoneNumber,
+            status: true,
+          };
+          if (response.data.isSuccess) {
+            handleUpdateStudent(data);
+            setShow(true);
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          }
+        })
+        .catch((err) => {
+          setShowErr(true);
+        });
     },
 
     //if register function succesful, redirect to login page
@@ -212,9 +220,11 @@ const RegisterInformationComponent = () => {
   const getDetailStudent = async () => {
     await axios.get(`${API_URL}/student/getStudentDetail/${student.id}`).then((response) => {
       setStudentDetail(response.data.responseSuccess[0]);
+      sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
+
     });
   };
-
+  
   const handleUpdateStudent = (dataUpdate) => {
     axios
       .put(`${API_URL}/student/update/${student.id}`, dataUpdate)
@@ -241,7 +251,7 @@ const RegisterInformationComponent = () => {
   };
   const getAllMajor = async () => {
     await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
-      setMajor(response.data.responseSuccess);
+      setMajors(response.data.responseSuccess);
     });
   };
 
@@ -292,7 +302,10 @@ const RegisterInformationComponent = () => {
     getAllMajor();
     getDetail();
     getDetailStudent();
-  }, []);
+    setMajor(student?.major)
+  
+  
+  }, [data]);
   useEffect(() => {
     if (Program) {
       getFormbyPrj(Program.projectId);
@@ -351,6 +364,7 @@ const RegisterInformationComponent = () => {
                 }}
               >
                 <form onSubmit={formik.handleSubmit}>
+                  <Button onClick={() => console.log(ExpirationDate)}>click</Button>
                   <Title number={'1'} title={'Program *'} />
                   {/* <Autocomplete
                   componentsProps={{
@@ -439,8 +453,46 @@ const RegisterInformationComponent = () => {
                       />
                     </Box>
                   </Box>
+                 
                   <Title number={'4'} title={'Major *'} />
-                  {Major && (
+                  {Majors && (
+              //        <FormControl fullWidth>
+                   
+              //        <Select
+                    
+              //          labelId="demo-simple-select-label"
+              //          id="demo-simple-select"
+              //          value={Major}
+              // defaultValue={student.majorId}
+              //          onChange={handleChange}
+              //                    sx={{
+              //               width: '93.5%',
+              //               borderRadius: '25px',
+              //               backgroundColor: '#ffff',
+              //               margin: '10px 0 0 20px',
+              //               border: 'none !important',
+              //               '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+              //               '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+              //                 border: 'none !important',
+              //               },
+              //               '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              //                 border: 'none !important',
+              //               },
+              //               '& .MuiSvgIcon-root': {
+              //                 color: 'primary.main',
+              //               },
+              //             }}
+              //        >
+              //        {Majors.map((maj, index) => (
+              //          <MenuItem value={maj.id}>{maj.majorFullName}</MenuItem>
+
+              //        )
+              //        )
+
+              //        }
+                     
+              //        </Select>
+              //      </FormControl>
                     <Autocomplete
                       componentsProps={{
                         paper: {
@@ -450,8 +502,8 @@ const RegisterInformationComponent = () => {
                         },
                       }}
                       disablePortal
-                      options={Major}
-                      defaultValue={studentDetail.major}
+                      options={Majors}
+                      defaultValue={student?.major}
                       getOptionLabel={(option) => option['majorFullName']}
                       sx={{ border: 'none !important', fontWeight: 'bold' }}
                       onChange={(event, newValue) => {

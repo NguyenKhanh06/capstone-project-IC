@@ -259,7 +259,7 @@ fetchDataComment()
     }
   }, [props.task]);
 
-
+console.log("cmt", cmtTask)
  const removeImage = () => {
     setFileCmt({
         selectedFile: undefined,
@@ -456,8 +456,8 @@ fetchDataComment()
                 src="https://img-19.commentcamarche.net/cI8qqj-finfDcmx6jMK6Vr-krEw=/1500x/smart/b829396acc244fd484c5ddcdcb2b08f3/ccmcms-commentcamarche/20494859.jpg"
                 alt="imgcmt"
               /> */}
-            {cmtTask
-              ? cmtTask.map((cmt, index) => (
+            {cmtTask.length
+              ? cmtTask?.map((cmt, index) => (
                   <Box
                     key={index}
                     sx={{
@@ -470,7 +470,8 @@ fetchDataComment()
                       marginTop: '20px',
                     }}
                   >
-                    <b>{cmt?.fullName}</b>
+                 
+                    {cmt?.fullName &&    <b>{cmt?.fullName}</b> }
                     <Typography
                       sx={{
                         float: 'left',
@@ -486,8 +487,9 @@ fetchDataComment()
 
                     <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
             <Box>
-             {cmt?.fileUrl && <Link href={cmt?.fileUrl}>{cmt?.viewFile[0].fileName}</Link>}
-                    {cmt?.comment && <p>{cmt?.comment}</p>}
+          
+             {cmt?.fileUrl && <Link href={cmt?.fileUrl}>{cmt?.viewFile[0]?.fileName}</Link>}
+                    {cmt?.comment && <p>{cmt?.comment}</p> }
               </Box>  
 
             {cmt?.staffId === staffcheck[0]?.id ?    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>

@@ -40,10 +40,10 @@ const Header: FC = () => {
             </Box>
             <Box
               sx={{
-                position: router.pathname !== '/landingpage/register' ? 'fixed' : 'unset',
+                position:   'fixed',
                 top: '20px',
                 zIndex: '1',
-                pt: router.pathname === '/landingpage/register' ? '20px' : null,
+                mb: router.pathname === '/register' ? '20px' : null,
                 display: { xs: 'none', md: 'flex' },
                 alignItems: 'center',
               }}
@@ -73,6 +73,7 @@ const Header: FC = () => {
                 }}
               >
                 {/* <Logo /> */}
+<img src='https://tuanfpt.blob.core.windows.net/folder-excel/loogo-PhotoRoom.png-PhotoRoom.png' alt='logo' style={{width: 100, height: 100, borderRadius: "50%", position: 'absolute', left: -150, zIndex: 999}}/>
                 <Navigation onClick={() => setColorMenu('primary')} />
                 {/* <AuthNavigation /> */}
                 {visibleMenu && matchMobileView && (

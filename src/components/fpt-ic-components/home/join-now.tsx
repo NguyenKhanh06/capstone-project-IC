@@ -1,4 +1,4 @@
-import { ColorMenuContext } from '../../../context/context';
+import { ColorMenuContext, PostContext } from '../../../context/context';
 import React, { FC, useCallback, useContext, useEffect } from 'react';
 import Slider, { Settings } from 'react-slick';
 import SlideScreen from './slide-screen';
@@ -23,14 +23,16 @@ const NavbarBottomAnchor = styled('div')(() => ({
 }));
 
 const JoinNow = () => {
+  const { posts, refreshPost } = useContext(PostContext);
+
   const renderSlides = () =>
-    data.map((item, index) => (
+    posts.map((item, index) => (
       <SlideScreen
         key={index}
-        textTilte={item.programName}
-        textDate={item.date}
-        textDetail={item.detailContent}
-        img={item.detailImageUrl}
+        textTilte={item.title}
+        textDate={item.dateCreated.slice(0, 10)}
+        textDetail={item.content}
+        img={item.posterUrl}
         id={item.id}
       />
     ));

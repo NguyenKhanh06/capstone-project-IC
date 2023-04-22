@@ -177,11 +177,14 @@ function DetailTaskMember(props) {
     })
   };
   const fetchDataComment = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/comment/GetCommentInTask`).then((response) => {
-      console.log("cmt", response)
-      setcmtTask(response.data.responseSuccess.filter(cmt => cmt.tasksId === props.task.id) );
+
+    await axios.get(`https://api.ic-fpt.click/api/v1/comment/GetCommentByTaskId/${props.task.id}`).then((response) => {
+
+      setcmtTask(response.data.responseSuccess);
     });
   };
+
+
 
   console.log("task", props)
 
@@ -477,7 +480,7 @@ fetchDataComment()
                       marginTop: '20px',
                     }}
                   >
-                    <b>{cmt.fullName}</b>
+                    <b>{cmt?.fullName}</b>
                     <Typography
                       sx={{
                         float: 'left',
@@ -486,14 +489,14 @@ fetchDataComment()
                         color: '#8F8E8E',
                       }}
                     >
-                      {cmt.checkEdit && <p>Edited</p>}
-                      {dayjs(cmt.created).format('DD/MM/YYYY')}
+                      {cmt?.checkEdit && <p>Edited</p>}
+                      {dayjs(cmt?.created).format('DD/MM/YYYY')}
                     </Typography>
 
                     <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
                       <Box>
-                        {cmt?.fileUrl && <Link href={cmt.fileUrl}>File Attack</Link>}
-                        {cmt?.comment && <p>{cmt?.comment}</p>}
+                      {cmt?.fileUrl && <Link href={cmt?.fileUrl}>{cmt?.viewFile[0]?.fileName}</Link>}
+                    {cmt?.comment && <p>{cmt?.comment}</p> }
                       </Box>
 
                       {cmt?.staffId === staff[0]?.id ? (

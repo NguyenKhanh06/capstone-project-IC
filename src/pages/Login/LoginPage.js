@@ -1,12 +1,13 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
+import {  Container, Typography, Divider, Stack, Button } from '@mui/material';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
 
 
 import TabLogin from './TabLogin';
 import LoginStaff from './LoginStaff';
+import { Link } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -57,10 +58,20 @@ export default function LoginPage() {
 
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom>
               Sign in to IC website
             </Typography>
-            <LoginStaff/>
+          
+           
+            <LoginStaff />
+            <Link style={{position: "relative", top: "20vh", left:"38%"}} to="/">
+              <Button>
+              Back to homepage
+
+              </Button>
+      </Link>
+
+          
           </StyledContent>
         </Container>
       </StyledRoot>
