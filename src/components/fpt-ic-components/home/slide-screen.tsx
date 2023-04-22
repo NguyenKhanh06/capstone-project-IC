@@ -53,7 +53,7 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
             <Typography
               sx={{
                 color: 'primary.contrastText',
-                fontSize: { lg: '80px', sm: '40px', xs: '40px' },
+                fontSize: { lg: '50px', sm: '40px', xs: '40px' },
                 fontWeight: 'bold',
               }}
             >
