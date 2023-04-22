@@ -109,7 +109,7 @@ function ListSubTaskMember(props) {
       },
     },
   ];
-  const staff = JSON.parse(sessionStorage.getItem("staff"));
+  const staff = JSON.parse(sessionStorage.getItem("user"));
   
   const [open, setOpen] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
@@ -153,7 +153,7 @@ function ListSubTaskMember(props) {
 
   useEffect(() => {
     if(props.state != null){
-      setChildrenTask(props.state?.childrenTask?.filter(task => task?.assignTasks[0]?.staffId === staff[0].id).filter(task => task.status !== 5))
+      setChildrenTask(props.state?.childrenTask?.filter(task => task?.assignTasks[0]?.staffId === staff?.staff.id).filter(task => task.status !== 5))
 
     }
   }, [props.state]);

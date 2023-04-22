@@ -66,35 +66,15 @@ function ListProjectNego(props) {
       setShowConfirm(false)
     };
 
-    const changeStatus = () => {
-      const formData = new FormData();
-      formData.append("Status", 1)
-      formData.append("ProjectId", idPrj)
-      
+    
+
+    // console.log(`https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
   
-      axios({
-        method: 'POST',
-        data: formData,
-        url: 'https://api.ic-fpt.click/api/v1/project/changeStatus',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }) .then((response) => {
-
-        if (response.data.isSuccess) {
-          setShowSuccess(true);
-          setLoading(false);
-          window.location.reload()
-        }
-      })
-      .catch((err) => {
-        handleError("Update fail!!!!");
-        setLoading(false);
-        window.location.reload()
-
-      });
-       
-    }
+    const handleUpdateProject = () => {
+  
+  
+     
+    };
   
   const columns = [
     {
@@ -146,7 +126,7 @@ function ListProjectNego(props) {
              
              <DoNotDisturbOnOutlinedIcon color='error' />
 
-         </Tooltip> : params.row.projectStatus === 1   ? 
+         </Tooltip> : params.row.status   ? 
          
          <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
             <Tooltip title="View Detail">
@@ -176,7 +156,7 @@ function ListProjectNego(props) {
            </IconButton>
          </Tooltip>
          <Tooltip title="Complete">
-           <IconButton onClick={() => handleShowConfirmChange(params.row.id)} aria-label="delete">
+           <IconButton onClick={() => handleShowConfirmChange(params.row)} aria-label="delete">
              <CheckCircleOutlineTwoToneIcon  color='success'/>
            </IconButton>
          </Tooltip>
@@ -262,7 +242,7 @@ function ListProjectNego(props) {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseConfirm}>Cancel</Button>
-            <Button onClick={() => changeStatus()} variant="contained" autoFocus>
+            <Button onClick={() => handleUpdateProject()} variant="contained" autoFocus>
               Accept
             </Button>
           </DialogActions>

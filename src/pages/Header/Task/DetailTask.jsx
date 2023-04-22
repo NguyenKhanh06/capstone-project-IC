@@ -42,7 +42,7 @@ import DetailCmt from './DetailCmt';
 function DetailTask(props) {
   const user = JSON.parse(sessionStorage.getItem("user"));
   const staffcheck = JSON.parse(sessionStorage.getItem("staff"));
-
+console.log("check", user)
   const regex = /^[\w\s]*$/
   const [open, setOpen] = useState(false);
   const [deadline, setDeadline] = useState(null);
@@ -492,7 +492,7 @@ console.log("cmt", cmtTask)
                     {cmt?.comment && <p>{cmt?.comment}</p> }
               </Box>  
 
-            {cmt?.staffId === staffcheck[0]?.id ?    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+            {cmt?.staffId === user.id ?    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
               <Tooltip title="Edit comment">
               <IconButton onClick={() => handleShowCmt(cmt)}>
                 <EditOutlinedIcon/>

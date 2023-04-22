@@ -31,8 +31,8 @@ import DetailPrjMember from './DetailPrjMember';
 import DetailProjectLeader from './Leader/DetailPrjLeader';
 
 function ListProjectMember(props) {
-  const staff = JSON.parse(sessionStorage.getItem('staff'));
-console.log("staff", staff)
+  const user = JSON.parse(sessionStorage.getItem('user'));
+console.log("staff", user)
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -79,7 +79,7 @@ console.log("staff", staff)
       flex: 1,
       renderCell: (params) => {
        
-        return params.row.project.leaderId === staff[0].id ? <Chip label="Leader" /> : <Chip label="Member" />;
+        return params.row.project.leaderId === user?.staff.id ? <Chip label="Leader" /> : <Chip label="Member" />;
       },
     
     },
@@ -259,7 +259,7 @@ console.log("staff", staff)
                   <IconButton
                   color='error'
                     onClick={() => {
-                      if (params.row.project.leaderId === staff[0].id) {
+                      if (params.row.project.leaderId === user?.staff.id) {
                         navigate('/staff/leader/list-task', { state: params.row.project });
                       } else {
                         navigate('/staff/member/list-task', { state: params.row.project });
@@ -274,7 +274,7 @@ console.log("staff", staff)
               <IconButton
            
                 onClick={() => {
-                  if (params.row.project.leaderId === staff[0].id) {
+                  if (params.row.project.leaderId === user?.staff.id) {
                     navigate('/staff/leader/list-task', { state: params.row.project });
                   } else {
                     navigate('/staff/member/list-task', { state: params.row.project });
@@ -304,7 +304,7 @@ console.log("staff", staff)
               <IconButton
       
                 onClick={() => {
-                  if (params.row.project.leaderId === staff[0].id) {
+                  if (params.row.project.leaderId === user?.staff.id) {
                     navigate('/staff/leader/list-task', { state: params.row.project });
                   } else {
                     navigate('/staff/member/list-task', { state: params.row.project });
@@ -334,7 +334,8 @@ console.log("staff", staff)
   
   const fetchData = async () => {
     setLoading(true);
-    await axios.get(`https://api.ic-fpt.click/api/v1/staff/GetProjectByStaffId/${staff[0].id}`).then((response) => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/staff/GetProjectByStaffId/${user?.staff?.id}`).then((response) => {
+      console.log(response)
       setProjects(response.data.responseSuccess);
       setLoading(false)
 

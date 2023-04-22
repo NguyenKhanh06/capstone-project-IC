@@ -34,8 +34,8 @@ import ErrorAlert from '../Alert/ErrorAlert';
 import DetailCmt from '../Header/Task/DetailCmt';
 
 function DetailTaskMember(props) {
-  const staff = JSON.parse(sessionStorage.getItem('staff'));
-
+  const staff = JSON.parse(sessionStorage.getItem('user'));
+console.log("staf", staff)
   const [open, setOpen] = useState(false);
   const [disableBtn, setDisable] = useState(false);
   const [deadline, setDeadline] = useState(null);
@@ -216,6 +216,7 @@ fetchDataComment()
       setDisableCmt(false);
     }
   };
+  console.log(cmtTask)
 
   return (
     <div>
@@ -499,7 +500,7 @@ fetchDataComment()
                     {cmt?.comment && <p>{cmt?.comment}</p> }
                       </Box>
 
-                      {cmt?.staffId === staff[0]?.id ? (
+                      {cmt?.staffId === staff?.id ? (
                         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
                           <Tooltip title="Edit comment">
                             <IconButton onClick={() => handleShowCmt(cmt)}>

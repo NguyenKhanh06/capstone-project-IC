@@ -48,11 +48,12 @@ const LoginStaff = () => {
     onError: (errorResponse) => console.log(errorResponse),
   });
 
-  const getdetailStaff = (id) => {
-    axios.get(`https://api.ic-fpt.click/api/v1/staff/getStaffAccountId/${id}`).then((response) => {
-      sessionStorage.setItem('staff', JSON.stringify(response.data.responseSuccess));
-    });
-  };
+  // const getdetailStaff = (id) => {
+  //   axios.get(`https://api.ic-fpt.click/api/v1/staff/getStaffAccountId/${id}`).then((response) => {
+  //     sessionStorage.setItem('staff', JSON.stringify(response.data.responseSuccess));
+
+  //   });
+  // };
   const getdetailStudent = (id) => {
     axios.get(`https://api.ic-fpt.click/api/v1/student/getStudentDetail/${id}`).then((response) => {
       sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
@@ -96,10 +97,7 @@ const LoginStaff = () => {
         'deputy',
         JSON.stringify(response.data.responseSuccess.filter((dep) => dep.accountId === id)[0])
       );
-      console.log(
-        'paertn',
-        response.data.responseSuccess.filter((dep) => dep.accountId === id)
-      );
+   
     });
   };
   return (
@@ -134,12 +132,13 @@ const LoginStaff = () => {
               })
           
                 .then((response) => {
-                  console.log(response);
+
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
                   if (
                     response.data.responseSuccess.role === 2 &&
                     response.data.responseSuccess.staff.isHeadOfDepartMent
                   ) {
+              
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                     navigate('/header');
                     requestPermission();
@@ -148,7 +147,7 @@ const LoginStaff = () => {
                     !response.data.responseSuccess.staff.isHeadOfDepartMent
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
-                    getdetailStaff(response.data.responseSuccess.id);
+                 
                     navigate('/staff');
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 4 && response.data.responseSuccess.status) {
@@ -249,7 +248,7 @@ const LoginStaff = () => {
               axios
                 .post(`https://api.ic-fpt.click/api/v1/authen/signin-google/${credentialResponse.credential}`)
                 .then((response) => {
-                  getdetailStaff(response.data.responseSuccess.id);
+              
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
                   if (
                     response.data.responseSuccess.role === 2 &&
