@@ -108,10 +108,13 @@ const LoginStaff = () => {
           validate={(values) => {
             const errors = {};
             if (!values.email) {
-              errors.email = 'Required';
+              errors.email = 'Please input your email!';
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
               errors.email = 'Invalid email address';
             }
+            if (!values.password) {
+              errors.password = 'Please input your password!';
+            } 
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
@@ -188,22 +191,27 @@ const LoginStaff = () => {
                 type="email"
                 name="email"
                 fullWidth
-                sx={{ marginBottom: 3 }}
+  
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
                 placeholder="Email address *"
               />
-              {errors.email && touched.email && errors.email}
+                <Typography color={'red'} fontSize="14px">
+                {errors.email && touched.email && errors.email}
+
+                </Typography>
 
               <TextField
                 name="password"
                 fullWidth
+                sx={{marginTop: 3}}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
                 placeholder="Password *"
                 type={showPassword ? 'text' : 'password'}
+                
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -214,7 +222,10 @@ const LoginStaff = () => {
                   ),
                 }}
               />
-              {errors.password && touched.password && errors.password}
+                              <Typography color={'red'} fontSize="14px">
+                              {errors.password && touched.password && errors.password}
+
+                              </Typography>
               <Button
                 fullWidth
                 size="large"

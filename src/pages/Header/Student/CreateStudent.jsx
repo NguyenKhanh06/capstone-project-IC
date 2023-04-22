@@ -24,7 +24,7 @@ import SuccessAlert from '../../Alert/SuccessAlert';
 function CreateStudent(props) {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
   const regex = /^[\w\s]*$/
-  const regexPhone = /^\+?\d{1,3}[- ]?\d{3}[- ]?\d{4}$/;
+  const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -41,6 +41,7 @@ function CreateStudent(props) {
   const [address, setAddress] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [Checkerr, setErr] = useState(false);
+  const [CheckerrPhone, setErrPhone] = useState(false);
   const [majors, setMajors] = useState([]);
 
   const [showError, setShowError] = useState(false);
@@ -121,10 +122,17 @@ function CreateStudent(props) {
   // };
  
   const onblurMail = () => {
-    if (regexMail.test(email) ) {
+    if (regexMail.test(email)) {
       setErr(false);
     } else {
       setErr(true);
+    }
+  };
+  const onblurPhone = () => {
+    if (regexPhone.test(phoneNumber)) {
+      setErrPhone(false);
+    } else {
+      setErrPhone(true);
     }
   };
   const fetchData = async () => {
@@ -197,9 +205,12 @@ function CreateStudent(props) {
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     required
                     fullWidth
+                    onBlur={onblurPhone}
+
                     inputProps={{ maxLength: 10 }}
                     label="Phone Number"
-                
+                    error={CheckerrPhone}
+                    helperText={CheckerrPhone && 'Please input phone number'}
                   />
                 </Stack>
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
@@ -334,7 +345,7 @@ function CreateStudent(props) {
     
               address.trim().length &&
          
-              !Checkerr ? (
+              !Checkerr && !CheckerrPhone ? (
                 
                 <Button variant="contained" onClick={() => handleCreateStudent()} autoFocus>
                   Create Student

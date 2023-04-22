@@ -184,7 +184,13 @@ const RegisterInformationComponent = () => {
           `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${values.ExpirationDate}&DateOfBirth=${values.DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
         )
         .then((response) => {
-          const data = {
+          const dataUpdate = {
+            memberCode: student.memberCode,
+            oldRollNumber: student.oldRollNumber,
+            batch: student.batch,
+            semeter: student.semeter,
+            upStatus: student.studentStatus,
+            address: student.address,
             rollNumber: values.RollNumber,
             fullName: values.FullName,
             majorId: Major.id,
@@ -193,11 +199,8 @@ const RegisterInformationComponent = () => {
             status: true,
           };
           if (response.data.isSuccess) {
-            handleUpdateStudent(data);
-            setShow(true);
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
+            handleUpdateStudent(dataUpdate);
+          
           }
         })
         .catch((err) => {
@@ -364,7 +367,7 @@ const RegisterInformationComponent = () => {
                 }}
               >
                 <form onSubmit={formik.handleSubmit}>
-                  <Button onClick={() => console.log(ExpirationDate)}>click</Button>
+
                   <Title number={'1'} title={'Program *'} />
                   {/* <Autocomplete
                   componentsProps={{

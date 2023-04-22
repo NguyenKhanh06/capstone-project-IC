@@ -120,9 +120,9 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               display: '-webkit-box',
-              WebkitLineClamp: 4,
+              WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',
-              lineClamp: 4,
+              lineClamp: 3,
               marginRight: 8
             }}
          
@@ -143,7 +143,8 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
               alignItems: 'center',
             }}
           >
-            <img src="/images/arrow.svg" width={250} height={30} alt="alt" />
+            <span className="arrow-right"></span>
+            {/* <img src="/images/arrow.svg" width={250} height={30} alt="alt" /> */}
             <Link
               to={`/program/${id}`}
               onClick={() => setColorMenu('primary')}
@@ -174,6 +175,7 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
         <Box
           sx={{
             height: '100%',
+  
             width: { lg: '100%', sm: '80%', xs: '80%' },
             margin: '0px auto',
           }}
@@ -182,9 +184,9 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
             src={img}
             key={key}
             alt="alt"
-            style={{ position: 'relative', borderRadius: 30 }}
+            style={{ position: 'relative', borderRadius: 30, marginTop: "25%" }}
             width={'100%'}
-            height={'100%'}
+            height={'85%'}
           />
         </Box>
       </Box>

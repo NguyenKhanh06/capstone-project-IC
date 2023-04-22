@@ -27,11 +27,18 @@ import ErrorAlert from '../Alert/ErrorAlert';
 import SuccessAlert from '../Alert/SuccessAlert';
 
 function DetailStaffAd(props) {
+
+  const regexMailFu = /[\w.-]+fptu@gmail\.com$/;
+  const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+
+
+  const [Checkerr, setErr] = useState(false);
+  const [CheckerrPhone, setErrPhone] = useState(false);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [disableBtn, setDisable] = useState(false);
 
-const [password, setPassword] = useState(null)
+const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState(null);
   const [role, setRole] = useState(null);
   const [email, setEmail] = useState(null);
@@ -120,21 +127,13 @@ setAddress(props.staff?.account?.address)
 
   const handleChangePhone = (e) => {
     setPhoneNumber(e.target.value)
-    if(e.target.value){
-      setDisable(true)
-    }else{
-      setDisable(false)
-    }
+ 
 
   }
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value)
-    if(e.target.value){
-      setDisable(true)
-    }else{
-      setDisable(false)
-    }
+
 
   }
   const handleChangeAddress = (e) => {
@@ -146,7 +145,24 @@ setAddress(props.staff?.account?.address)
     }
 
   }
+  const onblurMail = () => {
+    if (regexMailFu.test(email)) {
+      setErr(false);
+      setDisable(true)
 
+    } else {
+      setErr(true);
+    }
+  };
+  const onblurPhone = () => {
+    if (regexPhone.test(phoneNumber)) {
+      setErrPhone(false);
+      setDisable(true)
+
+    } else {
+      setErrPhone(true);
+    }
+  };
 
   return (
     <div>
@@ -180,13 +196,18 @@ setAddress(props.staff?.account?.address)
               </Stack>
 
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                <TextField value={email} onChange={handleChangeEmail} required fullWidth label="Email" />
+                <TextField value={email}  onBlur={onblurMail } onChange={handleChangeEmail} required fullWidth label="Email"  error={Checkerr}
+                    helperText={Checkerr && 'Please input email fptu'}/>
                 <TextField
                   value={phoneNumber}
                   onChange={handleChangePhone}
                   required
                   fullWidth
                   label="Phone Number"
+                  onBlur={onblurPhone }
+                  inputProps={{ maxLength: 10 }}
+                  error={CheckerrPhone}
+                  helperText={CheckerrPhone && 'Please input phone number'}
                 />
               </Stack>
 
@@ -224,7 +245,7 @@ setAddress(props.staff?.account?.address)
             </Stack>
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
-            {disableBtn ? (
+            {disableBtn && !Checkerr && !CheckerrPhone ? (
               <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
                 Save
               </Button>

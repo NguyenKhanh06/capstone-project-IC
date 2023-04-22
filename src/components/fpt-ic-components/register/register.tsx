@@ -71,6 +71,7 @@ const RegisterComponent = () => {
   const [Program, setProgram] = React.useState(null);
   const [ProgramForm, setProgramForm] = React.useState(null);
   const [Major, setMajor] = React.useState(null);
+  const [Majors, setMajors] = React.useState(null);
   const [DOB, setDOB] = React.useState<Date | null>(null);
   const [ExpirationDate, setExpirationDate] = React.useState<Date | null>(null);
   const [forms, setForm] = React.useState(null);
@@ -199,7 +200,7 @@ const RegisterComponent = () => {
   };
   const getAllMajor = async () => {
     await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
-      setMajor(response.data.responseSuccess);
+      setMajors(response.data.responseSuccess);
     });
   };
 
@@ -311,6 +312,7 @@ const RegisterComponent = () => {
                 }}
               >
                 <form onSubmit={formik.handleSubmit}>
+            
                   <Title number={'1'} title={'Program *'} />
                   <Autocomplete
                     componentsProps={{
@@ -397,7 +399,7 @@ const RegisterComponent = () => {
                     </Box>
                   </Box>
                   <Title number={'4'} title={'Major *'} />
-                  {Major && (
+                  {Majors && (
                     <Autocomplete
                       componentsProps={{
                         paper: {
@@ -408,7 +410,7 @@ const RegisterComponent = () => {
                       }}
                       defaultValue={student?.major}
                       disablePortal
-                      options={Major}
+                      options={Majors}
                       getOptionLabel={(option) => option['majorFullName']}
                       sx={{ border: 'none !important', fontWeight: 'bold' }}
                       onChange={(event, newValue) => {

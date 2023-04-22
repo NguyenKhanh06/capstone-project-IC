@@ -28,6 +28,9 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
   
   function CreateStaff(props) {
     const regex = /^[\w\s]*$/;
+    const regexMailFu = /[\w.-]+fptu@gmail\.com$/;
+    const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+  
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState(null)
@@ -40,7 +43,8 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
     const [showError, setShowError] = useState(false);
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-  
+    const [Checkerr, setErr] = useState(false);
+  const [CheckerrPhone, setErrPhone] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
     const handleMouseDownPassword = (event) => {
@@ -83,7 +87,21 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
             handleError(err.response.data.responseSuccess);
           })
     };
-  
+    const onblurMail = () => {
+      if (regexMailFu.test(email)) {
+        setErr(false);
+      } else {
+        setErr(true);
+      }
+    };
+    const onblurPhone = () => {
+      if (regexPhone.test(phoneNumber)) {
+        setErrPhone(false);
+        
+      } else {
+        setErrPhone(true);
+      }
+    };
     return (
       <div>
         <Dialog
@@ -116,13 +134,18 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
                 </Stack>
   
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                  <TextField value={email} onChange={(e) => setEmail(e.target.value)} required fullWidth label="Email" />
+                  <TextField value={email}    onBlur={onblurMail }  error={Checkerr}
+                    helperText={Checkerr && 'Please input email fptu'} onChange={(e) => setEmail(e.target.value)} required fullWidth label="Email" />
                   <TextField
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     required
                     fullWidth
                     label="Phone Number"
+                    onBlur={onblurPhone }
+                    inputProps={{ maxLength: 10 }}
+                    error={CheckerrPhone}
+                    helperText={CheckerrPhone && 'Please input phone number'}
                   />
                 </Stack>
   
@@ -139,7 +162,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
             </DialogContent>
             <DialogActions style={{ padding: 20 }}>
          
-              {fullName.trim().length && email.trim().length && phoneNumber.trim().length && address.trim().length ? (
+              {fullName.trim().length && email.trim().length && phoneNumber.trim().length && address.trim().length && !Checkerr && !CheckerrPhone ? (
                 <Button variant="contained" onClick={() => handleCreateStaff()} autoFocus>
                  Create Staff
                 </Button>

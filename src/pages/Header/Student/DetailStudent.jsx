@@ -36,6 +36,8 @@ import SuccessAlert from '../../Alert/SuccessAlert';
 function DetailStudent(props) {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
   const regex = /^[\w\s]*$/
+  const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [disableBtn, setDisableBtn] = useState(false);
@@ -62,6 +64,8 @@ const [student, setStudent] = useState({})
   const [id, setID] = useState('');
   const [majors, setMajors] = useState([]);
   const [majorDefaul, setMajorDefault] = useState(null);
+  const [CheckerrPhone, setErrPhone] = useState(false);
+
 
   const handleShowConfirm = (data) => {
     setID(data);
@@ -112,7 +116,6 @@ const [student, setStudent] = useState({})
     "fullName": fullName,
     "oldRollNumber": props.student.rollNumber,
     "majorId": majorID,
-
     "batch": batch,
     "semeter": semester,
     "upStatus": studentStatus,
@@ -238,19 +241,11 @@ const deleteFile = (name) => {
   };
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
-    if (e.target.value) {
-      setDisableBtn(true);
-    } else {
-      setDisableBtn(false);
-    }
+
   };
   const handleChangePhone = (e) => {
     setPhoneNumber(e.target.value);
-    if (e.target.value) {
-      setDisableBtn(true);
-    } else {
-      setDisableBtn(false);
-    }
+ 
   };
   const handleChangeMajor = (e) => {
 console.log(e.target.value)
@@ -293,10 +288,17 @@ console.log(e.target.value)
     setFileStudent(e.target.files[0]);
   };
   const onblurMail = () => {
-    if (regexMail.test(email) ) {
+    if (regexMail.test(email)) {
       setErr(false);
     } else {
       setErr(true);
+    }
+  };
+  const onblurPhone = () => {
+    if (regexPhone.test(phoneNumber)) {
+      setErrPhone(false);
+    } else {
+      setErrPhone(true);
     }
   };
   const fetchData = async () => {
@@ -306,7 +308,7 @@ console.log(e.target.value)
     });
   };
 
-  console.log("default", props.student.major)
+
   useEffect(() => {
     fetchData()
   }, []);
@@ -314,7 +316,7 @@ console.log(e.target.value)
   const MOBILE_ITEM_HEIGHT = 58;
   const ITEM_PADDING_TOP = 18;
   const MENU_ITEMS = 6;
-  console.log("mj", student.major)
+
   return (
     <div>
       <Dialog
@@ -361,6 +363,12 @@ console.log(e.target.value)
                   fullWidth
                   label="Phone Number"
                   inputProps={{ maxLength: 10 }}
+                  onBlur={onblurPhone}
+
+                  // inputProps={{ maxLength: 10 }}
+         
+                  error={CheckerrPhone}
+                  helperText={CheckerrPhone && 'Please input phone number'}
 
                 />
               </Stack>
@@ -488,7 +496,7 @@ console.log(e.target.value)
                 <input onChange={(e) => setFileStudent(e.target.files[0])} id="input" hidden type="file" />
               </Button>
 
-              {disableBtn && !Checkerr
+              {disableBtn && !Checkerr && !CheckerrPhone
               
               && regex.test(rollNumber) && 
               regex.test(memberCode) &&
