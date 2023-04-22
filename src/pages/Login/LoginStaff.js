@@ -5,7 +5,7 @@ import axios from 'axios';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken } from 'firebase/messaging';
 // eslint-disable-next-line camelcase
-import jwt_decode from "jwt-decode";
+import jwt_decode from 'jwt-decode';
 
 // @mui
 import { Stack, IconButton, InputAdornment, TextField, Button, Divider, Typography, Box } from '@mui/material';
@@ -19,7 +19,7 @@ import SuccessAlert from '../Alert/SuccessAlert';
 
 const LoginStaff = () => {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
-  const regexMailFu = /[\w.-]+fptu@gmail\.com$/
+  const regexMailFu = /[\w.-]+fptu@gmail\.com$/;
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -56,7 +56,6 @@ const LoginStaff = () => {
   const getdetailStudent = (id) => {
     axios.get(`https://api.ic-fpt.click/api/v1/student/getStudentDetail/${id}`).then((response) => {
       sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
-
     });
   };
   const firebaseConfig = {
@@ -105,9 +104,8 @@ const LoginStaff = () => {
   };
   return (
     <>
-      <Stack  spacing={3}>
+      <Stack spacing={3}>
         <Formik
-
           initialValues={{ email: '', password: '' }}
           validate={(values) => {
             const errors = {};
@@ -122,17 +120,26 @@ const LoginStaff = () => {
             setTimeout(() => {
               //  alert(JSON.stringify(values, null, 2));
 
-              //  alert(values.email)
-              const data = {
-                email: values.email,
-                password: values.password,
-              };
-              axios
-                .post(`https://api.ic-fpt.click/api/v1/authen/login`, data)
+              const formData = new FormData();
+              formData.append('Email', values.email);
+              formData.append('Password', values.password);
+             
+              axios({
+                method: 'POST',
+                data: formData,
+                url: 'https://api.ic-fpt.click/api/v1/authen/login',
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              })
+          
                 .then((response) => {
                   console.log(response);
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
-                  if (response.data.responseSuccess.role === 2 && response.data.responseSuccess.staff.isHeadOfDepartMent) {
+                  if (
+                    response.data.responseSuccess.role === 2 &&
+                    response.data.responseSuccess.staff.isHeadOfDepartMent
+                  ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                     navigate('/header');
                     requestPermission();
@@ -151,16 +158,16 @@ const LoginStaff = () => {
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 4 && !response.data.responseSuccess.status) {
                     handleErr('Your account can not login!!!!');
-                  }else if (response.data.responseSuccess.role === 1) {
+                  } else if (response.data.responseSuccess.role === 1) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                     navigate('/admin');
                     requestPermission();
-                  }else if (response.data.responseSuccess.role === 0) {
-                   handleSuccess('You are not a staff member who needs to wait for admin set role!!')
+                  } else if (response.data.responseSuccess.role === 0) {
+                    handleSuccess('You are not a staff member who needs to wait for admin set role!!');
                   }
                 })
                 .catch((err) => {
-                  console.log(err)
+                  console.log(err);
                   handleErr('Wrong email or password!');
                 });
               setSubmitting(false);
@@ -229,7 +236,7 @@ const LoginStaff = () => {
           OR
         </Typography>
       </Divider>
-      <Box sx={{ margin: "20px auto" }}>
+      <Box sx={{ margin: '20px auto' }}>
         <GoogleLogin
           size="large"
           width="100px"
@@ -238,59 +245,59 @@ const LoginStaff = () => {
           onSuccess={(credentialResponse) => {
             const decoded = jwt_decode(credentialResponse.credential);
             sessionStorage.setItem('student', JSON.stringify(decoded));
-            if(regexMailFu.test(decoded.email)){
+            if (regexMailFu.test(decoded.email)) {
               axios
-              .post(`https://api.ic-fpt.click/api/v1/authen/signin-google/${credentialResponse.credential}`)
-              .then((response) => {
-                getdetailStaff(response.data.responseSuccess.id);
-                localStorage.setItem('token', response.data.responseSuccess.accountToken);
-                if (
-                  response.data.responseSuccess.role === 2 &&
-                  response.data.responseSuccess.staff.isHeadOfDepartMent
-                ) {
-                  sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                .post(`https://api.ic-fpt.click/api/v1/authen/signin-google/${credentialResponse.credential}`)
+                .then((response) => {
+                  getdetailStaff(response.data.responseSuccess.id);
+                  localStorage.setItem('token', response.data.responseSuccess.accountToken);
+                  if (
+                    response.data.responseSuccess.role === 2 &&
+                    response.data.responseSuccess.staff.isHeadOfDepartMent
+                  ) {
+                    sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
 
-                  navigate('/header');
+                    navigate('/header');
 
-                  requestPermission();
-                } else if (
-                  response.data.responseSuccess.role === 2 &&
-                  !response.data.responseSuccess.staff.isHeadOfDepartMent
-                ) {
-                  sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                    requestPermission();
+                  } else if (
+                    response.data.responseSuccess.role === 2 &&
+                    !response.data.responseSuccess.staff.isHeadOfDepartMent
+                  ) {
+                    sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
 
-                  navigate('/staff');
-                  requestPermission();
-                } else if (response.data.responseSuccess.role === 4) {
-                  handleErr('You can not login!!!');
-                } else if (response.data.responseSuccess.role === 1) {
-                  sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
-                  navigate('/admin');
-                  requestPermission();
-                }else if (response.data.responseSuccess.role === 0) {
-                  handleSuccess('You are not a staff member who needs to wait for admin set role!!')
-                 }
-              });
-            }else if(regexMail.test(decoded.email)){
+                    navigate('/staff');
+                    requestPermission();
+                  } else if (response.data.responseSuccess.role === 4) {
+                    handleErr('You can not login!!!');
+                  } else if (response.data.responseSuccess.role === 1) {
+                    sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                    navigate('/admin');
+                    requestPermission();
+                  } else if (response.data.responseSuccess.role === 0) {
+                    handleSuccess('You are not a staff member who needs to wait for admin set role!!');
+                  }
+                });
+            } else if (regexMail.test(decoded.email)) {
               axios
-              .post(`https://api.ic-fpt.click/api/v1/student/signin-google/${credentialResponse.credential}`).then(response => {
-                localStorage.setItem('token', response.data.responseSuccess.tokenToken);
-     
-                getdetailStudent(response.data.responseSuccess.id)
-                navigate(state?.path || "/");
-              })
-            }else{
-              handleErr('Your email can not login!!')
+                .post(`https://api.ic-fpt.click/api/v1/student/signin-google/${credentialResponse.credential}`)
+                .then((response) => {
+                  localStorage.setItem('token', response.data.responseSuccess.tokenToken);
+
+                  getdetailStudent(response.data.responseSuccess.id);
+                  navigate(state?.path || '/');
+                });
+            } else {
+              handleErr('Your email can not login!!');
             }
-         
           }}
           onError={() => {
             console.log('Login Failed');
           }}
         />
-      </Box> 
+      </Box>
       <ErrorAlert show={showAl} close={() => setShowAl(false)} message={message} />
-      <SuccessAlert show = {show} close={() => setShow(false)} message={message}/>
+      <SuccessAlert show={show} close={() => setShow(false)} message={message} />
 
       {/* <Button onClick={() => googleLogin()} fullWidth size="large" color="inherit" variant="outlined">
         <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
