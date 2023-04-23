@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Chip,
+  CircularProgress,
   IconButton,
   MenuItem,
   Select,
@@ -43,7 +44,7 @@ const RegisterSchema = Yup.object().shape({
 
   // Major: Yup.string().required('Can you input your major, please ?'),
 
-  PhoneNumber: Yup.string().matches(/^[0-9]{8,10}$/, 'Invalid phone number, please check again!'),
+  PhoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Invalid phone number, please check again!'),
 
   // PassportNumber: Yup.string()
   //   .matches(/[A-Z]{1}[0-9]{8}/, 'Incorrect passport number, please check again! [Example: A12345678]')
@@ -149,7 +150,7 @@ console.log(student)
             setShow(true);
             setTimeout(() => {
               window.location.reload();
-            }, 4000);
+            }, 2000);
           }
         })
         .catch((err) => {
@@ -191,7 +192,7 @@ console.log(student)
         }
       })
       .catch((err) => {
-        console.log(err);
+        setShowErr(true);
       });
   };
   const getAllForm = async () => {
@@ -254,7 +255,7 @@ console.log(student)
   }, []);
   useEffect(() => {
     if (Program) {
-      setProgramForm(forms.find((form) => form.id === Program.id));
+      setProgramForm(forms.find((formcheck) => formcheck.id === Program.id));
     }
   }, [Program]);
   return (
@@ -312,7 +313,7 @@ console.log(student)
                   width: 'auto',
                 }}
               >
-                {student ?    <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit}>
             
             <Title number={'1'} title={'Program *'} />
             <Autocomplete
@@ -391,20 +392,20 @@ console.log(student)
                 }}
               >
                 <Title number={'3'} title={'Roll number *'} />
-                {student.rollNumber && <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.rollNumber}</Typography>
-                ||   <InputBar
+                  <InputBar
                 inputName="RollNumber"
                 width={'90%'}
+                check={!student.rollNumber}
                 {...formik.getFieldProps('RollNumber')}
                 error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
                 helperText={formik.touched.RollNumber && formik.errors.RollNumber}
               />
-                }
+                
            
               </Box>
             </Box>
             <Title number={'4'} title={'Major *'} />
-            {!student?.major && (
+            {Majors && (
               <Autocomplete
                 componentsProps={{
                   paper: {
@@ -425,6 +426,7 @@ console.log(student)
                 }}
                 renderInput={(params) => (
                   <TextField
+                  disabled={!student?.major }
                     {...params}
                     inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
                     sx={{
@@ -449,7 +451,7 @@ console.log(student)
                 )}
                 noOptionsText="This major not found"
               />
-            ) ||    <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.major.majorFullName}</Typography> }
+            ) }
             {Boolean(formik.touched.Major && formik.errors.Major) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
@@ -513,15 +515,16 @@ console.log(student)
                 }}
               >
                 <Title number={'6'} title={'Phone number *'} />
-                {student?.phoneNumber && <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.phoneNumber}</Typography>
-                ||  <InputBar
+               <InputBar
                 inputName="PhoneNumber"
                 width={'90%'}
+                check={!student.phoneNumber}
+             
                 {...formik.getFieldProps('PhoneNumber')}
                 error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
                 helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
               />
-                }
+                
                
               </Box>
             </Box>
@@ -825,7 +828,7 @@ console.log(student)
                 SUBMIT
               </Button>
             </Box>
-          </form> :  <Typography style={{marginTop: "5%"}} variant='h6' >Please <Link to={"/login"}>Login</Link> before regis any program</Typography>}
+          </form>
              
               </Box>
             </Box>
@@ -885,7 +888,9 @@ console.log(student)
             </Snackbar>
           </Box>
         </Slide>
-      )}
+      )||     <Box  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, height: "100vh", position:"relative", top: "50vh", left: "80vh" }}>
+      <CircularProgress />
+    </Box>}
     </>
   );
 };

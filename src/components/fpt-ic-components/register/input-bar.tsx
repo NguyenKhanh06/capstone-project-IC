@@ -8,10 +8,13 @@ interface Props {
   helperText?: ReactNode;
   placeholderText?: string | null;
   error?: boolean;
+  check?: boolean;
   type?: 'text' | 'password' | 'email' | 'number';
 }
 
-const InputBar = ({ width, inputName, value, helperText, error, placeholderText, type, ...props }: Props) => {
+const InputBar = ({ width, inputName, value, helperText, error, placeholderText, check, type, ...props }: Props) => {
+
+
   return (
     <Box sx={{ margin: ' 10px 0 0 20px' }}>
       <TextField
@@ -28,6 +31,7 @@ const InputBar = ({ width, inputName, value, helperText, error, placeholderText,
         inputProps={{
           style: { fontWeight: 'bold !important' },
         }}
+        disabled={check}
         sx={{
           backgroundColor: 'background.grey',
           width: width ?? '100%',
