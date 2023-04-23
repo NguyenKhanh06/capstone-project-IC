@@ -156,7 +156,7 @@ console.log("check", user)
         }
       })
       .catch((err) => {
-        handleError(err.response.data.responseSuccess);
+        handleError('Update Task Fail!');
       });
   };
 
@@ -210,7 +210,7 @@ console.log("check", user)
       }
     })
     .catch((err) => {
-      handleError(err.response.data.responseSuccess);
+      handleError('Delete fail!');
     });
   }
   const handleDelete = (id) => {
@@ -224,7 +224,7 @@ console.log("check", user)
         }
       })
       .catch((err) => {
-        handleError(err.response.data.responseSuccess);
+        handleError('Unassign member fail!');
       });
   };
   const handleChangeComment = (e) => {
@@ -492,7 +492,7 @@ console.log("cmt", cmtTask)
                     {cmt?.comment && <p>{cmt?.comment}</p> }
               </Box>  
 
-            {cmt?.staffId === user.id ?    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+            {cmt?.staffId === user?.staff.id ?    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
               <Tooltip title="Edit comment">
               <IconButton onClick={() => handleShowCmt(cmt)}>
                 <EditOutlinedIcon/>

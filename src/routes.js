@@ -98,6 +98,8 @@ export default function Router() {
         { path: 'registration-form', element: <ListForm />},
         { path: 'blog', element: <BlogPage /> },
         { path: 'project-task', element: <ListProjectTaskMember /> },
+        { path: 'student', element: <ListStudent />},
+
       ],
     },
     {

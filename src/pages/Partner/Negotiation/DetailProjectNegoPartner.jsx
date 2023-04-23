@@ -192,9 +192,11 @@ function DetailProjectNegoPartner(props) {
             </Stack>
             <Box sx={{ padding: '0 44px 44px 44px', maxWidth: '100%' }}>
               <b>Project Description:</b>
-              <Typography>
-               {project?.description}
-              </Typography>
+              {project?.description !== 'null' &&       <Typography>
+
+{project?.description}
+</Typography>}
+        
             </Box>
             <Box sx={{ padding: '0 44px 44px 44px', maxWidth: '100%' }}>
             <b>Project's Files:</b>
@@ -224,7 +226,7 @@ function DetailProjectNegoPartner(props) {
               >
                 Download File Contract
               </Button>  */}
-              {props.project?.projectStatus === 1 ?   <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+              {props.project?.checkNegotiationStatus ?   <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
                 Import Mark For Student
                 <input
                   onChange={onChangeFile}

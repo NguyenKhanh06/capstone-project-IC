@@ -61,6 +61,7 @@ const [student, setStudent] = useState({})
   const [fileStudent, setFileStudent] = useState(null);
   const [listFile, setListFile] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [id, setID] = useState('');
   const [majors, setMajors] = useState([]);
   const [majorDefaul, setMajorDefault] = useState(null);
@@ -75,7 +76,9 @@ const [student, setStudent] = useState({})
   const handleCloseConfirm = (data) => {
     setShowConfirm(false);
   };
-
+  const handleCloseConfirmDelete = (data) => {
+    setShowConfirmDelete(false);
+  };
   const handleClose = () => {
     setOpen(props.close);
   };
@@ -146,17 +149,21 @@ const [student, setStudent] = useState({})
   // };
 
 const deleteFile = (name) => {
-  axios.delete(`https://api.ic-fpt.click/api/v1/storage/filename?filename=${name}`)   .then((response) => {
+  axios.delete(`https://api.ic-fpt.click/api/v1/student/deleteGrading/${props.student.id}`)   .then((response) => {
     console.log('response', response);
     if (response.data.isSuccess) {
       handleSuccess('Delete File Successfull!!!');
       getAllFile()
+      setTimeout(() => {
+        handleCloseConfirmDelete()
+
+      }, 1000)
 
       // setTimeout(reload(), 3000)
     } 
   })
   .catch((err) => {
-    console.log('errr', err);
+    
     handleError('Delete File fail!!');
     setLoading(false);
   });
@@ -164,7 +171,7 @@ const deleteFile = (name) => {
 
   const getAllFile = () => {
     axios.get(`https://api.ic-fpt.click/api/v1/student/GetGradingStudentId/${props.student.id}`).then((response) => {
-      setListFile(response.data.responseSuccess);
+      setListFile(response.data.responseSuccess[0]);
     });
   };
 
@@ -471,30 +478,34 @@ console.log(e.target.value)
             </Stack>
             <Divider style={{ marginTop: 20 }} variant="middle" />
             {/* {props.student.gradingUrl && <Link href={props.student.gradingUrl}>Grading file</Link>} */}
-            <DialogTitle>List File Student</DialogTitle>
+            <DialogTitle>File Student's Mark</DialogTitle>
 
-            {listFile && (
-              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                {listFile.map((value, index) => (
-                  <ListItem key={index} disableGutters divider>
-                    <Link href={value.gradingUrl}>{`${index + 1}. ${value.fileName}`}</Link>
-                    {/* <ListItemText primary={`${index + 1}. ${value.fileName}`} /> */}
-                    <Tooltip title="Delete">
-                  <IconButton onClick={() => console.log(value)}>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                </Tooltip> 
-                  </ListItem>
-                ))}
-              </List>
-            )}
+            {listFile ? (
+             <ListItem disableGutters divider>
+             <Link href={listFile.gradingUrl}>  <Button
+                    color="warning"
+   
+                    variant="contained"
+                    startIcon={<FileDownloadOutlinedIcon />}
+            
+                  >
+                    Download File
+                  </Button></Link>
+           
+             <Tooltip title="Delete File">
+           <IconButton onClick={() => setShowConfirmDelete(true)}>
+             <DeleteIcon color="error" />
+           </IconButton>
+         </Tooltip> 
+           </ListItem>
+            ):    <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+            Import File
+            <input onChange={(e) => setFileStudent(e.target.files[0])} id="input" hidden type="file" />
+          </Button>}
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-              <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                Import File
-                <input onChange={(e) => setFileStudent(e.target.files[0])} id="input" hidden type="file" />
-              </Button>
+           
 
               {disableBtn && !Checkerr && !CheckerrPhone
               
@@ -552,13 +563,37 @@ console.log(e.target.value)
               Accept
             </Button>
           </DialogActions>
-          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Student Successful!'} />
-          <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
-        </Dialog>
-      </Dialog>
 
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
+      <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+        </Dialog>
+        <Dialog
+          open={showConfirmDelete}
+          onClose={handleCloseConfirmDelete}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          fullWidth
+          maxWidth="sm"
+        >
+          <DialogTitle id="alert-dialog-title">Update Student</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">You Want To Delete File?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseConfirmDelete}>Cancel</Button>
+            <Button variant="contained" color='error' onClick={() => deleteFile()} autoFocus>
+     Delete
+            </Button>
+          </DialogActions>
+
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
+      <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+        </Dialog>
+        
       <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
       <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+      </Dialog>
+
     </div>
   );
 }

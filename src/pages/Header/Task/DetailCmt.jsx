@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import InfoIcon from '@mui/icons-material/Info';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Button,
@@ -94,7 +94,7 @@ function DetailCmt(props) {
     })
       .then((response) => {
         if (response.data.isSuccess) {
-          setShowSuccess(true);
+          handleSuccess("Update comment successful!")
          
           setTimeout(() => {
   
@@ -117,6 +117,26 @@ function DetailCmt(props) {
     }
   
   };
+  const DeleteFile = () => {
+    axios.delete(`https://api.ic-fpt.click/api/v1/comment/deleteFile/${props.cmt.id}`).then((response) => {
+      if (response.data.isSuccess) {
+        handleSuccess("Delete file successful!")
+
+       
+        setTimeout(() => {
+
+          setShowSuccess(false)
+          handleClose()
+
+    
+        }, 1000);
+      props.fetchDataComment()
+      }
+    })
+    .catch((err) => {
+      handleError(err.response.data.responseSuccess);
+    });
+  }
   return (
     <Dialog fullWidth maxWidth="md" onClose={props.close} aria-labelledby="customized-dialog-title" open={props.show}>
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
@@ -172,10 +192,16 @@ function DetailCmt(props) {
                 }}
               >
                 {props.cmt?.fileUrl && <Link href={props?.cmt?.fileUrl}>{props.cmt?.viewFile[0].fileName}</Link>}
-               {props.cmt?.fileUrl ? <Button sx={{marginLeft: 4}} component="label">
-       Delete file
-        <input hidden onChange={onChangeFile} type="file" />
-      </Button> : <Button sx={{marginLeft: 4}} component="label">
+               {props.cmt?.fileUrl ? 
+       
+                  <Tooltip title="Delete Comment">
+                       <IconButton onClick={() => DeleteFile()} color='error'>
+               <DeleteIcon />
+             </IconButton>
+                </Tooltip>
+              : 
+     
+      <Button  component="label" variant='contained'>
         Upload file
         <input hidden onChange={onChangeFile} type="file" />
       </Button> } 
@@ -236,7 +262,7 @@ function DetailCmt(props) {
             Accept
           </Button>
         </DialogActions>
-        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Comment Successful!'} />
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       </Dialog>
     </Dialog>

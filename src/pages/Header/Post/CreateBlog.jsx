@@ -136,7 +136,7 @@ console.log(response)
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setLoading(false);
-          setTimeout(reload(), 5000);
+          setTimeout(reload(), 2000);
         }
       })
       .catch((err) => {
@@ -188,9 +188,7 @@ console.log(response)
               required
               fullWidth
               label="Content"
-              inputProps={{
-                maxLength: 1000,
-              }}
+      
             />
           
             <Divider variant="middle" />

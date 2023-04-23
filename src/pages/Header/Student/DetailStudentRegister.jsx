@@ -174,7 +174,7 @@ function DetailStudentRegister(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/registration/UpdateRegisId/${student.id}?FullName=${student.student.fullName}&MajorId=${student?.student?.majorId}&memberCode=${student?.student?.memberCode}&PhoneNumber=${student.student.phoneNumber}&NumberPassPort=${numberPassPort}&RollNumber=${student.student?.rollNumber}&RollNumber=${student.student?.rollNumber}&YourEmail=${student.student?.email}&ScocialLink=${socialLink}&DateExpired=${dateExpired}&ProjectId=${project}&Content1=${content1}&Content2=${content2}&Content3=${content3}&Content4=${content4}&Content5=${content5}`,
+      url: `https://api.ic-fpt.click/api/v1/registration/UpdateRegisId/${student.id}?FullName=${student.student.fullName}&MajorId=${student?.student?.majorId}&memberCode=${student?.student?.memberCode}&PhoneNumber=${student.student.phoneNumber}&NumberPassPort=${numberPassPort}&RollNumber=${student.student?.rollNumber}&RollNumber=${student.student?.rollNumber}&YourEmail=${student.student?.email}&ScocialLink=${socialLink}&DateExpired=${dateExpired}&ProjectId=${student?.projectId}&Content1=${content1}&Content2=${content2}&Content3=${content3}&Content4=${content4}&Content5=${content5}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -248,7 +248,10 @@ function DetailStudentRegister(props) {
             </Stack>
           </Stack>
           <Divider variant="middle" sx={{ marginBottom: 6, marginTop: 4 }} />
-
+          <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}  sx={{ marginBottom: 6}}>
+              <Typography variant="body1">Project:</Typography>
+              <Typography variant="h6">{student?.project.projectName}</Typography>
+            </Stack>
           <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
             <TextField
               value={numberPassPort}
@@ -258,7 +261,7 @@ function DetailStudentRegister(props) {
               }}
               required
               fullWidth
-              placeholder="Number Passport"
+              label="Number Passport"
             />
             <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -283,9 +286,10 @@ function DetailStudentRegister(props) {
               }}
               required
               fullWidth
+              label="Social Link"
             />
 
-            <FormControl fullWidth>
+            {/* <FormControl fullWidth>
               <InputLabel id="demo-simple-select-autowidth-label">Project</InputLabel>
               <Select
                 labelId="demo-simple-select-autowidth-label"
@@ -320,7 +324,7 @@ function DetailStudentRegister(props) {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Stack>
           <Stack sx={{ marginTop: 4 }} direction="column" justifyContent="center" alignItems="center" spacing={2}>
             {student?.contentHeader1 !== 'null' && (

@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AssignmentLateTwoToneIcon from '@mui/icons-material/AssignmentLateTwoTone';
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
-
+import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -109,7 +109,22 @@ console.log("user", user)
              
              <DoNotDisturbOnOutlinedIcon color='error' />
 
-         </Tooltip>: <>
+         </Tooltip>: params.row.checkNegotiationStatus   ?  <>
+         <Tooltip title="View Detail">
+              <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
+                <RemoveRedEyeRoundedIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Neogotiation is completed">
+           <IconButton onClick={() => handleViewNego(params.row)} aria-label="delete">
+       <CheckCircleOutlineTwoToneIcon  color='success' />
+           </IconButton>
+            
+
+         </Tooltip> 
+         
+     
+         </> : <>
          <Tooltip title="View Detail">
               <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
                 <RemoveRedEyeRoundedIcon />

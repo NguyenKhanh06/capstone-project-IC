@@ -18,14 +18,14 @@ const ProfileComponent = () => {
       setInfors(response.data.responseSuccess);
     });
   };
-  const getGrading = async () => {
-    axios.get(`${API_URL}/student/GetGradingStudentId/${user.id}`).then((response) => {
-      setGrading(response.data.responseSuccess);
-    });
-  };
+  // const getGrading = async () => {
+  //   axios.get(`${API_URL}/student/GetGradingStudentId/${user.id}`).then((response) => {
+  //     setGrading(response.data.responseSuccess);
+  //   });
+  // };
   useEffect(() => {
     getRegisInfor();
-    getGrading();
+    // getGrading();
   }, []);
 
   console.log(user);
@@ -194,14 +194,12 @@ const ProfileComponent = () => {
           }}
         >
           <Typography variant="h3" style={{ margin: '10px 0 0 0' }}>
-            Your files
+            Your files mark
           </Typography>
-          {grading &&
-            grading.map((grad, index) => (
-              <Button variant="text" key={index} href={grad.gradingUrl}>
-                <RightTitle NameText={grad.fileName} />
-              </Button>
-            ))}
+          {user?.gradingUrl &&   <Button variant="text"  href={user?.gradingUrl}>
+                <RightTitle NameText='File mark' />
+              </Button>}
+        
         </Box>
       </Container>
     </Box>

@@ -34,7 +34,11 @@ const navConfigMember = [
     icon: <AppRegistrationTwoToneIcon/>
   },
 
-  
+  {
+    title: 'Student',
+    path: '/staff/student',
+    icon: <BadgeTwoToneIcon/>
+  },
  
  
  

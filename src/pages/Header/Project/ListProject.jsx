@@ -110,6 +110,13 @@ function ListProject(props) {
       valueGetter: (params) => {
         return params.value.name;
       },
+    }, {
+      field: 'name',
+      headerName: 'Partner',
+      flex: 1,
+      valueGetter: (params) => {
+        return params.row.partner?.name
+      },
     },
 
     {

@@ -329,8 +329,12 @@ function DetailProject(props) {
       if(props.project.officalTimeEnd){
         setOfficialEnd(dayjs(props.project.officalTimeEnd));
       }
-      
-      setDescription(props.project.description);
+  if(props.project.description !== 'null'){
+    setDescription(props.project.description)
+  }else{
+    setDescription('')
+  }
+
       setStatus(props.project.projectStatus);
       setLeader(props.project.leaderId);
       setCourse(props.project.courseId);

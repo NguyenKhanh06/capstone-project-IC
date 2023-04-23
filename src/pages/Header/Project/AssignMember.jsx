@@ -307,7 +307,7 @@ sx={{marginBottom: 4}}
             </Button>
           </DialogActions>
         </form>
-        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Assign Successful!'} />
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
       <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       </Dialog>
     );

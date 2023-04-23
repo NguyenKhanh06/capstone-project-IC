@@ -76,7 +76,7 @@ function CreateForm(props) {
     setLoading(true);
     await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
    
-      setProjects(response.data.responseSuccess.filter(prj => prj.projectStatus === 1));
+      setProjects(response.data.responseSuccess.filter(prj => prj.checkNegotiationStatus && prj.projectStatus !== 2));
       setLoading(false);
     });
   };

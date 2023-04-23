@@ -65,15 +65,67 @@ function ListProjectNego(props) {
     const handleCloseConfirm = (data) => {
       setShowConfirm(false)
     };
-
+    const handleError = (data) => {
+      setShowError(true);
+      setMessage(data);
+    };
+    const handleSuccess = (data) => {
+      setShowSuccess(true);
+      setMessage(data);
+    };
+    const handleUpdate1 = () => {
+      axios
+        .put(
+          `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.data.isSuccess) {
+            handleSuccess('Update Project Successsfull!!!');
+  
+            setTimeout(() => {
+              window.location.reload()
+                 }, 2000)
+          }
+        })
+        .catch((err) => {
+          handleError(err.response.data.responseSuccess);
+        });
+    };
     
+    const handleUpdate2 = () => {
+      axios
+        .put(
+          `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&OfficalTimeStart=${dayjs(idPrj.officalTimeStart)}&OfficalTimeEnd=${dayjs(idPrj.officalTimeEnd)}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
 
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.data.isSuccess) {
+            handleSuccess('Update Project Successsfull!!!');
+  
+            setTimeout(() => {
+         window.location.reload()
+            }, 2000)
+          }
+        })
+        .catch((err) => {
+          handleError(err.response.data.responseSuccess);
+        });
+    };
     // console.log(`https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
   
     const handleUpdateProject = () => {
   
   
+      if (idPrj.officalTimeStart && idPrj.officalTimeEnd != null) {
+    handleUpdate2()
      
+      } else {
+        handleUpdate1()
+          
+         
+      }
     };
   
   const columns = [
@@ -126,7 +178,7 @@ function ListProjectNego(props) {
              
              <DoNotDisturbOnOutlinedIcon color='error' />
 
-         </Tooltip> : params.row.status   ? 
+         </Tooltip> : params.row.checkNegotiationStatus   ? 
          
          <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
             <Tooltip title="View Detail">
