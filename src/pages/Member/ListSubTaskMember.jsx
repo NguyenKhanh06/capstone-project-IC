@@ -116,6 +116,7 @@ function ListSubTaskMember(props) {
   const [showDetail, setShowDetail] = useState(false);
   const [showDetailParent, setShowDetailParent] = useState(false);
   const [task, setTask] = useState([]);
+  const [childTask, setChildTask] = useState(null)
   const [deadline, setDeadline] = useState(null);
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("")
@@ -150,11 +151,16 @@ function ListSubTaskMember(props) {
     setShowDetail(true);
     setTask(data);
   };
-
+  const getChildTask = async () => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/task/GetChildTask/${props.state.id}`).then(response => {
+    
+       setChildTask(response.data.responseSuccess.filter(task => task?.assignTasks[0]?.staffId === staff?.staff.id).filter(task => task.status !== 5))
+     })
+   }
   useEffect(() => {
     if(props.state != null){
-      setChildrenTask(props.state?.childrenTask?.filter(task => task?.assignTasks[0]?.staffId === staff?.staff.id).filter(task => task.status !== 5))
-
+   
+getChildTask()
     }
   }, [props.state]);
 

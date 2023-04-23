@@ -58,8 +58,7 @@ function CreateSubTask(props) {
           setShowSuccess(true);
           props.getDetail()
           setTimeout(() => {
-          
-            props.closeSub()
+
             setShowSuccess(false)
           
             handleClose()
@@ -84,7 +83,7 @@ function CreateSubTask(props) {
           props.getDetail()
 setTimeout(() => {
 
-  props.closeSub()
+ 
   setShowSuccess(false)
 
   handleClose()

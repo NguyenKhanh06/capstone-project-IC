@@ -35,7 +35,7 @@ import dayjs from 'dayjs';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 
-function DetailStudentRegister(props) {
+function DetailStudentRegisterDetail(props) {
   const [disableBtn, setDisableBtn] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { state } = useLocation();
@@ -76,16 +76,16 @@ function DetailStudentRegister(props) {
     setMessage(data);
   };
 
-  const fetchDataPrj = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/registration/getAllRes`).then((response) => {
-      setProjects(response.data.responseSuccess);
+  // const fetchDataPrj = async () => {
+  //   await axios.get(`https://api.ic-fpt.click/api/v1/registration/getAllRes`).then((response) => {
+  //     setProjects(response.data.responseSuccess);
 
-    });
-  };
+  //   });
+  // };
 
   const getDetail = async () => {
     await axios
-      .get(`https://api.ic-fpt.click/api/v1/registration/GetDetailResId/${props.studentID}`)
+      .get(`https://api.ic-fpt.click/api/v1/registration/getDetailbyStudentId/${props.studentID}`)
       .then((response) => {
 
         setStudent(response.data.responseSuccess[0]);
@@ -161,7 +161,7 @@ function DetailStudentRegister(props) {
   useEffect(() => {
     if (props.studentID) {
       getDetail();
-      fetchDataPrj();
+      // fetchDataPrj();
     }
   }, [props.studentID]);
   console.log(props)
@@ -336,7 +336,7 @@ console.log(student)
                   setContent1(e.target.value);
                   setDisableBtn(true);
                 }}
- 
+    
                 fullWidth
               />
             )}
@@ -348,7 +348,7 @@ console.log(student)
                   setContent2(e.target.value);
                   setDisableBtn(true);
                 }}
-
+   
                 fullWidth
               />
             )}
@@ -360,7 +360,7 @@ console.log(student)
                   setContent3(e.target.value);
                   setDisableBtn(true);
                 }}
-
+        
                 fullWidth
               />
             )}{' '}
@@ -372,7 +372,7 @@ console.log(student)
                   setContent4(e.target.value);
                   setDisableBtn(true);
                 }}
-           
+
                 fullWidth
               />
             )}{' '}
@@ -384,7 +384,7 @@ console.log(student)
                   setContent5(e.target.value);
                   setDisableBtn(true);
                 }}
-  
+     
                 fullWidth
               />
             )}
@@ -472,4 +472,4 @@ console.log(student)
   );
 }
 
-export default DetailStudentRegister;
+export default DetailStudentRegisterDetail;

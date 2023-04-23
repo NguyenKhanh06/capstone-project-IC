@@ -168,12 +168,11 @@ const handleDeleteTask = () => {
 
     if (response.data.isSuccess) {
    setShowSuccess(true)
-props.getDetail()
+getChildTask()
 setTimeout(() => {
   handleCloseConfirm()
   setShowSuccess(false)
 
-  handleClose()
 }, 1000);
 
    
@@ -186,8 +185,7 @@ setTimeout(() => {
 const getChildTask = async () => {
  await axios.get(`https://api.ic-fpt.click/api/v1/task/GetChildTask/${props.state.id}`).then(response => {
  
-
-    setChildTask(response.data.responseSuccess).filter(task => task.status !== 5)
+    setChildTask(response.data.responseSuccess.filter(task => task.status !== 5))
   })
 }
 
@@ -359,14 +357,14 @@ const getChildTask = async () => {
         <DialogTitle id="alert-dialog-title">
           <Stack direction="row" alignItems="flex-end" justifyContent="flex-end" spacing={2}>
           
-          
-               <Button
+          {props.state.state !== 2 &&  <Button
               variant="contained"
               startIcon={<Iconify icon="eva:plus-fill" />}
               onClick={() => setShowCreate(true)}
             >
               New Task
-            </Button>
+            </Button>}
+              
           </Stack>
         </DialogTitle>
             <Container>
@@ -404,7 +402,7 @@ const getChildTask = async () => {
               show={showCreate}
               close={() => setShowCreate(false)}
               closeSub = {handleClose}
-              getDetail={props.getDetail}
+              getDetail={getChildTask}
             />
             <DetailTask task={task} show={showDetail} close={() => setShowDetail(false)} />
           </>

@@ -297,6 +297,8 @@ console.log(e.target.value)
   const onblurMail = () => {
     if (regexMail.test(email)) {
       setErr(false);
+      setDisableBtn(true);
+
     } else {
       setErr(true);
     }
@@ -304,6 +306,8 @@ console.log(e.target.value)
   const onblurPhone = () => {
     if (regexPhone.test(phoneNumber)) {
       setErrPhone(false);
+      setDisableBtn(true);
+
     } else {
       setErrPhone(true);
     }
@@ -480,11 +484,11 @@ console.log(e.target.value)
             {/* {props.student.gradingUrl && <Link href={props.student.gradingUrl}>Grading file</Link>} */}
             <DialogTitle>File Student's Mark</DialogTitle>
 
-            {listFile ? (
+            {props.student.gradingUrl ? (
              <ListItem disableGutters divider>
              <Link href={listFile.gradingUrl}>  <Button
                     color="warning"
-   
+
                     variant="contained"
                     startIcon={<FileDownloadOutlinedIcon />}
             

@@ -48,9 +48,9 @@ const RegisterSchema = Yup.object().shape({
 
   PhoneNumber: Yup.string().matches(/^[0-9]{8,10}$/, 'Invalid phone number, please check again!'),
 
-  PassportNumber: Yup.string()
-    .matches(/[A-Z]{1}[0-9]{8}/, 'Incorrect passport number, please check again! [Example: A12345678]')
-    .required('Can you input your major, please ?'),
+  // PassportNumber: Yup.string()
+  //   .matches(/[A-Z]{1}[0-9]{8}/, 'Incorrect passport number, please check again! [Example: A12345678]')
+  //   .required('Can you input your major, please ?'),
 
   FacebookLink: Yup.string()
     .matches(
@@ -447,18 +447,22 @@ const RegisterInformationComponent = () => {
                       }}
                     >
                       <Title number={'3'} title={'Roll number *'} />
-                      <InputBar
-                        inputName="RollNumber"
-                        width={'90%'}
-                        {...formik.getFieldProps('RollNumber')}
-                        error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
-                        helperText={formik.touched.RollNumber && formik.errors.RollNumber}
-                      />
+                      {student.phoneNumber && <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.rollNumber}</Typography>
+                      ||     <InputBar
+                      inputName="RollNumber"
+                      width={'90%'}
+                      {...formik.getFieldProps('RollNumber')}
+                      error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
+                      helperText={formik.touched.RollNumber && formik.errors.RollNumber}
+                    />
+                      }
+                 
                     </Box>
                   </Box>
                  
                   <Title number={'4'} title={'Major *'} />
-                  {Majors && (
+                  {!student?.major && (
+                 
               //        <FormControl fullWidth>
                    
               //        <Select
@@ -496,6 +500,7 @@ const RegisterInformationComponent = () => {
                      
               //        </Select>
               //      </FormControl>
+
                     <Autocomplete
                       componentsProps={{
                         paper: {
@@ -539,7 +544,7 @@ const RegisterInformationComponent = () => {
                       )}
                       noOptionsText="This major not found"
                     />
-                  )}
+                  ) || <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.major.majorFullName}</Typography> }
                   {Boolean(formik.touched.Major && formik.errors.Major) && (
                     <Box sx={{ margin: ' 10px 0 0 20px' }}>
                       <Typography color={'red'} fontSize="14px">
@@ -603,13 +608,16 @@ const RegisterInformationComponent = () => {
                       }}
                     >
                       <Title number={'6'} title={'Phone number *'} />
-                      <InputBar
-                        inputName="PhoneNumber"
-                        width={'90%'}
-                        {...formik.getFieldProps('PhoneNumber')}
-                        error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
-                        helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
-                      />
+                      {student?.phoneNumber && <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.phoneNumber}</Typography> 
+                      ||    <InputBar
+                      inputName="PhoneNumber"
+                      width={'90%'}
+                      {...formik.getFieldProps('PhoneNumber')}
+                      error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
+                      helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
+                    />
+                      }
+                  
                     </Box>
                   </Box>
                   <Title number={'7'} title={'Passport number *'} />
@@ -617,8 +625,8 @@ const RegisterInformationComponent = () => {
                     inputName="PassportNumber"
                     width={'95%'}
                     {...formik.getFieldProps('PassportNumber')}
-                    error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
-                    helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
+                    // error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
+                    // helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
                   />
                   <Title number={'8'} title={'Expiration date *'} />
                   <Box height={12}></Box>

@@ -32,7 +32,7 @@ import DetailProjectLeader from './Leader/DetailPrjLeader';
 
 function ListProjectMember(props) {
   const user = JSON.parse(sessionStorage.getItem('user'));
-console.log("staff", user)
+
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -51,7 +51,20 @@ console.log("staff", user)
   const handleCloseConfirm = (data) => {
     setShowConfirm(false);
   };
-
+  const updateMilstone = (id, state) => {
+    const formData = new FormData();
+    formData.append('ProjectId', id);
+    formData.append('Status', state);
+    axios({
+      method: 'POST',
+      data: formData,
+      url: `https://api.ic-fpt.click/api/v1/project/changeStatus`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+     
+  };
   const columns = [
     {
       field: 'projectName',
@@ -372,7 +385,7 @@ console.log("staff", user)
         </Stack>
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-          <DataGrid
+            {projects.length &&       <DataGrid
               autoHeight
               rows={projects}
               columns={columns}
@@ -390,7 +403,8 @@ console.log("staff", user)
               components={{ NoRowsOverlay }}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
-            />
+            /> || <></>}
+    
          
 
 </Box>

@@ -45,9 +45,9 @@ const RegisterSchema = Yup.object().shape({
 
   PhoneNumber: Yup.string().matches(/^[0-9]{8,10}$/, 'Invalid phone number, please check again!'),
 
-  PassportNumber: Yup.string()
-    .matches(/[A-Z]{1}[0-9]{8}/, 'Incorrect passport number, please check again! [Example: A12345678]')
-    .required('Can you input your major, please ?'),
+  // PassportNumber: Yup.string()
+  //   .matches(/[A-Z]{1}[0-9]{8}/, 'Incorrect passport number, please check again! [Example: A12345678]')
+  //   .required('Can you input your major, please ?'),
 
   FacebookLink: Yup.string()
     .matches(
@@ -58,7 +58,7 @@ const RegisterSchema = Yup.object().shape({
 
   DOB: Yup.date().required('Can you input your date of birth, please ?'),
 
-  ExpirationDate: Yup.date().required('Can you input your expiration date, please ?'),
+  // ExpirationDate: Yup.date().required('Can you input your expiration date, please ?'),
 
   // PassportImage: Yup.array().required('Can you upload your passport image, please ?'),
 
@@ -66,7 +66,7 @@ const RegisterSchema = Yup.object().shape({
 });
 const RegisterComponent = () => {
   const student = JSON.parse(sessionStorage.getItem('user'));
-
+console.log(student)
   // const [PassportImage, setPassportImage] = React.useState<File[]>([]);
   const [TransferInfomation, setTransferInfomation] = React.useState<File[]>([]);
   const [Program, setProgram] = React.useState(null);
@@ -382,6 +382,7 @@ const RegisterComponent = () => {
                   helperText={formik.touched.FullName && formik.errors.FullName}
                 />
               </Box>
+              
               <Box
                 sx={{
                   display: 'flex',
@@ -390,17 +391,20 @@ const RegisterComponent = () => {
                 }}
               >
                 <Title number={'3'} title={'Roll number *'} />
-                <InputBar
-                  inputName="RollNumber"
-                  width={'90%'}
-                  {...formik.getFieldProps('RollNumber')}
-                  error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
-                  helperText={formik.touched.RollNumber && formik.errors.RollNumber}
-                />
+                {student.rollNumber && <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.rollNumber}</Typography>
+                ||   <InputBar
+                inputName="RollNumber"
+                width={'90%'}
+                {...formik.getFieldProps('RollNumber')}
+                error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
+                helperText={formik.touched.RollNumber && formik.errors.RollNumber}
+              />
+                }
+           
               </Box>
             </Box>
             <Title number={'4'} title={'Major *'} />
-            {Majors && (
+            {!student?.major && (
               <Autocomplete
                 componentsProps={{
                   paper: {
@@ -409,6 +413,7 @@ const RegisterComponent = () => {
                     },
                   },
                 }}
+
                 defaultValue={student?.major}
                 disablePortal
                 options={Majors}
@@ -444,7 +449,7 @@ const RegisterComponent = () => {
                 )}
                 noOptionsText="This major not found"
               />
-            )}
+            ) ||    <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.major.majorFullName}</Typography> }
             {Boolean(formik.touched.Major && formik.errors.Major) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
@@ -508,24 +513,27 @@ const RegisterComponent = () => {
                 }}
               >
                 <Title number={'6'} title={'Phone number *'} />
-                <InputBar
-                  inputName="PhoneNumber"
-                  width={'90%'}
-                  {...formik.getFieldProps('PhoneNumber')}
-                  error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
-                  helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
-                />
+                {student?.phoneNumber && <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.phoneNumber}</Typography>
+                ||  <InputBar
+                inputName="PhoneNumber"
+                width={'90%'}
+                {...formik.getFieldProps('PhoneNumber')}
+                error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
+                helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
+              />
+                }
+               
               </Box>
             </Box>
-            <Title number={'7'} title={'Passport number *'} />
+            <Title number={'7'} title={'Passport number'} />
             <InputBar
               inputName="PassportNumber"
               width={'95%'}
               {...formik.getFieldProps('PassportNumber')}
-              error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
-              helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
+              // error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
+              // helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
             />
-            <Title number={'8'} title={'Expiration date *'} />
+            <Title number={'8'} title={'Expiration date'} />
             <Box height={12}></Box>
             <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -551,13 +559,13 @@ const RegisterComponent = () => {
                 format="DD/MM/YYYY"
               />
             </LocalizationProvider>
-            {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
+            {/* {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
                   {formik.touched.ExpirationDate && formik.errors.ExpirationDate}
                 </Typography>
               </Box>
-            )}
+            )} */}
             <Title number={'9'} title={'Personal Facebook link *'} />
             <InputBar
               inputName="FacebookLink"

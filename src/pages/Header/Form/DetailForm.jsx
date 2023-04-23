@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import axios from 'axios';
+import DetailStudentRegisterDetail from '../Student/DetailStudentRegisterDetail';
 
 function DetailForm(props) {
   const [disableBtn, setDisable] = useState(false);
@@ -132,7 +133,7 @@ const updateDate = () => {
 
   });
 }
-console.log(props.form)
+
 useEffect(() => {
   if (props.form) {
     setOpenRegis(dayjs(props.form?.dateOpenRegis))
@@ -266,7 +267,7 @@ useEffect(() => {
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
     
       </Dialog>
-        <DetailStudentRegister show={showRegis} close={() => setShowRegis(false)} studentID = {student.id}/>
+        <DetailStudentRegisterDetail show={showRegis} close={() => setShowRegis(false)} studentID = {student.id}/>
       </Dialog>
     );
 }
