@@ -116,7 +116,7 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
               margin: '0',
 
               fontSize: { lg: '20px', sm: '15px', xs: '15px' },
-              fontWeight: 'fontWeightBold',
+              fontWeight: '500',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               display: '-webkit-box',
