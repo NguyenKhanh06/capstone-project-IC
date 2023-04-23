@@ -39,7 +39,7 @@ const ProfileComponent = () => {
         }}
       >
         <BaseBreadCrumbs previousLink={[{ href: 'home', name: 'Homepage' }]} currentLink={'Profile'} />
-        <Box
+        {student ? <><Box
           sx={{
             display: 'flex',
             flexDirection: { lg: 'row', sm: 'row', xs: 'column' },
@@ -200,7 +200,8 @@ const ProfileComponent = () => {
                 <RightTitle NameText='File mark' />
               </Button>}
         
-        </Box>
+        </Box></> :  <Typography style={{marginTop: "5%"}} variant='h6' >Please <Link to={"/login"}>Login</Link> before view profile</Typography>}
+        
       </Container>
     </Box>
   );

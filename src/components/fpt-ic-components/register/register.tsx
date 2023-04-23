@@ -27,6 +27,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import axios from 'axios';
 import { API_URL } from 'src/config/apiUrl/apis-url';
+import { Link } from 'react-router-dom';
 
 const RegisterSchema = Yup.object().shape({
   Program: Yup.string().required('Can you select the program you want register, please ?'),
@@ -65,7 +66,7 @@ const RegisterSchema = Yup.object().shape({
 });
 const RegisterComponent = () => {
   const student = JSON.parse(sessionStorage.getItem('user'));
-  console.log("ses", student);
+
   // const [PassportImage, setPassportImage] = React.useState<File[]>([]);
   const [TransferInfomation, setTransferInfomation] = React.useState<File[]>([]);
   const [Program, setProgram] = React.useState(null);
@@ -311,512 +312,513 @@ const RegisterComponent = () => {
                   width: 'auto',
                 }}
               >
-                <form onSubmit={formik.handleSubmit}>
+                {student ?    <form onSubmit={formik.handleSubmit}>
             
-                  <Title number={'1'} title={'Program *'} />
-                  <Autocomplete
-                    componentsProps={{
-                      paper: {
-                        sx: {
-                          fontWeight: 'bold',
-                        },
+            <Title number={'1'} title={'Program *'} />
+            <Autocomplete
+              componentsProps={{
+                paper: {
+                  sx: {
+                    fontWeight: 'bold',
+                  },
+                },
+              }}
+              options={forms}
+              getOptionLabel={(option) => option['project']['projectName']}
+              sx={{ border: 'none !important', fontWeight: 'bold', width: '43%' }}
+              onChange={(event, newValue) => {
+                setProgram(newValue);
+
+                formik.setFieldValue('Program', newValue !== null ? newValue['id'].toString() : '');
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
+                  sx={{
+                    borderRadius: '25px',
+                    backgroundColor: '#D9D9D9',
+                    margin: '10px 0 0 20px',
+                    border: 'none !important',
+                    '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                    '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                      border: 'none !important',
+                    },
+                    '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      border: 'none !important',
+                    },
+                    '& .MuiSvgIcon-root': {
+                      color: 'primary.main',
+                    },
+                  }}
+                  placeholder="Select Program"
+                />
+              )}
+              noOptionsText="This program not found"
+            />
+
+            {Boolean(formik.touched.Program && formik.errors.Program) && (
+              <Box sx={{ margin: ' 10px 0 0 20px' }}>
+                <Typography color={'red'} fontSize="14px">
+                  {formik.touched.Program && formik.errors.Program}
+                </Typography>
+              </Box>
+            )}
+
+            <Box sx={{ display: 'flex', width: '100%' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                }}
+              >
+                <Title number={'2'} title={'Full name *'} />
+                <InputBar
+                  inputName="FullName"
+                  width={'90%'}
+                  {...formik.getFieldProps('FullName')}
+                  error={Boolean(formik.touched.FullName && formik.errors.FullName)}
+                  helperText={formik.touched.FullName && formik.errors.FullName}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                }}
+              >
+                <Title number={'3'} title={'Roll number *'} />
+                <InputBar
+                  inputName="RollNumber"
+                  width={'90%'}
+                  {...formik.getFieldProps('RollNumber')}
+                  error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
+                  helperText={formik.touched.RollNumber && formik.errors.RollNumber}
+                />
+              </Box>
+            </Box>
+            <Title number={'4'} title={'Major *'} />
+            {Majors && (
+              <Autocomplete
+                componentsProps={{
+                  paper: {
+                    sx: {
+                      fontWeight: 'bold',
+                    },
+                  },
+                }}
+                defaultValue={student?.major}
+                disablePortal
+                options={Majors}
+                getOptionLabel={(option) => option['majorFullName']}
+                sx={{ border: 'none !important', fontWeight: 'bold' }}
+                onChange={(event, newValue) => {
+                  setMajor(newValue);
+                  formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
+                    sx={{
+                      width: '93.5%',
+                      borderRadius: '25px',
+                      backgroundColor: '#D9D9D9',
+                      margin: '10px 0 0 20px',
+                      border: 'none !important',
+                      '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                      '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                        border: 'none !important',
+                      },
+                      '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        border: 'none !important',
+                      },
+                      '& .MuiSvgIcon-root': {
+                        color: 'primary.main',
                       },
                     }}
-                    options={forms}
-                    getOptionLabel={(option) => option['project']['projectName']}
-                    sx={{ border: 'none !important', fontWeight: 'bold', width: '43%' }}
-                    onChange={(event, newValue) => {
-                      setProgram(newValue);
-
-                      formik.setFieldValue('Program', newValue !== null ? newValue['id'].toString() : '');
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                        sx={{
-                          borderRadius: '25px',
-                          backgroundColor: '#D9D9D9',
-                          margin: '10px 0 0 20px',
-                          border: 'none !important',
-                          '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                          '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                            border: 'none !important',
-                          },
-                          '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            border: 'none !important',
-                          },
-                          '& .MuiSvgIcon-root': {
-                            color: 'primary.main',
-                          },
-                        }}
-                        placeholder="Select Program"
-                      />
-                    )}
-                    noOptionsText="This program not found"
+                    placeholder="Select Major"
                   />
-
-                  {Boolean(formik.touched.Program && formik.errors.Program) && (
-                    <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                      <Typography color={'red'} fontSize="14px">
-                        {formik.touched.Program && formik.errors.Program}
-                      </Typography>
-                    </Box>
-                  )}
-
-                  <Box sx={{ display: 'flex', width: '100%' }}>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <Title number={'2'} title={'Full name *'} />
-                      <InputBar
-                        inputName="FullName"
-                        width={'90%'}
-                        {...formik.getFieldProps('FullName')}
-                        error={Boolean(formik.touched.FullName && formik.errors.FullName)}
-                        helperText={formik.touched.FullName && formik.errors.FullName}
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <Title number={'3'} title={'Roll number *'} />
-                      <InputBar
-                        inputName="RollNumber"
-                        width={'90%'}
-                        {...formik.getFieldProps('RollNumber')}
-                        error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
-                        helperText={formik.touched.RollNumber && formik.errors.RollNumber}
-                      />
-                    </Box>
-                  </Box>
-                  <Title number={'4'} title={'Major *'} />
-                  {Majors && (
-                    <Autocomplete
-                      componentsProps={{
-                        paper: {
-                          sx: {
-                            fontWeight: 'bold',
-                          },
-                        },
-                      }}
-                      defaultValue={student?.major}
-                      disablePortal
-                      options={Majors}
-                      getOptionLabel={(option) => option['majorFullName']}
-                      sx={{ border: 'none !important', fontWeight: 'bold' }}
-                      onChange={(event, newValue) => {
-                        setMajor(newValue);
-                        formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                          sx={{
-                            width: '93.5%',
-                            borderRadius: '25px',
-                            backgroundColor: '#D9D9D9',
-                            margin: '10px 0 0 20px',
-                            border: 'none !important',
-                            '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                            '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                              border: 'none !important',
-                            },
-                            '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                              border: 'none !important',
-                            },
-                            '& .MuiSvgIcon-root': {
-                              color: 'primary.main',
-                            },
-                          }}
-                          placeholder="Select Major"
-                        />
-                      )}
-                      noOptionsText="This major not found"
-                    />
-                  )}
-                  {Boolean(formik.touched.Major && formik.errors.Major) && (
-                    <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                      <Typography color={'red'} fontSize="14px">
-                        {formik.touched.Major && formik.errors.Major}
-                      </Typography>
-                    </Box>
-                  )}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      width: '100%',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        width: '50%',
-                        flexDirection: 'column',
-                      }}
-                    >
-                      <Title number={'5'} title={'Date of birth'} />
-                      <Box height={12}></Box>
-                      <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          sx={{
-                            input: { fontWeight: 'bold' },
-                            margin: '0 0 0 20px',
-                            padding: '0 20px 0 5px',
-                            width: '90%',
-                            borderRadius: '25px',
-                            '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                            '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                              border: 'none !important',
-                            },
-                            '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                              border: 'none !important',
-                            },
-                          }}
-                          value={DOB}
-                          onChange={(newValue) => {
-                            setDOB(newValue);
-                            formik.setFieldValue('DOB', newValue);
-                          }}
-                          format="DD/MM/YYYY"
-                        />
-                      </LocalizationProvider>
-                      {Boolean(formik.touched.DOB && formik.errors.DOB) && (
-                        <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                          <Typography color={'red'} fontSize="14px">
-                            {formik.touched.DOB && formik.errors.DOB}
-                          </Typography>
-                        </Box>
-                      )}
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <Title number={'6'} title={'Phone number *'} />
-                      <InputBar
-                        inputName="PhoneNumber"
-                        width={'90%'}
-                        {...formik.getFieldProps('PhoneNumber')}
-                        error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
-                        helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
-                      />
-                    </Box>
-                  </Box>
-                  <Title number={'7'} title={'Passport number *'} />
-                  <InputBar
-                    inputName="PassportNumber"
-                    width={'95%'}
-                    {...formik.getFieldProps('PassportNumber')}
-                    error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
-                    helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
-                  />
-                  <Title number={'8'} title={'Expiration date *'} />
-                  <Box height={12}></Box>
-                  <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      sx={{
-                        input: { fontWeight: 'bold' },
-                        margin: '0 0 0 20px',
-                        padding: '0 20px 0 5px',
-                        width: '93.5%',
-                        borderRadius: '25px',
-                        '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                        '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                          border: 'none !important',
-                        },
-                        '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          border: 'none !important',
-                        },
-                      }}
-                      value={ExpirationDate}
-                      onChange={(newValue) => {
-                        setExpirationDate(newValue);
-                        formik.setFieldValue('ExpirationDate', newValue);
-                      }}
-                      format="DD/MM/YYYY"
-                    />
-                  </LocalizationProvider>
-                  {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
-                    <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                      <Typography color={'red'} fontSize="14px">
-                        {formik.touched.ExpirationDate && formik.errors.ExpirationDate}
-                      </Typography>
-                    </Box>
-                  )}
-                  <Title number={'9'} title={'Personal Facebook link *'} />
-                  <InputBar
-                    inputName="FacebookLink"
-                    width={'95%'}
-                    {...formik.getFieldProps('FacebookLink')}
-                    error={Boolean(formik.touched.FacebookLink && formik.errors.FacebookLink)}
-                    helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
-                  />
-                  {/* <Title number={'10'} title={'Passport image *'} />
-            {!PassportImage ||
-              (PassportImage.length < 1 && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: '20px',
-                    margin: '10px 0 0 20px',
-                  }}
-                >
-                  <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
-                  <Box
-                    component="label"
-                    sx={{
-                      fontWeight: '500',
-                      fontSize: '18px',
-                      cursor: 'pointer',
-                      '&:hover': { color: 'primary.main' },
-                    }}
-                  >
-                    Upload your file here
-                    <input type="file" hidden onChange={handlePassportImage} />
-                  </Box>
-                </Box>
-              ))}
-            {PassportImage.length > 0 && (
-              <>
-                <Box height={24}></Box>
-                <Box px={2} display={'flex'} flexWrap="wrap" width={'100%'} gap={1}>
-                  {PassportImage.map((item, index) => (
-                    <Chip
-                      label={item.name}
-                      onDelete={() => handleDeletePassportImage(item)}
-                      sx={{ borderRadius: 10, padding: '5px 10px' }}
-                    />
-                  ))}
-                  <Box width={3}></Box>
-                  {PassportImage.length < 1 && (
-                    <Button
-                      component="label"
-                      variant="contained"
-                      fullWidth={false}
-                      size={'small'}
-                      style={{
-                        maxWidth: '30px',
-                        maxHeight: '30px',
-                        minWidth: '30px',
-                        minHeight: '30px',
-                        backgroundColor: '#D9D9D9',
-                        color: 'background.paper',
-                        fontSize: '16px',
-                      }}
-                    >
-                      +
-                      <input type="file" hidden onChange={handlePassportImage} />
-                    </Button>
-                  )}
-                </Box>
-              </>
+                )}
+                noOptionsText="This major not found"
+              />
             )}
-            {Boolean(formik.touched.PassportImage && formik.errors.PassportImage) && (
+            {Boolean(formik.touched.Major && formik.errors.Major) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
-                  {formik.touched.PassportImage && formik.errors.PassportImage}
+                  {formik.touched.Major && formik.errors.Major}
                 </Typography>
               </Box>
             )}
-            <Title number={'11'} title={'Transfer information *'} />
-            {!TransferInfomation ||
-              (TransferInfomation.length < 1 && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: '20px',
-                    margin: '10px 0 0 20px',
-                  }}
-                >
-                  <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
-                  <Box
-                    component="label"
+            <Box
+              sx={{
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  width: '50%',
+                  flexDirection: 'column',
+                }}
+              >
+                <Title number={'5'} title={'Date of birth'} />
+                <Box height={12}></Box>
+                <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                  <DatePicker
                     sx={{
-                      fontWeight: '500',
-                      fontSize: '18px',
-                      cursor: 'pointer',
-                      '&:hover': { color: 'primary.main' },
+                      input: { fontWeight: 'bold' },
+                      margin: '0 0 0 20px',
+                      padding: '0 20px 0 5px',
+                      width: '90%',
+                      borderRadius: '25px',
+                      '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                      '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                        border: 'none !important',
+                      },
+                      '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        border: 'none !important',
+                      },
                     }}
-                  >
-                    Upload your file here
-                    <input type="file" hidden onChange={handleTransferInformation} />
+                    value={DOB}
+                    onChange={(newValue) => {
+                      setDOB(newValue);
+                      formik.setFieldValue('DOB', newValue);
+                    }}
+                    format="DD/MM/YYYY"
+                  />
+                </LocalizationProvider>
+                {Boolean(formik.touched.DOB && formik.errors.DOB) && (
+                  <Box sx={{ margin: ' 10px 0 0 20px' }}>
+                    <Typography color={'red'} fontSize="14px">
+                      {formik.touched.DOB && formik.errors.DOB}
+                    </Typography>
                   </Box>
-                </Box>
-              ))}
-            {TransferInfomation.length > 0 && (
-              <>
-                <Box height={24}></Box>
-                <Box px={2} gap={1} display={'flex'} flexWrap="wrap" width={'100%'}>
-                  {TransferInfomation.map((item, index) => (
-                    <Chip
-                      label={item.name}
-                      onDelete={() => handleDeleteTransferInformation(item)}
-                      sx={{ borderRadius: 10, padding: '5px 10px' }}
-                    />
-                  ))}
-
-                  <Box width={3}></Box>
-                  {TransferInfomation.length < 1 && (
-                    <Button
-                      variant="contained"
-                      fullWidth={false}
-                      component="label"
-                      size={'small'}
-                      style={{
-                        maxWidth: '30px',
-                        maxHeight: '30px',
-                        minWidth: '30px',
-                        minHeight: '30px',
-                        backgroundColor: '#D9D9D9',
-                        color: 'background.paper',
-                        fontSize: '16px',
-                      }}
-                    >
-                      +
-                      <input type="file" hidden onChange={handleTransferInformation} />
-                    </Button>
-                  )}
-                </Box>
-              </>
-            )}
-            {Boolean(formik.touched.TransferInfomation && formik.errors.TransferInfomation) && (
+                )}
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                }}
+              >
+                <Title number={'6'} title={'Phone number *'} />
+                <InputBar
+                  inputName="PhoneNumber"
+                  width={'90%'}
+                  {...formik.getFieldProps('PhoneNumber')}
+                  error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
+                  helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
+                />
+              </Box>
+            </Box>
+            <Title number={'7'} title={'Passport number *'} />
+            <InputBar
+              inputName="PassportNumber"
+              width={'95%'}
+              {...formik.getFieldProps('PassportNumber')}
+              error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
+              helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
+            />
+            <Title number={'8'} title={'Expiration date *'} />
+            <Box height={12}></Box>
+            <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+              <DatePicker
+                sx={{
+                  input: { fontWeight: 'bold' },
+                  margin: '0 0 0 20px',
+                  padding: '0 20px 0 5px',
+                  width: '93.5%',
+                  borderRadius: '25px',
+                  '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                  '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                    border: 'none !important',
+                  },
+                  '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    border: 'none !important',
+                  },
+                }}
+                value={ExpirationDate}
+                onChange={(newValue) => {
+                  setExpirationDate(newValue);
+                  formik.setFieldValue('ExpirationDate', newValue);
+                }}
+                format="DD/MM/YYYY"
+              />
+            </LocalizationProvider>
+            {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
-                  {formik.touched.TransferInfomation && formik.errors.TransferInfomation}
+                  {formik.touched.ExpirationDate && formik.errors.ExpirationDate}
                 </Typography>
               </Box>
-            )} */}
+            )}
+            <Title number={'9'} title={'Personal Facebook link *'} />
+            <InputBar
+              inputName="FacebookLink"
+              width={'95%'}
+              {...formik.getFieldProps('FacebookLink')}
+              error={Boolean(formik.touched.FacebookLink && formik.errors.FacebookLink)}
+              helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
+            />
+            {/* <Title number={'10'} title={'Passport image *'} />
+      {!PassportImage ||
+        (PassportImage.length < 1 && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '20px',
+              margin: '10px 0 0 20px',
+            }}
+          >
+            <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
+            <Box
+              component="label"
+              sx={{
+                fontWeight: '500',
+                fontSize: '18px',
+                cursor: 'pointer',
+                '&:hover': { color: 'primary.main' },
+              }}
+            >
+              Upload your file here
+              <input type="file" hidden onChange={handlePassportImage} />
+            </Box>
+          </Box>
+        ))}
+      {PassportImage.length > 0 && (
+        <>
+          <Box height={24}></Box>
+          <Box px={2} display={'flex'} flexWrap="wrap" width={'100%'} gap={1}>
+            {PassportImage.map((item, index) => (
+              <Chip
+                label={item.name}
+                onDelete={() => handleDeletePassportImage(item)}
+                sx={{ borderRadius: 10, padding: '5px 10px' }}
+              />
+            ))}
+            <Box width={3}></Box>
+            {PassportImage.length < 1 && (
+              <Button
+                component="label"
+                variant="contained"
+                fullWidth={false}
+                size={'small'}
+                style={{
+                  maxWidth: '30px',
+                  maxHeight: '30px',
+                  minWidth: '30px',
+                  minHeight: '30px',
+                  backgroundColor: '#D9D9D9',
+                  color: 'background.paper',
+                  fontSize: '16px',
+                }}
+              >
+                +
+                <input type="file" hidden onChange={handlePassportImage} />
+              </Button>
+            )}
+          </Box>
+        </>
+      )}
+      {Boolean(formik.touched.PassportImage && formik.errors.PassportImage) && (
+        <Box sx={{ margin: ' 10px 0 0 20px' }}>
+          <Typography color={'red'} fontSize="14px">
+            {formik.touched.PassportImage && formik.errors.PassportImage}
+          </Typography>
+        </Box>
+      )}
+      <Title number={'11'} title={'Transfer information *'} />
+      {!TransferInfomation ||
+        (TransferInfomation.length < 1 && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '20px',
+              margin: '10px 0 0 20px',
+            }}
+          >
+            <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
+            <Box
+              component="label"
+              sx={{
+                fontWeight: '500',
+                fontSize: '18px',
+                cursor: 'pointer',
+                '&:hover': { color: 'primary.main' },
+              }}
+            >
+              Upload your file here
+              <input type="file" hidden onChange={handleTransferInformation} />
+            </Box>
+          </Box>
+        ))}
+      {TransferInfomation.length > 0 && (
+        <>
+          <Box height={24}></Box>
+          <Box px={2} gap={1} display={'flex'} flexWrap="wrap" width={'100%'}>
+            {TransferInfomation.map((item, index) => (
+              <Chip
+                label={item.name}
+                onDelete={() => handleDeleteTransferInformation(item)}
+                sx={{ borderRadius: 10, padding: '5px 10px' }}
+              />
+            ))}
 
-                  {ProgramForm && ProgramForm?.contentHeader1 && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <Title number={'10'} title={ProgramForm?.contentHeader1} />
-                      <InputBar
-                        inputName={'contentHeader1'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader1')}
-                      />
-                    </Box>
-                  )}
-                  {ProgramForm && ProgramForm?.contentHeader2 && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <Title number={'11'} title={ProgramForm?.contentHeader2} />
-                      <InputBar
-                        inputName={'contentHeader2'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader2')}
-                      />
-                    </Box>
-                  )}
-                  {ProgramForm && ProgramForm?.contentHeader3 && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <Title number={'12'} title={ProgramForm?.contentHeader3} />
-                      <InputBar
-                        inputName={'contentHeader3'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader3')}
-                      />
-                    </Box>
-                  )}
-                  {ProgramForm && ProgramForm?.contentHeader4 && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <Title number={'13'} title={ProgramForm?.contentHeader4} />
-                      <InputBar
-                        inputName={'contentHeader4'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader4')}
-                      />
-                    </Box>
-                  )}
-                  {ProgramForm && ProgramForm?.contentHeader5 && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '50%',
-                      }}
-                    >
-                      <Title number={'14'} title={ProgramForm?.contentHeader5} />
-                      <InputBar
-                        inputName={'contentHeader5'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader5')}
-                      />
-                    </Box>
-                  )}
-                  <Box
-                    sx={{
-                      width: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      marginTop: '50px',
-                    }}
-                  >
-                    <Button
-                      disableRipple
-                      variant="contained"
-                      sx={{
-                        fontWeight: '500',
-                        fontSize: '20px',
-                        padding: '10px 50px',
-                        borderRadius: '10px',
-                        backgroundColor: 'primary.main',
-                        color: 'secondary.contrastText',
-                        transition: 'all .5s',
-                        boxShadow: '0 2px 3px #00000085',
+            <Box width={3}></Box>
+            {TransferInfomation.length < 1 && (
+              <Button
+                variant="contained"
+                fullWidth={false}
+                component="label"
+                size={'small'}
+                style={{
+                  maxWidth: '30px',
+                  maxHeight: '30px',
+                  minWidth: '30px',
+                  minHeight: '30px',
+                  backgroundColor: '#D9D9D9',
+                  color: 'background.paper',
+                  fontSize: '16px',
+                }}
+              >
+                +
+                <input type="file" hidden onChange={handleTransferInformation} />
+              </Button>
+            )}
+          </Box>
+        </>
+      )}
+      {Boolean(formik.touched.TransferInfomation && formik.errors.TransferInfomation) && (
+        <Box sx={{ margin: ' 10px 0 0 20px' }}>
+          <Typography color={'red'} fontSize="14px">
+            {formik.touched.TransferInfomation && formik.errors.TransferInfomation}
+          </Typography>
+        </Box>
+      )} */}
 
-                        '&:hover': {
-                          backgroundColor: 'primary.main',
-                          transform: 'translateY(3px)',
-                        },
-                      }}
-                      type="submit"
-                    >
-                      SUBMIT
-                    </Button>
-                  </Box>
-                </form>
+            {ProgramForm && ProgramForm?.contentHeader1 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                }}
+              >
+                <Title number={'10'} title={ProgramForm?.contentHeader1} />
+                <InputBar
+                  inputName={'contentHeader1'}
+                  width={'90%'}
+                  {...formik.getFieldProps('contentHeader1')}
+                />
+              </Box>
+            )}
+            {ProgramForm && ProgramForm?.contentHeader2 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                }}
+              >
+                <Title number={'11'} title={ProgramForm?.contentHeader2} />
+                <InputBar
+                  inputName={'contentHeader2'}
+                  width={'90%'}
+                  {...formik.getFieldProps('contentHeader2')}
+                />
+              </Box>
+            )}
+            {ProgramForm && ProgramForm?.contentHeader3 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                }}
+              >
+                <Title number={'12'} title={ProgramForm?.contentHeader3} />
+                <InputBar
+                  inputName={'contentHeader3'}
+                  width={'90%'}
+                  {...formik.getFieldProps('contentHeader3')}
+                />
+              </Box>
+            )}
+            {ProgramForm && ProgramForm?.contentHeader4 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                }}
+              >
+                <Title number={'13'} title={ProgramForm?.contentHeader4} />
+                <InputBar
+                  inputName={'contentHeader4'}
+                  width={'90%'}
+                  {...formik.getFieldProps('contentHeader4')}
+                />
+              </Box>
+            )}
+            {ProgramForm && ProgramForm?.contentHeader5 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '50%',
+                }}
+              >
+                <Title number={'14'} title={ProgramForm?.contentHeader5} />
+                <InputBar
+                  inputName={'contentHeader5'}
+                  width={'90%'}
+                  {...formik.getFieldProps('contentHeader5')}
+                />
+              </Box>
+            )}
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '50px',
+              }}
+            >
+              <Button
+                disableRipple
+                variant="contained"
+                sx={{
+                  fontWeight: '500',
+                  fontSize: '20px',
+                  padding: '10px 50px',
+                  borderRadius: '10px',
+                  backgroundColor: 'primary.main',
+                  color: 'secondary.contrastText',
+                  transition: 'all .5s',
+                  boxShadow: '0 2px 3px #00000085',
+
+                  '&:hover': {
+                    backgroundColor: 'primary.main',
+                    transform: 'translateY(3px)',
+                  },
+                }}
+                type="submit"
+              >
+                SUBMIT
+              </Button>
+            </Box>
+          </form> :  <Typography style={{marginTop: "5%"}} variant='h6' >Please <Link to={"/login"}>Login</Link> before regis any program</Typography>}
+             
               </Box>
             </Box>
             <Snackbar

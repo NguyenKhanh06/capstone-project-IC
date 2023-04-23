@@ -188,7 +188,9 @@ console.log(response)
               required
               fullWidth
               label="Content"
-      
+              inputProps={{
+                maxLength: 800,
+              }}
             />
           
             <Divider variant="middle" />
