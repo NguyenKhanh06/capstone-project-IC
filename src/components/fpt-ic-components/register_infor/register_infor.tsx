@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Chip,
+  CircularProgress,
   Fade,
   FormControl,
   IconButton,
@@ -671,14 +672,13 @@ const RegisterInformationComponent = () => {
                     helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
                   />
                   <Title number={'10'} title={'Passport image *'} />
-                  {data?.passportImageUrl ? (
+                  {data?.passportImageUrl && 
                     <img
                       src={formDetail?.passportImageUrl}
                       style={{ maxWidth: '50%', margin: '10px 0 20px 0' }}
                       alt="alt"
-                    />
-                  ) : (
-                    <>
+                    />}
+               
                       {!PassportImage ||
                         (PassportImage.length < 1 && (
                           <Box
@@ -705,8 +705,7 @@ const RegisterInformationComponent = () => {
                             </Box>
                           </Box>
                         ))}
-                    </>
-                  )}
+               
 
                   {PassportImage.length > 0 && (
                     <>
@@ -754,14 +753,19 @@ const RegisterInformationComponent = () => {
                  </> : null }  */}
 
                   <Title number={'11'} title={'Transfer information *'} />
-                  {data?.urlImageBill ? (
+
+               
+                {
+                  data?.urlImageBill && (
+                    
                     <img
                       src={formDetail?.urlImageBill}
                       alt="alt"
                       style={{ maxWidth: '50%', margin: '10px 0 20px 0' }}
                     />
-                  ) : (
-                    <>
+                    
+                  )
+                }
                       {!TransferInfomation ||
                         (TransferInfomation.length < 1 && (
                           <Box
@@ -788,8 +792,8 @@ const RegisterInformationComponent = () => {
                             </Box>
                           </Box>
                         ))}
-                    </>
-                  )}
+              
+               
 
                   {TransferInfomation.length > 0 && (
                     <>
@@ -1007,7 +1011,9 @@ const RegisterInformationComponent = () => {
             </Snackbar>
           </Box>
         </Slide>
-      )}
+      )  ||     <Box  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, height: "100vh", position:"relative", top: "50vh", left: "80vh" }}>
+      <CircularProgress />
+    </Box>}
     </>
   );
 };

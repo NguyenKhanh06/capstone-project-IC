@@ -95,7 +95,7 @@ useEffect(() => {
     >
       <form>
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <DialogTitle id="alert-dialog-title">Create Major</DialogTitle>
+          <DialogTitle id="alert-dialog-title">Delete Major</DialogTitle>
           <IconButton style={{marginRight: 6}} onClick={() => handleClose()}>
               <CloseOutlinedIcon />
             </IconButton>

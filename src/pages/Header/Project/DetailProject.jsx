@@ -464,7 +464,7 @@ function DetailProject(props) {
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
               <Stack direction="column" spacing={3.5} sx={{ padding: 2 }}>
-                <TextField value={projectName} onChange={handleOnChangeName} required fullWidth label="Project Name" 
+                <TextField value={projectName} disabled={props.project?.checkNegotiationStatus} onChange={handleOnChangeName} required fullWidth label="Project Name" 
                   error={ !regex.test(projectName)}
                   helperText={!regex.test(projectName) && "Can not input special character"}
                   inputProps={{ maxLength: 50 }}
@@ -542,6 +542,7 @@ function DetailProject(props) {
                       displayEmpty
                       label="Course"
                       value={course}
+                      disabled={props.project?.checkNegotiationStatus}
                       name="course"
                       onChange={handleOnChangeCourse}
                       MenuProps={{
@@ -667,6 +668,7 @@ function DetailProject(props) {
                       defaultValue={props.project.campusId}
                       label="Campus"
                       onChange={handleChangeCampus}
+                      disabled={props.project?.checkNegotiationStatus}
                       MenuProps={{
                         PaperProps: {
                           sx: {
