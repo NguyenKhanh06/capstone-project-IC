@@ -32,7 +32,7 @@ import DetailCourseNegoPartner from './DetailCourseNeogoPartner';
 
 function ListProjectNegoPartner(props) {
   const user = JSON.parse(sessionStorage.getItem('user'));
-console.log("user", user)
+
   const navigate = useNavigate();
   const [showCreate, setShowCreate] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -60,12 +60,17 @@ console.log("user", user)
       setShowNego(true);
     setID(data)
     };
+    const onChangeFile = (e) => {
+      setFileStudent(e.target.files[0]);
+      console.log('file', e.target.files[0]);
+    };
+  
   const columns = [
  
     {
       field: 'projectName',
       headerName: 'Project Name',
-      flex: 1,
+      flex: 2,
     },
 
     {
@@ -152,7 +157,7 @@ console.log("user", user)
 
   const fetchData =  (id) => {
    axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
-      console.log(response)
+
       setProjects(response.data.responseSuccess.filter((project) => project.partnerId === id));
 
     });

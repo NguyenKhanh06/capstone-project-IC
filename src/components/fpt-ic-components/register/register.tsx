@@ -260,7 +260,7 @@ console.log(student)
   }, [Program]);
   return (
     <>
-      {forms && (
+      {(forms && Majors) && (
         <Slide
           direction="up"
           in={true}
@@ -358,13 +358,13 @@ console.log(student)
               noOptionsText="This program not found"
             />
 
-            {Boolean(formik.touched.Program && formik.errors.Program) && (
+            {/* {!student?.major &&Boolean(formik.touched.Program && formik.errors.Program) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
                   {formik.touched.Program && formik.errors.Program}
                 </Typography>
               </Box>
-            )}
+            )} */}
 
             <Box sx={{ display: 'flex', width: '100%' }}>
               <Box
@@ -405,7 +405,7 @@ console.log(student)
               </Box>
             </Box>
             <Title number={'4'} title={'Major *'} />
-            {Majors && (
+            {!student?.major && (
               <Autocomplete
                 componentsProps={{
                   paper: {
@@ -417,6 +417,7 @@ console.log(student)
 
                 defaultValue={student?.major}
                 disablePortal
+                
                 options={Majors}
                 getOptionLabel={(option) => option['majorFullName']}
                 sx={{ border: 'none !important', fontWeight: 'bold' }}
@@ -424,9 +425,10 @@ console.log(student)
                   setMajor(newValue);
                   formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
                 }}
+                
                 renderInput={(params) => (
                   <TextField
-                  disabled={student?.major }
+         
                     {...params}
                     inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
                     sx={{
@@ -451,14 +453,15 @@ console.log(student)
                 )}
                 noOptionsText="This major not found"
               />
-            ) }
-            {Boolean(formik.touched.Major && formik.errors.Major) && (
+            ) ||    <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.major.majorFullName}</Typography> }
+            
+           {/* {Boolean(formik.touched.Major && formik.errors.Major) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
                   {formik.touched.Major && formik.errors.Major}
                 </Typography>
               </Box>
-            )}
+            )} */}
             <Box
               sx={{
                 display: 'flex',

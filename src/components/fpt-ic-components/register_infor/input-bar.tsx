@@ -9,9 +9,10 @@ interface Props {
   placeholderText?: string | null;
   error?: boolean;
   type?: 'text' | 'password' | 'email' | 'number';
+  check?: boolean;
 }
 
-const InputBar = ({ width, inputName, value, helperText, error, placeholderText, type, ...props }: Props) => {
+const InputBar = ({ width, inputName, check, value, helperText, error, placeholderText, type, ...props }: Props) => {
   return (
     <Box sx={{ margin: ' 10px 0 0 20px' }}>
       <TextField
@@ -20,6 +21,8 @@ const InputBar = ({ width, inputName, value, helperText, error, placeholderText,
         name={inputName}
         value={value}
         error={error}
+        disabled={check}
+
         placeholder={placeholderText ?? 'Enter your answer here'}
         variant="standard" // <== changed this
         InputProps={{

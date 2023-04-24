@@ -120,9 +120,9 @@ function DetailProjectNego(props) {
       } 
     }).catch((err) => {
       handleError('Upload fail!');
-      setTimeout(() => {
-        window.location.reload()
-         }, 1000);
+         setTimeout(() => {
+       window.location.reload()
+        }, 1000);
     })
   };
 
@@ -230,7 +230,17 @@ function DetailProjectNego(props) {
               divider={<Divider orientation="vertical" flexItem />}
             >
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+                {
+                  props.project.checkNegotiationStatus ?        <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+                  Import Course Result
+                  <input
+                    onChange={onChangeFile}
+                    id="input"
+                    hidden
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    type="file"
+                  />
+                </Button> :        <Button disabled color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
                   Import Course Result
                   <input
                     onChange={onChangeFile}
@@ -240,6 +250,8 @@ function DetailProjectNego(props) {
                     type="file"
                   />
                 </Button>
+                }
+         
            
                 {/* {doc != null ? (
                   <Button

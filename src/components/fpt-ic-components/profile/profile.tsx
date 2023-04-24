@@ -38,7 +38,7 @@ const ProfileComponent = () => {
           paddingTop: '6%',
         }}
       >
-        <BaseBreadCrumbs previousLink={[{ href: 'home', name: 'Homepage' }]} currentLink={'Profile'} />
+        <BaseBreadCrumbs previousLink={[{ href: '/home', name: 'Homepage' }]} currentLink={'Profile'} />
         {student ? <><Box
           sx={{
             display: 'flex',

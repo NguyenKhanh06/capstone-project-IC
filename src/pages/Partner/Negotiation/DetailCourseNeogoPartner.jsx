@@ -36,6 +36,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Iconify from '../../../components/iconify/Iconify';
 
 function DetailCourseNegoPartner(props) {
+  console.log("deal", props)
   const [open, setOpen] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [course, setCourse] = useState([]);
@@ -261,15 +262,15 @@ function DetailCourseNegoPartner(props) {
             >
               <Box>
                 <b>Skill Name:</b>
-                <Typography>{course?.courseName}</Typography>
+                <Typography>{props?.id?.course?.courseName}</Typography>
               </Box>
               <Box>
                 <b>Activity:</b>
-                <Typography>{course?.activity}</Typography>
+                <Typography>{props?.id?.course?.activity}</Typography>
               </Box>
               <Box>
                 <b>Course Content:</b>
-                <Typography>{course?.content}</Typography>
+                <Typography>{props?.id?.course?.content}</Typography>
               </Box>
             </Stack>
           </Paper>

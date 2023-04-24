@@ -161,10 +161,10 @@ useEffect(() => {
         <Stack  sx={{ marginBottom: 4}} direction="row" justifyContent="center" alignItems="center" spacing={2}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                      disablePast
+            
                       format="DD/MM/YYYY"
                       sx={{ width: '50%' }}
-                      label="Date Open"
+                      label="Estimate Date Open"
                       value={openRegis}
                       onChange={(newValue) => {
                         setOpenRegis(newValue);
@@ -175,10 +175,10 @@ useEffect(() => {
 
                   <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
                     <DatePicker
-                      disablePast
+       
                       minDate={dayjs(closeRegis)}
                       sx={{ width: '50%' }}
-                      label="Date Close"
+                      label="Estimate Date Close"
                       value={closeRegis}
                       onChange={(newValue) => {
                         setCloseRegis(newValue);

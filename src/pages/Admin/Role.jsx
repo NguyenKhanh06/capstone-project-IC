@@ -22,6 +22,7 @@ function Role(props) {
     const [staff, setStaff] = useState([])
     const [showConfirm, setShowConfirm] = useState(false);
     const [showConfirmChange, setShowConfirmChange] = useState(false);
+    const [showConfirmChangeRole, setShowConfirmChangeRole] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -29,6 +30,7 @@ function Role(props) {
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [id, setID] = useState(null);
+  const [idStaff, setIDStaff] = useState(null);
   const [status, setStatus] = useState(null);
   const [mail, setMail] = useState(null);
 
@@ -55,25 +57,52 @@ setStatus(status)
   const handleCloseConfirm = (data) => {
     setShowConfirm(false);
   };
+  const handleShowConfirmUpdate = (data) => {
+    setIDStaff(data);
+
+    setShowConfirmChangeRole(true);
+  };
+  const handleCloseConfirmUpdate = (data) => {
+    setShowConfirmChangeRole(false);
+    setIDStaff(data)
+  };
   const handleShowConfirmChange = (data) => {
     setMail(data);
     setShowConfirmChange(true);
   };
+  const handleCloseConfirmChange = () => {
 
-  const handleCloseConfirmChange = (data) => {
     setShowConfirmChange(false);
   };
+
 const handleShowDetail = (data) => {
     setShowDetail(true);
     setStaff(data);
 
 }
 
+const updateHeader = () => {
+  console.log(idStaff)
+  const data = {
+    "staffCode": idStaff.id,
+  "isHeadOfDepartMent": true,
+  "accountId": idStaff.accountId
+  }
+  axios.put(`https://api.ic-fpt.click/api/v1/staff/update/${idStaff.id}`, data).then((response) => {
+    if (response.data.isSuccess) {
+      handleSuccess('Update Successful!!!!!')
+      setTimeout(reload(), 2000);
+    } 
+  }).catch((err) => {
+    handleError('Update Fail!!!!');
+  })
+}
+
 const handleChange = () => {
     axios.put(`https://api.ic-fpt.click/api/v1/account/ChangeRole/${mail}?roleEnum=2`).then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Update Successful!!!!!')
-          setTimeout(reload(), 5000);
+          setTimeout(reload(), 2000);
         } 
       }).catch((err) => {
         handleError('Update Fail!!!!');
@@ -184,7 +213,7 @@ const handleDeleteStaff = () => {
         {
           field: 'action',
           headerName: 'Action',
-          flex: 1,
+          flex: 1.5,
           disableClickEventBubbling: true,
     
           renderCell: (params) => {
@@ -216,6 +245,10 @@ const handleDeleteStaff = () => {
                 
                 {params.row?.account.role === 0 ?   <Tooltip  title="Update to Staff">
                   <IconButton onClick={() => handleShowConfirmChange(params.row?.account?.email)} >
+                    <ArrowCircleUpOutlinedIcon color="success" />
+                  </IconButton>
+                </Tooltip> : params.row?.account.role === 2 && !params.row.isHeadOfDepartMent ?   <Tooltip  title="Update to Header of department">
+                  <IconButton onClick={() => handleShowConfirmUpdate(params.row)} >
                     <ArrowCircleUpOutlinedIcon color="success" />
                   </IconButton>
                 </Tooltip> : null}
@@ -292,6 +325,25 @@ const handleDeleteStaff = () => {
           <DialogActions>
             <Button onClick={() => handleCloseConfirm()}>Cancel</Button>
             <Button onClick={() => handleDeleteStaff()} variant="contained"  autoFocus>
+              Accept
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={showConfirmChangeRole}
+          onClose={handleCloseConfirmUpdate}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          fullWidth
+          maxWidth="sm"
+        >
+          <DialogTitle id="alert-dialog-title">Chnage Staff's Status</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">You want to change this staff to head of department?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleCloseConfirmUpdate()}>Cancel</Button>
+            <Button onClick={() => updateHeader()} variant="contained"  autoFocus>
               Accept
             </Button>
           </DialogActions>

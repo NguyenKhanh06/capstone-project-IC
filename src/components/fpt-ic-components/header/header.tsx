@@ -23,10 +23,12 @@ const Header: FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+         
             }}
           >
             <Box
               sx={{
+
                 padding: '10px',
                 ml: 'auto',
                 display: { xs: 'inline-flex', md: 'none' },
@@ -40,6 +42,7 @@ const Header: FC = () => {
             </Box>
             <Box
               sx={{
+           
                 position:   'fixed',
                 top: '20px',
                 zIndex: '1',
@@ -50,6 +53,7 @@ const Header: FC = () => {
             >
               <Box
                 sx={{
+                  
                   width: 'fit-content',
                   display: 'flex',
                   backgroundColor: colorMenu === 'primary' ? 'primary.light' : 'primary.dark',

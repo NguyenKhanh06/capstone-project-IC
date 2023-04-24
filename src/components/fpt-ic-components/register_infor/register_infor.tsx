@@ -447,15 +447,15 @@ const RegisterInformationComponent = () => {
                       }}
                     >
                       <Title number={'3'} title={'Roll number *'} />
-                      {student.phoneNumber && <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.rollNumber}</Typography>
-                      ||     <InputBar
+                         <InputBar
+                          check={student?.rollNumber}
                       inputName="RollNumber"
                       width={'90%'}
                       {...formik.getFieldProps('RollNumber')}
                       error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
                       helperText={formik.touched.RollNumber && formik.errors.RollNumber}
                     />
-                      }
+                      
                  
                     </Box>
                   </Box>
@@ -545,13 +545,13 @@ const RegisterInformationComponent = () => {
                       noOptionsText="This major not found"
                     />
                   ) || <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.major.majorFullName}</Typography> }
-                  {Boolean(formik.touched.Major && formik.errors.Major) && (
+                  {/* {Boolean(formik.touched.Major && formik.errors.Major) && (
                     <Box sx={{ margin: ' 10px 0 0 20px' }}>
                       <Typography color={'red'} fontSize="14px">
                         {formik.touched.Major && formik.errors.Major}
                       </Typography>
                     </Box>
-                  )}
+                  )} */}
                   <Box
                     sx={{
                       display: 'flex',
@@ -608,15 +608,16 @@ const RegisterInformationComponent = () => {
                       }}
                     >
                       <Title number={'6'} title={'Phone number *'} />
-                      {student?.phoneNumber && <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.phoneNumber}</Typography> 
-                      ||    <InputBar
+                       <InputBar
                       inputName="PhoneNumber"
+                      check={student?.phoneNumber}
+
                       width={'90%'}
                       {...formik.getFieldProps('PhoneNumber')}
                       error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
                       helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
                     />
-                      }
+                      
                   
                     </Box>
                   </Box>

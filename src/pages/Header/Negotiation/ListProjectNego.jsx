@@ -15,6 +15,8 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
@@ -36,6 +38,8 @@ import ErrorAlert from '../../Alert/ErrorAlert';
 
 function ListProjectNego(props) {
   const navigate = useNavigate();
+  const [fileStudent, setFileStudent] = useState(null);
+
   const [showCreate, setShowCreate] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [project, setProject] = useState([]);
@@ -52,6 +56,34 @@ function ListProjectNego(props) {
     const [id, setID] = useState('');
     const [idPrj, setIDPrj] = useState('');
   
+    const handleImportFile = (file) => {
+      const formData = new FormData();
+      formData.append('formFile', fileStudent);
+      formData.append('DateCreated', new Date());
+      formData.append('Status', true);
+      formData.append('ProjectId', idPrj.id);
+      axios({
+        method: 'POST',
+        data: formData,
+        url: 'https://api.ic-fpt.click/api/v1/document',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.data.isSuccess) {
+          handleSuccess('Update Project Successsfull!!!');
+          setTimeout(() => {
+            window.location.reload()
+             }, 1000);
+        } 
+      }).catch((err) => {
+        handleError('Upload fail!');
+        setTimeout(() => {
+          window.location.reload()
+           }, 1000);
+      })
+    };
+
     const handleShowConfirmChange = (data) => {
       setShowConfirm(true);
       setIDPrj(data)
@@ -81,11 +113,9 @@ function ListProjectNego(props) {
         .then((response) => {
           console.log(response);
           if (response.data.isSuccess) {
-            handleSuccess('Update Project Successsfull!!!');
+            handleImportFile()
+       
   
-            setTimeout(() => {
-              window.location.reload()
-                 }, 2000)
           }
         })
         .catch((err) => {
@@ -102,11 +132,8 @@ function ListProjectNego(props) {
         .then((response) => {
           console.log(response);
           if (response.data.isSuccess) {
-            handleSuccess('Update Project Successsfull!!!');
-  
-            setTimeout(() => {
-         window.location.reload()
-            }, 2000)
+            handleImportFile()
+        
           }
         })
         .catch((err) => {
@@ -126,6 +153,11 @@ function ListProjectNego(props) {
           
          
       }
+    };
+  
+    const onChangeFile = (e) => {
+      setFileStudent(e.target.files[0]);
+
     };
   
   const columns = [
@@ -291,12 +323,30 @@ function ListProjectNego(props) {
           <DialogTitle id="alert-dialog-title">Complete the neogotiation</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">You Want To Complete the Neogotiation?</DialogContentText>
+            <Button style={{marginTop: 20}} color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+                  Import Course Result
+                  <input
+                    onChange={onChangeFile}
+                    id="input"
+                    hidden
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    type="file"
+                  />
+                </Button>
+                {fileStudent &&                 <Typography style={{marginTop: 10}}>{fileStudent?.name}</Typography>
+}
           </DialogContent>
+            
           <DialogActions>
             <Button onClick={handleCloseConfirm}>Cancel</Button>
-            <Button onClick={() => handleUpdateProject()} variant="contained" autoFocus>
+            {
+              fileStudent ? <Button onClick={() => handleUpdateProject()} variant="contained" autoFocus>
+              Accept
+            </Button> : <Button disabled onClick={() => handleUpdateProject()} variant="contained" autoFocus>
               Accept
             </Button>
+            }
+            
           </DialogActions>
           <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Successful!'} />
           <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
