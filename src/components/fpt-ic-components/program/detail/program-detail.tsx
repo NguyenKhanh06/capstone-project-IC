@@ -23,6 +23,7 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
     <Box
       id={`program-detail-${item.id}`}
       sx={{
+        height: "100vh",
         pt: {
           xs: 6,
           md: 20,

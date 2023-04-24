@@ -35,7 +35,7 @@ const ProgramList: FC = () => {
     <Box
       id="programs"
       sx={{
-
+marginTop: 6,
         pt: {
           xs: 6,
           md: 15,
@@ -48,7 +48,7 @@ const ProgramList: FC = () => {
       }}
     >
       <Container maxWidth="lg" sx={{height: "100vh"}}>
-        <BaseBreadCrumbs previousLink={[{ href: '/', name: 'Homepage' }]} currentLink={'Programs'} />
+        {/* <BaseBreadCrumbs previousLink={[{ href: '/', name: 'Homepage' }]} currentLink={'Programs'} /> */}
         <Grid
           container
           spacing={{ xs: 1, md: 3 }}

@@ -33,12 +33,13 @@ const ProfileComponent = () => {
     <Box sx={{ height: '100%', width: '100%' }}>
       <Container
         sx={{
+          marginTop: 10,
           height: '100%',
           width: { lg: '70%', sm: '90%', xs: '90%' },
           paddingTop: '6%',
         }}
       >
-        <BaseBreadCrumbs previousLink={[{ href: '/home', name: 'Homepage' }]} currentLink={'Profile'} />
+        {/* <BaseBreadCrumbs previousLink={[{ href: '/home', name: 'Homepage' }]} currentLink={'Profile'} /> */}
         {student ? <><Box
           sx={{
             display: 'flex',
