@@ -359,7 +359,6 @@ const handleCreateForm6 = () => {
         <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Form Successful!'} />
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
 
-        <Loading show={loading} />
       </Dialog>
     </div>
   );

@@ -64,6 +64,7 @@ function DetailSyllabus(props) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [disableBtn, setDisableBtn] = useState(false);
 
+
   const handleShowConfirm = (data) => {
     setShowConfirm(true);
   };
@@ -165,7 +166,22 @@ setTimeout(() =>{
       headerName: 'Time Allocation (minutes)',
       flex: 1,
     },
-
+    {
+      field: 'slotStatus',
+      headerName: 'Status',
+      flex: 1,
+      renderCell: (params) => (
+        <>
+          {params.row?.slotStatus === 1 ? (
+                              <Chip label="Approved" color="success" size="small" />
+                            ) : params.row?.slotStatus === 2 ? (
+                              <Chip label="Rejected" color="error" size="small" />
+                            ) : params.row?.slotStatus === 0 ? (
+                              <Chip label="New" color="warning" size="small" />
+                            ) : null}
+        </>
+      )
+    },
     {
       headerName: 'Action',
       flex: 1,
@@ -237,6 +253,15 @@ setTimeout(() =>{
 
           <DialogContent>
             <Stack direction="column" spacing={3.5} sx={{ padding: 2 }}>
+            <Stack direction="column" justifyContent="space-around" alignItems="flex-start" spacing={2}>
+                  <b>Partner:</b>
+                  <Typography>{props.syllabus?.partner?.name}</Typography>
+                </Stack>
+                <Stack direction="column" justifyContent="space-around" alignItems="flex-start" spacing={2}>
+                  <b>Partner's Location:</b>
+                  <Typography>{props.syllabus?.partner?.local}</Typography>
+                </Stack>
+                <Divider variant='middle'/>
               <TextField value={content} onChange={handleChangeContent} required fullWidth label="Syllabus Content"
                inputProps={{
                 maxLength: 25,

@@ -3,7 +3,8 @@ import axios from 'axios';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from 'react';
-
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
+import ArrowCircleUpOutlinedIcon from '@mui/icons-material/ArrowCircleUpOutlined';
 import { DataGrid } from '@mui/x-data-grid';
 import PublishedWithChangesOutlinedIcon from '@mui/icons-material/PublishedWithChangesOutlined';
 import DetailStaff from '../Header/Staff/DetailStaff';
@@ -28,6 +29,7 @@ function Role(props) {
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [id, setID] = useState(null);
+  const [status, setStatus] = useState(null);
   const [mail, setMail] = useState(null);
 
 
@@ -44,8 +46,9 @@ function Role(props) {
     }
 
 
-  const handleShowConfirm = (data) => {
+  const handleShowConfirm = (data, status) => {
     setID(data);
+setStatus(status)
     setShowConfirm(true);
   };
 
@@ -78,22 +81,22 @@ const handleChange = () => {
 }
 
 const handleDeleteStaff = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=false`).then((response) => {
+    axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=${status}`).then((response) => {
         if (response.data.isSuccess) {
-          handleSuccess('Delete Successful!!!!!')
+          handleSuccess('Update Successful!!!!!')
           setTimeout(() =>{
             window.location.reload();
          }, 2000);
         } 
       }).catch((err) => {
-        handleError('Delete Fail!!!!');
+        handleError('Update Fail!!!!');
       })
 }
 
     const fetchData = async () => {
        await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
     
-            setStaffs(response.data.responseSuccess.filter(staff => staff.account.role !== 4  && staff.account.status && regexMailFu.test(staff.account.email)))
+            setStaffs(response.data.responseSuccess.filter(staff => staff.account.role !== 4   && regexMailFu.test(staff.account.email)))
         })
     }
     useEffect(() => {
@@ -119,7 +122,7 @@ const handleDeleteStaff = () => {
         {
           field: 'email',
           headerName: 'Email',
-          flex: 1,
+          flex: 2,
             valueGetter: (params) => {
        
         return params.row?.account?.email
@@ -135,6 +138,21 @@ const handleDeleteStaff = () => {
           valueGetter: (params) => {
        
             return params.row?.account?.address
+          },
+        },
+        {
+          field: 'status',
+          headerName: 'Status',
+          flex: 1,
+          renderCell: (params) => {
+       
+            return (
+              <>
+              {params.row.account.status ? 
+              <Chip label="Active" color='success'/> : <Chip label="Deactive" color='error' />
+            }
+              </>
+            )
           },
         },
         {
@@ -178,15 +196,27 @@ const handleDeleteStaff = () => {
                     <RemoveRedEyeRoundedIcon />
                   </IconButton> 
                 </Tooltip>
-                {params.row?.account.role === 2 && !params.row.isHeadOfDepartMent ?   <Tooltip  title="Delete">
-                  <IconButton onClick={() => handleShowConfirm(params.row?.account?.email)} >
-                    <DeleteIcon color="error" />
+                {params.row?.account.role === 2 && !params.row.isHeadOfDepartMent ?   
+                
+                params.row.account.status ? (
+                  <Tooltip  title="Deactive account">
+                  <IconButton onClick={() => handleShowConfirm(params.row?.account?.email, false)} >
+                  <HighlightOffOutlinedIcon color="error" />
                   </IconButton>
-                </Tooltip> : null}
+                </Tooltip>
+        
+                ) : (
+                  <Tooltip title="Active Account">
+                    <IconButton onClick={() => handleShowConfirm(params.row.account.email, true)}>
+                      <PublishedWithChangesOutlinedIcon color="success" />
+                    </IconButton>
+                  </Tooltip>
+                )
+                : null}
                 
                 {params.row?.account.role === 0 ?   <Tooltip  title="Update to Staff">
                   <IconButton onClick={() => handleShowConfirmChange(params.row?.account?.email)} >
-                    <PublishedWithChangesOutlinedIcon color="success" />
+                    <ArrowCircleUpOutlinedIcon color="success" />
                   </IconButton>
                 </Tooltip> : null}
               
@@ -255,14 +285,14 @@ const handleDeleteStaff = () => {
           fullWidth
           maxWidth="sm"
         >
-          <DialogTitle id="alert-dialog-title">Delete Staff</DialogTitle>
+          <DialogTitle id="alert-dialog-title">Chnage Staff's Status</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">You want to delete this staff?</DialogContentText>
+            <DialogContentText id="alert-dialog-description">You want to change status of this staff?</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => handleCloseConfirm()}>Cancel</Button>
-            <Button onClick={() => handleDeleteStaff()} variant="contained" color="error" autoFocus>
-              Delete
+            <Button onClick={() => handleDeleteStaff()} variant="contained"  autoFocus>
+              Accept
             </Button>
           </DialogActions>
         </Dialog>

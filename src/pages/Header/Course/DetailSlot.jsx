@@ -179,7 +179,7 @@ function DetailSlot(props) {
               />
             </Stack>
           </DialogContent>
-          <DialogActions style={{ padding: 20 }}>
+          {props.slot.slotStatus !== 1 && <DialogActions style={{ padding: 20 }}>
             {disableBtn && regex.test(detail) && regex.test(topic) ? (
               <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
                 Save
@@ -189,7 +189,8 @@ function DetailSlot(props) {
                 Save
               </Button>
             )}
-          </DialogActions>
+          </DialogActions> }
+         
         </form>
         <Dialog
           open={showConfirm}

@@ -139,7 +139,7 @@ const LoginStaff = () => {
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
                   if (
                     response.data.responseSuccess.role === 2 &&
-                    response.data.responseSuccess.staff.isHeadOfDepartMent
+                    response.data.responseSuccess.staff.isHeadOfDepartMent&& response.data.responseSuccess.status
                   ) {
               
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
@@ -148,12 +148,20 @@ const LoginStaff = () => {
                   } else if (
                     response.data.responseSuccess.role === 2 &&
                     !response.data.responseSuccess.staff.isHeadOfDepartMent
+                    && response.data.responseSuccess.status
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                  
                     navigate('/staff');
                     requestPermission();
-                  } else if (response.data.responseSuccess.role === 4 && response.data.responseSuccess.status) {
+                  } else if (
+                    response.data.responseSuccess.role === 3&& response.data.responseSuccess.status
+                  ) {
+                    sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                 
+                    navigate('/staff');
+                    requestPermission();
+                  }else if (response.data.responseSuccess.role === 4 && response.data.responseSuccess.status) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                     getDeputy(response.data.responseSuccess.id);
                     navigate('/partner');
@@ -166,6 +174,8 @@ const LoginStaff = () => {
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 0) {
                     handleSuccess('You are not a staff member who needs to wait for admin set role!!');
+                  }else if ( !response.data.responseSuccess.status) {
+                    handleErr('Your account can not login!!!!');
                   }
                 })
                 .catch((err) => {
@@ -259,11 +269,11 @@ const LoginStaff = () => {
               axios
                 .post(`https://api.ic-fpt.click/api/v1/authen/signin-google/${credentialResponse.credential}`)
                 .then((response) => {
-              
+   
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
                   if (
                     response.data.responseSuccess.role === 2 &&
-                    response.data.responseSuccess.staff.isHeadOfDepartMent
+                    response.data.responseSuccess.staff.isHeadOfDepartMent&& response.data.responseSuccess.status
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
 
@@ -272,7 +282,15 @@ const LoginStaff = () => {
                     requestPermission();
                   } else if (
                     response.data.responseSuccess.role === 2 &&
-                    !response.data.responseSuccess.staff.isHeadOfDepartMent
+                    !response.data.responseSuccess.staff.isHeadOfDepartMent&& response.data.responseSuccess.status
+                  ) {
+                    sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+
+                    navigate('/staff');
+                    requestPermission();
+                  }else if (
+                    response.data.responseSuccess.role === 3 && response.data.responseSuccess.status
+            
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
 
@@ -286,6 +304,8 @@ const LoginStaff = () => {
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 0) {
                     handleSuccess('You are not a staff member who needs to wait for admin set role!!');
+                  }  else if ( !response.data.responseSuccess.status) {
+                    handleErr('Your account can not login!!!!');
                   }
                 });
             } else if (regexMail.test(decoded.email)) {

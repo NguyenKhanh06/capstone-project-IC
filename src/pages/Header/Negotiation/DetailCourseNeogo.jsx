@@ -59,7 +59,7 @@ function DetailCourseNego(props) {
   const handleClose = () => {
     setOpen(props.close);
   };
-console.log(props)
+
   const fetchData = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/syllabus/GetListSyllabusPartner/${props.id.partnerId}`).then((response) => {
       console.log("deal", response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId))

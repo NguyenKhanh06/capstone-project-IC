@@ -313,7 +313,7 @@ console.log(student)
                   width: 'auto',
                 }}
               >
-                <form onSubmit={formik.handleSubmit}>
+                {student && <form onSubmit={formik.handleSubmit}>
             
             <Title number={'1'} title={'Program *'} />
             <Autocomplete
@@ -395,7 +395,7 @@ console.log(student)
                   <InputBar
                 inputName="RollNumber"
                 width={'90%'}
-                check={student.rollNumber}
+                check={student?.rollNumber}
                 {...formik.getFieldProps('RollNumber')}
                 error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
                 helperText={formik.touched.RollNumber && formik.errors.RollNumber}
@@ -518,7 +518,7 @@ console.log(student)
                <InputBar
                 inputName="PhoneNumber"
                 width={'90%'}
-                check={student.phoneNumber}
+                check={student?.phoneNumber}
              
                 {...formik.getFieldProps('PhoneNumber')}
                 error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
@@ -828,7 +828,9 @@ console.log(student)
                 SUBMIT
               </Button>
             </Box>
-          </form>
+          </form> || <Box sx={{height: "100vh"}}>
+          <Typography style={{marginTop: "5%"}} variant='h6' >Please <Link to={"/login"}>Login</Link> before regis any program!</Typography>
+          </Box> }
              
               </Box>
             </Box>

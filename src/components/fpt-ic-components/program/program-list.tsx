@@ -47,7 +47,7 @@ const ProgramList: FC = () => {
         backgroundColor: 'background.default',
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{height: "100vh"}}>
         <BaseBreadCrumbs previousLink={[{ href: '/', name: 'Homepage' }]} currentLink={'Programs'} />
         <Grid
           container

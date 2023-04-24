@@ -225,7 +225,7 @@ function ListProject(props) {
               {' '}
               {dayjs(new Date()).month() + 1 - (dayjs(params.row?.tasks[0]?.deadLine).month() + 1) === 0 &&
               dayjs(params.row?.tasks[0]?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
-              dayjs(params.row?.tasks[0]?.deadLine).year() - dayjs(new Date()).year() >= 0 &&  params.row?.tasks[0]?.status!==5? (
+              dayjs(params.row?.tasks[0]?.deadLine).year() - dayjs(new Date()).year() >= 0 &&   params.row?.tasks[0]?.state !== 3 &&  params.row?.tasks[0]?.status !== 5? (
                 <Tooltip title="Task List - Have task need do complete">
                   <IconButton
                     color="error"
