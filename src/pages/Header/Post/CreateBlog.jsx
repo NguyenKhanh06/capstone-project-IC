@@ -202,7 +202,7 @@ function CreateBlog(props) {
               Import Poster
               <input onChange={onSelectFile} id="input" hidden accept="image/*" type="file" />
             </Button>
-            {selectedFile ? selectedFile.size > 20000000 && <p style={{color: "red"}}>Poster image file is not must exceed 20mb</p>: <></>}
+            {selectedFile ? selectedFile?.size > 20000000 && <p style={{color: "red"}}>Poster image file is not must exceed 20mb</p>: <></>}
 {/*             
             <Divider variant="middle" />
             <Typography variant="h6">Another Images:</Typography>
