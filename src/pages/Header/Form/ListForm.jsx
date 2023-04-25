@@ -100,7 +100,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
       {
         field: 'project',
         headerName: 'Project',
-        flex: 1,
+        flex: 2,
         valueGetter: (params) => {
        
           return params.row?.project?.projectName
@@ -111,7 +111,15 @@ import ErrorAlert from '../../Alert/ErrorAlert';
         headerName: 'Creater',
         flex: 1,
       },
-  
+      {
+        field: 'childrenRegistrations',
+        headerName: 'Total registed student',
+
+        valueGetter: (params) => {
+       
+          return params.row?.childrenRegistrations?.length
+        },
+      },
       {
         field: 'status',
         headerName: 'Status',

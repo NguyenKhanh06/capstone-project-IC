@@ -19,7 +19,7 @@ function DetailForm(props) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [message, setMessage] = useState('');
-    
+    const [childForm, setChildForm] = useState(null)
     const [open, setOpen] = useState(false);
   const [showRegis, setShowRegis] = useState(false);
   const [student, setStudent] = useState([]);
@@ -134,10 +134,17 @@ const updateDate = () => {
   });
 }
 
+const getChildForm = async () => {
+  axios.get(`https://api.ic-fpt.click/api/v1/registration/GetChildReg/${props.form?.id}`).then(response => {
+    setChildForm(response.data.responseSuccess)
+  })
+}
+
 useEffect(() => {
   if (props.form) {
     setOpenRegis(dayjs(props.form?.dateOpenRegis))
     setCloseRegis(dayjs(props.form?.dateCloseRegis))
+    getChildForm()
   }
 }, [props.form]);
 
@@ -225,11 +232,11 @@ useEffect(() => {
              </ol>
             </Stack>
             <Divider sx={{marginTop: 5}} variant="middle" />
-            <Typography sx={{marginTop: 6, marginBottom: 4}} variant='h6'>Register (Total student: {props.form?.childrenRegistrations?.length})</Typography>
+            <Typography sx={{marginTop: 6, marginBottom: 4}} variant='h6'>Register (Total student: {childForm?.length})</Typography>
 
-          {props.form?.childrenRegistrations && <DataGrid
+          {childForm && <DataGrid
               autoHeight
-              rows={props.form?.childrenRegistrations}
+              rows={childForm}
               columns={columns}
               initialState={{
                 pagination: {
