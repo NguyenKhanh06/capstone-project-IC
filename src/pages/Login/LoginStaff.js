@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
@@ -22,6 +22,7 @@ const LoginStaff = () => {
   const regexMailFu = /[\w.-]+fptu@gmail\.com$/;
   const navigate = useNavigate();
   const [token, setToken] = useState(null);
+  const [idAcc, setidAcc] = useState(null)
   const [showPassword, setShowPassword] = useState(false);
   const [showAl, setShowAl] = useState(false);
   const [show, setShow] = useState(false);
@@ -54,6 +55,28 @@ const LoginStaff = () => {
 
   //   });
   // };
+  const UpdateTokenFCM = async () => {
+    const formData = new FormData();
+    formData.append('accountId', idAcc);
+    formData.append('token', token);
+  await  axios({
+      method: 'POST',
+      data: formData,
+      url: 'https://api.ic-fpt.click/api/v1/firebasefcm',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
+      
+  }
+  useEffect(() => {
+    if (idAcc && token) {
+      UpdateTokenFCM ()
+    }
+  }, [idAcc && token]);
+
+
   const getdetailStudent = (id) => {
     axios.get(`https://api.ic-fpt.click/api/v1/student/getStudentDetail/${id}`).then((response) => {
       sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
@@ -81,6 +104,8 @@ const LoginStaff = () => {
           vapidKey: 'BJK48eQ8rOBKK2_nX_1qNjwwF-bVV-mnx24sEtEhcxXnil91TwxgWG8K_VxH5xnwVf9NgGJHpyi0omG3th_L_xI',
         }).then((currentToken) => {
           if (currentToken) {
+           
+            setToken(currentToken)
             console.log('currentToken: ', currentToken);
           } else {
             console.log('Can not get token');
@@ -135,36 +160,42 @@ const LoginStaff = () => {
               })
           
                 .then((response) => {
+                 setidAcc(response.data.responseSuccess.id)
 
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
                   if (
                     response.data.responseSuccess.role === 2 &&
                     response.data.responseSuccess.staff.isHeadOfDepartMent&& response.data.responseSuccess.status
                   ) {
+         
+                
+                    requestPermission();
               
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                     navigate('/header');
-                    requestPermission();
                   } else if (
                     response.data.responseSuccess.role === 2 &&
                     !response.data.responseSuccess.staff.isHeadOfDepartMent
                     && response.data.responseSuccess.status
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
-                 
+                   
                     navigate('/staff');
                     requestPermission();
                   } else if (
                     response.data.responseSuccess.role === 3&& response.data.responseSuccess.status
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                   
                  
                     navigate('/staff');
                     requestPermission();
                   }else if (response.data.responseSuccess.role === 4 && response.data.responseSuccess.status) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                  
                     getDeputy(response.data.responseSuccess.id);
                     navigate('/partner');
+
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 4 && !response.data.responseSuccess.status) {
                     handleErr('Your account can not login!!!!');
@@ -276,6 +307,7 @@ const LoginStaff = () => {
                     response.data.responseSuccess.staff.isHeadOfDepartMent&& response.data.responseSuccess.status
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                    setidAcc(response.data.responseSuccess.id)
 
                     navigate('/header');
 
@@ -285,6 +317,7 @@ const LoginStaff = () => {
                     !response.data.responseSuccess.staff.isHeadOfDepartMent&& response.data.responseSuccess.status
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                    setidAcc(response.data.responseSuccess.id)
 
                     navigate('/staff');
                     requestPermission();
@@ -293,6 +326,7 @@ const LoginStaff = () => {
             
                   ) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                    setidAcc(response.data.responseSuccess.id)
 
                     navigate('/staff');
                     requestPermission();
@@ -300,6 +334,8 @@ const LoginStaff = () => {
                     handleErr('You can not login!!!');
                   } else if (response.data.responseSuccess.role === 1) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
+                    setidAcc(response.data.responseSuccess.id)
+                    
                     navigate('/admin');
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 0) {
