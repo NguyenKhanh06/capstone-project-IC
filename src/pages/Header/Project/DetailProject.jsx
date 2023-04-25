@@ -159,10 +159,7 @@ const handleDetailCate = (data) => {
   };
   const fetchDataDoc = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
-      console.log(
-        'doc',
-        response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id)
-      );
+   
       setDoc(response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id));
     });
   };
@@ -375,6 +372,7 @@ const handleDetailCate = (data) => {
       fetchDataCate();
       fetchDataPartner();
       fetchDataStaff();
+      fetchDataDoc()
     }
   }, [props.project]);
 
@@ -998,9 +996,9 @@ const handleDetailCate = (data) => {
             <Box sx={{ padding: '0 44px 44px 44px', maxWidth: '100%' }}>
             <b>Project's Files:</b>
             <Stack direction="column" alignItems="flex-start" spacing={3}>
-            {doc && doc.map((document, index) => (
+            {doc && doc?.map((document, index) => (
                       <Button
-                   
+                   key={index}
                       variant="text"
                      
                       onClick={() => handleExportFile(document)}

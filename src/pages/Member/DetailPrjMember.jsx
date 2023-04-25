@@ -32,7 +32,12 @@ import {
     const handleClickOpen = () => {
       setOpen(true);
     };
-console.log(props)
+    const fetchDataDoc = async () => {
+      await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
+     
+        setDoc(response.data.responseSuccess.filter((doc) => doc.projectId === props.project.project.id));
+      });
+    };
 
     const getdetailProject = async () => {
     await  axios.get(`https://api.ic-fpt.click/api/v1/project/getDetail/${props.project.project.id}`).then((response) => {
@@ -52,7 +57,7 @@ console.log(props)
     useEffect(() => {
       if (props.project != null) {
         getdetailProject();
-       
+       fetchDataDoc()
       }
     }, [props.project]);
   console.log("props", props)
@@ -158,7 +163,22 @@ console.log(props)
                 <b>Project Description:</b>
                 <Typography>{project?.description}</Typography>
               </Box>
-      
+              <Box sx={{ padding: '0 44px 44px 44px', maxWidth: '100%' }}>
+            <b>Project's Files:</b>
+            <Stack direction="column" alignItems="flex-start" spacing={3}>
+            {doc && doc?.map((document, index) => (
+                      <Button
+                   key={index}
+                      variant="text"
+                     
+                      onClick={() => handleExportFile(document)}
+                    >
+                      {document.fileName}
+                    </Button>
+                ))
+                }
+            </Stack>
+            </Box>
             </Paper>
           </DialogContent>
           {/* <DialogActions style={{ padding: 20 }}>
