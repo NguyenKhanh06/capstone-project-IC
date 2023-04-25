@@ -304,13 +304,12 @@ https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${sta
                 required
                 fullWidth
                 label="Description"
-                error={!regex.test(courseContent)}
-                helperText={!regex.test(courseContent) && 'Can not input special character'}
+ 
               />
             </Stack>
 
             <DialogActions style={{ padding: 10 }}>
-              {disableBtn && regex.test(skillName) && regex.test(activity) && regex.test(courseContent) ? (
+              {disableBtn && regex.test(skillName) && regex.test(activity)  ? (
                 <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
                   Save
                 </Button>
