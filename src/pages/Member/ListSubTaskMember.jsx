@@ -118,11 +118,9 @@ function ListSubTaskMember(props) {
   const [task, setTask] = useState([]);
   const [childTask, setChildTask] = useState(null)
   const [deadline, setDeadline] = useState(null);
-  const [taskName, setTaskName] = useState("");
-  const [description, setDescription] = useState("")
-  const [selectedOptions, setSelectedOptions] = useState([]);
+
   const[id, setID] = useState([])
-  const [childrenTask, setChildrenTask] = useState([])
+
   const [showConfirm, setShowConfirm] = useState(false);
   const [stateTask, SetStateTask] = useState(props.state.state)
   const [showSuccess, setShowSuccess] = useState(false);
