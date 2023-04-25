@@ -1,5 +1,5 @@
 import {
-  Box,
+
   Button,
   Dialog,
   DialogActions,
@@ -12,10 +12,9 @@ import {
   InputAdornment,
   InputLabel,
   Link,
-  List,
+
   ListItem,
-  ListItemButton,
-  ListItemText,
+
   MenuItem,
   Select,
   Stack,
@@ -30,7 +29,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Loading from '../../Loading';
+
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 
@@ -42,12 +41,11 @@ function DetailStudent(props) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [disableBtn, setDisableBtn] = useState(false);
-const [student, setStudent] = useState({})
   const [fullName, setFullName] = useState(null);
   const [rollNumber, setRollNumber] = useState(null);
   const [oldRollNumber, setOldRoll] = useState(null);
   const [memberCode, setMemberCode] = useState(null);
-  const [majorName, setMajorName] = useState(null);
+
   const [majorID, setMajorID] = useState(null);
   const [batch, setBatch] = useState(null);
   const [Checkerr, setErr] = useState(false);
@@ -65,7 +63,7 @@ const [student, setStudent] = useState({})
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [id, setID] = useState('');
   const [majors, setMajors] = useState([]);
-  const [majorDefaul, setMajorDefault] = useState(null);
+
   const [CheckerrPhone, setErrPhone] = useState(false);
 
 
@@ -92,9 +90,7 @@ const [student, setStudent] = useState({})
     setMessage(data);
     setShowSuccess(true);
   };
-  function reload() {
-    window.location.reload(false);
-  }
+ 
   useEffect(() => {
     if (props.student !== null) {
       setFullName(props.student.fullName);

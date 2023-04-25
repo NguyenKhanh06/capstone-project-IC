@@ -45,7 +45,7 @@ import AuthGuard from './components/fpt-ic-components/guards/auth-guard';
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const student = JSON.parse(sessionStorage.getItem("student"));
+
 
   const routes = useRoutes([
     {

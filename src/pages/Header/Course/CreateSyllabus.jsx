@@ -26,7 +26,7 @@ function CreateSyllabus(props) {
   const regex = /^[\w\s]*$/
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState('');
-  const [partner, setPartner] = useState([]);
+  const [partner, setPartner] = useState(null);
 
   const [description, setDescription] = useState('');
   const [partners, setPartners] = useState([])
@@ -138,8 +138,7 @@ function CreateSyllabus(props) {
                 maxLength: 1000,
                
               }}
-              error={ !regex.test(description)}
-              helperText={!regex.test(description) && "Can not input special character"}
+             
             />
               <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">Partner</InputLabel>
@@ -170,7 +169,7 @@ function CreateSyllabus(props) {
           </Stack>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          {content.trim() && description.trim().length && regex.test(description) && regex.test(content)? (
+          {content.trim() && description.trim().length && regex.test(content) && partner ? (
             <Button variant="contained" onClick={() => handleCreateSyllabus()} autoFocus>
               Create Syllabus
             </Button>

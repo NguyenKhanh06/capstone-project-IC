@@ -1,48 +1,26 @@
 
-import { faker } from '@faker-js/faker';
+
 // @mui
-import { styled } from '@mui/material/styles';
 
 
-import { Grid, Container, Typography } from '@mui/material';
+
+import { Container, Typography } from '@mui/material';
 // components
-import Iconify from '../components/iconify';
+
 // sections
-import {
-  AppTasks,
-  AppNewsUpdate,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppWidgetSummary,
-  AppCurrentSubject,
-  AppConversionRates,
-} from '../sections/@dashboard/app';
+
 import { useEffect } from 'react';
 import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
-const StyledRoot = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('md')]: {
-    display: 'flex',
-  },
-}));
+
 
 export default function DashboardAppPage() {
   const user = JSON.parse(sessionStorage.getItem("user"));
   const tokenfcm = localStorage.getItem('tokenfcm');
 
-  const StyledSection = styled('div')(({ theme }) => ({
-    width: '100%',
-    maxWidth: 680,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    boxShadow: theme.customShadows.card,
-    backgroundColor: "white",
-  }));
+
   const UpdateTokenFCM = async () => {
     const formData = new FormData();
     formData.append('accountId', user.id);

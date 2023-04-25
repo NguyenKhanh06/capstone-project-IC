@@ -17,7 +17,7 @@ import ScrollToTop from './components/scroll-to-top';
 
 
 const token = localStorage.getItem('token');
-const user= sessionStorage.getItem('user');
+
 
 // ----------------------------------------------------------------------
 if (token) {
@@ -26,7 +26,7 @@ if (token) {
       config.headers.authorization = `Bearer ${localStorage.getItem('token')}`;
       return config;
     },
-    (error) => Promise.reject.error
+
   );
  
   
