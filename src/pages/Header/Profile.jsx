@@ -1,5 +1,4 @@
 import {
-    Box,
     Button,
     Dialog,
     DialogActions,
@@ -11,12 +10,11 @@ import {
     IconButton,
     InputAdornment,
     InputLabel,
-    MenuItem,
     OutlinedInput,
-    Select,
+  
     Stack,
     TextField,
-    Typography,
+
   } from '@mui/material';
   import axios from 'axios';
   import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -26,19 +24,19 @@ import {
   import ErrorAlert from '../Alert/ErrorAlert';
   import SuccessAlert from '../Alert/SuccessAlert';
 import ChangePass from './ChangePass';
-import { useNavigate } from 'react-router-dom';
+
   
   function Profile(props) {
     const user = JSON.parse(sessionStorage.getItem("user"));
   const regexPhone = /(0[3|5|7|8|9])+([0-9]{7})\b/g;
    
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+
     const [disableBtn, setDisable] = useState(false);
   
   const [password, setPassword] = useState(null)
     const [fullName, setFullName] = useState(null);
-    const [role, setRole] = useState(null);
+ 
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
@@ -50,14 +48,7 @@ import { useNavigate } from 'react-router-dom';
     const [showConfirm, setShowConfirm] = useState(false);
   const [CheckerrPhone, setErrPhone] = useState(false);
 
-  
-    function reload() {
-      window.location.reload(false);
-    }
-    const handleShowConfirm = (data) => {
-     
-      setShowConfirm(true);
-    };
+
   
     const handleCloseConfirm = (data) => {
       setShowConfirm(false);
