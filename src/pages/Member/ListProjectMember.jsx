@@ -193,7 +193,7 @@ function ListProjectMember(props) {
           dayjs(new Date()).year() - dayjs(params.row.project?.estimateTimeStart).year() === 0
             ? updateMilstone(params.row.project.id, 3)
             : dayjs(new Date()).date() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).date().add(1, 'day') ===
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
                 dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).month() ===
@@ -204,7 +204,7 @@ function ListProjectMember(props) {
             ? updateMilstone(params.row.project.id, 4)
             
             : dayjs(new Date()).date() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).date().add(1, 'day') ===
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
                 dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).month() ===
@@ -214,7 +214,7 @@ function ListProjectMember(props) {
                 0
             ? updateMilstone(params.row.project.id, 5)
             : dayjs(new Date()).date() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).date().add(1, 'day') ===
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
                 dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).month() ===
@@ -224,7 +224,7 @@ function ListProjectMember(props) {
                 0
             ? updateMilstone(params.row.project.id, 6)
             : dayjs(new Date()).date() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).date().add(1, 'day') ===
+                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).date() ===
                 0 &&
               dayjs(new Date()).month() -
                 dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).month() ===
