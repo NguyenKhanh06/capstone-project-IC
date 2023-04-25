@@ -140,7 +140,7 @@ function ListProject(props) {
             <Chip label="Closing" color="success" />
           ): null}
 
-          {dayjs(new Date()).date() - dayjs(params.row?.estimateTimeStart).date() === 0 &&
+          {params.row.projectStatus > 2 ? (dayjs(new Date()).date() - dayjs(params.row?.estimateTimeStart).date() === 0 &&
           dayjs(new Date()).month() - dayjs(params.row?.estimateTimeStart).month() === 0 &&
           dayjs(new Date()).year() - dayjs(params.row?.estimateTimeStart).year() === 0
             ? updateMilstone(params.row.id, 3)
@@ -185,7 +185,7 @@ function ListProject(props) {
                 dayjs(params.row?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).year() ===
                 0
             ? updateMilstone(params.row.id, 7)
-            : null}
+            : null) : null}
         </>
       ),
     },

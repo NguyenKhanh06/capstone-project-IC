@@ -176,7 +176,7 @@ function ListProjectMember(props) {
         <>
           {params.row.project.projectStatus === 2 ? (
             <Chip label="Cancel" color="error" />
-          ) : params.row.project.projectStatus === 3 ? (
+          ) : params.row.project.projectStatus ===  3 ? (
             <Chip label="Initiation" />
           ) : params.row.project.projectStatus === 4 ? (
             <Chip label="Planning" color="primary" />
@@ -188,7 +188,7 @@ function ListProjectMember(props) {
             <Chip label="Closing" color="success" />
           ) : null}
 
-          {dayjs(new Date()).date() - dayjs(params.row.project?.estimateTimeStart).date() === 0 &&
+          {params.row.project?.projectStatus > 2 ? (dayjs(new Date()).date() - dayjs(params.row.project?.estimateTimeStart).date() === 0 &&
           dayjs(new Date()).month() - dayjs(params.row.project?.estimateTimeStart).month() === 0 &&
           dayjs(new Date()).year() - dayjs(params.row.project?.estimateTimeStart).year() === 0
             ? updateMilstone(params.row.project.id, 3)
@@ -233,7 +233,7 @@ function ListProjectMember(props) {
                 dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).year() ===
                 0
             ? updateMilstone(params.row.project.id, 7)
-            : null}
+            : null) : null}
         </>
       ),
     },
