@@ -186,7 +186,7 @@ function ChangePass(props) {
             Accept
           </Button>
         </DialogActions>
-        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Pass Successful!'} />
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Password Successful!'} />
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       </Dialog>
     </Dialog>

@@ -25,6 +25,7 @@ function ListDeputy(props) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false)
+  const [CheckerrPhone, setErrPhone] = useState(false);
   const handleShowConfirm = (mail, status) => {
     setEmail(mail);
     setStatus(status)
@@ -177,7 +178,7 @@ function ListDeputy(props) {
             Accept
           </Button>
         </DialogActions>
-        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Successful!'} />
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Status Successful!'} />
       <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       </Dialog>
       <DetailDeputyPartner show={showDep} close={() => setShowDep(false)} id={idDep} />

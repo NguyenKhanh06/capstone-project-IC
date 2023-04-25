@@ -25,7 +25,7 @@ import SuccessAlert from '../../Alert/SuccessAlert';
 function CreateStudent(props) {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
   const regex = /^[\w\s]*$/
-  const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+  const regexPhone = /(0[3|5|7|8|9])+([0-9]{7})\b/g;
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -129,7 +129,8 @@ function CreateStudent(props) {
       setErr(true);
     }
   };
-  const onblurPhone = () => {
+  const onblurPhone = (e) => {
+    setPhoneNumber(e.target.value)
     if (regexPhone.test(phoneNumber)) {
       setErrPhone(false);
     } else {
@@ -203,10 +204,10 @@ function CreateStudent(props) {
                   />
                   <TextField
                     value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    onChange={onblurPhone}
                     required
                     fullWidth
-                    onBlur={onblurPhone}
+                 
 
                     inputProps={{ maxLength: 10 }}
                     label="Phone Number"

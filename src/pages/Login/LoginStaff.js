@@ -55,26 +55,8 @@ const LoginStaff = () => {
 
   //   });
   // };
-  const UpdateTokenFCM = async () => {
-    const formData = new FormData();
-    formData.append('accountId', idAcc);
-    formData.append('token', token);
-  await  axios({
-      method: 'POST',
-      data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/firebasefcm',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
 
-      
-  }
-  useEffect(() => {
-    if (idAcc && token) {
-      UpdateTokenFCM ()
-    }
-  }, [idAcc && token]);
+
 
 
   const getdetailStudent = (id) => {
@@ -104,8 +86,8 @@ const LoginStaff = () => {
           vapidKey: 'BJK48eQ8rOBKK2_nX_1qNjwwF-bVV-mnx24sEtEhcxXnil91TwxgWG8K_VxH5xnwVf9NgGJHpyi0omG3th_L_xI',
         }).then((currentToken) => {
           if (currentToken) {
-           
-            setToken(currentToken)
+            localStorage.setItem('tokenfcm',currentToken);
+
             console.log('currentToken: ', currentToken);
           } else {
             console.log('Can not get token');
@@ -331,7 +313,7 @@ const LoginStaff = () => {
                     navigate('/staff');
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 4) {
-                    handleErr('You can not login!!!');
+                    handleErr('This account is currently inactive.');
                   } else if (response.data.responseSuccess.role === 1) {
                     sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess));
                     setidAcc(response.data.responseSuccess.id)
@@ -339,9 +321,9 @@ const LoginStaff = () => {
                     navigate('/admin');
                     requestPermission();
                   } else if (response.data.responseSuccess.role === 0) {
-                    handleSuccess('You are not a staff member who needs to wait for admin set role!!');
+                    handleSuccess('You do not have access to this page. Contact admin to receive permission');
                   }  else if ( !response.data.responseSuccess.status) {
-                    handleErr('Your account can not login!!!!');
+                    handleErr('This account is currently inactive.');
                   }
                 });
             } else if (regexMail.test(decoded.email)) {

@@ -23,14 +23,20 @@ import { useEffect, useState } from 'react';
 import Iconify from '../../../components/iconify/Iconify';
 import CreateCourse from './CreateCourse';
 import DetailCourse from './DetailCourse';
+import SuccessAlert from '../../Alert/SuccessAlert';
+import ErrorAlert from '../../Alert/ErrorAlert';
 
 function ListCourse(props) {
+  const [message, setMessage] = useState('');
+
   const [showCreate, setShowCreate] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [course, setCourse] = useState([]);
   const [courses, setCourses] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [id, setID] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const handleShowConfirm = (data) => {
     setID(data);
@@ -58,8 +64,16 @@ function ListCourse(props) {
   }, []);
 
   const handleDeleteCourse = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`).then((response) => {
-      window.location.reload(false);
+    axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`) .then((response) => {
+      if (response.data.isSuccess) {
+        setShowSuccess(true);
+        setTimeout(() =>{
+          window.location.reload()
+        }, 2000);
+      }
+    })
+    .catch((err) => {
+      handleError('Delete fail!');
     });
   };
 
@@ -155,6 +169,8 @@ function ListCourse(props) {
             Delete
           </Button>
         </DialogActions>
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Delete Course successful!!'} />
+          <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       </Dialog>
     </>
   );

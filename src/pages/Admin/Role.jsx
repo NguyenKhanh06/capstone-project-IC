@@ -90,35 +90,35 @@ const updateHeader = () => {
   }
   axios.put(`https://api.ic-fpt.click/api/v1/staff/update/${idStaff.id}`, data).then((response) => {
     if (response.data.isSuccess) {
-      handleSuccess('Update Successful!!!!!')
+      handleSuccess('Update To Header Successful!!!!!')
       setTimeout(reload(), 2000);
     } 
   }).catch((err) => {
-    handleError('Update Fail!!!!');
+    handleError('Update To Header Fail!!!!');
   })
 }
 
 const handleChange = () => {
     axios.put(`https://api.ic-fpt.click/api/v1/account/ChangeRole/${mail}?roleEnum=2`).then((response) => {
         if (response.data.isSuccess) {
-          handleSuccess('Update Successful!!!!!')
+          handleSuccess('Update To Staff Successful!!!!!')
           setTimeout(reload(), 2000);
         } 
       }).catch((err) => {
-        handleError('Update Fail!!!!');
+        handleError('Update  To Staff Fail!!!!');
       })
 }
 
 const handleDeleteStaff = () => {
     axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=${status}`).then((response) => {
         if (response.data.isSuccess) {
-          handleSuccess('Update Status Successful!!!!!')
+          handleSuccess('Delete Account Successful!!!!!')
           setTimeout(() =>{
             window.location.reload();
          }, 2000);
         } 
       }).catch((err) => {
-        handleError('Update Status Fail!!!!');
+        handleError('Delete Account Fail!!!!');
       })
 }
 

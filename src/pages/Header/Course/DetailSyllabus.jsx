@@ -59,6 +59,8 @@ function DetailSyllabus(props) {
   const [id, setId] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [showSuccessDelete, setShowSuccessDelete] = useState(false);
+  const [showErrorDelete, setShowErrorDelete] = useState(false);
   const [message, setMessage] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
@@ -76,6 +78,10 @@ function DetailSyllabus(props) {
   const handleError = (data) => {
     setMessage(data);
     setShowError(true);
+  };
+  const handleErrorDelete = (data) => {
+    setMessage(data);
+    setShowErrorDelete(true);
   };
   const handleClickOpenConfirmDelete = (id) => {
     setId(id);
@@ -114,7 +120,11 @@ function DetailSyllabus(props) {
       )
       .then((response) => {
         handleClickCloseConfirmDelete()
+        setShowSuccessDelete(true);
+
         getDetail()
+      }) .catch((err) => {
+        handleError("Delete fail!");
       });
   };
 const getDetail= async () => {
@@ -414,6 +424,12 @@ setTimeout(() =>{
               Delete
             </Button>
           </DialogActions>
+          <SuccessAlert
+            show={showSuccessDelete}
+            close={() => setShowSuccessDelete(false)}
+            message={'Delete Slot Successful!'}
+          />
+          <ErrorAlert show={showErrorDelete} close={() => setShowError(false)} message={message} />
         </Dialog>
         <Dialog
           open={showConfirm}

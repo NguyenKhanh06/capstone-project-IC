@@ -252,7 +252,7 @@ function DetailProjectNegoPartner(props) {
             </Button> */}
           </Stack>
         </DialogActions>
-        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Upload file Successful!'} />
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Upload File Successful!'} />
       <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       </Dialog>
       <CancelProject show={showCancel} close={() => setShowCancel(false)} />

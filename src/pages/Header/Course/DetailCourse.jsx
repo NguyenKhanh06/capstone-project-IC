@@ -97,7 +97,7 @@ function DetailCourse(props) {
     setOpen(props.close);
   };
 
-console.log(syllabuses)
+
 
   const getDetail = () => {
     axios.get(`https://api.ic-fpt.click/api/v1/course/getDetail/${props.course.id}`).then((response) => {

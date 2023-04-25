@@ -114,6 +114,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
       {
         field: 'childrenRegistrations',
         headerName: 'Total registed student',
+        flex: 2,
 
         valueGetter: (params) => {
        
@@ -200,7 +201,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
         </Container>
   <DetailForm show={showDetail} close={() => setShowDetail(false)} form={formDetail} />
   <CreateForm show={showCreate} close={() => setShowCreate(false)}/>
-        <Dialog
+        {/* <Dialog
           open={showConfirm}
           onClose={handleCloseConfirm}
           aria-labelledby="alert-dialog-title"
@@ -218,7 +219,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
               Delete
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
         <Dialog
           open={showConfirmUpdate}
           onClose={handleCloseConfirmUpdate}
@@ -237,8 +238,8 @@ import ErrorAlert from '../../Alert/ErrorAlert';
             Accept
             </Button>
           </DialogActions>
-          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Successful!'} />
-          <ErrorAlert show={showError} close={() => setShowError(false)} message={'Update Fail!!!'} />
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Status Successful!'} />
+          <ErrorAlert show={showError} close={() => setShowError(false)} message={'Update Status Fail!!!'} />
         </Dialog>
       </>
     );

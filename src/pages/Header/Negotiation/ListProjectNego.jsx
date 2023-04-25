@@ -71,13 +71,13 @@ function ListProjectNego(props) {
         },
       }).then((response) => {
         if (response.data.isSuccess) {
-          handleSuccess('Update Project Successsfull!!!');
+          handleSuccess('Complete Project Successful!');
           setTimeout(() => {
             window.location.reload()
              }, 1000);
         } 
       }).catch((err) => {
-        handleError('Upload fail!');
+        handleError('Complete Project Fail!');
         setTimeout(() => {
           window.location.reload()
            }, 1000);
@@ -111,7 +111,7 @@ function ListProjectNego(props) {
           `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
         )
         .then((response) => {
-          console.log(response);
+         
           if (response.data.isSuccess) {
             handleImportFile()
        
@@ -130,7 +130,7 @@ function ListProjectNego(props) {
 
         )
         .then((response) => {
-          console.log(response);
+        
           if (response.data.isSuccess) {
             handleImportFile()
         
@@ -348,8 +348,8 @@ function ListProjectNego(props) {
             }
             
           </DialogActions>
-          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Successful!'} />
-          <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Complete Project Successful!'} />
+          <ErrorAlert show={showError} close={() => setShowError(false)} message={"Complete Project Fail!"} />
         </Dialog>
 <DetailCourseNego show={showNego} close={() => setShowNego(false)} id={id}/>
       <DetailProjectNego show={showDetail} close={() => setShowDetail(false)} project={project} />

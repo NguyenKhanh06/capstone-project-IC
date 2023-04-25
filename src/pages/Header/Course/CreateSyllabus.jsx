@@ -64,7 +64,10 @@ function CreateSyllabus(props) {
       .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
-          handleClose();
+          setTimeout(() => {
+            handleClose();
+
+          }, 1000)
           setContent('');
           setDescription('');
           props.getDetail();

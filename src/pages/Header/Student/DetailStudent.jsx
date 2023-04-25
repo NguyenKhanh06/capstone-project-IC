@@ -37,7 +37,7 @@ import SuccessAlert from '../../Alert/SuccessAlert';
 function DetailStudent(props) {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
   const regex = /^[\w\s]*$/
-  const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+  const regexPhone = /(0[3|5|7|8|9])+([0-9]{7})\b/g;
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -251,10 +251,8 @@ const deleteFile = (name) => {
     setEmail(e.target.value);
 
   };
-  const handleChangePhone = (e) => {
-    setPhoneNumber(e.target.value);
- 
-  };
+
+  
   const handleChangeMajor = (e) => {
 console.log(e.target.value)
     setMajorID(e.target.value)
@@ -304,15 +302,19 @@ console.log(e.target.value)
       setErr(true);
     }
   };
-  const onblurPhone = () => {
+  const handleChangePhone = (e) => {
+    setPhoneNumber(e.target.value)
     if (regexPhone.test(phoneNumber)) {
       setErrPhone(false);
-      setDisableBtn(true);
-
+      setDisableBtn(true)
     } else {
       setErrPhone(true);
+      setDisableBtn(false)
+
     }
-  };
+
+  }
+
   const fetchData = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/Major/getAllMajor`).then((response) => {
      
@@ -367,22 +369,16 @@ console.log(e.target.value)
                    error={Checkerr}
                    helperText={Checkerr && 'Please input email fpt'}
                 />
-                <TextField
-                  value={phoneNumber}
-                  onChange={handleChangePhone}
-                  type="number"
-                  required
-                  fullWidth
-                  label="Phone Number"
-                  inputProps={{ maxLength: 10 }}
-                  onBlur={onblurPhone}
-
-                  // inputProps={{ maxLength: 10 }}
-         
-                  error={CheckerrPhone}
-                  helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
-
-                />
+                  <TextField
+                    value={phoneNumber}
+                    onChange={handleChangePhone}
+                    required
+                    fullWidth
+                    inputProps={{ maxLength: 10 }}
+                    label="Phone Number"
+                    error={CheckerrPhone}
+                    helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
+                  />
               </Stack>
               <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
                 <TextField
@@ -521,7 +517,7 @@ console.log(e.target.value)
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
            
 
-              {disableBtn && !Checkerr && !CheckerrPhone
+              {disableBtn && !CheckerrPhone
               
               && regex.test(rollNumber) && 
               regex.test(memberCode) &&

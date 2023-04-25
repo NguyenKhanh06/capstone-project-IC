@@ -1006,7 +1006,7 @@ const RegisterInformationComponent = () => {
                 severity="error"
                 sx={{ width: '100%' }}
               >
-                {'Regis fail!!'}
+                {'Update fail!!'}
               </Alert>
             </Snackbar>
           </Box>

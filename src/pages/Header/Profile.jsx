@@ -30,7 +30,7 @@ import { useNavigate } from 'react-router-dom';
   
   function Profile(props) {
     const user = JSON.parse(sessionStorage.getItem("user"));
-  const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+  const regexPhone = /(0[3|5|7|8|9])+([0-9]{7})\b/g;
    
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -136,18 +136,27 @@ getDetail()
   
     const handleChangePhone = (e) => {
       setPhoneNumber(e.target.value)
-     
-  
-    }
-    const onblurPhone = () => {
       if (regexPhone.test(phoneNumber)) {
         setErrPhone(false);
         setDisable(true)
-      }else{
+      } else {
+        setErrPhone(true);
         setDisable(false)
+
       }
   
-    };
+    }
+ 
+    // const onblurPhone = () => {
+    //   if (regexPhone.test(phoneNumber)) {
+    //     setErrPhone(false);
+    //     setDisable(true)
+    //   } else {
+    //     setErrPhone(true);
+    //     setDisable(false)
+
+    //   }
+    // };
     const handleChangeEmail = (e) => {
       setEmail(e.target.value)
       if(e.target.value){
@@ -209,7 +218,10 @@ getDetail()
                     fullWidth
                     label="Phone Number"
                     type='number'
-                    onBlur={onblurPhone}
+                    // onBlur={onblurPhone}
+
+                    inputProps={{ maxLength: 10 }}
+                
                     error={CheckerrPhone}
                     helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
   
@@ -255,7 +267,7 @@ getDetail()
             <Button variant="contained" onClick={() => setShowChangePassword(true)} autoFocus>
                 Change Password
                 </Button>
-              {disableBtn ? (
+              {disableBtn && !CheckerrPhone ? (
                 <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
                   Save
                 </Button>

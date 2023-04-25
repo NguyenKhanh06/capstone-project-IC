@@ -30,6 +30,7 @@ import Iconify from '../../components/iconify/Iconify';
   
   function DetailDeputyPartner(props) {
     const regex = /^[\w\s]*$/
+    const regexPhone = /(0[3|5|7|8|9])+([0-9]{7})\b/g;
   
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ import Iconify from '../../components/iconify/Iconify';
     const [CheckConfirm, setErrConfirm] = useState(false);
     const [deputy, setDeputy] = useState([])
 
+    const [CheckerrPhone, setErrPhone] = useState(false);
 
   const [showConfirm, setShowConfirm] = useState(false);
   const [id, setID] = useState('');
@@ -192,16 +194,19 @@ const handleChangePass = (e) => {
 
 //     }
 // }
-
 const handleChangePhone = (e) => {
-    setPhoneNumber(e.target.value)
-    if(e.target.value && e.target.value.trim().length){
-        setDisable(true)
-       
-    }else{
-        setDisable(false)
-    }
+  setPhoneNumber(e.target.value)
+  if (regexPhone.test(phoneNumber)) {
+    setErrPhone(false);
+    setDisable(true)
+  } else {
+    setErrPhone(true);
+    setDisable(false)
+
+  }
+
 }
+
 
     return (
       <div>
@@ -254,8 +259,15 @@ const handleChangePhone = (e) => {
                     onChange={handleChangePhone}
                     required
                     fullWidth
-                   type={'number'}
                     label="Phone Number"
+                    type='number'
+                    // onBlur={onblurPhone}
+
+                    inputProps={{ maxLength: 10 }}
+                
+                    error={CheckerrPhone}
+                    helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
+  
                   />
                 </Stack>
   
@@ -303,7 +315,7 @@ helperText={CheckConfirm && "Password not match!!!"}
               </Stack>
             </DialogContent>
             <DialogActions style={{ padding: 20 }}>
-              { disable ? (
+              { disable && !CheckerrPhone? (
                 <Button variant="contained"  onClick={() => setShowConfirm(true)} autoFocus>
              Save
                 </Button>

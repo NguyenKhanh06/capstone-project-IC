@@ -19,6 +19,8 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +32,7 @@ const StyledRoot = styled('div')(({ theme }) => ({
 
 export default function DashboardAppPage() {
   const user = JSON.parse(sessionStorage.getItem("user"));
+  const tokenfcm = localStorage.getItem('tokenfcm');
 
   const StyledSection = styled('div')(({ theme }) => ({
     width: '100%',
@@ -40,6 +43,32 @@ export default function DashboardAppPage() {
     boxShadow: theme.customShadows.card,
     backgroundColor: "white",
   }));
+  const UpdateTokenFCM = async () => {
+    const formData = new FormData();
+    formData.append('accountId', user.id);
+    formData.append('token',localStorage.getItem('tokenfcm'));
+ await axios({
+      method: 'POST',
+      data: formData,
+      url: 'https://api.ic-fpt.click/api/v1/firebasefcm',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+  
+      
+  }
+  
+  useEffect(() => {
+   
+     
+     setTimeout(() => {
+UpdateTokenFCM()
+    }, 3500)
+  
+    }
+
+  , [tokenfcm]);
   return (
     <>
 

@@ -220,12 +220,12 @@ console.log("check", user)
       .then((response) => {
         handleUpdateStatus();
         if (response.data.isSuccess) {
-          handleSuccess('Unassign member successfull!!!');
+          handleSuccess('Unassign successfull!!!');
           fetchData()
         }
       })
       .catch((err) => {
-        handleError('Unassign member fail!');
+        handleError('Unassign fail!');
       });
   };
   const handleChangeComment = (e) => {
