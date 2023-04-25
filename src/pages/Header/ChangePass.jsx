@@ -55,10 +55,11 @@ function ChangePass(props) {
   };
 
   const handleChangeConfirmPass = (e) => {
+    setConfirmPass(e.target.value)
     if (e.target.value === newPass) {
-      setCheck(true);
-    } else {
       setCheck(false);
+    } else {
+      setCheck(true);
     }
   };
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -144,19 +145,19 @@ function ChangePass(props) {
               label="New Password"
             />
             <TextField
-      
+      disabled={!newPass}
               value={confirmPass}
-              onBlur={handleChangeConfirmPass}
-              onChange={(e) => setConfirmPass(e.target.value)}
-              error={!check}
-              helperText={!check && 'Passwords do NOT match'}
+              // onBlur={handleChangeConfirmPass}
+              onChange={handleChangeConfirmPass}
+              error={check}
+              helperText={check && 'Passwords do NOT match'}
               type="password"
               label="Confirm New Password"
             />
           </Stack>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          {check ? (
+          {!check && newPass === confirmPass ? (
             <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
               Save
             </Button>
