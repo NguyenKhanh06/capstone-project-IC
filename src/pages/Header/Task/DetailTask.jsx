@@ -421,7 +421,7 @@ console.log("cmt", cmtTask)
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <Tooltip title="File attack">
+                      <Tooltip title="File attach">
                         <IconButton onChange={onChangeFile}  aria-label="upload picture" component="label">
                           <input hidden type="file" />
                           <AttachFileIcon fontSize="inherit" />
