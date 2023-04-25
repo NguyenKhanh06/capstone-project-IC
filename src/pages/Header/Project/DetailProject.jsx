@@ -186,15 +186,22 @@ const handleDetailCate = (data) => {
   // update date milestone
 
   const CreateDateInit = () => {
-    const data = {
-      projectId: props.project.id,
-      mileStoneId: 1,
-      dateBegin: fromDateInit,
-      dateEnd: toDateInit.add(1, 'day'),
-    };
-    axios
-      .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/1`, data)
+    const formData = new FormData();
+    formData.append('ProjectId', props.project.id);
+    formData.append('MileStoneId', 1);
+    formData.append('DateBegin',estimateStart);
+    formData.append('DateEnd',toDateInit);
+   
+    axios({
+      method: 'PUT',
+      data: formData,
+      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/1`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
       .then((response) => {
+        console.log(response)
         if (response.data.isSuccess) {
           handleSuccess('Update date successfull!!!');
           setTimeout(reload(), 3000);
@@ -206,14 +213,20 @@ const handleDetailCate = (data) => {
   };
 
   const CreateDatePlan = () => {
-    const data = {
-      projectId: props.project.id,
-      mileStoneId: 2,
-      dateBegin: fromDatePlan.add(1, 'day'),
-      dateEnd: toDatePlan.add(1, 'day'),
-    };
-    axios
-      .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/2`, data)
+    const formData = new FormData();
+    formData.append('ProjectId', props.project.id);
+    formData.append('MileStoneId', 2);
+    formData.append('DateBegin',fromDatePlan);
+    formData.append('DateEnd',toDatePlan);
+   
+    axios({
+      method: 'PUT',
+      data: formData,
+      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/2`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
       .then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Update date successfull!!!');
@@ -225,14 +238,20 @@ const handleDetailCate = (data) => {
       });
   };
   const CreateDateExe = () => {
-    const data = {
-      projectId: props.project.id,
-      mileStoneId: 3,
-      dateBegin: fromDateEx.add(1, 'day'),
-      dateEnd: toDateEx.add(1, 'day'),
-    };
-    axios
-      .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/3`, data)
+    const formData = new FormData();
+    formData.append('ProjectId', props.project.id);
+    formData.append('MileStoneId', 3);
+    formData.append('DateBegin',fromDateEx);
+    formData.append('DateEnd',toDateEx);
+   
+    axios({
+      method: 'PUT',
+      data: formData,
+      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/3`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
       .then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Update date successfull!!!');
@@ -244,14 +263,20 @@ const handleDetailCate = (data) => {
       });
   };
   const CreateDateMino = () => {
-    const data = {
-      projectId: props.project.id,
-      mileStoneId: 4,
-      dateBegin: fromDateMino.add(1, 'day'),
-      dateEnd: toDateMino.add(1, 'day'),
-    };
-    axios
-      .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/4`, data)
+    const formData = new FormData();
+    formData.append('ProjectId', props.project.id);
+    formData.append('MileStoneId', 4);
+    formData.append('DateBegin',fromDateMino);
+    formData.append('DateEnd',toDateMino);
+   
+    axios({
+      method: 'PUT',
+      data: formData,
+      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/4`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
       .then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Update date successfull!!!');
@@ -263,14 +288,20 @@ const handleDetailCate = (data) => {
       });
   };
   const CreateDateClosing = () => {
-    const data = {
-      projectId: props.project.id,
-      mileStoneId: 5,
-      dateBegin: fromDateClose.add(1, 'day'),
-      dateEnd: estimateEnd,
-    };
-    axios
-      .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/5`, data)
+    const formData = new FormData();
+    formData.append('ProjectId', props.project.id);
+    formData.append('MileStoneId', 5);
+    formData.append('DateBegin',fromDateClose);
+    formData.append('DateEnd',estimateEnd);
+   
+    axios({
+      method: 'PUT',
+      data: formData,
+      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/5`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
       .then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Update date successfull!!!');
@@ -294,7 +325,7 @@ const handleDetailCate = (data) => {
       }else{
         setenableplan(true);
       }
-      setToInit(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 1).dateEnd);
+      setToInit(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 1).dateEnd).add(1, 'day'));
 
       if (
         props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateBegin &&
@@ -305,8 +336,8 @@ const handleDetailCate = (data) => {
         setenableEx(true);
       }
 
-      setFromPlan(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateBegin);
-      setToPlan(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateEnd);
+      setFromPlan(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateBegin).add(1, 'day'));
+      setToPlan(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateEnd).add(1, 'day'));
 
       if (
         props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateBegin &&
@@ -316,8 +347,8 @@ const handleDetailCate = (data) => {
       }else{
         setenableMino(true);
       }
-      setFromEx(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateBegin);
-      setToEx(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateEnd);
+      setFromEx(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateBegin).add(1, 'day'));
+      setToEx(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateEnd).add(1, 'day'));
 
       if (
         props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateBegin &&
@@ -327,10 +358,10 @@ const handleDetailCate = (data) => {
       }else{
         setenableClose(true)
       }
-      setFromMino(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateBegin);
-      setToMino(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateEnd);
+      setFromMino(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateBegin).add(1, 'day'));
+      setToMino(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateEnd).add(1, 'day'));
 
-      setFromClose(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 5).dateBegin);
+      setFromClose(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 5).dateBegin).add(1, 'day'));
 
       setProjectName(props.project.projectName);
       setEstimateStart(dayjs(props.project.estimateTimeStart));

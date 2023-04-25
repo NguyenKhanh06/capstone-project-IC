@@ -102,8 +102,8 @@ console.log(props)
               <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
                 <DatePicker
                   disablePast
-                  minDate={dayjs(props?.deadline?.dateBegin)}
-                  maxDate={dayjs(props?.deadline?.dateEnd)}
+                  minDate={dayjs(props?.deadline?.dateBegin).add(1, 'day')}
+                  maxDate={dayjs(props?.deadline?.dateEnd).add(1, 'day')}
                   sx={{ width: '50%' }}
                   label="Deadline"
                   value={deadline}
