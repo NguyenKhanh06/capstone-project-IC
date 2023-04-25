@@ -788,7 +788,7 @@ const RegisterInformationComponent = () => {
                               }}
                             >
                               Upload your file here
-                              <input type="file" hidden onChange={handleTransferInformation} />
+                              <input accept="image/*" type="file" hidden onChange={handleTransferInformation} />
                             </Box>
                           </Box>
                         ))}
@@ -825,7 +825,7 @@ const RegisterInformationComponent = () => {
                             }}
                           >
                             +
-                            <input type="file" hidden onChange={handleTransferInformation} />
+                            <input accept="image/*" type="file" hidden onChange={handleTransferInformation} />
                           </Button>
                         )}
                       </Box>

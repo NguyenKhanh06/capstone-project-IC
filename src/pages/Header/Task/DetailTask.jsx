@@ -173,6 +173,7 @@ console.log("check", user)
         'Content-Type': 'multipart/form-data',
       },
     }).then(response => {
+      console.log(response)
       setComment("")
       setFileCmt()
       fetchDataComment()
@@ -314,6 +315,7 @@ console.log("cmt", cmtTask)
                 <DatePicker
                   required
                   disablePast
+                  maxDate={dayjs(props.task.deadLine)}
                   sx={{ width: '50%' }}
                   label="Deadline"
                   value={deadline}

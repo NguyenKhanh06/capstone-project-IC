@@ -324,7 +324,7 @@ function ListProjectNego(props) {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">You Want To Complete the Neogotiation?</DialogContentText>
             <Button style={{marginTop: 20}} color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                  Import Course Result
+                  Import Program file
                   <input
                     onChange={onChangeFile}
                     id="input"

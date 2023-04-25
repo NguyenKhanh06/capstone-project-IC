@@ -236,7 +236,7 @@ function DetailProjectNegoPartner(props) {
                   type="file"
                 />
               </Button> :   <Button disabled color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                Import Mark For Student
+                Import Course Reasult
                 <input
                   onChange={onChangeFile}
                   id="input"

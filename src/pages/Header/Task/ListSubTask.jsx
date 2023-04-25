@@ -328,7 +328,33 @@ const getChildTask = async () => {
                     <MenuItem style={{ display: 'none' }} value={1}>Process</MenuItem>
                     <MenuItem style={{ display: 'none' }} value={2}>Done</MenuItem>
 
-                  </Select> :  <Select
+                  </Select> :  props.state.state ===  0 ?<Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={state}
+                    label="Status"
+                    onChange={(e) => {setState(e.target.value); setDisable(true)}}
+                    defaultValue={props.state.state}
+                  >
+                    
+                    <MenuItem style={{ display: 'none' }} value={0}>To Do</MenuItem>
+                    <MenuItem value={1}>Process</MenuItem>
+                    <MenuItem style={{ display: 'none' }} value={2}>Done</MenuItem>
+
+                  </Select> : props.state.state ===  1 ? <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={state}
+                    label="Status"
+                    onChange={(e) => {setState(e.target.value); setDisable(true)}}
+                    defaultValue={props.state.state}
+                  >
+                    
+                    <MenuItem style={{ display: 'none' }}  value={0}>To Do</MenuItem>
+                    <MenuItem style={{ display: 'none' }}  value={1}>Process</MenuItem>
+                    <MenuItem value={2}>Done</MenuItem>
+
+                  </Select> :<Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={state}

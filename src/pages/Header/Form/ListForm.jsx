@@ -19,6 +19,7 @@ import {
   import dayjs from 'dayjs';
   import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
 import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
   import { DataGrid } from '@mui/x-data-grid';
   import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
   import DeleteIcon from '@mui/icons-material/Delete';
@@ -141,11 +142,11 @@ import ErrorAlert from '../../Alert/ErrorAlert';
                 </IconButton>
               </Tooltip>
 
-              {params.row.status ? (<Tooltip title="Deactive form">
+              {params.row.status ? (<Tooltip title="Close form">
            <IconButton onClick={() => handleShowConfirmUpdate(params.row.id, false)} aria-label="delete">
-             <DoNotDisturbOnOutlinedIcon color='error'/>
+             <HighlightOffIcon color='error'/>
            </IconButton>
-         </Tooltip>) : (<Tooltip title="Active form">
+         </Tooltip>) : (<Tooltip title="Open form">
            <IconButton onClick={() => handleShowConfirmUpdate(params.row.id, true)} aria-label="delete">
              <CheckCircleOutlineTwoToneIcon color='success'/>
            </IconButton>

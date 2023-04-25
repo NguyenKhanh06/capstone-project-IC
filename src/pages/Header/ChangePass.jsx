@@ -56,9 +56,9 @@ function ChangePass(props) {
 
   const handleChangeConfirmPass = (e) => {
     if (e.target.value === newPass) {
-      setCheck(false);
-    } else {
       setCheck(true);
+    } else {
+      setCheck(false);
     }
   };
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -148,15 +148,15 @@ function ChangePass(props) {
               value={confirmPass}
               onBlur={handleChangeConfirmPass}
               onChange={(e) => setConfirmPass(e.target.value)}
-              error={check}
-              helperText={check && 'Passwords do NOT match'}
+              error={!check}
+              helperText={!check && 'Passwords do NOT match'}
               type="password"
               label="Confirm New Password"
             />
           </Stack>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          {!check ? (
+          {check ? (
             <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
               Save
             </Button>

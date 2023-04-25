@@ -16,6 +16,7 @@ const [showConfirm, setShowConfirm] = useState(false);
 const [loading, setLoading] = useState(false)
 const [showSuccess, setShowSuccess] = useState(false);
 const [showError, setShowError] = useState(false);
+const [disableBtn, setDisable] = useState(false)
 const [message, setMessage] = useState('');
 const handleShowConfirm = (data) => {
     setShowConfirm(true);
@@ -37,8 +38,12 @@ const handleShowConfirm = (data) => {
       
        if (response.data.isSuccess) {
         setShowSuccess(true);
-        handleClose()
-     handleCloseConfirm()
+        setTimeout(() => {
+          handleClose()
+          setShowSuccess(false);
+          handleCloseConfirm()
+setDisable(false)
+        }, 1000)
         props.getAll()
        
       } 
@@ -51,7 +56,14 @@ const handleShowConfirm = (data) => {
       
     };
 
-
+const handleChangeName = (e) => {
+setCateName(e.target.value)
+if (e.target.value.trim()) {
+  setDisable(true);
+} else {
+  setDisable(false);
+}
+}
     useEffect(() => {
         if(props.cate){
             setCateName(props.cate.name)
@@ -78,7 +90,7 @@ const handleShowConfirm = (data) => {
 
           <DialogContent>
           <Stack direction="column" spacing={3.5} sx={{ padding: 2 }}>
-          <TextField value={cateName} onChange={(e) => setCateName(e.target.value)} required fullWidth label="Category Name"
+          <TextField value={cateName} onChange={handleChangeName} required fullWidth label="Category Name"
           inputProps={{
             maxLength: 25,
           }}
@@ -89,7 +101,7 @@ const handleShowConfirm = (data) => {
           </Stack>
           </DialogContent>
           <DialogActions style={{padding: 20}}>
-{cateName.trim().length && regex.test(cateName) ? <Button variant="contained" onClick={()=> handleShowConfirm()} autoFocus>
+{ disableBtn  && regex.test(cateName)? <Button variant="contained" onClick={()=> handleShowConfirm()} autoFocus>
               Save
             </Button> :  <Button disabled variant="contained" autoFocus>
               Save

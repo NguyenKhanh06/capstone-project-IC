@@ -147,15 +147,13 @@ console.log(student)
           };
           if (response.data.isSuccess) {
             handleUpdateStudent(data);
-            setShow(true);
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+      
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 2000);
           }
         })
-        .catch((err) => {
-          setShowErr(true);
-        });
+      
     },
 
     //if register function succesful, redirect to login page

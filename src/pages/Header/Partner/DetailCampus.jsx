@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, Stack, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import React, { useEffect, useState } from 'react';
@@ -130,6 +130,14 @@ const handleChangeAddress = (e) => {
               required
               fullWidth
               label="Campus Address"
+              inputProps={{ maxLength: 200 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" style={{ position: 'absolute', right: 10, bottom: 25 }}>
+                    {address?.length}/200
+                  </InputAdornment>
+                ),
+              }}
             />
           </Stack>
         </DialogContent>

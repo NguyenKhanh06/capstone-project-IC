@@ -9,6 +9,7 @@ import {
   Divider,
   FormControl,
   IconButton,
+  InputAdornment,
   InputLabel,
   Link,
   List,
@@ -379,7 +380,7 @@ console.log(e.target.value)
                   // inputProps={{ maxLength: 10 }}
          
                   error={CheckerrPhone}
-                  helperText={CheckerrPhone && 'Please input phone number'}
+                  helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
 
                 />
               </Stack>
@@ -478,7 +479,16 @@ console.log(e.target.value)
                     </FormControl>
               </Stack>
 
-              <TextField value={address} multiline onChange={handleChangeAddress} required fullWidth label="Address" />
+              <TextField value={address} multiline onChange={handleChangeAddress} required fullWidth label="Address" 
+                   inputProps={{ maxLength: 200 }}
+                   InputProps={{
+                     endAdornment: (
+                       <InputAdornment position="end" style={{ position: 'absolute', right: 10, bottom: 25 }}>
+                         {address?.length}/200
+                       </InputAdornment>
+                     ),
+                   }}
+              />
             </Stack>
             <Divider style={{ marginTop: 20 }} variant="middle" />
             {/* {props.student.gradingUrl && <Link href={props.student.gradingUrl}>Grading file</Link>} */}

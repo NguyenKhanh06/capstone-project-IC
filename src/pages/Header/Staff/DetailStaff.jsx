@@ -198,7 +198,9 @@ setAddress(props.staff?.account?.address)
 
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
            
-                <TextField value={email}       onBlur={onblurMail } onChange={handleChangeEmail} required fullWidth label="Email"  error={Checkerr}
+                <TextField value={email}   InputProps={{
+    readOnly: true,
+  }}    onBlur={onblurMail } onChange={handleChangeEmail} required fullWidth label="Email"  error={Checkerr}
                     helperText={Checkerr && 'Please input email fptu'}/>
                 <TextField
                   value={phoneNumber}

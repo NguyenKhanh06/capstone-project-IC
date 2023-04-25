@@ -141,7 +141,7 @@ setTimeout(() => {
               <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
                 <DatePicker
                   disablePast
-                  maxDate={dayjs(props. deadline.deadLine)}
+                  maxDate={dayjs(props.deadline.deadLine)}
                   sx={{ width: '50%' }}
                   label="Deadline"
                   value={deadline}

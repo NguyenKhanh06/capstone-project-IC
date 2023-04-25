@@ -151,12 +151,14 @@ function ListSubTaskMember(props) {
     setShowDetail(true);
     setTask(data);
   };
+
   const getChildTask = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/task/GetChildTask/${props.state.id}`).then(response => {
-    
+
        setChildTask(response.data.responseSuccess.filter(task => task?.assignTasks[0]?.staffId === staff?.staff.id).filter(task => task.status !== 5))
      })
    }
+
   useEffect(() => {
     if(props.state != null){
    
@@ -205,9 +207,9 @@ getChildTask()
         
 
         <Card>
-          {childrenTask ?  <DataGrid
+          {childTask ?  <DataGrid
         autoHeight
-        rows={childrenTask}
+        rows={childTask}
         columns={columns}
         initialState={{
           pagination: {

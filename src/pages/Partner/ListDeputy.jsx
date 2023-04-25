@@ -9,9 +9,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import DetailDeputyPartner from './DetailDeputyPartner';
 import SuccessAlert from '../Alert/SuccessAlert';
 import ErrorAlert from '../Alert/ErrorAlert';
+import { useNavigate } from 'react-router-dom';
 
 function ListDeputy(props) {
   const deputy = JSON.parse(sessionStorage.getItem('deputy'));
+  const navigate = useNavigate();
 
   const [deputies, setDeputies] = useState([]);
   const [id, setId] = useState('');
@@ -63,8 +65,8 @@ function ListDeputy(props) {
           getDeputy()
           handleSuccess('Update Successful!!!');
           setTimeout(() => {
-            window.location.reload()
-          }, 1000)
+            navigate("/")
+          }, 2000)
         
         }
       })
@@ -118,19 +120,13 @@ function ListDeputy(props) {
               <RemoveRedEyeRoundedIcon />
             </IconButton>
           </Tooltip>
-          {params.row.account.status ? (
-            <Tooltip title="Deactive account">
-              <IconButton onClick={() => handleShowConfirm(params.row.account.email, false)}>
-                <HighlightOffOutlinedIcon color="error" />
-              </IconButton>
-            </Tooltip>
-          ) : (
-            <Tooltip title="Active Account">
-              <IconButton onClick={() => handleShowConfirm(params.row.account.email, true)}>
-                <PublishedWithChangesOutlinedIcon color="success" />
-              </IconButton>
-            </Tooltip>
-          )}
+          {!params.row.account.status && 
+          <Tooltip title="Active Account">
+          <IconButton onClick={() => handleShowConfirm(params.row.account.email, true)}>
+            <PublishedWithChangesOutlinedIcon color="success" />
+          </IconButton>
+        </Tooltip>
+          }
         </Stack>
       ),
     },

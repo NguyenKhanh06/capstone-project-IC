@@ -28,6 +28,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import DetailCate from '../Category/DetailCate'
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { useEffect, useState } from 'react';
 import AssignLeader from './AssignLeader';
@@ -55,10 +56,13 @@ function DetailProject(props) {
   const regexMailFu = /[\w.-]+fptu@gmail\.com$/
   const regex = /^[\w\s]*$/;
   const [disableBtn, setDisable] = useState(false);
+  const [doc, setDoc] = useState(null);
+
   const [project, setProject] = useState([]);
   const [open, setOpen] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [showDetailCate, setShowDetailCate] = useState(false);
   const [showCreateCate, setShowCreateCate] = useState(false);
   const [showCreateInit, setShowCreateInit] = useState(false);
   const [estimateStart, setEstimateStart] = useState(null);
@@ -72,6 +76,7 @@ function DetailProject(props) {
   const [courses, setCourses] = useState([]);
   const [cates, setCates] = useState([]);
   const [cate, setCate] = useState([]);
+  const [cateDetail, setCateDetail] = useState([]);
   const [leader, setLeader] = useState([]);
   const [partner, setPartner] = useState([]);
   const [partners, setPartners] = useState([]);
@@ -143,13 +148,24 @@ function DetailProject(props) {
       setDisable(false);
     }
   };
-
+const handleDetailCate = (data) => {
+  setCateDetail(data)
+  setShowDetailCate(true)
+}
   const fetchDataStaff = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
       setStaffs(response.data.responseSuccess.filter((staff) => staff.account.status && staff.account.role === 2 && regexMailFu.test(staff.account.email)));
     });
   };
-
+  const fetchDataDoc = async () => {
+    await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
+      console.log(
+        'doc',
+        response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id)
+      );
+      setDoc(response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id));
+    });
+  };
   const fetchDataPartner = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
       setPartners(response.data.responseSuccess).find((partner) => partner.id === props.project.partnerId);
@@ -438,6 +454,31 @@ function DetailProject(props) {
     }
   };
 
+  const handleExportFile = (documentPrj) => {
+    axios({
+      url: `https://api.ic-fpt.click/api/v1/document/content/${documentPrj.id}`,
+      method: 'GET',
+      responseType: 'blob', // important
+    }).then((response) => {
+      console.log(response);
+      const blob = new Blob([response.data], { type: response.data.type });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const contentDisposition = response.headers['content-disposition: attachment'];
+      let fileName = documentPrj.fileName;
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (fileNameMatch.length === 2) fileName = fileNameMatch[1];
+      }
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    });
+  };
+
   const ITEM_HEIGHT = 46;
   const MOBILE_ITEM_HEIGHT = 58;
   const ITEM_PADDING_TOP = 18;
@@ -506,7 +547,7 @@ function DetailProject(props) {
                             divider={<Divider orientation="vertical" flexItem />}
                           >
                             <Tooltip title="Edit Course">
-                              <IconButton onClick={() => setShowCreate(true)} size="small" aria-label="delete">
+                              <IconButton onClick={() => handleDetailCate(cate)} size="small" aria-label="delete">
                                 <CreateOutlinedIcon />
                               </IconButton>
                             </Tooltip>
@@ -954,6 +995,22 @@ function DetailProject(props) {
                 </Stack>
               </Stack>
             </DialogContentText>
+            <Box sx={{ padding: '0 44px 44px 44px', maxWidth: '100%' }}>
+            <b>Project's Files:</b>
+            <Stack direction="column" alignItems="flex-start" spacing={3}>
+            {doc && doc.map((document, index) => (
+                      <Button
+                   
+                      variant="text"
+                     
+                      onClick={() => handleExportFile(document)}
+                    >
+                      {document.fileName}
+                    </Button>
+                ))
+                }
+            </Stack>
+            </Box>
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             <Stack direction="row" alignItems="center" spacing={3}>
@@ -999,10 +1056,9 @@ function DetailProject(props) {
       </Dialog>
       <AssignMember project={props.project} show={showAssignMember} close={() => setShowAssignMember(false)} />
       <CancelProject show={showCancel} close={() => setShowCancel(false)} id={props.project.id} />
-
+<DetailCate show={showDetailCate} close ={() => setShowDetailCate(false)} cate={cateDetail}getAll={fetchDataCate}/>
       <CreateCategory show={showCreateCate} close={() => setShowCreateCate(false)} getAll={fetchDataCate}  />
 
-      <CreateCourse show={showCreate} close={() => setShowCreate(false)} />
       <CreateDateMil show={showCreateInit} close={() => setShowCreateInit(false)} prjId={props.project.id} />
     </div>
   );

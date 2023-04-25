@@ -82,9 +82,9 @@ const handleShowDetail = (data) => {
 }
 
 const updateHeader = () => {
-  console.log(idStaff)
+
   const data = {
-    "staffCode": idStaff.id,
+    "staffCode": idStaff.staffCode,
   "isHeadOfDepartMent": true,
   "accountId": idStaff.accountId
   }

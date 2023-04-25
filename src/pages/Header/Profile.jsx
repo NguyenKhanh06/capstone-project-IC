@@ -30,6 +30,7 @@ import { useNavigate } from 'react-router-dom';
   
   function Profile(props) {
     const user = JSON.parse(sessionStorage.getItem("user"));
+  const regexPhone = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
    
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -47,6 +48,8 @@ import { useNavigate } from 'react-router-dom';
     const [showPassword, setShowPassword] = useState(false);
     const [showChangePassword, setShowChangePassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
+  const [CheckerrPhone, setErrPhone] = useState(false);
+
   
     function reload() {
       window.location.reload(false);
@@ -133,14 +136,18 @@ getDetail()
   
     const handleChangePhone = (e) => {
       setPhoneNumber(e.target.value)
-      if(e.target.value){
+     
+  
+    }
+    const onblurPhone = () => {
+      if (regexPhone.test(phoneNumber)) {
+        setErrPhone(false);
         setDisable(true)
       }else{
         setDisable(false)
       }
   
-    }
-  
+    };
     const handleChangeEmail = (e) => {
       setEmail(e.target.value)
       if(e.target.value){
@@ -192,13 +199,20 @@ getDetail()
                 </Stack>
   
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                  <TextField readOnly value={email} fullWidth label="Email" />
+                  <TextField  InputProps={{
+    readOnly: true,
+  }}  value={email} fullWidth label="Email" />
                   <TextField
                     value={phoneNumber}
                     onChange={handleChangePhone}
                     required
                     fullWidth
                     label="Phone Number"
+                    type='number'
+                    onBlur={onblurPhone}
+                    error={CheckerrPhone}
+                    helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
+  
                   />
                 </Stack>
   
@@ -209,6 +223,7 @@ getDetail()
                   required
                   fullWidth
                   label="Address"
+               
                 />
                  <FormControl fullWidth variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>

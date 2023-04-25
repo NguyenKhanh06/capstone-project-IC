@@ -7,6 +7,7 @@ import {
   Divider,
   FormControl,
   IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -92,7 +93,7 @@ function CreateStudent(props) {
         }
       })
       .catch((err) => {
-        handleError('Please check email or number phone!!!');
+        handleError('Please check email or phone number!!!');
         setLoading(false);
       });
   };
@@ -210,7 +211,7 @@ function CreateStudent(props) {
                     inputProps={{ maxLength: 10 }}
                     label="Phone Number"
                     error={CheckerrPhone}
-                    helperText={CheckerrPhone && 'Please input phone number'}
+                    helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
                   />
                 </Stack>
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
@@ -322,6 +323,14 @@ function CreateStudent(props) {
                   required
                   fullWidth
                   label="Address"
+                  inputProps={{ maxLength: 200 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end" style={{ position: 'absolute', right: 10, bottom: 25 }}>
+                        {address?.length}/200
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Stack>
             </DialogContent>
