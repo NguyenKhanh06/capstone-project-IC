@@ -54,7 +54,7 @@ function StudentCertificate(props) {
   const [students, setStudents] = useState([]);
   const [student, setStudent] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [id, setID] = useState('');
+  const [id, setID] = useState({});
   const navigate = useNavigate();
 
   const [showSuccess, setShowSuccess] = useState(false);
@@ -124,7 +124,7 @@ function StudentCertificate(props) {
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton onClick={() => handleShowConfirm(params.row.id)}>
+              <IconButton onClick={() => handleShowConfirm(params.row)}>
                 <DeleteIcon color="error" />
               </IconButton>
             </Tooltip>
@@ -145,8 +145,20 @@ function StudentCertificate(props) {
     setShowConfirm(false);
   };
   const handleDeleteStudent = () => {
-    axios.delete(`https://api.ic-fpt.click/api/v1/student/delete/${id}`).then((response) => {
-      window.location.reload(false);
+    axios.delete(`https://api.ic-fpt.click/api/v1/student/delete/${id.id}`).then((response) => {
+      setLoading(false)
+      if (response.data.isSuccess) {
+        google.accounts.id.revoke(id.email, done => {
+          console.log('consent revoked');
+        });
+        handleSuccess("Delete Successful")
+        setTimeout(() => {
+         window.location.reload()
+        }, 1500)
+      }
+    })
+    .catch((err) => {
+      handleError('Delete fail!');
     });
   };
 
@@ -189,11 +201,13 @@ function StudentCertificate(props) {
         setLoading(false)
         if (response.data.isSuccess) {
           handleSuccess("Upload File Successful")
-          setTimeout(reload(), 5000);
+          setTimeout(() => {
+           window.location.reload()
+          }, 1500)
         }
       })
       .catch((err) => {
-        handleError(err.response.data.responseSuccess);
+        handleError('Import fail!');
       });
   };
 
@@ -210,7 +224,7 @@ function StudentCertificate(props) {
         responseType: 'blob',
       })
       .then((response) => {
-        console.log(response);
+
 
         if (response.status === 200) {
        handleSuccess("Export Successfull, Please waitting for download!!!")
