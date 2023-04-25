@@ -253,7 +253,7 @@ console.log(student)
   }, []);
   useEffect(() => {
     if (Program) {
-      setProgramForm(forms.find((formcheck) => formcheck.id === Program.id));
+      setProgramForm(forms.find((formcheck) => formcheck.id === Program.id && formcheck.status));
     }
   }, [Program]);
   return (
