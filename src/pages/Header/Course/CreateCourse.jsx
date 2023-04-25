@@ -60,7 +60,7 @@ setSkillName(e.target.value)
         setLoading(false)
       }).catch((err) => {
         setLoading(false)
-        handleError(err.response.data.responseSuccess);
+        handleError('Create fail!');
       })
   };
 
