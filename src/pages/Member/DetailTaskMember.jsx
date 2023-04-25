@@ -148,8 +148,10 @@ console.log("staf", staff)
       setShowConfirm(false);
       if (response.data.isSuccess) {
         handleSuccess('Update Task Successfull!!!!')
+        props.getChildTask()
         setTimeout(() => {
-          reload();
+         handleClose()
+         
         }, 2000);
       }
     })

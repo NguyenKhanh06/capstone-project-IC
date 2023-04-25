@@ -187,7 +187,24 @@ getChildTask()
             </IconButton>
           </Stack>
         </DialogTitle>
-         
+        <Stack sx={{marginLeft: 10}} direction="column" justifyContent="center" alignItems="flex-start" spacing={3}>
+                <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
+                <Typography variant='h6'>Task Name: </Typography>
+
+                    <Typography>{props.state.taskName}</Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
+                <Typography variant='h6'>Deadline: </Typography>
+
+                    <Typography>{dayjs(props.state.deadLine).format("DD/MM/YYYY")}</Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
+                <Typography variant='h6'>Task description: </Typography>
+
+                    <Typography>{props.state.description}</Typography>
+                </Stack>
+             
+              </Stack>
         
         <Divider variant="middle" />
         <DialogTitle  id="alert-dialog-title">
@@ -223,15 +240,15 @@ getChildTask()
         </Card>
       </Container>
 
- <DetailTaskMember task={task} show={showDetail} close={()=> setShowDetail(false)}/>
+ <DetailTaskMember task={task} show={showDetail} close={()=> setShowDetail(false)} getChildTask={getChildTask}/>
     </>
         </DialogContent>
-        <DialogActions style={{padding: 20}}>
+        {/* <DialogActions style={{padding: 20}}>
 
    <Button variant='contained' onClick={() => setShowDetailParent(true)}>View detail</Button>
-        </DialogActions>
+        </DialogActions> */}
       </form>
-<DetailParentTaskMember show={showDetailParent} close={() => setShowDetailParent(false)} task = {props.state}/>
+{/* <DetailParentTaskMember show={showDetailParent} close={() => setShowDetailParent(false)} task = {props.state}/> */}
     </Dialog>
   );
 }
