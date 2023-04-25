@@ -112,13 +112,13 @@ const handleChange = () => {
 const handleDeleteStaff = () => {
     axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=${status}`).then((response) => {
         if (response.data.isSuccess) {
-          handleSuccess('Update Successful!!!!!')
+          handleSuccess('Update Status Successful!!!!!')
           setTimeout(() =>{
             window.location.reload();
          }, 2000);
         } 
       }).catch((err) => {
-        handleError('Update Fail!!!!');
+        handleError('Update Status Fail!!!!');
       })
 }
 

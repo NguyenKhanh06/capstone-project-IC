@@ -23,7 +23,7 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
     <Box
       id={`program-detail-${item.id}`}
       sx={{
-        height: "100vh",
+
         pt: {
           xs: 6,
           md: 20,
@@ -32,6 +32,8 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
           xs: 8,
           md: 12,
         },
+        minHeight: "100vh",
+        maxHeight: "100%",
         backgroundColor: 'background.default',
       }}
     >

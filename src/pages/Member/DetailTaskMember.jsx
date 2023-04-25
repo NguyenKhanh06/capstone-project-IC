@@ -216,7 +216,7 @@ fetchDataComment()
       setDisableCmt(false);
     }
   };
-  console.log(cmtTask)
+ 
 
   return (
     <div>
@@ -500,7 +500,7 @@ fetchDataComment()
                     {cmt?.comment && <p>{cmt?.comment}</p> }
                       </Box>
 
-                      {cmt?.staffId === staff?.id ? (
+                      {cmt?.staffId === staff?.staff.id ? (
                         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
                           <Tooltip title="Edit comment">
                             <IconButton onClick={() => handleShowCmt(cmt)}>

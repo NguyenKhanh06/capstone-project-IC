@@ -162,7 +162,7 @@ useEffect(() => {
               Accept
             </Button>
           </DialogActions>
-          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Slot Successful!'} />
+          <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Update Major Successful!'} />
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
         </Dialog>
       <Loading show={loading}/>
