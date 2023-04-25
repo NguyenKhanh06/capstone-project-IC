@@ -86,10 +86,14 @@ function CreateForm(props) {
     // free memory when ever this component is unmounted
   }, []);
 const handleCreateForm2 = () => {
-    axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}`).then((response) => {
+    axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}`).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true);
-            setTimeout(reload(), 5000);
+            setTimeout(() => {
+              window.location.reload()
+              setShowSuccess(false);
+  
+            }, 1000)
           }
           setLoading(false);
         })
@@ -101,10 +105,14 @@ const handleCreateForm2 = () => {
   
 }
 const handleCreateForm3 = () => {
-  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}`).then((response) => {
+  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
-          setTimeout(reload(), 5000);
+          setTimeout(() => {
+            window.location.reload()
+            setShowSuccess(false);
+
+          }, 1000)
         }
         setLoading(false);
       })
@@ -116,10 +124,14 @@ const handleCreateForm3 = () => {
 
 }
 const handleCreateForm4 = () => {
-  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}`).then((response) => {
+  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
-          setTimeout(reload(), 5000);
+          setTimeout(() => {
+            window.location.reload()
+            setShowSuccess(false);
+
+          }, 1000)
         }
         setLoading(false);
       })
@@ -131,10 +143,14 @@ const handleCreateForm4 = () => {
 
 }
 const handleCreateForm5 = () => {
-  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}`).then((response) => {
+  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
-          setTimeout(reload(), 5000);
+          setTimeout(() => {
+            window.location.reload()
+            setShowSuccess(false);
+
+          }, 1000)
         }
         setLoading(false);
       })
@@ -146,10 +162,14 @@ const handleCreateForm5 = () => {
 
 }
 const handleCreateForm6 = () => {
-  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis}&DateCloseRegis=${closeRegis}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}&ContentHeader5=${inputList[4].title}`).then((response) => {
+  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}&ContentHeader5=${inputList[4].title}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
-          setTimeout(reload(), 5000);
+          setTimeout(() => {
+            window.location.reload()
+            setShowSuccess(false);
+
+          }, 1000)
         }
         setLoading(false);
       })
@@ -162,11 +182,15 @@ const handleCreateForm6 = () => {
 }
   const handleCreateForm = () => {
     console.log(inputList)
-    axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}
+    axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}
     `).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true);
-            setTimeout(reload(), 5000);
+            setTimeout(() => {
+              window.location.reload()
+              setShowSuccess(false);
+  
+            }, 1000)
           }
           setLoading(false);
         })

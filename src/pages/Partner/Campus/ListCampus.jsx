@@ -176,7 +176,7 @@ function ListCampus(props) {
             Delete
           </Button>
         </DialogActions>
-        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Campus Successful!'} />
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Delete Campus Successful!'} />
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
       </Dialog>
       <CreateCampPartner show={showCreate} close={() => setShowCreate(false)} PartnerID= {deputy.partnerId} />

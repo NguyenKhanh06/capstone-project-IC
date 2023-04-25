@@ -303,7 +303,7 @@ https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${sta
                 onChange={handleChangeContent}
                 required
                 fullWidth
-                label="Content"
+                label="Description"
                 error={!regex.test(courseContent)}
                 helperText={!regex.test(courseContent) && 'Can not input special character'}
               />

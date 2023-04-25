@@ -39,9 +39,7 @@ function CreateSyllabus(props) {
     setMessage(data);
   };
 
-  function reload() {
-    window.location.reload(false);
-  }
+
   const handleClose = () => {
     setOpen(props.close);
   };

@@ -51,7 +51,11 @@ setSkillName(e.target.value)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
-          setTimeout(reload(), 5000);
+          setTimeout(() => {
+            window.location.reload()
+            setShowSuccess(false);
+
+          }, 1000)
         } 
         setLoading(false)
       }).catch((err) => {
