@@ -159,6 +159,10 @@ function StudentCertificate(props) {
     })
     .catch((err) => {
       handleError('Delete fail!');
+      setTimeout(() => {
+        window.location.reload()
+       }, 1500)
+      
     });
   };
 
@@ -207,7 +211,10 @@ function StudentCertificate(props) {
         }
       })
       .catch((err) => {
-        handleError('Import fail!');
+        handleError('Import File Fail, please check your file student!');
+        setTimeout(() => {
+          window.location.reload()
+         }, 1500)
       });
   };
 
