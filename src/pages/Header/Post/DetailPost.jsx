@@ -330,7 +330,7 @@ function DetailPost(props) {
 
             <Divider variant="middle" />
             <Typography variant="h6">Poster:</Typography>
-
+            <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
             {selectedFile ? (
               <img src={preview} alt="poster" style={{ maxWidth: '100%', marginLeft: '25%', borderRadius: 10 }} />
             ) : (
@@ -347,7 +347,7 @@ function DetailPost(props) {
 
             <Divider variant="middle" />
             <Typography variant="h6">Another Images:</Typography>
-
+            <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
             <Stack direction="row" justifyContent="space-evenly" alignItems="center" spacing={3} flexWrap="wrap">
               {post?.postImages?.length
                 ? post?.postImages?.map((item, index) => (
@@ -388,6 +388,7 @@ function DetailPost(props) {
               Import Another Images
               <input onChange={handleFileChangeSub} multiple id="input" hidden accept="image/*" type="file" />
             </Button>
+            
           </Stack>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
