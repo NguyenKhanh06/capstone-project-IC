@@ -75,7 +75,7 @@ function DetailProjectNegoPartner(props) {
 
   const onChangeFile = (e) => {
     setFileStudent(e.target.files[0]);
-    console.log('file', e.target.files[0]);
+ 
   };
   
   const handleImportFile = (file) => {
@@ -217,7 +217,7 @@ function DetailProjectNegoPartner(props) {
           </Paper>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          <Stack direction="row" alignItems="center" spacing={3}>
+          <Stack direction="column" alignItems="center" spacing={3}>
           {/* <Button
                 color="warning"
                 variant="contained"
@@ -245,11 +245,9 @@ function DetailProjectNegoPartner(props) {
                   type="file"
                 />
               </Button>}
-          
-{/* 
-            <Button onClick={() => setShowCancel(true)} color="error" variant="contained">
-              Cancel Project
-            </Button> */}
+              {fileStudent && <p style={{marginTop: 10}}>{fileStudent.name}</p>}
+              <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
+
           </Stack>
         </DialogActions>
         <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Upload File Successful!'} />

@@ -207,6 +207,7 @@ function ListProject(props) {
           spacing={1}
           divider={<Divider orientation="vertical" flexItem />}
         >
+          
           {params.row.projectStatus !== 2 ? (
             <Tooltip title="View Detail">
               <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
@@ -223,10 +224,14 @@ function ListProject(props) {
 
           {params.row?.tasks?.length && params.row.projectStatus !== 2 ? (
             <>
+              {/* <Button onClick={() => console.log(params.row?.tasks.filter( task =>  dayjs(new Date()).month() + 1 - (dayjs(task?.deadLine).month() + 1) === 0 &&
+              dayjs(task ?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
+              dayjs(task ?.deadLine).year() - dayjs(new Date()).year() >= 0 && task?.state !== 3 &&task?.state !== 2 &&  task?.status !== 4))}>p</Button> */}
+         
               {' '}
-              {dayjs(new Date()).month() + 1 - (dayjs(params.row?.tasks.pop()?.deadLine).month() + 1) === 0 &&
-              dayjs(params.row?.tasks.pop()?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
-              dayjs(params.row?.tasks.pop()?.deadLine).year() - dayjs(new Date()).year() >= 0 &&   params.row?.tasks.pop()?.state !== 3 &&  params.row?.tasks.pop()?.status !== 5?  (
+              {params.row?.tasks.filter( task =>  dayjs(new Date()).month() + 1 - (dayjs(task?.deadLine).month() + 1) === 0 &&
+              dayjs(task ?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
+              dayjs(task ?.deadLine).year() - dayjs(new Date()).year() >= 0 &&   task?.state !== 3 &&task?.state !== 2 &&  task?.status !== 4).length?  (
                 <Tooltip title="Task List - Have task need do complete">
                   <IconButton
                     color="error"
@@ -287,6 +292,7 @@ function ListProject(props) {
                 </IconButton>
               </Tooltip>
             )} */}
+            
         </Stack>
       ),
     },

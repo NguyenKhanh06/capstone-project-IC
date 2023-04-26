@@ -147,14 +147,13 @@ function DetailStudent(props) {
 
 const deleteFile = (name) => {
   axios.delete(`https://api.ic-fpt.click/api/v1/student/deleteGrading/${props.student.id}`)   .then((response) => {
-    console.log('response', response);
+ 
     if (response.data.isSuccess) {
       handleSuccess('Delete File Successfull!!!');
       getAllFile()
       setTimeout(() => {
-        handleCloseConfirmDelete()
-
-      }, 1000)
+        window.location.reload()
+             }, 1000)
 
       // setTimeout(reload(), 3000)
     } 
@@ -192,10 +191,12 @@ const deleteFile = (name) => {
       },
     })
       .then((response) => {
-        console.log('response', response);
+    
         if (response.data.isSuccess) {
           handleSuccess('Upload File Successfull!!!');
-          getAllFile()
+          setTimeout(() => {
+     window.location.reload()
+          }, 1000)
 
           // setTimeout(reload(), 3000)
         } 
@@ -250,7 +251,7 @@ const deleteFile = (name) => {
 
   
   const handleChangeMajor = (e) => {
-console.log(e.target.value)
+
     setMajorID(e.target.value)
     setDisableBtn(true);
   };
@@ -504,10 +505,14 @@ console.log(e.target.value)
            </IconButton>
          </Tooltip> 
            </ListItem>
-            ):    <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+            ):  <>
+            
+            <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
             Import File
             <input onChange={(e) => setFileStudent(e.target.files[0])} id="input" hidden type="file" />
-          </Button>}
+          </Button>
+          <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
+            </> }
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>

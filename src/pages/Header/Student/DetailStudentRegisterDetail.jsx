@@ -87,7 +87,7 @@ function DetailStudentRegisterDetail(props) {
     await axios
       .get(`https://api.ic-fpt.click/api/v1/registration/getDetailbyStudentId/${props.studentID}`)
       .then((response) => {
-
+console.log(response)
         setStudent(response.data.responseSuccess[0]);
         if (response.data.responseSuccess[0]?.contentHeader1 !== 'null') {
           setContent1(response.data.responseSuccess[0].content1);
@@ -104,10 +104,13 @@ function DetailStudentRegisterDetail(props) {
         if (response.data.responseSuccess[0]?.contentHeader5 !== 'null') {
           setContent5(response.data.responseSuccess[0].content5);
         }
-     
+        if (response.data.responseSuccess[0]?.numberPassPort !== 'null') {
+          setNumber(response.data.responseSuccess[0]?.numberPassPort);
+        }
         setDate(response.data.responseSuccess[0]?.dateExpired);
-        setNumber(response.data.responseSuccess[0]?.numberPassPort);
-        setLink(response.data.responseSuccess[0]?.scocialLink);
+      
+        setLink(response.data.responseSuccess[0]?.scocialLink
+          );
         setProject(response.data.responseSuccess[0]?.project?.id);
       });
   };
@@ -164,7 +167,7 @@ function DetailStudentRegisterDetail(props) {
       // fetchDataPrj();
     }
   }, [props.studentID]);
-  console.log(props)
+
 
   const UpdateStudent = () => {
     const formData = new FormData();
@@ -199,8 +202,7 @@ function DetailStudentRegisterDetail(props) {
   const MOBILE_ITEM_HEIGHT = 58;
   const ITEM_PADDING_TOP = 18;
   const MENU_ITEMS = 6;
-console.log(props)
-console.log(student)
+
   return (
     <Dialog
       fullWidth
@@ -392,6 +394,7 @@ console.log(student)
           <ImageList fullWidth>
             <ImageListItem key="Subheader" cols={2}>
               <ListSubheader component="div">Passport</ListSubheader>
+              <p style={{ color: "red"}}>(Just accept file with size under 20MB)</p>
             </ImageListItem>
             <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
               {selectedFile ? (
@@ -410,6 +413,7 @@ console.log(student)
           <ImageList sx={{ marginTop: 6 }} fullWidth>
             <ImageListItem key="Subheader" cols={2}>
               <ListSubheader component="div">Transfer Information</ListSubheader>
+              <p style={{ color: "red"}}>(Just accept file with size under 20MB)</p>
             </ImageListItem>
             <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
               {selectedFile2 ? (
@@ -420,7 +424,7 @@ console.log(student)
                 <></>
               )}
               <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                Import Payment Image
+                Import Payment Image 
                 <input onChange={onSelectFile2} id="input" hidden accept="image/*" type="file" />
               </Button>
             </Stack>

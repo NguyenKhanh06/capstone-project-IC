@@ -168,6 +168,12 @@ function ListProjectNego(props) {
     },
 
     {
+      field: 'dateCreated',
+      headerName: 'Date Create',
+      flex: 1,
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
+    },
+    {
       field: 'estimateTimeStart',
       headerName: 'Start Date',
       flex: 1,
@@ -304,6 +310,9 @@ function ListProjectNego(props) {
                     pageSize: 10,
                   },
                 },
+                sorting: {
+                  sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+                },
               }}
               components={{ NoRowsOverlay }}
               pageSizeOptions={[10]}
@@ -322,17 +331,19 @@ function ListProjectNego(props) {
         >
           <DialogTitle id="alert-dialog-title">Complete the neogotiation</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">You Want To Complete the Neogotiation?</DialogContentText>
+            <DialogContentText id="alert-dialog-description">Import file before complete the Neogotiation? </DialogContentText>
+            <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
             <Button style={{marginTop: 20}} color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
                   Import Program file
                   <input
                     onChange={onChangeFile}
                     id="input"
                     hidden
-                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          
                     type="file"
                   />
                 </Button>
+            
                 {fileStudent &&                 <Typography style={{marginTop: 10}}>{fileStudent?.name}</Typography>
 }
           </DialogContent>

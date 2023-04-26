@@ -124,8 +124,10 @@ changeStatus()
                 File Cancel (Just accept file pdf)
                 <input hidden type="file" accept='.pdf' onChange={(e) => setFile(e.target.files[0])} />
               </Button>
-              {file && <p>{file.name}</p>}
+              {file && <p style={{marginTop: 10}}>{file.name}</p>}
+              <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
             </DialogContent>
+            
             <DialogActions style={{ padding: 20 }}>
               {reason.length && file ? (
                 <Button color="error" variant="contained" onClick={() => handleCancel()} autoFocus>

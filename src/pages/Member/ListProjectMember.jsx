@@ -62,19 +62,17 @@ function ListProjectMember(props) {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    })
-     
+    });
   };
+  
   const columns = [
     {
       field: 'projectName',
       headerName: 'Project Name',
       flex: 1,
-       valueGetter: (params) => {
-       
-        return params.row.project.projectName
+      valueGetter: (params) => {
+        return params.row.project.projectName;
       },
-    
     },
     // {
     //   field: 'categoryProject',
@@ -91,24 +89,20 @@ function ListProjectMember(props) {
 
       flex: 1,
       renderCell: (params) => {
-       
         return params.row.project.leaderId === user?.staff.id ? <Chip label="Leader" /> : <Chip label="Member" />;
       },
-    
     },
-
 
     // {
     //   field: 'campusName',
     //   headerName: 'Start Date',
     //   flex: 1,
     //   valueGetter: (params) => {
-       
+
     //     return params.row.project.campusName
     //   },
     // },
 
-  
     // {
     //   field: 'campusName',
 
@@ -119,20 +113,18 @@ function ListProjectMember(props) {
     //    console.log(params)
     //     return params.value.campusName
     //   },
-    
-    // },
 
+    // },
 
     {
       field: 'dateCreated',
       headerName: 'Date Create',
       flex: 1,
       valueGetter: (params) => {
-       
-        return dayjs(params.row.project.dateCreated).format("DD/MM/YYYY")
+        return dayjs(params.row.project.dateCreated).format('DD/MM/YYYY');
       },
     },
-      
+
     {
       field: 'estimateTimeStart',
 
@@ -140,10 +132,8 @@ function ListProjectMember(props) {
 
       flex: 1,
       valueGetter: (params) => {
-       
-        return dayjs(params.row.project.estimateTimeStart).format("DD/MM/YYYY")
+        return dayjs(params.row.project.estimateTimeStart).format('DD/MM/YYYY');
       },
-    
     },
     {
       field: 'estimateTimeEnd',
@@ -152,18 +142,15 @@ function ListProjectMember(props) {
 
       flex: 1,
       valueGetter: (params) => {
-       
-        return dayjs(params.row.project.estimateTimeEnd).format("DD/MM/YYYY")
+        return dayjs(params.row.project.estimateTimeEnd).format('DD/MM/YYYY');
       },
-    
     },
     {
       field: 'name',
       headerName: 'Campus',
       flex: 1,
       valueGetter: (params) => {
-       
-        return params.row.project.campus.name
+        return params.row.project.campus.name;
       },
     },
 
@@ -172,11 +159,10 @@ function ListProjectMember(props) {
       headerName: 'MileStone',
       flex: 1,
       renderCell: (params) => (
-     
         <>
           {params.row.project.projectStatus === 2 ? (
             <Chip label="Cancel" color="error" />
-          ) : params.row.project.projectStatus ===  3 ? (
+          ) : params.row.project.projectStatus === 3 ? (
             <Chip label="Initiation" />
           ) : params.row.project.projectStatus === 4 ? (
             <Chip label="Planning" color="primary" />
@@ -188,58 +174,82 @@ function ListProjectMember(props) {
             <Chip label="Closing" color="success" />
           ) : null}
 
-          {params.row.project?.projectStatus > 2 ? (dayjs(new Date()).date() - dayjs(params.row.project?.estimateTimeStart).date() === 0 &&
-          dayjs(new Date()).month() - dayjs(params.row.project?.estimateTimeStart).month() === 0 &&
-          dayjs(new Date()).year() - dayjs(params.row.project?.estimateTimeStart).year() === 0
-            ? updateMilstone(params.row.project.id, 3)
-            : dayjs(new Date()).date() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).date() ===
-                0 &&
-              dayjs(new Date()).month() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).month() ===
-                0 &&
-              dayjs(new Date()).year() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin).year() ===
-                0
-            ? updateMilstone(params.row.project.id, 4)
-            
-            : dayjs(new Date()).date() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).date() ===
-                0 &&
-              dayjs(new Date()).month() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).month() ===
-                0 &&
-              dayjs(new Date()).year() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin).year() ===
-                0
-            ? updateMilstone(params.row.project.id, 5)
-            : dayjs(new Date()).date() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).date() ===
-                0 &&
-              dayjs(new Date()).month() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).month() ===
-                0 &&
-              dayjs(new Date()).year() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin).year() ===
-                0
-            ? updateMilstone(params.row.project.id, 6)
-            : dayjs(new Date()).date() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).date() ===
-                0 &&
-              dayjs(new Date()).month() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).month() ===
-                0 &&
-              dayjs(new Date()).year() -
-                dayjs(params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin).year() ===
-                0
-            ? updateMilstone(params.row.project.id, 7)
-            : null) : null}
+          {params.row.project?.projectStatus > 2
+            ? dayjs(new Date()).date() - dayjs(params.row.project?.estimateTimeStart).date() === 0 &&
+              dayjs(new Date()).month() - dayjs(params.row.project?.estimateTimeStart).month() === 0 &&
+              dayjs(new Date()).year() - dayjs(params.row.project?.estimateTimeStart).year() === 0
+              ? updateMilstone(params.row.project.id, 3)
+              : dayjs(new Date()).date() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin
+                  ).date() ===
+                  0 &&
+                dayjs(new Date()).month() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin
+                  ).month() ===
+                  0 &&
+                dayjs(new Date()).year() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin
+                  ).year() ===
+                  0
+              ? updateMilstone(params.row.project.id, 4)
+              : dayjs(new Date()).date() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin
+                  ).date() ===
+                  0 &&
+                dayjs(new Date()).month() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin
+                  ).month() ===
+                  0 &&
+                dayjs(new Date()).year() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin
+                  ).year() ===
+                  0
+              ? updateMilstone(params.row.project.id, 5)
+              : dayjs(new Date()).date() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin
+                  ).date() ===
+                  0 &&
+                dayjs(new Date()).month() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin
+                  ).month() ===
+                  0 &&
+                dayjs(new Date()).year() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin
+                  ).year() ===
+                  0
+              ? updateMilstone(params.row.project.id, 6)
+              : dayjs(new Date()).date() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin
+                  ).date() ===
+                  0 &&
+                dayjs(new Date()).month() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin
+                  ).month() ===
+                  0 &&
+                dayjs(new Date()).year() -
+                  dayjs(
+                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin
+                  ).year() ===
+                  0
+              ? updateMilstone(params.row.project.id, 7)
+              : null
+            : null}
         </>
       ),
     },
 
     {
- 
       headerName: 'Action',
       flex: 1,
 
@@ -253,24 +263,68 @@ function ListProjectMember(props) {
 
         return (
           <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
-    
             <Tooltip title="View Detail">
-              <IconButton  onClick={() => {
-                         handleViewDetailMember(params.row)
-                    }} aria-label="delete">
+              <IconButton
+                onClick={() => {
+                  handleViewDetailMember(params.row);
+                }}
+                aria-label="delete"
+              >
                 <RemoveRedEyeRoundedIcon />
               </IconButton>
             </Tooltip>
             {params.row?.project?.tasks?.length && params.row.project.projectStatus !== 2 ? (
-          
               <>
-             
                 {' '}
-                {dayjs(new Date()).month() + 1 - (dayjs(params.row?.project.tasks.pop()?.deadLine).month() + 1) === 0 &&
-                dayjs(params.row?.project.tasks.pop()?.deadLine).date() - dayjs(new Date()).date() <= 3 && dayjs(params.row?.project.tasks.pop()?.deadLine).year() - dayjs(new Date()).year() >= 0 &&   params.row?.project.tasks.pop()?.state !== 3 &&  params.row?.project.tasks.pop()?.status !== 5 ? (
+                {params.row?.project.tasks?.filter( task =>  dayjs(new Date()).month() + 1 - (dayjs(task?.deadLine).month() + 1) === 0 &&
+              dayjs(task ?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
+              dayjs(task ?.deadLine).year() - dayjs(new Date()).year() >= 0 &&   task?.state !== 3 &&task?.state !== 2 &&  task?.status !== 4).length ? (
                   <Tooltip title="Task List - Have task need do complete">
+                    <IconButton
+                      color="error"
+                      onClick={() => {
+                        if (params.row.project.leaderId === user?.staff.id) {
+                          navigate('/staff/leader/list-task', { state: params.row.project });
+                        } else {
+                          navigate('/staff/member/list-task', { state: params.row.project });
+                        }
+                      }}
+                    >
+                      <AssignmentLateTwoToneIcon />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Task List ">
+                    <IconButton
+                      onClick={() => {
+                        if (params.row.project.leaderId === user?.staff.id) {
+                          navigate('/staff/leader/list-task', { state: params.row.project });
+                        } else {
+                          navigate('/staff/member/list-task', { state: params.row.project });
+                        }
+                      }}
+                    >
+                      <AssignmentLateTwoToneIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </>
+            ) : params.row.project.projectStatus === 2 ? (
+              <>
+                <Tooltip title="Task List - canceled">
                   <IconButton
-                  color='error'
+                    onClick={() => {
+                      navigate('/staff/list-task-cancel', { state: params.row.project });
+                    }}
+                  >
+                    <AssignmentLateTwoToneIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
+            ) : (
+              <>
+                <Tooltip title="Task List ">
+                  <IconButton
                     onClick={() => {
                       if (params.row.project.leaderId === user?.staff.id) {
                         navigate('/staff/leader/list-task', { state: params.row.project });
@@ -282,54 +336,8 @@ function ListProjectMember(props) {
                     <AssignmentLateTwoToneIcon />
                   </IconButton>
                 </Tooltip>
-                ) : (
-                  <Tooltip title="Task List ">
-              <IconButton
-           
-                onClick={() => {
-                  if (params.row.project.leaderId === user?.staff.id) {
-                    navigate('/staff/leader/list-task', { state: params.row.project });
-                  } else {
-                    navigate('/staff/member/list-task', { state: params.row.project });
-                  }
-                }}
-              >
-                <AssignmentLateTwoToneIcon />
-              </IconButton>
-            </Tooltip>
-                )}
               </>
-            ) : params.row.project.projectStatus === 2 ? (
-              <>
-                <Tooltip title="Task List - canceled">
-                  <IconButton
-                    onClick={() => {
-                      navigate('/staff/list-task-cancel', { state: params.row.project  });
-                    }}
-                  >
-                    <AssignmentLateTwoToneIcon />
-                  </IconButton>
-                </Tooltip>
-              </>
-            )  :  (
-              <>
-              <Tooltip title="Task List ">
-              <IconButton
-      
-                onClick={() => {
-                  if (params.row.project.leaderId === user?.staff.id) {
-                    navigate('/staff/leader/list-task', { state: params.row.project });
-                  } else {
-                    navigate('/staff/member/list-task', { state: params.row.project });
-                  }
-                }}
-              >
-                <AssignmentLateTwoToneIcon />
-              </IconButton>
-            </Tooltip>
-              </>
-            ) }
-           
+            )}
           </Stack>
         );
       },
@@ -344,24 +352,18 @@ function ListProjectMember(props) {
     setShowDetailMember(true);
     setProject(data);
   };
-  
+
   const fetchData = async () => {
     setLoading(true);
     await axios.get(`https://api.ic-fpt.click/api/v1/staff/GetProjectByStaffId/${user?.staff?.id}`).then((response) => {
-      console.log(response)
+      console.log(response);
       setProjects(response.data.responseSuccess);
-      setLoading(false)
-
-     
-      
+      setLoading(false);
     });
   };
 
   useEffect(() => {
-
-    fetchData()
-   
-  
+    fetchData();
   }, []);
 
   function NoRowsOverlay() {
@@ -373,7 +375,6 @@ function ListProjectMember(props) {
   }
   return (
     <>
-
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -385,32 +386,29 @@ function ListProjectMember(props) {
         </Stack>
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-            {projects.length &&       <DataGrid
-              autoHeight
-              rows={projects}
-              columns={columns}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 10,
+            {(projects.length && (
+              <DataGrid
+                autoHeight
+                rows={projects}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 10,
+                    },
                   },
-                }, 
-                sorting: {
-                  sortModel: [{ field: "dateCreated", sort: "desc" }],
-                   },
-              
-              }}
-              components={{ NoRowsOverlay }}
-              pageSizeOptions={[10]}
-              disableRowSelectionOnClick
-            /> || <></>}
-    
-         
-
-</Box>
+                  sorting: {
+                    sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+                  },
+                }}
+                components={{ NoRowsOverlay }}
+                pageSizeOptions={[10]}
+                disableRowSelectionOnClick
+              />
+            )) || <></>}
+          </Box>
         </Card>
       </Container>
-
 
       <Dialog
         open={showConfirm}
@@ -428,8 +426,8 @@ function ListProjectMember(props) {
           <Button onClick={handleCloseConfirm}>Cancel</Button>
         </DialogActions>
       </Dialog>
-<Loading show={loading} />
-      <DetailPrjMember show={showDetailMember} close={() => setShowDetailMember(false)} project={project}/>
+      <Loading show={loading} />
+      <DetailPrjMember show={showDetailMember} close={() => setShowDetailMember(false)} project={project} />
       <DetailProjectLeader show={showDetail} close={() => setShowDetail(false)} project={project} />
     </>
   );
