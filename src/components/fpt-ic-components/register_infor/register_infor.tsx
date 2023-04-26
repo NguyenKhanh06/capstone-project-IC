@@ -89,9 +89,7 @@ const RegisterInformationComponent = () => {
   const containerRef = useRef(null);
   const [age, setAge] = React.useState('');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+
 
   const formik = useFormik({
     initialValues: {

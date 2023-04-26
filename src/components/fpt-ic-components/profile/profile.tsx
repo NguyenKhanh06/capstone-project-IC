@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grow, Typography } from '@mui/material';
+import { Alert, Box, Button, Container, FormControl, Grow, IconButton, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material';
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -6,13 +6,25 @@ import { Link, useNavigate } from 'react-router-dom';
 import { API_URL } from 'src/config/apiUrl/apis-url';
 import BaseBreadCrumbs from '../breadscrumbs/breadcrumbs';
 import RightTitle from './right-title';
-
+import CloseIcon from '@mui/icons-material/Close';
 const ProfileComponent = () => {
   const navigate = useNavigate();
   const student = JSON.parse(sessionStorage.getItem('student'));
   const user = JSON.parse(sessionStorage.getItem('user'));
+
   const [infors, setInfors] = useState(null);
   const [grading, setGrading] = useState(null);
+  const [edit, setEdit] = useState(false)
+  const [fullName, setFullName] = useState('')
+  const [rollNumber, setRoll] = useState('')
+  const [phoneNumber, setPhone] = useState('')
+  const [batch, setBatch] = useState('')
+  const [address, setAddress] = useState('')
+  const [major, setMajor] = useState(null)
+  const [majors, setMajors] = useState(null)
+  const [show, setShow] = useState(false);
+  const [showErr, setShowErr] = useState(false);
+  const [studentDetail, setStudentDetail] = useState(null);
   const getRegisInfor = async () => {
     axios.get(`${API_URL}/registration/getDetailbyStudentId/${user.id}`).then((response) => {
       setInfors(response.data.responseSuccess);
@@ -23,12 +35,67 @@ const ProfileComponent = () => {
   //     setGrading(response.data.responseSuccess);
   //   });
   // };
+  const getAllMajor = async () => {
+    await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
+  
+      setMajors(response.data.responseSuccess);
+    });
+  };
+
   useEffect(() => {
     getRegisInfor();
-    // getGrading();
+setFullName(user?.fullName)
+setRoll(user?.rollNumber)
+setMajor(user?.majorId)
+setPhone(user?.phoneNumber)
+setAddress(user?.address)
+setBatch(user?.batch)
+getAllMajor()
   }, []);
+  const getDetailStudent =  () => {
+ axios.get(`${API_URL}/student/getStudentDetail/${user.id}`).then((response) => {
 
-  console.log(user);
+      sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
+
+    });
+  };
+  const handleUpdateStudent = () => {
+    const data = {
+      memberCode: user.memberCode,
+      oldRollNumber: user.oldRollNumber,
+      batch: batch,
+      semeter: user.semeter,
+      upStatus: user.studentStatus,
+      address: address,
+      rollNumber: rollNumber,
+      fullName: fullName,
+      majorId: major,
+      email: user.email,
+      phoneNumber: phoneNumber,
+
+      status: true,
+    };
+    axios
+      .put(`${API_URL}/student/update/${user.id}`, data)
+      .then((response) => {
+        console.log(response);
+        if (response.data.isSuccess) {
+          setShow(true);
+          getDetailStudent()
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        setShowErr(true);
+      });
+  };
+  const ITEM_HEIGHT = 46;
+  const MOBILE_ITEM_HEIGHT = 58;
+  const ITEM_PADDING_TOP = 18;
+  const MENU_ITEMS = 5;
+
   return (
     <Box sx={{ height: '100%', width: '100%' }}>
       <Container
@@ -40,7 +107,7 @@ const ProfileComponent = () => {
         }}
       >
         {/* <BaseBreadCrumbs previousLink={[{ href: '/home', name: 'Homepage' }]} currentLink={'Profile'} /> */}
-        {student ? <><Box
+        {user? <><Box
           sx={{
             display: 'flex',
             flexDirection: { lg: 'row', sm: 'row', xs: 'column' },
@@ -77,7 +144,8 @@ const ProfileComponent = () => {
               {user?.fullName}
             </Typography>
             <Typography style={{ margin: '0' }}>{user?.email}</Typography>
-            <Box
+            {!edit ?  <Button
+            onClick={() => setEdit(true)}
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -88,9 +156,19 @@ const ProfileComponent = () => {
                 color: 'text.secondary',
               }}
             >
-              {/* <Typography>Edit</Typography>
-              <img src={'/images/edit.svg'} width={15} height={15} alt="alt" /> */}
-            </Box>
+        
+              <Typography>Edit</Typography>
+              <img src={'/images/edit.svg'} width={15} height={15} alt="alt" />
+            </Button> : <Button   sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '5px',
+                cursor: 'pointer',
+                fontWeight: 'fontWeightRegular',
+                marginTop: '10px',
+                color: 'text.secondary',
+              }} onClick={() => setEdit(false)}>Cancel edit</Button>}
+           
           </Box>
           <Box
             sx={{
@@ -106,13 +184,15 @@ const ProfileComponent = () => {
           >
             {/* left content */}
             <RightTitle NameText={'Full name'} />
-            <Typography
+  
+            {!edit ? <Typography 
               sx={{
                 fontWeight: 'fontWeightRegular',
               }}
             >
               <Typography>{user?.fullName}</Typography>
-            </Typography>
+            </Typography> :  <TextField size='small' value={fullName} onChange={(e) => setFullName(e.target.value)} style={{width: "80%"}}/>}
+
 
             <RightTitle NameText={'Roll number'} />
             <Box
@@ -120,7 +200,7 @@ const ProfileComponent = () => {
                 fontWeight: 'fontWeightRegular',
               }}
             >
-              <Typography>{user?.rollNumber}</Typography>
+              {!edit ? <Typography>{user?.rollNumber}</Typography> :<TextField size='small' onChange={(e) => setRoll(e.target.value)} value={rollNumber} style={{width: "80%"}}/> }
             </Box>
             <RightTitle NameText={'Main major'} />
             <Box
@@ -128,7 +208,32 @@ const ProfileComponent = () => {
                 fontWeight: 'fontWeightRegular',
               }}
             >
-              <Typography>{user?.majorName}</Typography>
+              {!edit ?    <Typography>{user?.majorName}</Typography> :<FormControl style={{width: "80%"}} size='small'>
+       
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={major}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                maxHeight: {
+                  xs: MOBILE_ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                  sm: ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                },
+              },
+            },
+          }}
+          onChange={(e) => {setMajor(e.target.value)}}
+        >
+          {majors.map((majorUpdate, index) => (
+          <MenuItem key={index} value={majorUpdate.id}>{majorUpdate.majorFullName}</MenuItem>
+          ))}
+
+         
+        </Select>
+      </FormControl>}
+          
             </Box>
             <RightTitle NameText={'Batch'} />
             <Box
@@ -136,7 +241,8 @@ const ProfileComponent = () => {
                 fontWeight: 'fontWeightRegular',
               }}
             >
-              <Typography>{user?.batch}</Typography>
+              {!edit ?   <Typography>{user?.batch}</Typography> : <TextField size='small' onChange={(e) => setBatch(e.target.value)} value={batch} style={{width: "80%"}}/>}
+            
             </Box>
             <RightTitle NameText={'Phone Number'} />
             <Box
@@ -144,7 +250,8 @@ const ProfileComponent = () => {
                 fontWeight: 'fontWeightRegular',
               }}
             >
-              <Typography>{user?.phoneNumber}</Typography>
+              {!edit ?   <Typography>{user?.phoneNumber}</Typography> :  <TextField size='small' onChange={(e) => setPhone(e.target.value)} value={phoneNumber} style={{width: "80%"}}/>}
+            
             </Box>
             <RightTitle NameText={'Address'} />
             <Box
@@ -152,9 +259,12 @@ const ProfileComponent = () => {
                 fontWeight: 'fontWeightRegular',
               }}
             >
-              <Typography>{user?.address}</Typography>
+              {!edit ?   <Typography>{user?.address}</Typography> :<TextField size='small' onChange={(e) => setAddress(e.target.value)} value={address} style={{width: "80%"}}/> }
+            
             </Box>
+            {edit && <Button onClick={() => handleUpdateStudent()} size='small' style={{ margin: "20px auto  10px 50px"}} variant='contained'>Update profile</Button>}
           </Box>
+
         </Box>
         <Box
           sx={{
@@ -204,7 +314,62 @@ const ProfileComponent = () => {
         </Box></> :  <Typography style={{marginTop: "5%"}} variant='h6' >Please <Link to={"/login"}>Login</Link> before view profile</Typography>}
         
       </Container>
+      <Snackbar
+              open={show}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <Alert
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setShow(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                variant="filled"
+                severity="success"
+                sx={{ width: '100%' }}
+              >
+                {'Update Profile Successful!!'}
+              </Alert>
+            </Snackbar>
+            <Snackbar
+              open={showErr}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <Alert
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setShowErr(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                variant="filled"
+                severity="error"
+                sx={{ width: '100%' }}
+              >
+                {'Update Profile Fail!!'}
+              </Alert>
+            </Snackbar>
     </Box>
+    
   );
 };
 
