@@ -150,7 +150,7 @@ const deleteFile = (name) => {
  
     if (response.data.isSuccess) {
       handleSuccess('Delete File Successfull!!!');
-      getAllFile()
+
       setTimeout(() => {
         window.location.reload()
              }, 1000)
