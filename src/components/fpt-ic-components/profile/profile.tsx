@@ -61,16 +61,16 @@ getAllMajor()
   };
   const handleUpdateStudent = () => {
     const data = {
-      memberCode: user.memberCode,
-      oldRollNumber: user.oldRollNumber,
+      memberCode: user?.memberCode,
+      oldRollNumber: user?.oldRollNumber,
       batch: batch,
-      semeter: user.semeter,
-      upStatus: user.studentStatus,
+      semeter: user?.semeter,
+      upStatus: user?.studentStatus,
       address: address,
       rollNumber: rollNumber,
       fullName: fullName,
       majorId: major,
-      email: user.email,
+      email: user?.email,
       phoneNumber: phoneNumber,
 
       status: true,
