@@ -44,7 +44,7 @@ const RegisterSchema = Yup.object().shape({
 
   // Major: Yup.string().required('Can you input your major, please ?'),
 
-  PhoneNumber: Yup.string().matches(/^[0-9]{10}$/, 'Invalid phone number, please check again!'),
+  PhoneNumber: Yup.string().matches(/(0[3|5|7|8|9])+([0-9]{8})\b/, 'Invalid phone number, please check again!'),
 
   // PassportNumber: Yup.string()
   //   .matches(/[A-Z]{1}[0-9]{8}/, 'Incorrect passport number, please check again! [Example: A12345678]')
@@ -191,6 +191,9 @@ console.log(student)
       })
       .catch((err) => {
         setShowErr(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       });
   };
   const getAllForm = async () => {

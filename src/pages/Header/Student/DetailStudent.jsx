@@ -438,7 +438,7 @@ const deleteFile = (name) => {
                
                    
                 <TextField value={batch} type="number" onChange={handleChangeBatch} required fullWidth label="Batch"
-                    inputProps={{ maxLength: 2 }}
+                 
                 
                 error={ !regex.test(batch)}
                 helperText={!regex.test(batch) && "Can not input special character"}
