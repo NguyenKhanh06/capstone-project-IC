@@ -348,8 +348,7 @@ function ListProject(props) {
 
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-            {projects?.length && (
-              <DataGrid
+          <DataGrid
                 autoHeight
                 rows={projects}
                 columns={columns}
@@ -367,7 +366,6 @@ function ListProject(props) {
                 pageSizeOptions={[10]}
                 disableRowSelectionOnClick
               />
-            ) || <></>}
           </Box>
         </Card>
       </Container>
