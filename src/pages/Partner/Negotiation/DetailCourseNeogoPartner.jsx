@@ -307,7 +307,7 @@ function DetailCourseNegoPartner(props) {
                   <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
                     <Typography variant="h6">{slotsApprove?.length ? slotsApprove.length : '0'}</Typography>
                     <Typography sx={{ color: 'green' }} variant="h6">
-                      Slots Approve
+                      Slots Approved
                     </Typography>
                   </Stack>
                 </Paper>
@@ -315,7 +315,7 @@ function DetailCourseNegoPartner(props) {
                   <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
                     <Typography variant="h6">{slotsReject?.length ? slotsReject.length : '0'}</Typography>
                     <Typography color="error" variant="h6">
-                      Slots Reject
+                      Slots Rejected
                     </Typography>
                   </Stack>
                 </Paper>
