@@ -54,15 +54,14 @@ import {
     const fetchData = async () => {
       await axios.get(`https://api.ic-fpt.click/api/v1/task/getRootsTask`).then((response) => {
         setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.mileStoneId === 5).filter((task) => task.status!== 5));
-        
-        console.log(response)
+
         
       });
     };
   
     useEffect(() => {
       fetchData().catch((error) => {
-        console.log(error);
+    
       });
     }, []);
   
@@ -131,7 +130,7 @@ import {
       },
     ];
     
-    console.log("task plan", props)
+
   
   
     return (

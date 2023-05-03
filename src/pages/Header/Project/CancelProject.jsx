@@ -74,7 +74,7 @@ function CancelProject(props) {
       },
     })
       .then((response) => {
-        console.log(response)
+      
         if (response.data.isSuccess) {
 changeStatus()
           setShowSuccess(true);

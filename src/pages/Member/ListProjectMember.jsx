@@ -356,7 +356,7 @@ function ListProjectMember(props) {
   const fetchData = async () => {
     setLoading(true);
     await axios.get(`https://api.ic-fpt.click/api/v1/staff/GetProjectByStaffId/${user?.staff?.id}`).then((response) => {
-      console.log(response);
+  
       setProjects(response.data.responseSuccess);
       setLoading(false);
     });

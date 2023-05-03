@@ -103,7 +103,7 @@ setTimeout(() => {
     }
   }
 
-  console.log(props)
+
 
   return (
     <div>

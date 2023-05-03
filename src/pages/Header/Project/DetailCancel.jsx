@@ -48,7 +48,7 @@ setCancel(response.data.responseSuccess[0])
     const getdetailProject = () => {
       axios.get(`https://api.ic-fpt.click/api/v1/project/getDetail/${props.project.id}`).then((response) => {
         setProject(response.data.responseSuccess[0]);
-        console.log('detail prj', response.data);
+      
       });
     };
     // const fetchDataDoc = async () => {
@@ -67,14 +67,14 @@ setCancel(response.data.responseSuccess[0])
         getCancel()
       }
     }, [props.project]);
-  console.log("props", props)
+
     const handleClose = () => {
       setOpen(props.close);
     };
   
     const onChangeFile = (e) => {
       setFileStudent(e.target.files[0]);
-      console.log('file', e.target.files[0]);
+
     };
   
     // const handleExportFile = () => {
@@ -107,7 +107,7 @@ setCancel(response.data.responseSuccess[0])
           responseType: 'blob',
         })
         .then((response) => {
-          console.log(response);
+     
   
           if (response.status === 200) {
 setShowSuccess(true)

@@ -157,7 +157,7 @@ const handleDeleteTask = () => {
     taskId: props.state.id,
     state: stateTask,
   };
-console.log("props tak", props)
+
   return (
     <Dialog
       fullWidth

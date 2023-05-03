@@ -55,14 +55,14 @@ function TaskInitiationMember(props) {
     await axios.get(`https://api.ic-fpt.click/api/v1/task/getRootsTask`).then((response) => {
       setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.mileStoneId === 1).filter((task) => task.status!== 5));
       
-      console.log(response)
+  
       
     });
   };
 
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+
     });
   }, []);
 

@@ -90,11 +90,11 @@ function TaskMinotoring(props) {
 
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+    
     });
   }, []);
 
-console.log("props ini", props)
+
 
 const handleShowConfirm = (data) => {
   setID(data);

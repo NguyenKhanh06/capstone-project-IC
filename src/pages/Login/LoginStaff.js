@@ -44,7 +44,7 @@ const LoginStaff = () => {
   const googleLogin = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async (codeResponse) => {
-      console.log(codeResponse);
+
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
@@ -75,10 +75,10 @@ const LoginStaff = () => {
   };
 
   function requestPermission() {
-    console.log('Requesting permission...');
+
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
-        console.log('Notification permission granted.');
+
         const app = initializeApp(firebaseConfig);
 
         const messaging = getMessaging(app);
@@ -88,7 +88,7 @@ const LoginStaff = () => {
           if (currentToken) {
             localStorage.setItem('tokenfcm',currentToken);
 
-            console.log('currentToken: ', currentToken);
+          
           } else {
             console.log('Can not get token');
           }
@@ -192,7 +192,7 @@ const LoginStaff = () => {
                   }
                 })
                 .catch((err) => {
-                  console.log(err);
+                 
                   handleErr('Wrong email or password!');
                 });
               setSubmitting(false);

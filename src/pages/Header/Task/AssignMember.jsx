@@ -76,7 +76,7 @@ setStaffs(response.data.responseSuccess)
   }
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+      
     });
   }, []);
 
@@ -106,7 +106,7 @@ setStaffs(response.data.responseSuccess)
       },
     },
   ];
-  console.log("staff", staffs)
+
   return (
       <Dialog
       fullWidth

@@ -36,7 +36,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Iconify from '../../../components/iconify/Iconify';
 
 function DetailCourseNegoPartner(props) {
-  console.log("deal", props)
+  
   const [open, setOpen] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [course, setCourse] = useState([]);
@@ -89,11 +89,7 @@ function DetailCourseNegoPartner(props) {
     await axios
       .get(`https://api.ic-fpt.click/api/v1/syllabus/GetListSyllabusPartner/${props.id.partnerId}`)
       .then((response) => {
-        console.log(
-          response.data.responseSuccess
-            .filter((syl) => syl.status && syl.course.id === props.id.courseId)[0]
-            .slots.filter((slot) => slot.status)
-        );
+     
         setSyllabus(
           response.data.responseSuccess.filter((syl) => syl.status && syl.course.id === props.id.courseId)[0]
         );

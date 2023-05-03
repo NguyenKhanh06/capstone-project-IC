@@ -50,7 +50,7 @@ import {
   };
   
   function DetailProjectLeader(props) {
-    console.log(props)
+
     const regex = /^[\w\s]*$/;
     const [disableBtn, setDisable] = useState(false);
     const [project, setProject] = useState([]);
@@ -362,7 +362,7 @@ import {
           `https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate}&CampusId=${selectedCampus}`
         )
         .then((response) => {
-          console.log(response);
+       
           if (response.data.isSuccess) {
             handleSuccess('Update Project Successsfull!!!');
   
@@ -380,7 +380,7 @@ import {
           `https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&OfficalTimeStart=${officialStart.add(1, 'day')}&OfficalTimeEnd=${officialEnd.add(1, 'day')}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate}&CampusId=${selectedCampus}`
         )
         .then((response) => {
-          console.log(response);
+          
           if (response.data.isSuccess) {
             handleSuccess('Update Project Successsfull!!!');
   

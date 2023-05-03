@@ -90,7 +90,7 @@ function TaskExecuting(props) {
 
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+      
     });
   }, []);
 

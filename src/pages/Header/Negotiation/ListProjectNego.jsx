@@ -270,14 +270,14 @@ function ListProjectNego(props) {
   };
   const fetchData = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
-      console.log(response.data);
+     
       setProjects(response.data.responseSuccess);
     });
   };
 
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+ 
     });
   }, []);
 

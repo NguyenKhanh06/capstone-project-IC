@@ -44,15 +44,12 @@ function DetailProjectNego(props) {
   const getdetailProject = async () => {
    await axios.get(`https://api.ic-fpt.click/api/v1/project/getDetail/${props.project.id}`).then((response) => {
       setProject(response.data.responseSuccess[0]);
-      console.log('detail prj', response.data);
+  
     });
   };
   const fetchDataDoc = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
-      console.log(
-        'doc',
-        response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id)
-      );
+
       setDoc(response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id));
     });
   };
@@ -69,7 +66,7 @@ function DetailProjectNego(props) {
 
   const onChangeFile = (e) => {
     setFileStudent(e.target.files[0]);
-    console.log('file', e.target.files[0]);
+  
   };
 
   const handleExportFile = (documentPrj) => {
@@ -78,7 +75,7 @@ function DetailProjectNego(props) {
       method: 'GET',
       responseType: 'blob', // important
     }).then((response) => {
-      console.log(response);
+     
       const blob = new Blob([response.data], { type: response.data.type });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');

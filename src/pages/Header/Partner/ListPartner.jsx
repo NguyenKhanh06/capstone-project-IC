@@ -43,14 +43,14 @@ function ListPartner(props) {
     };
     const fetchData = async () => {
         await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
-          console.log(response)
+         
           setPartners(response.data.responseSuccess.filter(partner => partner.status))
        
         });
       };
       useEffect(() => {
         fetchData().catch((error) => {
-          console.log(error);
+
         });
       }, []);
 

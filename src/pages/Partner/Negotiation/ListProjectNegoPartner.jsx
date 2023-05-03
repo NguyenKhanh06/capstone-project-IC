@@ -62,7 +62,7 @@ function ListProjectNegoPartner(props) {
     };
     const onChangeFile = (e) => {
       setFileStudent(e.target.files[0]);
-      console.log('file', e.target.files[0]);
+
     };
   
   const columns = [

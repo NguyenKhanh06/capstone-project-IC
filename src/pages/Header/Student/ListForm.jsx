@@ -16,7 +16,7 @@ function ListFormStudent(props) {
     const handleClose = () => {
         setOpen(props.close);
       };
-      console.log(props.studentID?.id)
+
     const getDetail = async () => {
         await axios
           .get(`https://api.ic-fpt.click/api/v1/registration/getDetailbyStudentId/${props?.studentID?.id}`)

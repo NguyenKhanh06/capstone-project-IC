@@ -20,7 +20,7 @@ function CreateDateMil(props) {
             "dateEnd":toDateInit
         }
         axios.put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/1`, data).then((response) => {
-            console.log(response)
+           
         })
     }
     return (

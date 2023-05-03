@@ -181,7 +181,7 @@ const handleCreateForm6 = () => {
 
 }
   const handleCreateForm = () => {
-    console.log(inputList)
+    
     axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}
     `).then((response) => {
           if (response.data.isSuccess) {

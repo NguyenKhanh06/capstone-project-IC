@@ -49,7 +49,7 @@ import CreateCategory from './CreateCategory';
 
     const fetchData = async () => {
       await axios.get(`https://api.ic-fpt.click/api/v1/categoryProject/getAllCate`).then((response) => {
-        console.log(response.data)
+    
         setCates(response.data.responseSuccess.filter(cate => cate.status)
           )
         
@@ -58,7 +58,7 @@ import CreateCategory from './CreateCategory';
   
     useEffect(() => {
       fetchData().catch((error) => {
-        console.log(error);
+
       });
     }, []);
   

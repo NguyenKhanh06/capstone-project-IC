@@ -326,15 +326,15 @@ function AssignLeader(props) {
 
   const fetchData = async () =>{
    await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
-      console.log("response", response)
+ 
 setStaffs(response.data.responseSuccess.filter(staff => staff.account.status))
-console.log("staff", response.data.responseSuccess.filter(staff => staff.account.status))
+
     })
   }
-console.log("sat", staffs)
+
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+    
     });
   }, []);
 

@@ -33,7 +33,7 @@ export default function BlogPage() {
   }
   useEffect(() => {
     getPost().catch((error) => {
-      console.log(error);
+    
     });
   }, []);
   return (

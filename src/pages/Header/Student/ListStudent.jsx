@@ -149,7 +149,7 @@ function StudentCertificate(props) {
       setLoading(false)
       if (response.data.isSuccess) {
         google.accounts.id.revoke(id.email, done => {
-          console.log('consent revoked');
+        
         });
         handleSuccess("Delete Student Successful!")
         setTimeout(() => {

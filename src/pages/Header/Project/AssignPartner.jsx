@@ -339,7 +339,7 @@ import axios from 'axios';
 
      useEffect(() => {
        fetchData().catch((error) => {
-         console.log(error);
+       
        });
      }, []);
    

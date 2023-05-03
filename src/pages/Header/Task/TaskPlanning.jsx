@@ -89,7 +89,7 @@ function TaskPlanning(props) {
 
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+
     });
   }, []);
 

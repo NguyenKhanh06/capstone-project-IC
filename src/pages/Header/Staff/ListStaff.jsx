@@ -51,7 +51,7 @@ const handleShowDetail = (data) => {
 
 const handleDeleteStaff = () => {
     axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=false`).then((response) => {
-      console.log(response)
+     
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(() =>{

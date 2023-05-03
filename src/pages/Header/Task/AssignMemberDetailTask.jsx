@@ -44,7 +44,7 @@ function AssignMemberDetailTask(props) {
 
   const fetchData = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/project/getJoin/${props.project}`).then((response) => {
-      console.log('response', response.data.responseSuccess);
+    
       setStaffs(response.data.responseSuccess);
       //   const result = Object.values(response.data.responseSuccess).map(
       //     Object.values
@@ -61,7 +61,7 @@ function AssignMemberDetailTask(props) {
   };
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+   
     });
   }, []);
 

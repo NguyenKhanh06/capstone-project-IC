@@ -62,7 +62,7 @@ function DetailCourseNego(props) {
 
   const fetchData = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/syllabus/GetListSyllabusPartner/${props.id.partnerId}`).then((response) => {
-      console.log("deal", response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId))
+  
  
 
         setSyllabus(response.data.responseSuccess.filter(syl => syl.status && syl.course.id === props.id.courseId)[0])
@@ -83,7 +83,7 @@ function DetailCourseNego(props) {
     });
   };
 
-console.log(props)
+
   useEffect(() => {
     if (props.id) {
       fetchData();

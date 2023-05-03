@@ -128,7 +128,7 @@ function DetailStudent(props) {
     axios
       .put(`https://api.ic-fpt.click/api/v1/student/update/${props.student.id}`, data)
       .then((response) => {
-        console.log(response);
+
         if (response.data.isSuccess) {
           window.location.reload(false);
         
@@ -202,8 +202,11 @@ const deleteFile = (name) => {
         } 
       })
       .catch((err) => {
-        console.log('errr', err);
+       
         handleError('Upload File fail!!');
+        setTimeout(() => {
+          window.location.reload()
+               }, 1000)
         setLoading(false);
       });
   };

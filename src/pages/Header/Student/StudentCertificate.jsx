@@ -168,7 +168,7 @@ import {
     const fetchData = async () => {
       await axios.get(`https://api.ic-fpt.click/api/v1/student/getAllStudent`).then((response) => {
         setStudents(response.data.responseSuccess);
-        console.log(response.data.responseSuccess);
+   
       });
     };
   
@@ -187,7 +187,7 @@ import {
           'Content-Type': 'multipart/form-data',
         },
       }).then((response) => {
-        console.log(response);
+        
       });
     };
   

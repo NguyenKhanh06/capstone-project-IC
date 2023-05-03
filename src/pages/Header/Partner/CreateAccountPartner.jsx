@@ -96,7 +96,7 @@ setLoading(false)
         setLoading(false)
       });
   };
-console.log(props)
+
   const onblur = () => {
     const regexMail = /^[\w.-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (regexMail.test(email)) {

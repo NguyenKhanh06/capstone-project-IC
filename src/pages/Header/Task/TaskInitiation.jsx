@@ -90,11 +90,11 @@ function TaskInitiation(props) {
 
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+
     });
   }, []);
 
-console.log("state", state)
+
 
 const handleShowConfirm = (data) => {
   setID(data);

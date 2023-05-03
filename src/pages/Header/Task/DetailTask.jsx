@@ -42,7 +42,7 @@ import DetailCmt from './DetailCmt';
 function DetailTask(props) {
   const user = JSON.parse(sessionStorage.getItem("user"));
   const staffcheck = JSON.parse(sessionStorage.getItem("staff"));
-console.log("check", user)
+
   const regex = /^[\w\s]*$/
   const [open, setOpen] = useState(false);
   const [deadline, setDeadline] = useState(null);
@@ -109,7 +109,7 @@ console.log("check", user)
   };
 
   const fetchData = async () => {
-    console.log("check")
+   
   await axios.get(`https://api.ic-fpt.click/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
  
       setTask(response.data.responseSuccess[0]);
@@ -173,7 +173,7 @@ console.log("check", user)
         'Content-Type': 'multipart/form-data',
       },
     }).then(response => {
-      console.log(response)
+    
       setComment("")
       setFileCmt()
       fetchDataComment()

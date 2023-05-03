@@ -27,7 +27,7 @@ function DetailReason(props) {
     setOpen(props.close);
   };
 
-  console.log("reason", props.reason);
+  
   return (
     <Dialog
       fullWidth

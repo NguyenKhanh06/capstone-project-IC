@@ -43,7 +43,7 @@ setSkillName(e.target.value)
 
   const handleCreateCourse = () => {
     setLoading(true)
-    console.log(`https://api.ic-fpt.click/api/v1/course/create?Activity=${activity}&Content=${content}&CourseName=${skillName}`)
+    
     axios
       .post(
         `https://api.ic-fpt.click/api/v1/course/create?Activity=${activity}&Content=${content}&CourseName=${skillName}`

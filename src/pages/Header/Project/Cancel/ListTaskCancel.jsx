@@ -51,7 +51,7 @@ function ListTaskCancel(props) {
     setValue(newValue);
   };
   const { state } = useLocation();
-console.log("state", state)
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

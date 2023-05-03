@@ -35,7 +35,7 @@ function CreateMajor(props) {
   
   const handleChangeName = (e) => {
     // console.log(regex.test(e.target.value));
-    console.log(regexPhone.test(e.target.value));
+
 
 setSkillName(e.target.value)
 

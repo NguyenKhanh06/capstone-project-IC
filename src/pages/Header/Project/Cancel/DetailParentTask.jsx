@@ -117,7 +117,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
         },
       })
         .then((response) => {
-            console.log(response)
+   
           if (response.data.isSuccess) {
             setShowSuccess(true);
             setTimeout(() => {

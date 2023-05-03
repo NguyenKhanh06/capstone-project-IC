@@ -164,7 +164,7 @@ function DetailTask(props) {
   };
   const fetchDataComment = async () => {
     await axios.get(`${API_URL}/comment/GetCommentInTask`).then((response) => {
-      console.log("cmt", response)
+    
       setcmtTask(response.data.responseSuccess.filter(cmt => cmt.tasksId === props.task.id) );
     });
   };

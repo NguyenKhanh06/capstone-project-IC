@@ -87,7 +87,7 @@ function DetailStudentRegisterDetail(props) {
     await axios
       .get(`https://api.ic-fpt.click/api/v1/registration/getDetailbyStudentId/${props.studentID}`)
       .then((response) => {
-console.log(response)
+
         setStudent(response.data.responseSuccess[0]);
         if (response.data.responseSuccess[0]?.contentHeader1 !== 'null') {
           setContent1(response.data.responseSuccess[0].content1);

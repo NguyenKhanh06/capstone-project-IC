@@ -35,7 +35,7 @@ import DetailCmt from '../Header/Task/DetailCmt';
 
 function DetailTaskMember(props) {
   const staff = JSON.parse(sessionStorage.getItem('user'));
-console.log("staf", staff)
+
   const [open, setOpen] = useState(false);
   const [disableBtn, setDisable] = useState(false);
   const [deadline, setDeadline] = useState(null);
@@ -111,7 +111,7 @@ console.log("staf", staff)
   const fetchData = () => {
 
     axios.get(`https://api.ic-fpt.click/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
-      console.log("task", response)
+ 
       setTask(response.data.responseSuccess[0]);
       setTaskName(response.data.responseSuccess[0].taskName);
       setDeadline(dayjs(response.data.responseSuccess[0].deadLine));
@@ -188,7 +188,7 @@ console.log("staf", staff)
 
 
 
-  console.log("task", props)
+
 
 
   useEffect(() => {

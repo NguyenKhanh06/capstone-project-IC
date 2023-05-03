@@ -67,7 +67,7 @@ function CreateTask(props) {
         handleError('Create fail!!!!');
       });
   };
-console.log(props)
+
   return (
     <div>
       <Dialog

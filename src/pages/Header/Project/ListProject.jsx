@@ -299,7 +299,7 @@ function ListProject(props) {
   ];
   const handleDeleteProject = () => {
     axios.put(`https://api.ic-fpt.click/api/v1/project/disable/${id}`).then((response) => {
-      console.log(response);
+
     });
   };
 
@@ -314,7 +314,7 @@ function ListProject(props) {
   const fetchData = async () => {
     setLoading(true);
     await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
-      console.log('responseProject', response.data);
+   
       setProjects(response.data.responseSuccess);
       setLoading(false);
     });
@@ -322,7 +322,7 @@ function ListProject(props) {
 
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+    
     });
   }, []);
 

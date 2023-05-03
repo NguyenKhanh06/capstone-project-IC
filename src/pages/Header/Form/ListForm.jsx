@@ -66,7 +66,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
   
     const fetchData = async () => {
       await axios.get(`https://api.ic-fpt.click/api/v1/registration/getRootRegis`).then((response) => {
-        console.log(response.data);
+
         setForm(response.data.responseSuccess)
       });
     };

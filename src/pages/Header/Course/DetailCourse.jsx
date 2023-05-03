@@ -119,9 +119,7 @@ function DetailCourse(props) {
   }, [props.course]);
 
   const handleUpdate = () => {
-    console.log(
-      `https://api.ic-fpt.click/api/v1/course/update/${props.course.id}?Activity=${activity}&Content=${content}&CourseName=${skillName}`
-    );
+   
     axios
       .put(
         `https://api.ic-fpt.click/api/v1/course/update/${props.course.id}?Activity=${activity}&Content=${courseContent}&CourseName=${skillName}&Status=true&DateCreate=${props.course.dateCreated}`

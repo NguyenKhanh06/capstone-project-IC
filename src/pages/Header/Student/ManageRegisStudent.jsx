@@ -35,7 +35,7 @@ function ManageRegisStudent(props) {
   const [projects, setProjects] = useState([]);
   const [student, setStudent] = useState([]);
 
-  console.log('state', state);
+
 
   const handleClickOpenDetail = (data) => {
     setShowDetail(true);
@@ -107,14 +107,14 @@ function ManageRegisStudent(props) {
   };
   const fetchData = async () => {
     await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
-      console.log(response.data);
+  
       setProjects(response.data.responseSuccess.filter((project) => project.status));
     });
   };
 
   useEffect(() => {
     fetchData().catch((error) => {
-      console.log(error);
+
     });
   }, []);
   function NoRowsOverlay() {
