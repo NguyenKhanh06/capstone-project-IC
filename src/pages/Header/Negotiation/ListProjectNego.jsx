@@ -83,7 +83,7 @@ function ListProjectNego(props) {
            }, 1000);
       })
     };
-
+console.log(idPrj)
     const handleShowConfirmChange = (data) => {
       setShowConfirm(true);
       setIDPrj(data)
@@ -108,7 +108,7 @@ function ListProjectNego(props) {
     const handleUpdate1 = () => {
       axios
         .put(
-          `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
+          `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateTimeStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateTimeEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
         )
         .then((response) => {
          
@@ -126,7 +126,7 @@ function ListProjectNego(props) {
     const handleUpdate2 = () => {
       axios
         .put(
-          `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&OfficalTimeStart=${dayjs(idPrj.officalTimeStart)}&OfficalTimeEnd=${dayjs(idPrj.officalTimeEnd)}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
+          `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateTimeStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateTimeEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&OfficalTimeStart=${dayjs(idPrj.officalTimeStart)}&OfficalTimeEnd=${dayjs(idPrj.officalTimeEnd)}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
 
         )
         .then((response) => {
