@@ -317,6 +317,7 @@ const handleDetailCate = (data) => {
 
   useEffect(() => {
     if (props.project !== null) {
+      console.log(props.project)
       setCampuses(
         partners.find((partner) => partner.id === props.project.partnerId)?.campuses.filter((camp) => camp.status)
       );
@@ -325,7 +326,7 @@ const handleDetailCate = (data) => {
       }else{
         setenableplan(true);
       }
-      setToInit(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 1).dateEnd).add(1, 'day'));
+      setToInit(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 1).dateEnd));
 
       if (
         props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateBegin &&
@@ -336,8 +337,8 @@ const handleDetailCate = (data) => {
         setenableEx(true);
       }
 
-      setFromPlan(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateBegin).add(1, 'day'));
-      setToPlan(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateEnd).add(1, 'day'));
+      setFromPlan(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateBegin));
+      setToPlan(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateEnd));
 
       if (
         props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateBegin &&
@@ -347,8 +348,8 @@ const handleDetailCate = (data) => {
       }else{
         setenableMino(true);
       }
-      setFromEx(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateBegin).add(1, 'day'));
-      setToEx(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateEnd).add(1, 'day'));
+      setFromEx(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateBegin));
+      setToEx(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateEnd));
 
       if (
         props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateBegin &&
@@ -358,10 +359,10 @@ const handleDetailCate = (data) => {
       }else{
         setenableClose(true)
       }
-      setFromMino(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateBegin).add(1, 'day'));
-      setToMino(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateEnd).add(1, 'day'));
+      setFromMino(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateBegin));
+      setToMino(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateEnd));
 
-      setFromClose(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 5).dateBegin).add(1, 'day'));
+      setFromClose(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 5).dateBegin));
 
       setProjectName(props.project.projectName);
       setEstimateStart(dayjs(props.project.estimateTimeStart));
