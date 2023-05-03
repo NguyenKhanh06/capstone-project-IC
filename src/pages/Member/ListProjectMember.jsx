@@ -174,7 +174,7 @@ function ListProjectMember(props) {
             <Chip label="Closing" color="success" />
           ) : null}
 
-          {params.row.project?.projectStatus > 2
+          {params.row.project?.projectStatus !== 2
             ? dayjs(new Date()).date() - dayjs(params.row.project?.estimateTimeStart).date() === 0 &&
               dayjs(new Date()).month() - dayjs(params.row.project?.estimateTimeStart).month() === 0 &&
               dayjs(new Date()).year() - dayjs(params.row.project?.estimateTimeStart).year() === 0
