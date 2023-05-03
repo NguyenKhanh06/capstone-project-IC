@@ -512,7 +512,7 @@ const deleteFile = (name) => {
             
             <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
             Import File
-            <input onChange={(e) => setFileStudent(e.target.files[0])} id="input" hidden type="file" />
+            <input onChange={(e) => setFileStudent(e.target.files[0])} id="input" accept='.pdf' hidden type="file" />
           </Button>
           <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
             </> }
