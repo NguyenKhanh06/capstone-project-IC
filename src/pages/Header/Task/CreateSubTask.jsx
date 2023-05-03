@@ -126,8 +126,10 @@ setTimeout(() => {
 
           <DialogTitle style={{ marginBottom: 10 }} id="alert-dialog-title">
             <TextField required fullWidth label="Task Name" onChange={(e) => setTaskName(e.target.value)}
-               error={ !regex.test(taskName)}
-               helperText={!regex.test(taskName) && "Can not input special character"}
+                 inputProps={{
+                  maxLength: 255,
+                 
+                }} 
             />
           </DialogTitle>
 
@@ -162,7 +164,7 @@ setTimeout(() => {
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
       
-            {taskName.length && deadline && regex.test(taskName) ?   <Button variant="contained" onClick={() => handleSubmit()}  autoFocus>
+            {taskName.trim().length && deadline  ?   <Button variant="contained" onClick={() => handleSubmit()}  autoFocus>
               Create Task
             </Button> :   <Button disabled variant="contained" onClick={() => handleSubmit()}  autoFocus>
               Create Task

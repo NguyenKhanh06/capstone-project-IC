@@ -287,12 +287,12 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
               <Stack direction="column" spacing={3.5} sx={{ padding: 2 }}>
                 <TextField
                   value={projectName}
+                  inputProps={{ maxLength: 255 }}
                   onChange={(e) => setProjectName(e.target.value)}
                   required
                   fullWidth
                   label="Project Name"
-                  error={ !regex.test(projectName)}
-                  helperText={!regex.test(projectName) && "Can not input special character"}
+                 
                 />
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                   <FormControl fullWidth>
@@ -638,7 +638,7 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             {projectName.trim().length &&
-            regex.test(projectName) &&
+        
             cate &&
             course &&
             leader &&

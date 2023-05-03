@@ -284,8 +284,7 @@ https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${sta
                 required
                 fullWidth
                 label="Course Name"
-                error={!regex.test(skillName)}
-                helperText={!regex.test(skillName) && 'Can not input special character'}
+              
               />
               <TextField
                 value={activity}
@@ -304,12 +303,16 @@ https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${sta
                 required
                 fullWidth
                 label="Description"
+                inputProps={{
+                  maxLength: 1000,
+                 
+                }}
  
               />
             </Stack>
 
             <DialogActions style={{ padding: 10 }}>
-              {disableBtn && regex.test(skillName) && regex.test(activity)  ? (
+              {disableBtn && regex.test(activity)  ? (
                 <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
                   Save
                 </Button>

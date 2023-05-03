@@ -100,10 +100,9 @@ function CreateSlot(props) {
                 fullWidth
                 label="Slot Topic"
                 inputProps={{
-                  maxLength: 25,
+                  maxLength: 255,
                 }}
-                error={ !regex.test(topic)}
-              helperText={!regex.test(topic) && "Can not input special character"}
+             
               />
               <TextField
                 value={timeAllocation}
@@ -148,7 +147,7 @@ function CreateSlot(props) {
             </Stack>
           </DialogContent>
           <DialogActions>
-            {topic.trim().length && timeAllocation.trim().length && disable && regex.test(detail) && regex.test(topic) ? (
+            {topic.trim().length && timeAllocation.trim().length && disable && regex.test(detail)  ? (
               <Button variant="contained" onClick={() => handleCreateSlot()} autoFocus>
                 Create Slot
               </Button>

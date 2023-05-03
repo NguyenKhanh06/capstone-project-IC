@@ -260,7 +260,7 @@ fetchDataComment()
     }
   }, [props.task]);
 
-console.log("cmt", cmtTask)
+
  const removeImage = () => {
     setFileCmt({
         selectedFile: undefined,
@@ -299,8 +299,10 @@ console.log("cmt", cmtTask)
                 required
                 fullWidth
                 label="Task Name"
-                error={ !regex.test(taskName)}
-                helperText={!regex.test(taskName) && "Can not input special character"}
+                inputProps={{
+                  maxLength: 255,
+                 
+                }} 
               />
               <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
                 <Typography>Members:</Typography>
@@ -397,7 +399,7 @@ console.log("cmt", cmtTask)
           </DialogContent>
           <DialogActions style={{ paddingTop: 20, marginRight: 10 }}>
             {/* <Button onClick={handleClose}>Cancel</Button> */}
-            {disableBtn && regex.test(taskName) ? (
+            {disableBtn  ? (
               <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
                 Save
               </Button>

@@ -45,7 +45,7 @@ function CreateTask(props) {
   const handleClose = () => {
     setOpen(props.close);
   };
-console.log(props)
+
   const handleCreateTask = () => {
     axios
       .post(
@@ -91,8 +91,10 @@ console.log(props)
           <DialogTitle style={{ marginBottom: 10 }} id="alert-dialog-title">
             <TextField required fullWidth label="Task Name" onChange={(e) => setTaskName(e.target.value)} 
             
-            error={ !regex.test(taskName)}
-            helperText={!regex.test(taskName) && "Can not input special character"}
+            inputProps={{
+              maxLength: 255,
+             
+            }} 
             />
        
           </DialogTitle>
@@ -123,7 +125,7 @@ console.log(props)
             </Stack>
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
-            {taskName.trim().length && deadline && regex.test(taskName) ? (
+            {taskName.trim().length && deadline ? (
               <Button variant="contained" onClick={() => handleCreateTask()} autoFocus>
                 Create Task
               </Button>

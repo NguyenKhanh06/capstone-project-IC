@@ -87,7 +87,7 @@ changeStatus()
         setLoading(false);
       });
   };
-  console.log(props)
+ 
 
   return (
     <div>

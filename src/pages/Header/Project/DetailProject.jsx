@@ -416,12 +416,17 @@ const handleDetailCate = (data) => {
         console.log(response);
         if (response.data.isSuccess) {
           handleSuccess('Update Project Successsfull!!!');
-
-          setTimeout(reload(), 3000);
+          setTimeout(() => {
+      window.location.reload()
+          }, 2000)
         }
       })
       .catch((err) => {
         handleError(err.response.data.responseSuccess);
+        setTimeout(() => {
+          window.location.reload()
+              }, 2000)
+
       });
   };
 
@@ -435,11 +440,16 @@ const handleDetailCate = (data) => {
         if (response.data.isSuccess) {
           handleSuccess('Update Project Successsfull!!!');
 
-          setTimeout(reload(), 3000);
+          setTimeout(() => {
+            window.location.reload()
+                }, 2000)
         }
       })
       .catch((err) => {
         handleError(err.response.data.responseSuccess);
+        setTimeout(() => {
+          window.location.reload()
+              }, 2000)
       });
   };
   // console.log(`https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
@@ -535,9 +545,8 @@ const handleDetailCate = (data) => {
             <DialogContentText id="alert-dialog-slide-description">
               <Stack direction="column" spacing={3.5} sx={{ padding: 2 }}>
                 <TextField value={projectName} disabled={props.project?.checkNegotiationStatus} onChange={handleOnChangeName} required fullWidth label="Project Name" 
-                  error={ !regex.test(projectName)}
-                  helperText={!regex.test(projectName) && "Can not input special character"}
-                  inputProps={{ maxLength: 50 }}
+                
+                  inputProps={{ maxLength: 255 }}
                 />
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                   <FormControl fullWidth>
@@ -1047,7 +1056,7 @@ const handleDetailCate = (data) => {
                 Cancel Project
               </Button>
               
-              {disableBtn && regex.test(projectName) ? (
+              {disableBtn ? (
                 <Button onClick={() => handleShowConfirm()} variant="contained">
                   Save
                 </Button>

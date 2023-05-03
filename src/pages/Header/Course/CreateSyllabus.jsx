@@ -118,11 +118,10 @@ function CreateSyllabus(props) {
               fullWidth
               label="Syllabus Name"
               inputProps={{
-                maxLength: 25,
+                maxLength: 255,
                
               }}
-              error={ !regex.test(content)}
-              helperText={!regex.test(content) && "Can not input special character"}
+           
             />
             <TextField
             required
@@ -167,7 +166,7 @@ function CreateSyllabus(props) {
           </Stack>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          {content.trim() && description.trim().length && regex.test(content) && partner ? (
+          {content.trim() && description.trim().length && partner ? (
             <Button variant="contained" onClick={() => handleCreateSyllabus()} autoFocus>
               Create Syllabus
             </Button>

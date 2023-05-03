@@ -35,7 +35,7 @@ function CreateCourse(props) {
   
   const handleChangeName = (e) => {
     // console.log(regex.test(e.target.value));
-    console.log(regexPhone.test(e.target.value));
+
 
 setSkillName(e.target.value)
 
@@ -61,6 +61,11 @@ setSkillName(e.target.value)
       }).catch((err) => {
         setLoading(false)
         handleError('Create fail!');
+        setTimeout(() => {
+          window.location.reload()
+          setShowSuccess(false);
+
+        }, 1000)
       })
   };
 
@@ -94,10 +99,9 @@ setSkillName(e.target.value)
               fullWidth
               label="Course Name"
               inputProps={{
-                maxLength: 25,
+                maxLength: 255,
               }}
-              error={ !regex.test(skillName)}
-                  helperText={!regex.test(skillName) && "Can not input special character"}
+  
             />
             <TextField
               value={activity}
@@ -131,7 +135,7 @@ setSkillName(e.target.value)
           </Stack>
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
-          { activity.trim().length && regex.test(activity) && skillName.trim().length && regex.test(skillName)?    <Button variant="contained" onClick={() => handleCreateCourse()} autoFocus>
+          { activity.trim().length && regex.test(activity) && skillName.trim().length?    <Button variant="contained" onClick={() => handleCreateCourse()} autoFocus>
             Create Course
           </Button> :    <Button disabled variant="contained" autoFocus>
             Create Course

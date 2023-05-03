@@ -274,12 +274,11 @@ setTimeout(() =>{
                 <Divider variant='middle'/>
               <TextField value={content} onChange={handleChangeContent} required fullWidth label="Syllabus Content"
                inputProps={{
-                maxLength: 25,
+                maxLength: 255,
                
               }} 
               
-              error={ !regex.test(content)}
-              helperText={!regex.test(content) && "Can not input special character"}
+        
             />
               
               <TextField
@@ -296,14 +295,13 @@ setTimeout(() =>{
                  
                 }}
                 label="Description"
-                error={ !regex.test(description)}
-                helperText={!regex.test(description) && "Can not input special character"}
+             
               />
              
             </Stack>
             <DialogActions style={{ padding: 10 }}>
               <Stack direction="row" spacing={3.5} sx={{ padding: 2 }}>
-                {disableBtn && regex.test(description) && regex.test(content)? (
+                {disableBtn ? (
                   <Button onClick={() => setShowConfirm(true)} variant="contained" autoFocus>
                     Save
                   </Button>
