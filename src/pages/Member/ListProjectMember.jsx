@@ -69,7 +69,7 @@ function ListProjectMember(props) {
     {
       field: 'projectName',
       headerName: 'Project Name',
-      flex: 1,
+      flex: 2,
       valueGetter: (params) => {
         return params.row.project.projectName;
       },

@@ -70,30 +70,31 @@ import {
  
     };
   
-    // const handleExportFile = () => {
-    //   axios({
-    //     url: `https://api.ic-fpt.click/api/v1/document/content/${doc.id}`,
-    //     method: 'GET',
-    //     responseType: 'blob', // important
-    //   }).then((response) => {
-    //     console.log(response);
-    //     const blob = new Blob([response.data], { type: response.data.type });
-    //     const url = window.URL.createObjectURL(blob);
-    //     const link = document.createElement('a');
-    //     link.href = url;
-    //     const contentDisposition = response.headers['content-disposition: attachment'];
-    //     let fileName = doc.fileName;
-    //     if (contentDisposition) {
-    //       const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
-    //       if (fileNameMatch.length === 2) fileName = fileNameMatch[1];
-    //     }
-    //     link.setAttribute('download', fileName);
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     link.remove();
-    //     window.URL.revokeObjectURL(url);
-    //   });
-    // };
+    const handleExportFile = (doc) => {
+     
+      axios({
+        url: `https://api.ic-fpt.click/api/v1/document/content/${doc.id}`,
+        method: 'GET',
+        responseType: 'blob', // important
+      }).then((response) => {
+        console.log(response);
+        const blob = new Blob([response.data], { type: response.data.type });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        const contentDisposition = response.headers['content-disposition: attachment'];
+        let fileName = doc.fileName;
+        if (contentDisposition) {
+          const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+          if (fileNameMatch.length === 2) fileName = fileNameMatch[1];
+        }
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+      });
+    };
     return (
       <div>
         <Dialog
