@@ -177,7 +177,7 @@ function DetailStudentRegisterDetail(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/registration/UpdateRegisId/${student.id}?FullName=${student.student.fullName}&MajorId=${student?.student?.majorId}&memberCode=${student?.student?.memberCode}&PhoneNumber=${student.student.phoneNumber}&NumberPassPort=${numberPassPort}&RollNumber=${student.student?.rollNumber}&RollNumber=${student.student?.rollNumber}&YourEmail=${student.student?.email}&ScocialLink=${socialLink}&DateExpired=${dateExpired}&ProjectId=${student?.projectId}&Content1=${content1}&Content2=${content2}&Content3=${content3}&Content4=${content4}&Content5=${content5}`,
+      url: `https://api.ic-fpt.click/api/v1/registration/UpdateRegisId/${student.id}?FullName=${student.student.fullName}&MajorId=${student?.student?.majorId}&memberCode=${student?.student?.memberCode}&PhoneNumber=${student.student.phoneNumber}&NumberPassPort=${numberPassPort}&RollNumber=${student.student?.rollNumber}&RollNumber=${student.student?.rollNumber}&YourEmail=${student.student?.email}&ScocialLink=${socialLink}&DateExpired=${dayjs(dateExpired).add(1, 'dạy')}&ProjectId=${student?.projectId}&Content1=${content1}&Content2=${content2}&Content3=${content3}&Content4=${content4}&Content5=${content5}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
