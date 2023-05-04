@@ -29,6 +29,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { API_URL } from 'src/config/apiUrl/apis-url';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const RegisterSchema = Yup.object().shape({
   Program: Yup.string().required('Can you select the program you want register, please ?'),
@@ -128,7 +129,7 @@ console.log(student)
 
       axios
         .post(
-          `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&DateOfBirth=${DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
+          `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${dayjs(ExpirationDate).add(1, 'day')}&DateOfBirth=${dayjs(DOB).add(1, 'day')}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
         )
         .then((response) => {
           const data = {
