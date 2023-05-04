@@ -85,7 +85,7 @@ function DetailStudentRegisterDetail(props) {
 
   const getDetail = async () => {
     await axios
-      .get(`https://api.ic-fpt.click/api/v1/registration/getDetailbyStudentId/${props.studentID}`)
+      .get(`https://api.ic-fpt.click/api/v1/registration/GetDetailResId/${props.studentID.id}`)
       .then((response) => {
 
         setStudent(response.data.responseSuccess[0]);

@@ -88,7 +88,7 @@ function DetailForm(props) {
           renderCell: (params) => (
             <Tooltip title="View detail">
             <IconButton
-              onClick={() => handleClickOpenDetailRegis(params.row.student)}
+              onClick={() => handleClickOpenDetailRegis(params.row)}
               aria-label="delete"
             >
               <RemoveRedEyeRoundedIcon />
@@ -274,7 +274,7 @@ useEffect(() => {
         <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
     
       </Dialog>
-        <DetailStudentRegisterDetail show={showRegis} close={() => setShowRegis(false)} studentID = {student.id}/>
+        <DetailStudentRegisterDetail show={showRegis} close={() => setShowRegis(false)} studentID = {student}/>
       </Dialog>
     );
 }

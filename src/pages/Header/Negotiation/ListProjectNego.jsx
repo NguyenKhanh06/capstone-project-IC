@@ -83,7 +83,7 @@ function ListProjectNego(props) {
            }, 1000);
       })
     };
-console.log(idPrj)
+
     const handleShowConfirmChange = (data) => {
       setShowConfirm(true);
       setIDPrj(data)
