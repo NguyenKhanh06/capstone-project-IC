@@ -28,7 +28,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import dayjs from 'dayjs';
 import axios from 'axios';
-import DetailCate from '../Category/DetailCate'
+import DetailCate from '../Category/DetailCate';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { useEffect, useState } from 'react';
 import AssignLeader from './AssignLeader';
@@ -40,6 +40,8 @@ import CreateCategory from '../Category/CreateCategory';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import CreateDateMil from './CreateDateMil';
+import CreatePharse from './CreatePharse';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -53,7 +55,7 @@ const MenuProps = {
 };
 
 function DetailProject(props) {
-  const regexMailFu = /[\w.-]+fptu@gmail\.com$/
+  const regexMailFu = /[\w.-]+fptu@gmail\.com$/;
   const regex = /^[\w\s]*$/;
   const [disableBtn, setDisable] = useState(false);
   const [doc, setDoc] = useState(null);
@@ -61,6 +63,7 @@ function DetailProject(props) {
   const [project, setProject] = useState([]);
   const [open, setOpen] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
+  const [showPharse, setShowPharse] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showDetailCate, setShowDetailCate] = useState(false);
   const [showCreateCate, setShowCreateCate] = useState(false);
@@ -80,26 +83,6 @@ function DetailProject(props) {
   const [leader, setLeader] = useState([]);
   const [partner, setPartner] = useState([]);
   const [partners, setPartners] = useState([]);
-
-  const [milestoneInit, setInit] = useState([]);
-  const [fromDateInit, setFromInit] = useState(null);
-  const [toDateInit, setToInit] = useState(null);
-
-  const [enableplan, setenableplan] = useState(true);
-  const [fromDatePlan, setFromPlan] = useState(null);
-  const [toDatePlan, setToPlan] = useState(null);
-
-  const [enableEx, setenableEx] = useState(true);
-  const [fromDateEx, setFromEx] = useState(null);
-  const [toDateEx, setToEx] = useState(null);
-
-  const [enableMino, setenableMino] = useState(true);
-  const [fromDateMino, setFromMino] = useState(null);
-  const [toDateMino, setToMino] = useState(null);
-
-  const [enableClose, setenableClose] = useState(true);
-  const [fromDateClose, setFromClose] = useState(null);
-  const [toDateClose, setToClose] = useState(null);
 
   const [showAssignMember, setShowAssignMember] = useState(false);
   const [campuses, setCampuses] = useState([]);
@@ -148,23 +131,26 @@ function DetailProject(props) {
       setDisable(false);
     }
   };
-const handleDetailCate = (data) => {
-  setCateDetail(data)
-  setShowDetailCate(true)
-}
+  const handleDetailCate = (data) => {
+    setCateDetail(data);
+    setShowDetailCate(true);
+  };
   const fetchDataStaff = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
-      setStaffs(response.data.responseSuccess.filter((staff) => staff.account.status && staff.account.role === 2 && regexMailFu.test(staff.account.email)));
+    await axios.get(`${API_URL}/staff/getAll`).then((response) => {
+      setStaffs(
+        response.data.responseSuccess.filter(
+          (staff) => staff.account.status && staff.account.role === 2 && regexMailFu.test(staff.account.email)
+        )
+      );
     });
   };
   const fetchDataDoc = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
-   
+    await axios.get(`${API_URL}/document/getAll`).then((response) => {
       setDoc(response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id));
     });
   };
   const fetchDataPartner = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
+    await axios.get(`${API_URL}/partner/getAllPartner`).then((response) => {
       setPartners(response.data.responseSuccess).find((partner) => partner.id === props.project.partnerId);
     });
   };
@@ -183,217 +169,44 @@ const handleDetailCate = (data) => {
     );
   };
 
-  // update date milestone
-
-  const CreateDateInit = () => {
-    const formData = new FormData();
-    formData.append('ProjectId', props.project.id);
-    formData.append('MileStoneId', 1);
-    formData.append('DateBegin',estimateStart);
-    formData.append('DateEnd',toDateInit);
-   
-    axios({
-      method: 'PUT',
-      data: formData,
-      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/1`,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then((response) => {
-    
-        if (response.data.isSuccess) {
-          handleSuccess('Update date successfull!!!');
-          setTimeout(reload(), 3000);
-        }
-      })
-      .catch((err) => {
-        handleError(err.response.data.responseSuccess);
-      });
-  };
-
-  const CreateDatePlan = () => {
-    const formData = new FormData();
-    formData.append('ProjectId', props.project.id);
-    formData.append('MileStoneId', 2);
-    formData.append('DateBegin',fromDatePlan);
-    formData.append('DateEnd',toDatePlan);
-   
-    axios({
-      method: 'PUT',
-      data: formData,
-      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/2`,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then((response) => {
-        if (response.data.isSuccess) {
-          handleSuccess('Update date successfull!!!');
-          setTimeout(reload(), 3000);
-        }
-      })
-      .catch((err) => {
-        handleError(err.response.data.responseSuccess);
-      });
-  };
-  const CreateDateExe = () => {
-    const formData = new FormData();
-    formData.append('ProjectId', props.project.id);
-    formData.append('MileStoneId', 3);
-    formData.append('DateBegin',fromDateEx);
-    formData.append('DateEnd',toDateEx);
-   
-    axios({
-      method: 'PUT',
-      data: formData,
-      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/3`,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then((response) => {
-        if (response.data.isSuccess) {
-          handleSuccess('Update date successfull!!!');
-          setTimeout(reload(), 3000);
-        }
-      })
-      .catch((err) => {
-        handleError(err.response.data.responseSuccess);
-      });
-  };
-  const CreateDateMino = () => {
-    const formData = new FormData();
-    formData.append('ProjectId', props.project.id);
-    formData.append('MileStoneId', 4);
-    formData.append('DateBegin',fromDateMino);
-    formData.append('DateEnd',toDateMino);
-   
-    axios({
-      method: 'PUT',
-      data: formData,
-      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/4`,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then((response) => {
-        if (response.data.isSuccess) {
-          handleSuccess('Update date successfull!!!');
-          setTimeout(reload(), 3000);
-        }
-      })
-      .catch((err) => {
-        handleError(err.response.data.responseSuccess);
-      });
-  };
-  const CreateDateClosing = () => {
-    const formData = new FormData();
-    formData.append('ProjectId', props.project.id);
-    formData.append('MileStoneId', 5);
-    formData.append('DateBegin',fromDateClose);
-    formData.append('DateEnd',estimateEnd);
-   
-    axios({
-      method: 'PUT',
-      data: formData,
-      url: `https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/5`,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then((response) => {
-        if (response.data.isSuccess) {
-          handleSuccess('Update date successfull!!!');
-          setTimeout(reload(), 3000);
-        }
-      })
-      .catch((err) => {
-        handleError(err.response.data.responseSuccess);
-      });
-  };
-
   //
 
   useEffect(() => {
     if (props.project !== null) {
-      console.log(props.project)
       setCampuses(
         partners.find((partner) => partner.id === props.project.partnerId)?.campuses.filter((camp) => camp.status)
       );
-      if (props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 1).dateEnd) {
-        setenableplan(false);
-      }else{
-        setenableplan(true);
-      }
-      setToInit(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 1).dateEnd));
-
-      if (
-        props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateBegin &&
-        props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateEnd
-      ) {
-        setenableEx(false);
-      }else{
-        setenableEx(true);
-      }
-
-      setFromPlan(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateBegin));
-      setToPlan(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 2).dateEnd));
-
-      if (
-        props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateBegin &&
-        props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateEnd
-      ) {
-        setenableMino(false);
-      }else{
-        setenableMino(true);
-      }
-      setFromEx(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateBegin));
-      setToEx(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 3).dateEnd));
-
-      if (
-        props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateBegin &&
-        props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateEnd
-      ) {
-        setenableClose(false);
-      }else{
-        setenableClose(true)
-      }
-      setFromMino(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateBegin));
-      setToMino(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 4).dateEnd));
-
-      setFromClose(dayjs(props.project.mileStoneProject?.find((mil) => mil.mileStoneId === 5).dateBegin));
 
       setProjectName(props.project.projectName);
       setEstimateStart(dayjs(props.project.estimateTimeStart));
       setEstimateEnd(dayjs(props.project.estimateTimeEnd));
       setSelectedCampus(props.project.campusId);
-      if(props.project.officalTimeStart){
+      if (props.project.officalTimeStart) {
         setOfficialStart(dayjs(props.project.officalTimeStart));
       }
-      if(props.project.officalTimeEnd){
+      if (props.project.officalTimeEnd) {
         setOfficialEnd(dayjs(props.project.officalTimeEnd));
       }
-  if(props.project.description !== 'null'){
-    setDescription(props.project.description)
-  }else{
-    setDescription('')
-  }
+      if (props.project.description !== 'null') {
+        setDescription(props.project.description);
+      } else {
+        setDescription('');
+      }
 
       setStatus(props.project.projectStatus);
       setLeader(props.project.leaderId);
       setCourse(props.project.courseId);
-      setCate(props.project.categoryProjectId);
+      setCate(props.project.programId);
     }
   }, [props.project]);
 
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/course/getAllCourse`).then((response) => {
+    await axios.get(`${API_URL}/course/getAllCourse`).then((response) => {
       setCourses(response.data.responseSuccess.filter((course) => course.status));
     });
   };
   const fetchDataCate = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/categoryProject/getAllCate`).then((response) => {
+    await axios.get(`${API_URL}/program/getAllProgram`).then((response) => {
       setCates(response.data.responseSuccess.filter((cate) => cate.status));
     });
   };
@@ -404,67 +217,68 @@ const handleDetailCate = (data) => {
       fetchDataCate();
       fetchDataPartner();
       fetchDataStaff();
-      fetchDataDoc()
+      fetchDataDoc();
     }
   }, [props.project]);
 
   const handleUpdate1 = () => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate}&CampusId=${selectedCampus}`
+        `${API_URL}/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&programId=${cate}&CampusId=${selectedCampus}&CheckNegotiationStatus=${props.project.checkNegotiationStatus}`
       )
       .then((response) => {
-    
         if (response.data.isSuccess) {
           handleSuccess('Update Project Successsfull!!!');
           setTimeout(() => {
-      window.location.reload()
-          }, 2000)
+            window.location.reload();
+          }, 2000);
         }
       })
       .catch((err) => {
         handleError(err.response.data.responseSuccess);
         setTimeout(() => {
-          window.location.reload()
-              }, 2000)
-
+          window.location.reload();
+        }, 2000);
       });
   };
 
   const handleUpdate2 = () => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&OfficalTimeStart=${officialStart.add(1, 'day')}&OfficalTimeEnd=${officialEnd.add(1, 'day')}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate}&CampusId=${selectedCampus}`
+        `${API_URL}/project/update/${
+          props.project.id
+        }?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&OfficalTimeStart=${officialStart.add(
+          1,
+          'day'
+        )}&OfficalTimeEnd=${officialEnd.add(1, 'day')}&DateCreate=${
+          props.project.dateCreated
+        }&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${
+          props.project.partnerId
+        }&programId=${cate}&CampusId=${selectedCampus}`
       )
       .then((response) => {
-      
         if (response.data.isSuccess) {
           handleSuccess('Update Project Successsfull!!!');
 
           setTimeout(() => {
-            window.location.reload()
-                }, 2000)
+            window.location.reload();
+          }, 2000);
         }
       })
       .catch((err) => {
         handleError(err.response.data.responseSuccess);
         setTimeout(() => {
-          window.location.reload()
-              }, 2000)
+          window.location.reload();
+        }, 2000);
       });
   };
-  // console.log(`https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
+  // console.log(`${API_URL}/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
 
   const handleUpdateProject = () => {
-
-
     if (officialStart && officialEnd != null) {
-  handleUpdate2()
-       
+      handleUpdate2();
     } else {
-      handleUpdate1()
-        
-       
+      handleUpdate1();
     }
   };
   const handleOnChangeStatus = (e) => {
@@ -496,11 +310,10 @@ const handleDetailCate = (data) => {
 
   const handleExportFile = (documentPrj) => {
     axios({
-      url: `https://api.ic-fpt.click/api/v1/document/content/${documentPrj.id}`,
+      url: `${API_URL}/document/content/${documentPrj.id}`,
       method: 'GET',
       responseType: 'blob', // important
     }).then((response) => {
-     
       const blob = new Blob([response.data], { type: response.data.type });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -545,20 +358,26 @@ const handleDetailCate = (data) => {
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
               <Stack direction="column" spacing={3.5} sx={{ padding: 2 }}>
-                <TextField value={projectName} disabled={props.project?.checkNegotiationStatus} onChange={handleOnChangeName} required fullWidth label="Project Name" 
-                
+                <TextField
+                  value={projectName}
+                  disabled={props.project?.checkNegotiationStatus}
+                  onChange={handleOnChangeName}
+                  required
+                  fullWidth
+                  label="Project Name"
                   inputProps={{ maxLength: 255 }}
                 />
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-autowidth-label">Category</InputLabel>
+                    <InputLabel id="demo-simple-select-autowidth-label">Program</InputLabel>
                     <Select
                       labelId="demo-simple-select-autowidth-label"
                       id="demo-simple-select-autowidth"
                       displayEmpty
-                      label="Category"
+                      label="Program"
+                      disabled={props.project?.checkNegotiationStatus}
                       value={cate}
-                      defaultValue={props.project.categoryProjectId}
+                      defaultValue={props.project.programId}
                       name="cate"
                       onChange={handleOnChangeCate}
                       MenuProps={{
@@ -585,7 +404,7 @@ const handleDetailCate = (data) => {
                             spacing={1}
                             divider={<Divider orientation="vertical" flexItem />}
                           >
-                            <Tooltip title="Edit Course">
+                            <Tooltip title="Edit Program">
                               <IconButton onClick={() => handleDetailCate(cate)} size="small" aria-label="delete">
                                 <CreateOutlinedIcon />
                               </IconButton>
@@ -607,7 +426,7 @@ const handleDetailCate = (data) => {
                             endIcon={<AddOutlinedIcon />}
                             variant="contained"
                           >
-                            Create Category
+                            Create Program
                           </Button>
                         </em>
                       </MenuItem>
@@ -654,7 +473,7 @@ const handleDetailCate = (data) => {
                       value={estimateStart}
                       onChange={(newValue) => {
                         setEstimateStart(newValue);
-                        setDisable(true)
+                        setDisable(true);
                       }}
                     />
                   </LocalizationProvider>
@@ -668,7 +487,7 @@ const handleDetailCate = (data) => {
                       value={estimateEnd}
                       onChange={(newValue) => {
                         setEstimateEnd(newValue);
-                        setDisable(true)
+                        setDisable(true);
                       }}
                       format="DD/MM/YYYY"
                     />
@@ -799,7 +618,7 @@ const handleDetailCate = (data) => {
                       }}
                     >
                       {staffs?.map((staff) => (
-                        <MenuItem value={staff.id}>{`${staff.staffCode  } (${  staff.account.fullName  })`}</MenuItem>
+                        <MenuItem value={staff.id}>{`${staff.staffCode} (${staff.account.fullName})`}</MenuItem>
                       ))}
                     </Select>
                   </FormControl>
@@ -839,6 +658,9 @@ const handleDetailCate = (data) => {
                   {/* <Button onClick={() => setShowCreateInit(true)} variant="outlined" color="primary">
                    Create date of milestone
                   </Button> */}
+                  <Button variant="contained" onClick={() => setShowPharse(true)}>
+                    Project's Phase
+                  </Button>
                 </Stack>
 
                 <TextField
@@ -849,7 +671,7 @@ const handleDetailCate = (data) => {
                   value={description}
                 />
 
-                <Stack direction="column" justifyContent="center" spacing={2}>
+                {/* <Stack direction="column" justifyContent="center" spacing={2}>
                   <Typography variant="h6">Milestone of project</Typography>
                   <Divider variant="middle" />
 
@@ -1031,24 +853,19 @@ const handleDetailCate = (data) => {
                       Update Date
                     </Button>
                   </Stack>
-                </Stack>
+                </Stack> */}
               </Stack>
             </DialogContentText>
             <Box sx={{ padding: '0 44px 44px 44px', maxWidth: '100%' }}>
-            <b>Project's Files:</b>
-            <Stack direction="column" alignItems="flex-start" spacing={3}>
-            {doc && doc?.map((document, index) => (
-                      <Button
-                   key={index}
-                      variant="text"
-                     
-                      onClick={() => handleExportFile(document)}
-                    >
+              <b>Project's Files:</b>
+              <Stack direction="column" alignItems="flex-start" spacing={3}>
+                {doc &&
+                  doc?.map((document, index) => (
+                    <Button key={index} variant="text" onClick={() => handleExportFile(document)}>
                       {document.fileName}
                     </Button>
-                ))
-                }
-            </Stack>
+                  ))}
+              </Stack>
             </Box>
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
@@ -1056,7 +873,7 @@ const handleDetailCate = (data) => {
               <Button onClick={() => setShowCancel(true)} color="error" variant="contained">
                 Cancel Project
               </Button>
-              
+
               {disableBtn ? (
                 <Button onClick={() => handleShowConfirm()} variant="contained">
                   Save
@@ -1095,9 +912,14 @@ const handleDetailCate = (data) => {
       </Dialog>
       <AssignMember project={props.project} show={showAssignMember} close={() => setShowAssignMember(false)} />
       <CancelProject show={showCancel} close={() => setShowCancel(false)} id={props.project.id} />
-<DetailCate show={showDetailCate} close ={() => setShowDetailCate(false)} cate={cateDetail}getAll={fetchDataCate}/>
-      <CreateCategory show={showCreateCate} close={() => setShowCreateCate(false)} getAll={fetchDataCate}  />
-
+      <DetailCate
+        show={showDetailCate}
+        close={() => setShowDetailCate(false)}
+        cate={cateDetail}
+        getAll={fetchDataCate}
+      />
+      <CreateCategory show={showCreateCate} close={() => setShowCreateCate(false)} getAll={fetchDataCate} />
+      <CreatePharse show={showPharse} close={() => setShowPharse(false)} project={props.project} />
       <CreateDateMil show={showCreateInit} close={() => setShowCreateInit(false)} prjId={props.project.id} />
     </div>
   );

@@ -29,6 +29,7 @@ import Loading from '../Loading';
 import DetailProject from '../Header/Project/DetailProject';
 import DetailPrjMember from './DetailPrjMember';
 import DetailProjectLeader from './Leader/DetailPrjLeader';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 function ListProjectMember(props) {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -58,7 +59,7 @@ function ListProjectMember(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/project/changeStatus`,
+      url: `${API_URL}/project/changeStatus`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -74,6 +75,15 @@ function ListProjectMember(props) {
         return params.row.project.projectName;
       },
     },
+
+    // {
+    //   field: 'program',
+    //   headerName: 'Program',
+    //   flex: 1,
+    //   valueGetter: (params) => {
+    //     return params.value.name;
+    //   },
+    // },
     // {
     //   field: 'categoryProject',
     //   headerName: 'Category',
@@ -89,6 +99,7 @@ function ListProjectMember(props) {
 
       flex: 1,
       renderCell: (params) => {
+ 
         return params.row.project.leaderId === user?.staff.id ? <Chip label="Leader" /> : <Chip label="Member" />;
       },
     },
@@ -155,96 +166,21 @@ function ListProjectMember(props) {
     },
 
     {
-      field: 'projectStatus',
-      headerName: 'MileStone',
-      flex: 1,
-      renderCell: (params) => (
-        <>
-          {params.row.project.projectStatus === 2 ? (
-            <Chip label="Cancel" color="error" />
-          ) : params.row.project.projectStatus === 3 ? (
-            <Chip label="Initiation" />
-          ) : params.row.project.projectStatus === 4 ? (
-            <Chip label="Planning" color="primary" />
-          ) : params.row.project.projectStatus === 5 ? (
-            <Chip label="Execution" color="secondary" />
-          ) : params.row.project.projectStatus === 6 ? (
-            <Chip label="Monitoring" color="warning" />
-          ) : params.row.project.projectStatus === 7 ? (
-            <Chip label="Closing" color="success" />
-          ) : null}
+      field: 'projectPhase',
+      headerName: 'Phase',
 
-          {params.row.project?.projectStatus > 2
-            ? dayjs(new Date()).date() - dayjs(params.row.project?.estimateTimeStart).date() === 0 &&
-              dayjs(new Date()).month() - dayjs(params.row.project?.estimateTimeStart).month() === 0 &&
-              dayjs(new Date()).year() - dayjs(params.row.project?.estimateTimeStart).year() === 0
-              ? updateMilstone(params.row.project.id, 3)
-              : dayjs(new Date()).date() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin
-                  ).date() ===
-                  0 &&
-                dayjs(new Date()).month() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin
-                  ).month() ===
-                  0 &&
-                dayjs(new Date()).year() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 2)?.dateBegin
-                  ).year() ===
-                  0
-              ? updateMilstone(params.row.project.id, 4)
-              : dayjs(new Date()).date() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin
-                  ).date() ===
-                  0 &&
-                dayjs(new Date()).month() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin
-                  ).month() ===
-                  0 &&
-                dayjs(new Date()).year() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 3)?.dateBegin
-                  ).year() ===
-                  0
-              ? updateMilstone(params.row.project.id, 5)
-              : dayjs(new Date()).date() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin
-                  ).date() ===
-                  0 &&
-                dayjs(new Date()).month() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin
-                  ).month() ===
-                  0 &&
-                dayjs(new Date()).year() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 4)?.dateBegin
-                  ).year() ===
-                  0
-              ? updateMilstone(params.row.project.id, 6)
-              : dayjs(new Date()).date() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin
-                  ).date() ===
-                  0 &&
-                dayjs(new Date()).month() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin
-                  ).month() ===
-                  0 &&
-                dayjs(new Date()).year() -
-                  dayjs(
-                    params.row.project?.mileStoneProject?.find((mil) => mil?.mileStoneId === 5)?.dateBegin
-                  ).year() ===
-                  0
-              ? updateMilstone(params.row.project.id, 7)
-              : null
-            : null}
+      renderCell: (params) => (
+
+        <>
+        {
+          params.row.project.projectStatus === 2 && (
+            <Chip label="Cancel" color="error" />
+          ) ||  
+          <Chip label={ params.row?.project?.projectPhase?.find(phase => phase?.phase?.status)?.phase?.phaseName} />
+         
+        }
+
+       
         </>
       ),
     },
@@ -355,7 +291,7 @@ function ListProjectMember(props) {
 
   const fetchData = async () => {
     setLoading(true);
-    await axios.get(`https://api.ic-fpt.click/api/v1/staff/GetProjectByStaffId/${user?.staff?.id}`).then((response) => {
+    await axios.get(`${API_URL}/staff/GetProjectByStaffId/${user?.staff?.id}`).then((response) => {
   
       setProjects(response.data.responseSuccess);
       setLoading(false);

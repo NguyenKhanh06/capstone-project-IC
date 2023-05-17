@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import Iconify from '../../../components/iconify/Iconify';
 import DetailProjectNegoPartner from './DetailProjectNegoPartner';
 import DetailCourseNegoPartner from './DetailCourseNeogoPartner';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
 
@@ -156,14 +157,14 @@ function ListProjectNegoPartner(props) {
   };
 
   const fetchData =  (id) => {
-   axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
+   axios.get(`${API_URL}/project/getAllProject`).then((response) => {
 
       setProjects(response.data.responseSuccess.filter((project) => project.partnerId === id));
 
     });
   };
   const fetchDataDeputy = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
+    await axios.get(`${API_URL}/deputy/getAll`).then((response) => {
 
       fetchData(response.data.responseSuccess.find(dep => dep.accountId === user.id)?.partnerId)
       setDeputy(response.data.responseSuccess.find(dep => dep.accountId === user.id));

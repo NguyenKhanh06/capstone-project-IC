@@ -7,6 +7,7 @@ import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
 function CreateBlog(props) {
@@ -42,7 +43,7 @@ function CreateBlog(props) {
   const handleCreateCourse = () => {
     // axios
     //   .post(
-    //     `https://api.ic-fpt.click/api/v1/course/create?Activity=${activity}&Content=${content}&SkillName=${skillName}`
+    //     `${API_URL}/course/create?Activity=${activity}&Content=${content}&SkillName=${skillName}`
     //   )
     //   .then((response) => {
     //     window.location.reload(false);
@@ -126,7 +127,7 @@ function CreateBlog(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/post/create',
+      url: `${API_URL}/post/create`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

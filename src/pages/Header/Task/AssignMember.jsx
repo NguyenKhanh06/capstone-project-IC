@@ -40,6 +40,7 @@ import Iconify from '../../../components/iconify/Iconify';
 import Label from '../../../components/label/Label';
 import Scrollbar from '../../../components/scrollbar/Scrollbar';
 import { UserListToolbar } from '../../../sections/@dashboard/user';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
 
@@ -68,7 +69,7 @@ const handleClose = () => {
 
 
   const fetchData = async () =>{
-   await axios.get(`https://api.ic-fpt.click/api/v1/project/getJoin/${props.project}`).then((response) => {
+   await axios.get(`${API_URL}/project/getJoin/${props.project}`).then((response) => {
      
 setStaffs(response.data.responseSuccess)
 

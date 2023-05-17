@@ -34,7 +34,7 @@ const handleShowConfirm = (data) => {
     };
     const handleUpdateCategory= () => {
     
-      axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/update/${props.cate.id}?Name=${cateName}&Status=true`).then((response) =>{
+      axios.put(`${API_URL}/program/update/${props.cate.id}?Name=${cateName}&Status=true`).then((response) =>{
       
        if (response.data.isSuccess) {
         setShowSuccess(true);
@@ -81,7 +81,7 @@ if (e.target.value.trim()) {
         <form>
     
           <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <DialogTitle id="alert-dialog-title">Detail Category</DialogTitle>
+          <DialogTitle id="alert-dialog-title">Detail Program</DialogTitle>
           <IconButton style={{marginRight: 6}} onClick={() => handleClose()}>
               <CloseOutlinedIcon />
             </IconButton>
@@ -90,7 +90,7 @@ if (e.target.value.trim()) {
 
           <DialogContent>
           <Stack direction="column" spacing={3.5} sx={{ padding: 2 }}>
-          <TextField value={cateName} onChange={handleChangeName} required fullWidth label="Category Name"
+          <TextField value={cateName} onChange={handleChangeName} required fullWidth label="Program Name"
           inputProps={{
             maxLength: 25,
           }}
@@ -117,9 +117,9 @@ if (e.target.value.trim()) {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle id="alert-dialog-title">Update Category</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Update Program</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">You want to update this category?</DialogContentText>
+          <DialogContentText id="alert-dialog-description">You want to update this program?</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseConfirm}>

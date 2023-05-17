@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { Link, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import { PieChart, Pie, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar, Cell } from 'recharts';
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Paper, Stack } from '@mui/material';
 import ListProject from '../Project/ListProject';
 import TaskInitiation from './TaskInitiation';
@@ -13,6 +14,10 @@ import TaskPlanning from './TaskPlanning';
 import TaskExecuting from './TaskExecuting';
 import TaskMonitoring from './TaskMinitoring';
 import TaskClosing from './TaskClosing';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { API_URL } from '../../../config/apiUrl/apis-url';
+import { Doughnut } from 'react-chartjs-2';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,21 +58,201 @@ function ListTask(props) {
     setValue(newValue);
   };
   const { state } = useLocation();
+  const [phases, setPhases] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
+  const getPhase = () => {
+    axios.get(`${API_URL}/phase/getPhaseByProjectId/${state.id}`).then((response) => {
+      setPhases(response.data.responseSuccess);
+    });
+  };
+  const fetchData = async () => {
+    await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
+      setTasks(
+        response.data.responseSuccess
+          .filter((mil) => mil.projectId === state.id)
+          .filter((task) => task.state !== 3 && task.status !== 5)
+      );
+    });
+  };
+
+  const datachart = [
+    {
+      title: 'Todo',
+      lengthTask: tasks.filter((task) => task.state === 0).length,
+    },
+    { title: 'Process', lengthTask: tasks.filter((task) => task.state === 1).length },
+    { title: 'Done', lengthTask: tasks.filter((task) => task.state === 2).length },
+  ];
+
+  useEffect(() => {
+    fetchData();
+    getPhase();
+  }, []);
+  const COLORS = ['#FFC107', '#2065D1', '#54D62C'];
+  const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        {/* <Stack direction="row" justifyContent="space-evenly" alignItems="center" spacing={5}>
+          <Paper elevation={2} sx={{ padding: '10px 30px 10px 30px' }}>
+            <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
+              <Typography variant="h6">{tasks?.length}</Typography>
+              <Typography variant="h6">Tasks</Typography>
+            </Stack>
+          </Paper>
+       
+          <Paper elevation={2} sx={{ padding: '10px 30px 10px 30px' }}>
+            <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
+              <Typography variant="h6">
+                {
+                  tasks.filter((task) => task.state === 0).filter((task) => task.state !== 3 && task.status !== 5)
+                    .length
+                }
+              </Typography>
+              <Typography sx={{ color: 'orange' }} variant="h6">
+                Task To do
+              </Typography>
+            </Stack>
+          </Paper>
+          <Paper elevation={2} sx={{ padding: '10px 30px 10px 30px' }}>
+            <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
+              <Typography variant="h6">
+                {
+                  tasks.filter((task) => task.state === 1).filter((task) => task.state !== 3 && task.status !== 5)
+                    .length
+                }
+              </Typography>
+              <Typography color="primary" variant="h6">
+                Tasks Process
+              </Typography>
+            </Stack>
+          </Paper>
+          <Paper elevation={2} sx={{ padding: '10px 30px 10px 30px' }}>
+            <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
+              <Typography variant="h6">
+                {
+                  tasks.filter((task) => task.state === 2).filter((task) => task.state !== 3 && task.status !== 5)
+                    .length
+                }
+              </Typography>
+              <Typography sx={{ color: 'green' }} variant="h6">
+                Tasks Done
+              </Typography>
+            </Stack>
+          </Paper>
+        </Stack> */}
+        {tasks.length ? (   <div style={{ textAlign: 'left' }}>
+          <h2>List task</h2>
+          <div>
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center
+              "
+              spacing={2}
+            >
+   
+              <PieChart width={300} height={300}>
+                <Pie
+                  dataKey="lengthTask"
+                  isAnimationActive={false}
+                  data={datachart}
+                  // cx={120}
+                  // cy={200}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+          
+                  fill="#8884d8"
+          
+                  label={renderCustomizedLabel}
+                >
+                  {tasks.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+              <Stack
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start
+              "
+                spacing={2}
+              >
+                <Stack
+                  Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center
+              "
+                  spacing={2}
+                >
+                  <div style={{ width: '30px', height: '20px', backgroundColor: '#FFC107' }} />
+                  <Typography>To do</Typography>
+                </Stack>
+                <Stack
+                  Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center
+              "
+                  spacing={2}
+                >
+                  <div style={{ width: '30px', height: '20px', backgroundColor: '#2065D1' }} />
+                  <Typography>Process</Typography>
+                </Stack>
+                <Stack
+                  Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center
+              "
+                  spacing={2}
+                >
+                  <div style={{ width: '30px', height: '20px', backgroundColor: '#54D62C' }} />
+                  <Typography>Done</Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+          </div>
+        </div>) : (<></>)}
+     
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="scrollable auto tabs example"
+        >
+          {phases.map((phase, index) => (
+            <Tab key={index} label={phase?.phase?.phaseName} {...a11yProps(index)} />
+          ))}
 
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label=" Initiation" {...a11yProps(0)} />
-          <Tab label="Planning" {...a11yProps(1)} />
+          {/* <Tab label="Planning" {...a11yProps(1)} />
           <Tab label="Execution" {...a11yProps(2)} />
           <Tab label="Monitoring " {...a11yProps(3)} />
-          <Tab label="Closing" {...a11yProps(4)} />
-
+          <Tab label="Closing" {...a11yProps(4)} /> */}
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      {phases.map((phase, index) => (
+        <TabPanel key={index} value={value} index={index}>
+          <TaskInitiation phase={phase} state={state} />
+        </TabPanel>
+      ))}
+      {/* <TabPanel value={value} index={0}>
      <TaskInitiation state={state}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -81,7 +266,7 @@ function ListTask(props) {
       </TabPanel>
       <TabPanel value={value} index={4}>
       <TaskClosing state={state}/>
-      </TabPanel>
+      </TabPanel> */}
     </Box>
     // <>
     //   <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
@@ -105,7 +290,7 @@ function ListTask(props) {
     //           View detail
     //         </Button>
     //         </Link>
-           
+
     //       </CardActions>
     //     </Card>
     //     <Card sx={{ maxWidth: 345, borderRight: '4px solid #2065D1' }}>

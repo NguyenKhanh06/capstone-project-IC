@@ -18,7 +18,7 @@ interface Props {
 
 const ProgramCardItem: FC<Props> = ({ item, index }) => {
   return (
-    <Link to={`/program/${item.id}`}>
+    <Link to={`/post/${item.id}`}>
       <Grow in={true} style={{ transformOrigin: '0 0 0' }} {...(true ? { timeout: index * 610 } : {})}>
         <Box
           sx={{

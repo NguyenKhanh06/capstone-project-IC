@@ -22,6 +22,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DetailStudent from './DetailStudent';
 import DetailStudentRegister from './DetailStudentRegister';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function ManageRegisStudent(props) {
   const { state } = useLocation();
@@ -106,7 +107,7 @@ function ManageRegisStudent(props) {
     setProject(data);
   };
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
+    await axios.get(`${API_URL}/project/getAllProject`).then((response) => {
   
       setProjects(response.data.responseSuccess.filter((project) => project.status));
     });

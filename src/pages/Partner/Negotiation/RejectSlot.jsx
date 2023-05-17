@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert'
 import Loading from "../../Loading"
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
 
@@ -37,7 +38,7 @@ const [loading, setLoading] = useState(false)
 
         axios 
           .put(
-            `https://api.ic-fpt.click/api/v1/slot/updateStatus/${props.slotID}?Status=2`
+            `${API_URL}/slot/updateStatus/${props.slotID}?Status=2`
           ).  then((response) => {
             if (response.data.isSuccess) {
               CreateReason()
@@ -64,7 +65,7 @@ const [loading, setLoading] = useState(false)
         axios({
           method: "POST",
           data: formData,
-          url: "https://api.ic-fpt.click/api/v1/reason/create",
+          url: `${API_URL}/reason/create`,
           headers: {
             "Content-Type": "multipart/form-data",
           },

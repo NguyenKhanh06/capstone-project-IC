@@ -10,7 +10,7 @@ import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRena
 import DashboardTwoToneIcon from '@mui/icons-material/DashboardTwoTone';
 import AppRegistrationTwoToneIcon from '@mui/icons-material/AppRegistrationTwoTone';
 import SvgColor from '../../../../components/svg-color';
-
+import FeedbackTwoToneIcon from '@mui/icons-material/FeedbackTwoTone';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +33,11 @@ const navConfigMember = [
     path: '/staff/registration-form',
     icon: <AppRegistrationTwoToneIcon/>
   },
-
+  {
+    title: 'Feedback Form',
+    path: '/staff/feedback-form',
+    icon: <FeedbackTwoToneIcon/>
+  },
   {
     title: 'Student',
     path: '/staff/student',

@@ -29,6 +29,7 @@ import {
   import { UserListToolbar } from '../../sections/@dashboard/user';
   
   import ListSubTaskMember from './ListSubTaskMember';
+import { API_URL } from '../../config/apiUrl/apis-url';
   
   
   function TaskClosingMember(props) {
@@ -46,13 +47,13 @@ import {
       setTask(data);
     };
     const handleDeleteTask = () => {
-      axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`).then((response) => {
+      axios.put(`${API_URL}/course/delete/${id}`).then((response) => {
         window.location.reload(false);
       });
     };
   
     const fetchData = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/task/getRootsTask`).then((response) => {
+      await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
         setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.mileStoneId === 5).filter((task) => task.status!== 5));
 
         

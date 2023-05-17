@@ -24,6 +24,7 @@ import {
   import ErrorAlert from '../Alert/ErrorAlert';
   import SuccessAlert from '../Alert/SuccessAlert';
 import ChangePass from './ChangePass';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
   
   function Profile(props) {
@@ -70,7 +71,7 @@ import ChangePass from './ChangePass';
     };
   
     const getDetail = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/account/getDetail/${user.id}`).then(response => {
+      await axios.get(`${API_URL}/account/getDetail/${user.id}`).then(response => {
   
   setFullName(response.data.responseSuccess?.fullName)
   setEmail(response.data.responseSuccess?.email)
@@ -90,7 +91,7 @@ getDetail()
     }, []);
 
     const handleUpdateStaff2 = () => {
-      axios.put(`https://api.ic-fpt.click/api/v1/account/update/${user.id}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Status=true&Role=${user.role}`).then((response) => {
+      axios.put(`${API_URL}/account/update/${user.id}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Status=true&Role=${user.role}`).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true)
        window.location.reload(false)
@@ -103,7 +104,7 @@ getDetail()
     };
 
     const handleUpdateStaff = () => {
-      axios.put(`https://api.ic-fpt.click/api/v1/account/update/${user.id}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${user.role}`).then((response) => {
+      axios.put(`${API_URL}/account/update/${user.id}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${user.role}`).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true)
        window.location.reload(false)

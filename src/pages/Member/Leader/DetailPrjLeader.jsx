@@ -37,6 +37,7 @@ import {
   import SuccessAlert from '../../Alert/SuccessAlert';
   import ErrorAlert from '../../Alert/ErrorAlert';
   import CreateDateMil from '../../Header/Project/CreateDateMil';
+import { API_URL } from '../../../config/apiUrl/apis-url';
   
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -143,13 +144,13 @@ import {
     };
   
     const fetchDataStaff = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
+      await axios.get(`${API_URL}/staff/getAll`).then((response) => {
         setStaffs(response.data.responseSuccess?.filter((staff) => staff.account.status && staff.account.role === 2));
       });
     };
   
     const fetchDataPartner = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
+      await axios.get(`${API_URL}/partner/getAllPartner`).then((response) => {
         setPartners(response.data.responseSuccess)?.find((partner) => partner.id === props.project.partnerId);
       });
     };
@@ -178,7 +179,7 @@ import {
         dateEnd: toDateInit.add(1, 'day'),
       };
       axios
-        .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/1`, data)
+        .put(`${API_URL}/milestone/changeMileStoneDate/1`, data)
         .then((response) => {
           if (response.data.isSuccess) {
             handleSuccess('Update date successfull!!!');
@@ -198,7 +199,7 @@ import {
         dateEnd: toDatePlan.add(1, 'day'),
       };
       axios
-        .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/2`, data)
+        .put(`${API_URL}/milestone/changeMileStoneDate/2`, data)
         .then((response) => {
           if (response.data.isSuccess) {
             handleSuccess('Update date successfull!!!');
@@ -217,7 +218,7 @@ import {
         dateEnd: toDateEx.add(1, 'day'),
       };
       axios
-        .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/3`, data)
+        .put(`${API_URL}/milestone/changeMileStoneDate/3`, data)
         .then((response) => {
           if (response.data.isSuccess) {
             handleSuccess('Update date successfull!!!');
@@ -236,7 +237,7 @@ import {
         dateEnd: toDateMino.add(1, 'day'),
       };
       axios
-        .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/4`, data)
+        .put(`${API_URL}/milestone/changeMileStoneDate/4`, data)
         .then((response) => {
           if (response.data.isSuccess) {
             handleSuccess('Update date successfull!!!');
@@ -255,7 +256,7 @@ import {
         dateEnd: estimateEnd,
       };
       axios
-        .put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/5`, data)
+        .put(`${API_URL}/milestone/changeMileStoneDate/5`, data)
         .then((response) => {
           if (response.data.isSuccess) {
             handleSuccess('Update date successfull!!!');
@@ -337,12 +338,12 @@ import {
     }, [props.project]);
   
     const fetchData = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/course/getAllCourse`).then((response) => {
+      await axios.get(`${API_URL}/course/getAllCourse`).then((response) => {
         setCourses(response.data.responseSuccess.filter((course) => course.status));
       });
     };
     const fetchDataCate = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/categoryProject/getAllCate`).then((response) => {
+      await axios.get(`${API_URL}/categoryProject/getAllCate`).then((response) => {
         setCates(response.data.responseSuccess.filter((cate) => cate.status));
       });
     };
@@ -359,7 +360,7 @@ import {
     const handleUpdate1 = () => {
       axios
         .put(
-          `https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate}&CampusId=${selectedCampus}`
+          `${API_URL}/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate}&CampusId=${selectedCampus}`
         )
         .then((response) => {
        
@@ -377,7 +378,7 @@ import {
     const handleUpdate2 = () => {
       axios
         .put(
-          `https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&OfficalTimeStart=${officialStart.add(1, 'day')}&OfficalTimeEnd=${officialEnd.add(1, 'day')}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate}&CampusId=${selectedCampus}`
+          `${API_URL}/project/update/${props.project.id}?CampusName=${selectedCampus}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&OfficalTimeStart=${officialStart.add(1, 'day')}&OfficalTimeEnd=${officialEnd.add(1, 'day')}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${leader}&CourseId=${course}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate}&CampusId=${selectedCampus}`
         )
         .then((response) => {
           
@@ -391,7 +392,7 @@ import {
           handleError(err.response.data.responseSuccess);
         });
     };
-    // console.log(`https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
+    // console.log(`${API_URL}/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
   
     const handleUpdateProject = () => {
   

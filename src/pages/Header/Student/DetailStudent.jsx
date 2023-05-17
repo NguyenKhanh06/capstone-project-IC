@@ -32,6 +32,7 @@ import React, { useEffect, useState } from 'react';
 
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailStudent(props) {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
@@ -126,7 +127,7 @@ function DetailStudent(props) {
   }
   const handleUpdateStudent = () => {
     axios
-      .put(`https://api.ic-fpt.click/api/v1/student/update/${props.student.id}`, data)
+      .put(`${API_URL}/student/update/${props.student.id}`, data)
       .then((response) => {
 
         if (response.data.isSuccess) {
@@ -146,7 +147,7 @@ function DetailStudent(props) {
   // };
 
 const deleteFile = (name) => {
-  axios.delete(`https://api.ic-fpt.click/api/v1/student/deleteGrading/${props.student.id}`)   .then((response) => {
+  axios.delete(`${API_URL}/student/deleteGrading/${props.student.id}`)   .then((response) => {
  
     if (response.data.isSuccess) {
       handleSuccess('Delete File Successfull!!!');
@@ -166,7 +167,7 @@ const deleteFile = (name) => {
 }
 
   const getAllFile = () => {
-    axios.get(`https://api.ic-fpt.click/api/v1/student/GetGradingStudentId/${props.student.id}`).then((response) => {
+    axios.get(`${API_URL}/student/GetGradingStudentId/${props.student.id}`).then((response) => {
       setListFile(response.data.responseSuccess[0]);
     });
   };
@@ -185,7 +186,7 @@ const deleteFile = (name) => {
     axios({
       method: 'POST',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/student/upload/${id}`,
+      url: `${API_URL}/student/upload/${id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -212,7 +213,7 @@ const deleteFile = (name) => {
   };
 
   // const getListFile = async () => {
-  //  await axios.get(`https://api.ic-fpt.click/api/v1/storage/Get`).then((response) => {
+  //  await axios.get(`${API_URL}/storage/Get`).then((response) => {
   //     setListFile(response.data)
   //     console.log("file",response)
   //   })
@@ -316,7 +317,7 @@ const deleteFile = (name) => {
   }
 
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/Major/getAllMajor`).then((response) => {
+    await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
      
       setMajors(response.data.responseSuccess.filter((course) => course.status));
     });
@@ -490,7 +491,7 @@ const deleteFile = (name) => {
             {/* {props.student.gradingUrl && <Link href={props.student.gradingUrl}>Grading file</Link>} */}
             <DialogTitle>File Student's Mark</DialogTitle>
 
-            {props.student.gradingUrl ? (
+            {props?.student?.gradingUrl ? (
              <ListItem disableGutters divider>
              <Link href={listFile.gradingUrl}>  <Button
                     color="warning"

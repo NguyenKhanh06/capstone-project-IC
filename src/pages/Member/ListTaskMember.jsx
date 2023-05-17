@@ -12,6 +12,10 @@ import TaskPlanningMember from './TaskPlanningMember';
 import TaskExecutionMember from './TaskExecutionMember';
 import TaskMinotoringMember from './TaskMinotoringMember';
 import TaskClosingMember from './TaskClosingMember';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { API_URL } from '../../config/apiUrl/apis-url';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,39 +56,39 @@ function ListTaskMember(props) {
     setValue(newValue);
   };
   const { state } = useLocation();
+  const [phases, setPhases] = useState([])
+  const getPhase = () => {
+    axios.get(`${API_URL}/phase/getPhaseByProjectId/${state.id}`).then(response => {
+  setPhases(response.data.responseSuccess)
 
+    })
+  }
+
+  useEffect(() => {
+  
+    getPhase();
+  
+  }, []);
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label=" Initiation" {...a11yProps(0)} />
-          <Tab label="Planning" {...a11yProps(1)} />
-          <Tab label="Execution" {...a11yProps(2)} />
-          <Tab label="Monitoring " {...a11yProps(3)} />
-          <Tab label="Closing" {...a11yProps(4)} />
+        {phases.map((phase, index) =>        <Tab key={index} label={phase?.phase?.phaseName} {...a11yProps(index)} />)}
+   
+   {/* <Tab label="Planning" {...a11yProps(1)} />
+   <Tab label="Execution" {...a11yProps(2)} />
+   <Tab label="Monitoring " {...a11yProps(3)} />
+   <Tab label="Closing" {...a11yProps(4)} /> */}
 
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-     <TaskInitiationMember state={state}/>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-      <TaskPlanningMember state={state}/>
+ </Tabs>
+</Box>
+{phases.map((phase, index) =>  <TabPanel key={index} value={value} index={index}>
+<TaskInitiationMember phase = {phase} state={state}/>
+</TabPanel>)}
+   
 
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-      <TaskExecutionMember state={state}/>
 
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-      <TaskMinotoringMember state={state}/>
-
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-      <TaskClosingMember state={state}/>
-
-      </TabPanel>
     </Box>
     // <>
     //   <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>

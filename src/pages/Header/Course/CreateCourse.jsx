@@ -5,6 +5,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateCourse(props) {
 
@@ -46,7 +47,7 @@ setSkillName(e.target.value)
     
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/course/create?Activity=${activity}&Content=${content}&CourseName=${skillName}`
+        `${API_URL}/course/create?Activity=${activity}&Content=${content}&CourseName=${skillName}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

@@ -31,6 +31,7 @@ import CreateCampus from './CreateCampus';
 import CreateAccountPartner from './CreateAccountPartnerAd';
 import DetailCampusAd from './DetailCampusAd';
 import DetailDeputy from './DetailDeputy';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailPartnerAd(props) {
   const columns = [
@@ -190,7 +191,7 @@ setIdDep(id)
   }
   const handleDeleteCampus = () => {
     axios
-      .put(`https://api.ic-fpt.click/api/v1/campus/disable/${id}`)
+      .put(`${API_URL}/campus/disable/${id}`)
       .then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Delete Campus Successful!!!');
@@ -205,7 +206,7 @@ setIdDep(id)
   const handleUpdatePartner = () => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/partner/update/${props.partner.id}?Name=${name}&Local=${local}&Note=${note}&Status=true`
+        `${API_URL}/partner/update/${props.partner.id}?Name=${name}&Local=${local}&Note=${note}&Status=true`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -218,7 +219,7 @@ setIdDep(id)
       });
   };
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getDetail/${props.partner.id}`).then((response) => {
+    await axios.get(`${API_URL}/partner/getDetail/${props.partner.id}`).then((response) => {
       setPartner(response.data.responseSuccess[0]);
       setCampuses(response.data.responseSuccess[0]?.campuses.filter(camp => camp.status));
       setName(response.data.responseSuccess[0].name);
@@ -230,7 +231,7 @@ setIdDep(id)
   };
 
   const DeActive = async (mail) => {
-   await axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${mail}?Status=fasle`)  .then((response) => {
+   await axios.put(`${API_URL}/account/changeStatusAccount/${mail}?Status=fasle`)  .then((response) => {
       if (response.data.isSuccess) {
         handleSuccess('Update Successful!!!');
        setTimeout(window.location.reload(false), 3000)
@@ -242,7 +243,7 @@ setIdDep(id)
     });
   }
 const Active = async (mail) => {
- await axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${mail}?Status=true`)  .then((response) => {
+ await axios.put(`${API_URL}/account/changeStatusAccount/${mail}?Status=true`)  .then((response) => {
     if (response.data.isSuccess) {
       handleSuccess('Update Successful!!!');
       setTimeout(window.location.reload(false), 3000)
@@ -255,7 +256,7 @@ const Active = async (mail) => {
 }
 
   const getDeputy = () => {
-    axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
+    axios.get(`${API_URL}/deputy/getAll`).then((response) => {
       setDeputies(
         response.data.responseSuccess.filter((dep) => dep.partnerId === props.partner.id)
       );
@@ -263,7 +264,7 @@ const Active = async (mail) => {
   };
   const disableDeputy = () => {
     axios
-      .put(`https://api.ic-fpt.click/api/v1/account/disable/${email}`)
+      .put(`${API_URL}/account/disable/${email}`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowConfirmDeleteDep(false);

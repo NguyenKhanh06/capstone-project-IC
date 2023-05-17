@@ -37,6 +37,7 @@ import Iconify from '../../../components/iconify/Iconify';
 import Label from '../../../components/label/Label';
 import Scrollbar from '../../../components/scrollbar/Scrollbar';
 import { UserListToolbar } from '../../../sections/@dashboard/user';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
 
@@ -325,7 +326,7 @@ function AssignLeader(props) {
 
 
   const fetchData = async () =>{
-   await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
+   await axios.get(`${API_URL}/staff/getAll`).then((response) => {
  
 setStaffs(response.data.responseSuccess.filter(staff => staff.account.status))
 

@@ -68,7 +68,7 @@ const RegisterSchema = Yup.object().shape({
 });
 const RegisterComponent = () => {
   const student = JSON.parse(sessionStorage.getItem('user'));
-console.log(student)
+
   // const [PassportImage, setPassportImage] = React.useState<File[]>([]);
   const [TransferInfomation, setTransferInfomation] = React.useState<File[]>([]);
   const [Program, setProgram] = React.useState(null);
@@ -80,6 +80,8 @@ console.log(student)
   const [forms, setForm] = React.useState(null);
   const [show, setShow] = useState(false);
   const [showErr, setShowErr] = useState(false);
+  const [inputList, setInputList] = useState([]);
+  
   const containerRef = useRef(null);
   const formik = useFormik({
     initialValues: {
@@ -92,11 +94,7 @@ console.log(student)
       FacebookLink: '',
       DOB: '',
       ExpirationDate: '',
-      contentHeader1: '',
-      contentHeader2: '',
-      contentHeader3: '',
-      contentHeader4: '',
-      contentHeader5: '',
+
       // PassportImage: '',
       // TransferInfomation: '',
     },
@@ -114,11 +112,7 @@ console.log(student)
         DOB: DOB,
         ExpirationDate: ExpirationDate,
         FacebookLink: values.FacebookLink,
-        contentHeader1: values.contentHeader1,
-        contentHeader2: values.contentHeader2,
-        contentHeader3: values.contentHeader3,
-        contentHeader4: values.contentHeader4,
-        contentHeader5: values.contentHeader5,
+
         // PassportImage: PassportImage,
         // TransferInfomation: TransferInfomation,
       };
@@ -127,10 +121,27 @@ console.log(student)
       // {ProgramForm && (ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(3)}
       // {ProgramForm && (ProgramForm?.contentHeader4&& ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(4)}
 
-      axios
-        .post(
-          `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${dayjs(ExpirationDate).add(1, 'day')}&DateOfBirth=${dayjs(DOB).add(1, 'day')}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
-        )
+      const formData = new FormData();
+      formData.append('Title', Program['title'])
+      formData.append('ParentId',Program['id'])
+
+      formData.append('ProjectId', Program['projectId'])
+      formData.append('NumberPassPort',values.PassportNumber)
+      formData.append('ScocialLink',values.FacebookLink)
+      formData.append('DateExpired',values.ExpirationDate)
+      formData.append('DateOfBirth',values.DOB)
+      formData.append('StudentId',student.id)
+    
+      // inputList.map(question => formData.append('AddMoreOptinal', question.question))
+  
+      axios({
+        method: 'POST',
+        data: formData,
+        url: `${API_URL}/registration/create`,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
         .then((response) => {
           const data = {
             memberCode: student.memberCode,
@@ -147,11 +158,13 @@ console.log(student)
             status: true,
           };
           if (response.data.isSuccess) {
+            setShow(true);
+          handleRegis(response.data.responseSuccess.registrationAddOn)
             handleUpdateStudent(data);
-      
-            // setTimeout(() => {
-            //   window.location.reload();
-            // }, 2000);
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           }
         })
       
@@ -163,7 +176,11 @@ console.log(student)
     //   });
   });
 
-  const handleRegis = () => {
+  const handleRegis = (res) => {
+
+  for(let i = 0; i <= res.length; i += 1){
+    axios.put(`${API_URL}/registration/updateAnswer?RegistrationId=${res[i]?.registrationId}&Id=${res[i]?.id}&Answer=${inputList[i]?.answer}`).then(response => console.log(response))
+  }
     // if(ProgramForm?.contentHeader1){
     // }
     // else if(ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1){
@@ -182,7 +199,7 @@ console.log(student)
     axios
       .put(`${API_URL}/student/update/${student.id}`, data)
       .then((response) => {
-        console.log(response);
+
         if (response.data.isSuccess) {
           setShow(true);
           setTimeout(() => {
@@ -202,6 +219,20 @@ console.log(student)
       setForm(response.data.responseSuccess.filter((value) => value.status));
     });
   };
+  const getDetailForm = async (id) => {
+    await axios.get(`${API_URL}/registration/GetDetailResId/${id}`).then((response) => {
+      setProgramForm(response.data.responseSuccess[0]);
+     
+      console.log(response.data.responseSuccess[0])
+      // addList(response.data.responseSuccess[0])
+      // for (const element in response.data.responseSuccess[0].registrationAddOn) {
+      //   console.log(element);
+      // }
+      setInputList(response.data.responseSuccess[0].registrationAddOn)
+
+    });
+  };
+
   const getAllMajor = async () => {
     await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
       setMajors(response.data.responseSuccess);
@@ -257,9 +288,18 @@ console.log(student)
   }, []);
   useEffect(() => {
     if (Program) {
-      setProgramForm(forms.find((formcheck) => formcheck.id === Program.id && formcheck.status));
+      getDetailForm(Program.id)
+   
+
     }
   }, [Program]);
+  const handleInputChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...inputList];
+    list[index][name] = value;
+    setInputList(list);
+  };
+
   return (
     <>
       {(forms && Majors) && (
@@ -316,7 +356,7 @@ console.log(student)
                 }}
               >
                 {student && <form onSubmit={formik.handleSubmit}>
-            
+         
             <Title number={'1'} title={'Program *'} />
             <Autocomplete
               componentsProps={{
@@ -327,9 +367,10 @@ console.log(student)
                 },
               }}
               options={forms}
-              getOptionLabel={(option) => option['project']['projectName']}
+              getOptionLabel={(option) => option['title']}
               sx={{ border: 'none !important', fontWeight: 'bold', width: '43%' }}
               onChange={(event, newValue) => {
+                setInputList([])
                 setProgram(newValue);
 
                 formik.setFieldValue('Program', newValue !== null ? newValue['id'].toString() : '');
@@ -722,86 +763,48 @@ console.log(student)
         </Box>
       )} */}
 
-            {ProgramForm && ProgramForm?.contentHeader1 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'10'} title={ProgramForm?.contentHeader1} />
-                <InputBar
-                  inputName={'contentHeader1'}
-                  width={'90%'}
-                  {...formik.getFieldProps('contentHeader1')}
-                />
-              </Box>
-            )}
-            {ProgramForm && ProgramForm?.contentHeader2 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'11'} title={ProgramForm?.contentHeader2} />
-                <InputBar
-                  inputName={'contentHeader2'}
-                  width={'90%'}
-                  {...formik.getFieldProps('contentHeader2')}
-                />
-              </Box>
-            )}
-            {ProgramForm && ProgramForm?.contentHeader3 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'12'} title={ProgramForm?.contentHeader3} />
-                <InputBar
-                  inputName={'contentHeader3'}
-                  width={'90%'}
-                  {...formik.getFieldProps('contentHeader3')}
-                />
-              </Box>
-            )}
-            {ProgramForm && ProgramForm?.contentHeader4 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'13'} title={ProgramForm?.contentHeader4} />
-                <InputBar
-                  inputName={'contentHeader4'}
-                  width={'90%'}
-                  {...formik.getFieldProps('contentHeader4')}
-                />
-              </Box>
-            )}
-            {ProgramForm && ProgramForm?.contentHeader5 && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'14'} title={ProgramForm?.contentHeader5} />
-                <InputBar
-                  inputName={'contentHeader5'}
-                  width={'90%'}
-                  {...formik.getFieldProps('contentHeader5')}
-                />
-              </Box>
-            )}
+          {inputList?.map((x, index) => (
+            <Box
+            key={index}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '50%',
+            }}
+          >
+            <Title number={String(9 + index + 1)} title={x?.question} />
+            <TextField
+             variant="standard" // <== changed this
+             InputProps={{
+               disableUnderline: true, // <== change this
+             }}
+    name="answer"
+    placeholder={'Enter your answer here'}
+    inputProps={{
+      style: { fontWeight: 'bold !important' },
+    }}
+   multiline
+    sx={{
+      backgroundColor: 'background.grey',
+      width:'100vh',
+     minHeight: '60px',
+      borderRadius: '25px',
+      fontSize: '25px',
+      justifyContent: 'center',
+      padding: ' 0 20px',
+      fontWeight: 'bold !important',
+    }}
+    value={x.answer}
+    onChange={e => handleInputChange(e, index)}
+  />
+            {/* <TextField onChange={() => } /> */}
+            {/* <InputBar
+              inputName={form?.question}
+              width={'90%'}
+              {...formik.getFieldProps(form?.question)}
+            /> */}
+          </Box>
+          )) }
             <Box
               sx={{
                 width: '100%',

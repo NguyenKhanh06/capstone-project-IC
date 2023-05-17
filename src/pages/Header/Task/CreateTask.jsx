@@ -21,6 +21,7 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateTask(props) {
   const regex = /^[\w\s]*$/
@@ -49,7 +50,7 @@ function CreateTask(props) {
   const handleCreateTask = () => {
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/task/create?TaskName=${taskName}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.projectid}&MileStoneId=${props.mileStoneId}`
+        `${API_URL}/task/create?TaskName=${taskName}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.projectid}&PhaseId=${props.mileStoneId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -104,8 +105,8 @@ function CreateTask(props) {
               <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
                 <DatePicker
                   disablePast
-                  minDate={dayjs(props?.deadline?.dateBegin).add(1, 'day')}
-                  maxDate={dayjs(props?.deadline?.dateEnd).add(1, 'day')}
+                  minDate={dayjs(props?.deadline?.dateBegin)}
+                  maxDate={dayjs(props?.deadline?.dateEnd)}
                   sx={{ width: '50%' }}
                   label="Deadline"
                   value={deadline}

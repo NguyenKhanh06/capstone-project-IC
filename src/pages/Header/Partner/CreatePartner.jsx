@@ -4,6 +4,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import React, { useState } from 'react';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreatePartner(props) {
   const regex = /^[\w\s]*$/
@@ -28,7 +29,7 @@ function CreatePartner(props) {
 
   const handleCreatePartner = () => {
     axios
-      .post(`https://api.ic-fpt.click/api/v1/partner/create?Name=${name}&Local=${local}&Note=${note}&Status=true`)
+      .post(`${API_URL}/partner/create?Name=${name}&Local=${local}&Note=${note}&Status=true`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);

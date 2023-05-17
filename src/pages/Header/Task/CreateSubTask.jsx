@@ -22,6 +22,7 @@ import dayjs from 'dayjs';
 import AssignMember from './AssignMember';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateSubTask(props) {
   const regex = /^[\w\s]*$/
@@ -51,7 +52,7 @@ function CreateSubTask(props) {
   const handleCreateSubTask = () => {
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/task/create?TaskName=${taskName}&ParentTaskId=${props.taskID}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.project.id}&MileStoneId=${props.mileStoneID}&StaffId=${member.staffId}`
+        `${API_URL}/task/create?TaskName=${taskName}&ParentTaskId=${props.taskID}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.project.id}&PhaseId=${props.mileStoneID}&StaffId=${member.staffId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -73,7 +74,7 @@ function CreateSubTask(props) {
   const handleCreateSubTask2 = () => {
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/task/create?TaskName=${taskName}&ParentTaskId=${props.taskID}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.project.id}&MileStoneId=${props.mileStoneID}`
+        `${API_URL}/task/create?TaskName=${taskName}&ParentTaskId=${props.taskID}&Description=${description}&DeadLine=${deadline.add(1, 'day')}&ProjectId=${props.project.id}&PhaseId=${props.mileStoneID}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

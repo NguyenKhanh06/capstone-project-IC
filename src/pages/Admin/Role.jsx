@@ -13,6 +13,7 @@ import DetailStaffAd from './DetailStaffAd';
 import Iconify from '../../components/iconify/Iconify';
 import SuccessAlert from '../Alert/SuccessAlert';
 import ErrorAlert from '../Alert/ErrorAlert';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 function Role(props) {
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -88,7 +89,7 @@ const updateHeader = () => {
   "isHeadOfDepartMent": true,
   "accountId": idStaff.accountId
   }
-  axios.put(`https://api.ic-fpt.click/api/v1/staff/update/${idStaff.id}`, data).then((response) => {
+  axios.put(`${API_URL}/staff/update/${idStaff.id}`, data).then((response) => {
     if (response.data.isSuccess) {
       handleSuccess('Update To Header Successful!!!!!')
       setTimeout(reload(), 2000);
@@ -99,7 +100,7 @@ const updateHeader = () => {
 }
 
 const handleChange = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/account/ChangeRole/${mail}?roleEnum=2`).then((response) => {
+    axios.put(`${API_URL}/account/ChangeRole/${mail}?roleEnum=2`).then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Update To Staff Successful!!!!!')
           setTimeout(reload(), 2000);
@@ -110,7 +111,7 @@ const handleChange = () => {
 }
 
 const handleDeleteStaff = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=${status}`).then((response) => {
+    axios.put(`${API_URL}/account/changeStatusAccount/${id}?Status=${status}`).then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Delete Account Successful!!!!!')
           setTimeout(() =>{
@@ -123,7 +124,7 @@ const handleDeleteStaff = () => {
 }
 
     const fetchData = async () => {
-       await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
+       await axios.get(`${API_URL}/staff/getAll`).then((response) => {
     
             setStaffs(response.data.responseSuccess.filter(staff => staff.account.role !== 4   && regexMailFu.test(staff.account.email)))
         })

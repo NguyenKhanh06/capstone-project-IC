@@ -14,8 +14,8 @@ export const navigations: Navigation[] = [
     path: '/register',
   },
   {
-    label: 'Program',
-    path: '/program',
+    label: 'Post',
+    path: '/post',
   },
   {
     label: 'Profile',

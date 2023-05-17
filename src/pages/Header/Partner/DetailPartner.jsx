@@ -28,6 +28,7 @@ import CreateCampus from './CreateCampus';
 import DetailCampus from './DetailCampus';
 import CreateAccountPartner from './CreateAccountPartner';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailPartner(props) {
   const columns = [
@@ -172,7 +173,7 @@ function DetailPartner(props) {
 
   const handleDeleteCampus = () => {
     axios
-      .put(`https://api.ic-fpt.click/api/v1/campus/disable/${id}`)
+      .put(`${API_URL}/campus/disable/${id}`)
       .then((response) => {
         if (response.data.isSuccess) {
           handleSuccess('Delete Campus Successful!!!');
@@ -189,7 +190,7 @@ function DetailPartner(props) {
   const handleUpdatePartner = () => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/partner/update/${props.partner.id}?Name=${name}&Local=${local}&Note=${note}&Status=true`
+        `${API_URL}/partner/update/${props.partner.id}?Name=${name}&Local=${local}&Note=${note}&Status=true`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -207,7 +208,7 @@ function DetailPartner(props) {
   };
   const fetchData = async () => {
 
-    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getDetail/${props.partner.id}`).then((response) => {
+    await axios.get(`${API_URL}/partner/getDetail/${props.partner.id}`).then((response) => {
       
       setPartner(response.data.responseSuccess[0]);
       setCampuses(response.data.responseSuccess[0]?.campuses.filter(camp => camp.status));
@@ -220,7 +221,7 @@ function DetailPartner(props) {
     });
   };
   const getDeputy = () => {
-    axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
+    axios.get(`${API_URL}/deputy/getAll`).then((response) => {
       setDeputies(
         response.data.responseSuccess.filter((dep) => dep.partnerId === props.partner.id && dep.account.status)
       );
@@ -228,7 +229,7 @@ function DetailPartner(props) {
   };
   const disableDeputy = () => {
     axios
-      .put(`https://api.ic-fpt.click/api/v1/account/disable/${email}`)
+      .put(`${API_URL}/account/disable/${email}`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowConfirmDeleteDep(false);

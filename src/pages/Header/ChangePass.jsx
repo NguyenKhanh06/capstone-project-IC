@@ -21,6 +21,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 function ChangePass(props) {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -80,7 +81,7 @@ function ChangePass(props) {
   const handleChange = () => {
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/account/changePassword?Email=${user.email}&OldPassword=${password}&NewPassword=${newPass}&ConfirmPassword=${confirmPass}`
+        `${API_URL}/account/changePassword?Email=${user.email}&OldPassword=${password}&NewPassword=${newPass}&ConfirmPassword=${confirmPass}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

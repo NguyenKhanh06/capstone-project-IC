@@ -34,6 +34,7 @@ import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import { DataGrid } from '@mui/x-data-grid';
 import Iconify from '../../../components/iconify/Iconify';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailCourseNegoPartner(props) {
   
@@ -87,7 +88,7 @@ function DetailCourseNegoPartner(props) {
 
   const fetchData = async () => {
     await axios
-      .get(`https://api.ic-fpt.click/api/v1/syllabus/GetListSyllabusPartner/${props.id.partnerId}`)
+      .get(`${API_URL}/syllabus/GetListSyllabusPartner/${props.id.partnerId}`)
       .then((response) => {
      
         setSyllabus(
@@ -121,7 +122,7 @@ function DetailCourseNegoPartner(props) {
     }
   }, [props.id]);
   const handleApproveSlot = (id) => {
-    axios.put(`https://api.ic-fpt.click/api/v1/slot/updateStatus/${id}?Status=1`).then((response) => {
+    axios.put(`${API_URL}/slot/updateStatus/${id}?Status=1`).then((response) => {
       if (response.data.isSuccess) {
         setShowSuccess(true);
         fetchData();

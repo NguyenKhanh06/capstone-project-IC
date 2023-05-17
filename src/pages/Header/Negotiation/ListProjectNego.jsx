@@ -34,6 +34,7 @@ import DetailProjectNego from './DetailProjectNego';
 import DetailCourseNego from './DetailCourseNeogo';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
 function ListProjectNego(props) {
@@ -65,7 +66,7 @@ function ListProjectNego(props) {
       axios({
         method: 'POST',
         data: formData,
-        url: 'https://api.ic-fpt.click/api/v1/document',
+        url: `${API_URLL}/document`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -108,7 +109,7 @@ function ListProjectNego(props) {
     const handleUpdate1 = () => {
       axios
         .put(
-          `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateTimeStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateTimeEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
+          `${API_URL}/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateTimeStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateTimeEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
         )
         .then((response) => {
          
@@ -126,21 +127,21 @@ function ListProjectNego(props) {
     const handleUpdate2 = () => {
       axios
         .put(
-          `https://api.ic-fpt.click/api/v1/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateTimeStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateTimeEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&OfficalTimeStart=${dayjs(idPrj.officalTimeStart)}&OfficalTimeEnd=${dayjs(idPrj.officalTimeEnd)}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
+          `${API_URL}/project/update/${idPrj.id}?CampusName=${idPrj.campusName}&ProjectName=${idPrj.projectName}&Description=${idPrj.description}&EstimateTimeStart=${dayjs(idPrj.estimateTimeStart)}&EstimateTimeEnd=${dayjs(idPrj.estimateTimeEnd)}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${idPrj.leaderId}&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&OfficalTimeStart=${dayjs(idPrj.officalTimeStart)}&OfficalTimeEnd=${dayjs(idPrj.officalTimeEnd)}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
 
         )
         .then((response) => {
         
           if (response.data.isSuccess) {
             handleImportFile()
-        
+
           }
         })
         .catch((err) => {
           handleError(err.response.data.responseSuccess);
         });
     };
-    // console.log(`https://api.ic-fpt.click/api/v1/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
+    // console.log(`${API_URL}/project/update/${props.project.id}?CampusName=${selectedCampus?.name}&ProjectName=${projectName}&Description=${description}&EstimateTimeStart=${estimateStart}&EstimateTimeEnd=${estimateEnd}&DateCreate=${props.project.dateCreated}&ProjectStatus=${status}&LeaderId=${selectedLeader.id}&CourseId=${course.id}&PartnerId=${props.project.partnerId}&CategoryProjectId=${cate.id}&CampusId=${selectedCampus.id}`)}
   
     const handleUpdateProject = () => {
   
@@ -269,7 +270,7 @@ function ListProjectNego(props) {
   setID(data)
   };
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
+    await axios.get(`${API_URL}/project/getAllProject`).then((response) => {
      
       setProjects(response.data.responseSuccess);
     });

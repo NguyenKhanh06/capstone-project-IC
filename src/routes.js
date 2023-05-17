@@ -42,6 +42,7 @@ import ListMajor from './pages/Header/Major/ListMajor';
 import RegisterInformation from './pages/FPTIC/Information/index'
 import History from './pages/Admin/History';
 import AuthGuard from './components/fpt-ic-components/guards/auth-guard';
+import ListFormFb from './pages/Header/Feedback/ListFormFb';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -66,6 +67,7 @@ export default function Router() {
         { path: 'course', element: <ListCourse />},
         { path: 'major', element: <ListMajor />},
         { path: 'registration-form', element: <ListForm />},
+        { path: 'feedback-form', element: <ListFormFb />},
         { path: 'student', element: <ListStudent />},
         { path: 'task-initiation', element: <TaskInitiation />},
         { path: 'student-file', element: <StudentCertificate />},
@@ -96,6 +98,7 @@ export default function Router() {
         { path: 'member/list-task', element: <ListTaskMember />},
         { path: 'leader/list-task', element: <ListTask />},
         { path: 'registration-form', element: <ListForm />},
+        { path: 'feedback-form', element: <ListFormFb />},
         { path: 'blog', element: <BlogPage /> },
         { path: 'project-task', element: <ListProjectTaskMember /> },
         { path: 'student', element: <ListStudent />},
@@ -126,9 +129,9 @@ export default function Router() {
         { path: 'home', element: <Home /> },
         { path: 'register', element: <AuthGuard><Register /></AuthGuard> },
         { path: 'register-information', element: <RegisterInformation /> },
-        { path: 'program', element: <Program /> },
+        { path: 'post', element: <Program /> },
         { path: 'profile', element: <AuthGuard><Profile /></AuthGuard>},
-        { path: 'program/:id', element: <ProgramDetail /> },  
+        { path: 'post/:id', element: <ProgramDetail /> },  
       ]
     },
     {

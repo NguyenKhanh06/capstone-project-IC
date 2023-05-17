@@ -146,7 +146,7 @@ function SlideScreen({ key, id, textTilte, textDate, textDetail, img }: Props) {
             <span className="arrow-right"></span>
             {/* <img src="/images/arrow.svg" width={250} height={30} alt="alt" /> */}
             <Link
-              to={`/program/${id}`}
+              to={`/post/${id}`}
               onClick={() => setColorMenu('primary')}
               style={{
                 fontWeight: 'fontWeightRegular',

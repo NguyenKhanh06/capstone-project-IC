@@ -26,6 +26,7 @@ import {
   import ErrorAlert from '../../Alert/ErrorAlert';
   import SuccessAlert from '../../Alert/SuccessAlert';
 import Iconify from '../../../components/iconify/Iconify';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
   
   function DetailDeputy(props) {
@@ -84,7 +85,7 @@ import Iconify from '../../../components/iconify/Iconify';
 //       setLoading(true)
 //       axios
 //         .post(
-//           `https://api.ic-fpt.click/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=4
+//           `${API_URL}/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=4
 //           `
 //         )
 //         .then((response) => {
@@ -100,7 +101,7 @@ import Iconify from '../../../components/iconify/Iconify';
 //     const CreateDeputy = (id) => {
 //       axios
 //         .post(
-//           `https://api.ic-fpt.click/api/v1/deputy/create?AccountId=${id}&PartnerId=${props.partnerId}`
+//           `${API_URL}/deputy/create?AccountId=${id}&PartnerId=${props.partnerId}`
 //         )
 //         .then((response) => {
 //           if (response.data.isSuccess) {
@@ -126,7 +127,7 @@ import Iconify from '../../../components/iconify/Iconify';
 
 
 const handleUpdateDeputy = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/account/update/${props.id.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Status=true&Role=4`).then((response) => {
+    axios.put(`${API_URL}/account/update/${props.id.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Status=true&Role=4`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true)
           setTimeout(() => {
@@ -146,7 +147,7 @@ props.getDetail()
     
 }
     const getDetail = async () => {
-        await axios.get(`https://api.ic-fpt.click/api/v1/account/getDetail/${props.id.accountId}`).then(response => {
+        await axios.get(`${API_URL}/account/getDetail/${props.id.accountId}`).then(response => {
           console.log(response.data.responseSuccess)
 setDeputy(response.data.responseSuccess)
 setFullName(response.data.responseSuccess.fullName)

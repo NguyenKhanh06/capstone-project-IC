@@ -22,6 +22,7 @@ import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailPost(props) {
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -173,7 +174,7 @@ function DetailPost(props) {
   const DeleteImage = () => {
   
     axios
-      .delete(`https://api.ic-fpt.click/api/v1/post/deleteImage/${id.id}`)
+      .delete(`${API_URL}/post/deleteImage/${id.id}`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccessdlImg(true);
@@ -194,7 +195,7 @@ function DetailPost(props) {
   };
   const DeletePost = () => {
     axios
-      .delete(`https://api.ic-fpt.click/api/v1/post/delete/${props.post.id}`)
+      .delete(`${API_URL}/post/delete/${props.post.id}`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccessdl(true);
@@ -210,7 +211,7 @@ function DetailPost(props) {
       });
   };
   const getDetail = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/post/getPostById/${props.post.id}`).then((response) => {
+    await axios.get(`${API_URL}/post/getPostById/${props.post.id}`).then((response) => {
       setPost(response.data.responseSuccess[0]);
       setTitle(response.data.responseSuccess[0].title);
       setSubtitle(response.data.responseSuccess[0].subTitle);
@@ -227,7 +228,7 @@ function DetailPost(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/post/upload/${props.post.id}`,
+      url: `${API_URL}/post/upload/${props.post.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -266,7 +267,7 @@ function DetailPost(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/post/update/${props.post.id}`,
+      url: `${API_URL}/post/update/${props.post.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

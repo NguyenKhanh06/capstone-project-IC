@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 function History(props) {
   
@@ -66,7 +67,7 @@ function History(props) {
       ];
 
     const fetchData = () => {
-        axios.get(`https://api.ic-fpt.click/api/v1/changelog/getAllChangelog`).then(response => {
+        axios.get(`${API_URL}/changelog/getAllChangelog`).then(response => {
             console.log(response.data.responseSuccess)
             setHistory(response.data.responseSuccess)
         })

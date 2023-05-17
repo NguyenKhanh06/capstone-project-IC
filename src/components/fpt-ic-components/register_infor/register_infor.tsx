@@ -72,7 +72,7 @@ const RegisterInformationComponent = () => {
   const student = JSON.parse(sessionStorage.getItem('user'));
   const location = useLocation();
   const data = location.state;
-
+  console.log(data);
   const [PassportImage, setPassportImage] = React.useState<File[]>([]);
   const [TransferInfomation, setTransferInfomation] = React.useState<File[]>([]);
   const [Program, setProgram] = React.useState(null);
@@ -86,11 +86,22 @@ const RegisterInformationComponent = () => {
   const [studentDetail, setStudentDetail] = React.useState(null);
   const [show, setShow] = useState(false);
   const [showErr, setShowErr] = useState(false);
+  const [showFB, setShowFB] = useState(false);
+  const [showErrFB, setShowErrFB] = useState(false);
   const containerRef = useRef(null);
   const [age, setAge] = React.useState('');
 
+  const [inputList, setInputList] = useState([]);
 
+  const [formFb, setFormFb] = useState([]);
+  const [inputListFb, setInputListFb] = useState([]);
+  const [titleFb, setTitleFb] = useState('');
+  const [idFb, setIdFb] = useState('');
+  const [fbProgram, setfbProgram] = useState('');
 
+  const [fbStu, setfbStu] = useState(false);
+  const [detailformStu, setDetailFormStu] = useState(null);
+const [mess, setMess] = useState('')
   const formik = useFormik({
     initialValues: {
       // Program: data.project as string,
@@ -102,11 +113,7 @@ const RegisterInformationComponent = () => {
       FacebookLink: formDetail?.scocialLink as string,
       DOB: '',
       ExpirationDate: '',
-      contentHeader1: formDetail?.content1 as string,
-      contentHeader2: formDetail?.content2 as string,
-      contentHeader3: formDetail?.content3 as string,
-      contentHeader4: formDetail?.content4 as string,
-      contentHeader5: formDetail?.content5 as string,
+
       PassportImage: '',
       TransferInfomation: '',
     },
@@ -124,19 +131,10 @@ const RegisterInformationComponent = () => {
         DOB: DOB,
         ExpirationDate: ExpirationDate,
         FacebookLink: values.FacebookLink,
-        contentHeader1: values.contentHeader1,
-        contentHeader2: values.contentHeader2,
-        contentHeader3: values.contentHeader3,
-        contentHeader4: values.contentHeader4,
-        contentHeader5: values.contentHeader5,
+
         PassportImage: PassportImage,
         TransferInfomation: TransferInfomation,
       };
-    
-
-      // {ProgramForm && () &&  console.log(2)}
-      // {ProgramForm && (ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(3)}
-      // {ProgramForm && (ProgramForm?.contentHeader4&& ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(4)}
 
       const formData = new FormData();
       formData.append('PassportImageUrl', PassportImage[0]);
@@ -145,81 +143,76 @@ const RegisterInformationComponent = () => {
       axios({
         method: 'PUT',
         data: formData,
-        url: `${API_URL}/registration/UpdateRegisId/${data.id}?FullName=${values.FullName}&MajorId=${Major.id}&memberCode=${data?.student?.memberCode}&PhoneNumber=${values.PhoneNumber}&DateOfBirth=${DOB}&NumberPassPort=${values.PassportNumber}&RollNumber=${values.RollNumber}&YourEmail=${data?.student?.email}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&ProjectId=${data?.projectId}&Content1=${values?.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}`,
+        url: `${API_URL}/registration/UpdateRegisId/${data.id}?Title=${data.title}&FullName=${values.FullName}&MajorId=${Major.id}&memberCode=${data?.student?.memberCode}&PhoneNumber=${values.PhoneNumber}&DateOfBirth=${DOB}&NumberPassPort=${values.PassportNumber}&RollNumber=${values.RollNumber}&YourEmail=${data?.student?.email}&ScocialLink=${values.FacebookLink}&DateExpired=${ExpirationDate}&ProjectId=${data?.projectId}`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      })
-        .then((response) => {
-          const datas = {
-            memberCode: student.memberCode,
-            oldRollNumber: student.oldRollNumber,
-            batch: student.batch,
-            semeter: student.semeter,
-            upStatus: student.studentStatus,
-            address: student.address,
-            rollNumber: values.RollNumber,
-            fullName: values.FullName,
-            majorId: Major.id,
-            email: data.student.email,
-            phoneNumber: values.PhoneNumber,
-            status: true,
-          };
-          if (response.data.isSuccess) {
-            setShow(true);
-            getDetail();
-            getDetailStudent();
-            handleUpdateStudent(datas);
-            setTimeout(() => {
-              setShow(false);
-          
-            }, 2000);
-          }
-        })
-        .catch((err) => {
+      }).then((response) => {
+        const datas = {
+          memberCode: student.memberCode,
+          oldRollNumber: student.oldRollNumber,
+          batch: student.batch,
+          semeter: student.semeter,
+          upStatus: student.studentStatus,
+          address: student.address,
+          rollNumber: values.RollNumber,
+          fullName: values.FullName,
+          majorId: Major.id,
+          email: data.student.email,
+          phoneNumber: values.PhoneNumber,
+          status: true,
+        };
+        if (response.data.isSuccess) {
+          setShow(true);
+          handleRegis();
+          getDetail();
+          getDetailStudent();
+          handleUpdateStudent(datas);
+          setTimeout(() => {
+            setShow(false);
+            window.location.reload();
+          }, 2000);
+        } else {
           setShowErr(true);
           setTimeout(() => {
             window.location.reload();
           }, 2000);
-        });
-      axios
-        .put(
-          `${API_URL}/registration/create?ParentId=${Program['id']}&NumberPassPort=${values.PassportNumber}&ScocialLink=${values.FacebookLink}&DateExpired=${values.ExpirationDate}&DateOfBirth=${values.DOB}&ProjectId=${Program['projectId']}&StudentId=${student.id}&Content1=${values.contentHeader1}&Content2=${values.contentHeader2}&Content3=${values.contentHeader3}&Content4=${values.contentHeader4}&Content5=${values.contentHeader5}&contentHeader1=${ProgramForm?.contentHeader1}&contentHeader2=${ProgramForm?.contentHeader2}&contentHeader3=${ProgramForm?.contentHeader3}&contentHeader4=${ProgramForm?.contentHeader4}&contentHeader5=${ProgramForm?.contentHeader5}`
-        )
-        .then((response) => {
-          const dataUpdate = {
-            memberCode: student.memberCode,
-            oldRollNumber: student.oldRollNumber,
-            batch: student.batch,
-            semeter: student.semeter,
-            upStatus: student.studentStatus,
-            address: student.address,
-            rollNumber: values.RollNumber,
-            fullName: values.FullName,
-            majorId: Major.id,
-            email: student.email,
-            phoneNumber: values.PhoneNumber,
-            status: true,
-          };
-          if (response.data.isSuccess) {
-            handleUpdateStudent(dataUpdate);
-          
-          }
-        })
-        .catch((err) => {
-          setShowErr(true);
-        });
+        }
+      });
     },
-
-    //if register function succesful, redirect to login page
-    //   register(newUser).then((res) => {
-    //     history.push(`/login`);
-    //   });
   });
 
+  const handleRegis = () => {
+    for (let i = 0; i <= inputList.length; i += 1) {
+      axios.put(
+        `${API_URL}/registration/updateAnswer?RegistrationId=${data.id}&Id=${inputList[i]?.id}&Answer=${inputList[i]?.answer}`
+      );
+    }
+  };
+
+  const handleRegisFb = (res) => {
+    for (let i = 0; i <= res?.feedBackAddOns?.length; i += 1) {
+      console.log('fb', res.feedBackAddOns[i]);
+      const data = {
+        feedbackId: res?.feedBackAddOns[i]?.feedBackId,
+        id: res?.feedBackAddOns[i]?.id,
+        answer: inputListFb[i]?.answer,
+      };
+      axios.put(`${API_URL}/feedback/updateFbAnswer`, data).then((response) => console.log('check ans', response));
+    }
+  };
   const getDetail = async () => {
     await axios.get(`${API_URL}/registration/GetDetailResId/${data.id}`).then((response) => {
       setFormDetail(response.data.responseSuccess[0]);
+      setInputList(response.data.responseSuccess[0].registrationAddOn);
+    });
+  };
+  const getDetailFb = async () => {
+    await axios.get(`${API_URL}/feedback/getDetailByRes/${data.parentRegistrationsId}`).then((response) => {
+      getDetailFbByStudent(response.data.responseSuccess[0].id);
+      setFormFb(response.data.responseSuccess[0]);
+      setInputListFb(response.data.responseSuccess[0].feedBackAddOns);
+      setTitleFb(response.data.responseSuccess[0].title);
     });
   };
 
@@ -227,23 +220,128 @@ const RegisterInformationComponent = () => {
     await axios.get(`${API_URL}/student/getStudentDetail/${student.id}`).then((response) => {
       setStudentDetail(response.data.responseSuccess[0]);
       sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
-
     });
   };
-  
+  const getDetailFbByStudent = (id) => {
+    axios.get(`${API_URL}/feedback/getChildFb/${id}`).then((response) => {
+      console.log('detail', response.data.responseSuccess);
+      if (
+        response.data.responseSuccess.find(
+          (form) => form.registrationId === data.id && form.registration?.studentId === student.id
+        )
+      ) {
+        setDetailFormStu(
+          response.data.responseSuccess.find(
+            (form) => form.registrationId === data.id && form.registration?.studentId === student.id
+          )
+        );
+        setfbStu(true);
+        setfbProgram(
+          response.data.responseSuccess.find(
+            (form) => form.registrationId === data.id && form.registration?.studentId === student.id
+          ).feedBackContent
+        );
+
+        setInputListFb(
+          response.data.responseSuccess.find(
+            (form) => form.registrationId === data.id && form.registration?.studentId === student.id
+          ).feedBackAddOns
+        );
+      }
+    });
+  };
+const handleSuccess = (message) => {
+  setShowFB(true)
+  setMess(message)
+}
+const handleErr = (message) => {
+  setShowErrFB(true)
+  setMess(message)
+}
+  const CreateFb = () => {
+    const formData = new FormData();
+    formData.append('Title', titleFb);
+    formData.append('ParentFeedBacksId', formFb['id']);
+    formData.append('Description', formFb['description']);
+    formData.append('RegistrationId', data.id);
+    formData.append('FeedBackContent', fbProgram);
+    formData.append('DateCreated', formFb['dateCreated']);
+    // inputListFb.map((question) => formData.append('AddMoreQuestion', question.question));
+
+    axios({
+      method: 'POST',
+      data: formData,
+      url: `${API_URL}/feedback/create`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then((response) => {
+      if (response.data.isSuccess) {
+        handleSuccess("Feedback Successful!!!")
+        handleRegisFb(response.data.responseSuccess);
+        getDetailFb();
+
+        setTimeout(() => {
+          setShowFB(false);
+          window.location.reload();
+        }, 2000);
+      } else {
+      handleErr("Feedback fail!!")
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    });
+  };
+
+  const UpdateFb = () => {
+    const datas = {
+      parentFeedBacksId: detailformStu.parenFeedBacksId,
+      title: detailformStu?.title,
+      description: detailformStu?.description,
+      feedBackContent: fbProgram,
+      status: true,
+      registrationId: detailformStu.registrationId,
+    };
+    axios.put(`${API_URL}/feedback/UpdateFeedBackId/${detailformStu.id}`, datas).then((response) => {
+      if (response.data.isSuccess) {
+        handleRegisFb(detailformStu);
+        handleSuccess("Update Feedback Successful!!!")
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    }).catch((err) => {
+handleErr("Update Feedback Fail!!")
+setTimeout(() => {
+  window.location.reload();
+}, 2000);
+    });
+  };
+  const handleInputChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...inputList];
+    list[index][name] = value;
+    setInputList(list);
+  };
+  const handleInputChangeFB = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...inputListFb];
+    list[index][name] = value;
+    setInputListFb(list);
+  };
   const handleUpdateStudent = (dataUpdate) => {
     axios
       .put(`${API_URL}/student/update/${student.id}`, dataUpdate)
       .then((response) => {
-        console.log(response);
         if (response.data.isSuccess) {
           setShow(true);
           getDetail();
           getDetailStudent();
-          setTimeout(() => {
-            setShow(false);
-            window.location.reload();
-          }, 2000);
+          // setTimeout(() => {
+          //   setShow(false);
+          //   window.location.reload();
+          // }, 2000);
         }
       })
       .catch((err) => {
@@ -253,7 +351,6 @@ const RegisterInformationComponent = () => {
   const getAllForm = async () => {
     await axios.get(`${API_URL}/registration/getAllRes`).then((response) => {
       setForm(response.data.responseSuccess.filter((value) => value.project != null));
-      console.log(response);
     });
   };
   const getAllMajor = async () => {
@@ -265,7 +362,6 @@ const RegisterInformationComponent = () => {
   const getFormbyPrj = (id) => {
     axios.get(`${API_URL}/registration/getDetailbyProjectId/${id}`).then((response) => {
       setProgramForm(response.data.responseSuccess.filter((form) => !form.student)[0]);
-      console.log(response.data.responseSuccess.filter((form) => !form.student));
     });
   };
 
@@ -277,7 +373,6 @@ const RegisterInformationComponent = () => {
       const newFilesString = newFiles.map((file) => file.name);
       formik.setFieldValue('PassportImage', newFilesString);
     }
-    console.log(PassportImage);
   };
   const handleTransferInformation = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -287,7 +382,6 @@ const RegisterInformationComponent = () => {
       const newFilesString = newFiles.map((file) => file.name);
       formik.setFieldValue('TransferInfomation', newFilesString);
     }
-    console.log(TransferInfomation);
   };
 
   const handleDeletePassportImage = (file: File) => {
@@ -305,13 +399,13 @@ const RegisterInformationComponent = () => {
   };
 
   useEffect(() => {
+    getDetailFb();
+
     getAllForm();
     getAllMajor();
     getDetail();
     getDetailStudent();
-    setMajor(student?.major)
-  
-  
+    setMajor(student?.major);
   }, [data]);
   useEffect(() => {
     if (Program) {
@@ -320,7 +414,7 @@ const RegisterInformationComponent = () => {
   }, [Program]);
   return (
     <>
-      {forms && (
+      {(forms && (
         <Slide
           direction="up"
           in={true}
@@ -371,60 +465,11 @@ const RegisterInformationComponent = () => {
                 }}
               >
                 <form onSubmit={formik.handleSubmit}>
-
                   <Title number={'1'} title={'Program *'} />
-                  {/* <Autocomplete
-                  componentsProps={{
-                    paper: {
-                      sx: {
-                        fontWeight: 'bold',
-                      },
-                    },
-                  }}
-                  options={forms}
-                  getOptionLabel={(option) => option['project']['projectName']}
-                  sx={{ border: 'none !important', fontWeight: 'bold', width: '43%' }}
-                  onChange={(event, newValue) => {
-                    setProgram(newValue);
 
-                    formik.setFieldValue('Program', newValue !== null ? newValue['id'].toString() : '');
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                      sx={{
-                        borderRadius: '25px',
-                        backgroundColor: '#D9D9D9',
-                        margin: '10px 0 0 20px',
-                        border: 'none !important',
-                        '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                        '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                          border: 'none !important',
-                        },
-                        '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          border: 'none !important',
-                        },
-                        '& .MuiSvgIcon-root': {
-                          color: 'primary.main',
-                        },
-                      }}
-                      placeholder="Select Program"
-                    />
-                  )}
-                  noOptionsText="This program not found"
-                /> */}
                   <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
-                    {data.project.projectName}
+                    {data?.title}
                   </Typography>
-
-                  {/* {Boolean(formik.touched.Program && formik.errors.Program) && (
-                    <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                      <Typography color={'red'} fontSize="14px">
-                        {formik.touched.Program && formik.errors.Program}
-                      </Typography>
-                    </Box>
-                  )} */}
 
                   <Box sx={{ display: 'flex', width: '100%' }}>
                     <Box
@@ -451,59 +496,56 @@ const RegisterInformationComponent = () => {
                       }}
                     >
                       <Title number={'3'} title={'Roll number *'} />
-                         <InputBar
-                          check={student?.rollNumber}
-                      inputName="RollNumber"
-                      width={'90%'}
-                      {...formik.getFieldProps('RollNumber')}
-                      error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
-                      helperText={formik.touched.RollNumber && formik.errors.RollNumber}
-                    />
-                      
-                 
+                      <InputBar
+                        check={student?.rollNumber}
+                        inputName="RollNumber"
+                        width={'90%'}
+                        {...formik.getFieldProps('RollNumber')}
+                        error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
+                        helperText={formik.touched.RollNumber && formik.errors.RollNumber}
+                      />
                     </Box>
                   </Box>
-                 
+
                   <Title number={'4'} title={'Major *'} />
-                  {!student?.major && (
-                 
-              //        <FormControl fullWidth>
-                   
-              //        <Select
-                    
-              //          labelId="demo-simple-select-label"
-              //          id="demo-simple-select"
-              //          value={Major}
-              // defaultValue={student.majorId}
-              //          onChange={handleChange}
-              //                    sx={{
-              //               width: '93.5%',
-              //               borderRadius: '25px',
-              //               backgroundColor: '#ffff',
-              //               margin: '10px 0 0 20px',
-              //               border: 'none !important',
-              //               '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-              //               '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-              //                 border: 'none !important',
-              //               },
-              //               '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              //                 border: 'none !important',
-              //               },
-              //               '& .MuiSvgIcon-root': {
-              //                 color: 'primary.main',
-              //               },
-              //             }}
-              //        >
-              //        {Majors.map((maj, index) => (
-              //          <MenuItem value={maj.id}>{maj.majorFullName}</MenuItem>
+                  {(!student?.major && (
+                    //        <FormControl fullWidth>
 
-              //        )
-              //        )
+                    //        <Select
 
-              //        }
-                     
-              //        </Select>
-              //      </FormControl>
+                    //          labelId="demo-simple-select-label"
+                    //          id="demo-simple-select"
+                    //          value={Major}
+                    // defaultValue={student.majorId}
+                    //          onChange={handleChange}
+                    //                    sx={{
+                    //               width: '93.5%',
+                    //               borderRadius: '25px',
+                    //               backgroundColor: '#ffff',
+                    //               margin: '10px 0 0 20px',
+                    //               border: 'none !important',
+                    //               '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                    //               '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                    //                 border: 'none !important',
+                    //               },
+                    //               '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    //                 border: 'none !important',
+                    //               },
+                    //               '& .MuiSvgIcon-root': {
+                    //                 color: 'primary.main',
+                    //               },
+                    //             }}
+                    //        >
+                    //        {Majors.map((maj, index) => (
+                    //          <MenuItem value={maj.id}>{maj.majorFullName}</MenuItem>
+
+                    //        )
+                    //        )
+
+                    //        }
+
+                    //        </Select>
+                    //      </FormControl>
 
                     <Autocomplete
                       componentsProps={{
@@ -548,7 +590,11 @@ const RegisterInformationComponent = () => {
                       )}
                       noOptionsText="This major not found"
                     />
-                  ) || <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.major.majorFullName}</Typography> }
+                  )) || (
+                    <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
+                      {student?.major.majorFullName}
+                    </Typography>
+                  )}
                   {/* {Boolean(formik.touched.Major && formik.errors.Major) && (
                     <Box sx={{ margin: ' 10px 0 0 20px' }}>
                       <Typography color={'red'} fontSize="14px">
@@ -612,17 +658,14 @@ const RegisterInformationComponent = () => {
                       }}
                     >
                       <Title number={'6'} title={'Phone number *'} />
-                       <InputBar
-                      inputName="PhoneNumber"
-                      check={student?.phoneNumber}
-
-                      width={'90%'}
-                      {...formik.getFieldProps('PhoneNumber')}
-                      error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
-                      helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
-                    />
-                      
-                  
+                      <InputBar
+                        inputName="PhoneNumber"
+                        check={student?.phoneNumber}
+                        width={'90%'}
+                        {...formik.getFieldProps('PhoneNumber')}
+                        error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
+                        helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
+                      />
                     </Box>
                   </Box>
                   <Title number={'7'} title={'Passport number *'} />
@@ -675,40 +718,40 @@ const RegisterInformationComponent = () => {
                     helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
                   />
                   <Title number={'10'} title={'Passport image *'} />
-                  {data?.passportImageUrl && 
+                  {data?.passportImageUrl && (
                     <img
                       src={formDetail?.passportImageUrl}
                       style={{ maxWidth: '50%', margin: '10px 0 20px 0' }}
                       alt="alt"
-                    />}
-               
-                      {!PassportImage ||
-                        (PassportImage.length < 1 && (
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              gap: '20px',
-                              margin: '10px 0 0 20px',
-                            }}
-                          >
-                            <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
-                            <Box
-                              component="label"
-                              sx={{
-                                fontWeight: '500',
-                                fontSize: '18px',
-                                cursor: 'pointer',
-                                '&:hover': { color: 'primary.main' },
-                              }}
-                            >
-                              Upload your file here
-                              <input type="file" hidden onChange={handlePassportImage} />
-                            </Box>
-                          </Box>
-                        ))}
-               
+                    />
+                  )}
+
+                  {!PassportImage ||
+                    (PassportImage.length < 1 && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: '20px',
+                          margin: '10px 0 0 20px',
+                        }}
+                      >
+                        <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
+                        <Box
+                          component="label"
+                          sx={{
+                            fontWeight: '500',
+                            fontSize: '18px',
+                            cursor: 'pointer',
+                            '&:hover': { color: 'primary.main' },
+                          }}
+                        >
+                          Upload your file here
+                          <input type="file" hidden onChange={handlePassportImage} />
+                        </Box>
+                      </Box>
+                    ))}
 
                   {PassportImage.length > 0 && (
                     <>
@@ -757,46 +800,39 @@ const RegisterInformationComponent = () => {
 
                   <Title number={'11'} title={'Transfer information *'} />
 
-               
-                {
-                  data?.urlImageBill && (
-                    
+                  {data?.urlImageBill && (
                     <img
                       src={formDetail?.urlImageBill}
                       alt="alt"
                       style={{ maxWidth: '50%', margin: '10px 0 20px 0' }}
                     />
-                    
-                  )
-                }
-                      {!TransferInfomation ||
-                        (TransferInfomation.length < 1 && (
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              gap: '20px',
-                              margin: '10px 0 0 20px',
-                            }}
-                          >
-                            <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
-                            <Box
-                              component="label"
-                              sx={{
-                                fontWeight: '500',
-                                fontSize: '18px',
-                                cursor: 'pointer',
-                                '&:hover': { color: 'primary.main' },
-                              }}
-                            >
-                              Upload your file here
-                              <input accept="image/*" type="file" hidden onChange={handleTransferInformation} />
-                            </Box>
-                          </Box>
-                        ))}
-              
-               
+                  )}
+                  {!TransferInfomation ||
+                    (TransferInfomation.length < 1 && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: '20px',
+                          margin: '10px 0 0 20px',
+                        }}
+                      >
+                        <img src="/images/upload-icon.svg" width={25} height={25} alt="alt" />
+                        <Box
+                          component="label"
+                          sx={{
+                            fontWeight: '500',
+                            fontSize: '18px',
+                            cursor: 'pointer',
+                            '&:hover': { color: 'primary.main' },
+                          }}
+                        >
+                          Upload your file here
+                          <input accept="image/*" type="file" hidden onChange={handleTransferInformation} />
+                        </Box>
+                      </Box>
+                    ))}
 
                   {TransferInfomation.length > 0 && (
                     <>
@@ -844,117 +880,343 @@ const RegisterInformationComponent = () => {
             )}
                  </>}  */}
 
-                  {data?.contentHeader1 !== 'null' && (
+                  {inputList?.map((x, index) => (
                     <Box
+                      key={index}
                       sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        width: '100%',
+                        width: '50%',
                       }}
                     >
-                      <Title number={'10'} title={data?.contentHeader1} />
-                      <InputBar
-                        inputName={'contentHeader1'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader1')}
+                      <Title number={String(9 + index + 1)} title={x?.question} />
+                      <TextField
+                        variant="standard" // <== changed this
+                        InputProps={{
+                          disableUnderline: true, // <== change this
+                        }}
+                        name="answer"
+                        placeholder={'Enter your answer here'}
+                        inputProps={{
+                          style: { fontWeight: 'bold !important' },
+                        }}
+                        multiline
+                        sx={{
+                          backgroundColor: 'background.grey',
+                          width: '100vh',
+                          minHeight: '60px',
+                          borderRadius: '25px',
+                          fontSize: '25px',
+                          justifyContent: 'center',
+                          padding: ' 0 20px',
+                          fontWeight: 'bold !important',
+                        }}
+                        value={x.answer}
+                        onChange={(e) => handleInputChange(e, index)}
                       />
+                      {/* <TextField onChange={() => } /> */}
+                      {/* <InputBar
+              inputName={form?.question}
+              width={'90%'}
+              {...formik.getFieldProps(form?.question)}
+            /> */}
                     </Box>
-                  )}
-                  {data?.contentHeader2 !== 'null' && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '100%',
-                      }}
-                    >
-                      <Title number={'11'} title={data?.contentHeader2} />
-                      <InputBar
-                        inputName={'contentHeader2'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader2')}
-                      />
-                    </Box>
-                  )}
-                  {data?.contentHeader3 !== 'null' && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '100%',
-                      }}
-                    >
-                      <Title number={'12'} title={data?.contentHeader3} />
-                      <InputBar
-                        inputName={'contentHeader3'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader3')}
-                      />
-                    </Box>
-                  )}
-                  {data?.contentHeader4 !== 'null' && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '100%',
-                      }}
-                    >
-                      <Title number={'13'} title={data?.contentHeader4} />
-                      <InputBar
-                        inputName={'contentHeader4'}
-                        width={'90%'}
-                        {...formik.getFieldProps('contentHeader4')}
-                      />
-                    </Box>
-                  )}
-                  {data?.contentHeader5 !== 'null' && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '100%',
-                      }}
-                    >
-                      <Title number={'14'} title={data?.contentHeader5} />
-                      <InputBar
-                        inputName={'contentHeader5'}
-                        width={'95%'}
-                        {...formik.getFieldProps('contentHeader5')}
-                      />
-                    </Box>
-                  )}
-                  <Box
-                    sx={{
-                      width: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      marginTop: '50px',
-                    }}
-                  >
-                    <Button
-                      disableRipple
-                      variant="contained"
-                      sx={{
-                        fontWeight: '500',
-                        fontSize: '20px',
-                        padding: '10px 50px',
-                        borderRadius: '10px',
-                        backgroundColor: 'primary.main',
-                        color: 'secondary.contrastText',
-                        transition: 'all .5s',
-                        boxShadow: '0 2px 3px #00000085',
+                  ))}
 
-                        '&:hover': {
-                          backgroundColor: 'primary.main',
-                          transform: 'translateY(3px)',
-                        },
+                  {data?.student?.gradingUrl ? (
+                    <Box>
+                      <Box
+                        sx={{
+                          width: '80%',
+                          height: '100%',
+                          backgroundColor: ' #F8F8F8',
+                          margin: '13% auto',
+                          borderRadius: '30px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          boxShadow: '4px 0px 4px rgba(0, 0, 0, 0.25)',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            height: '200px',
+                            width: '100%',
+                            borderTopRightRadius: '30px',
+                            background: 'url("/images/register-form-bg.png")',
+                            backgroundSize: 'cover',
+                            backgroundColor: 'primary.main',
+                            borderTopLeftRadius: '30px',
+                            color: 'primary.contrastText',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-end',
+                            padding: '0 7% 20px',
+                          }}
+                        >
+                          <Typography style={{ fontWeight: 'Bold', fontSize: '60px' }}>FEEDBACK FORM</Typography>
+                          <Typography style={{ fontWeight: '400', fontSize: '25px' }}>* Required</Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            padding: ' 0 6% 7% 8%',
+                            width: 'auto',
+                          }}
+                        >
+                          <form>
+                            <Title number={'1'} title={'Form title'} />
+
+                            <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
+                              {titleFb}
+                            </Typography>
+
+                            <Title number={'1'} title={'Description'} />
+
+                            <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
+                              {formFb['description']}
+                            </Typography>
+                            <Box sx={{ display: 'flex', width: '100%' }}>
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  width: '50%',
+                                }}
+                              >
+                                <Title number={'2'} title={'Full name'} />
+                                <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
+                                  {student?.fullName}
+                                </Typography>
+                              </Box>
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  width: '50%',
+                                }}
+                              >
+                                <Title number={'3'} title={'Roll number'} />
+                                <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
+                                  {student?.rollNumber}
+                                </Typography>
+                              </Box>
+                            </Box>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                width: '50%',
+                              }}
+                            >
+                              <Title number="1" title={'Feed back about program'} />
+                              <TextField
+                                variant="standard" // <== changed this
+                                InputProps={{
+                                  disableUnderline: true, // <== change this
+                                }}
+                                name="answer"
+                                placeholder={'Enter your answer here'}
+                                inputProps={{
+                                  style: { fontWeight: 'bold !important' },
+                                }}
+                                multiline
+                                sx={{
+                                  backgroundColor: 'background.grey',
+                                  width: '100%',
+                                  minHeight: '60px',
+                                  borderRadius: '25px',
+                                  fontSize: '25px',
+                                  justifyContent: 'center',
+                                  padding: ' 0 20px',
+                                  fontWeight: 'bold !important',
+                                }}
+                                value={fbProgram}
+                                onChange={(e) => setfbProgram(e.target.value)}
+                              />
+                            </Box>
+                            {inputListFb?.map((x, index) => (
+                              <Box
+                                key={index}
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  width: '50%',
+                                }}
+                              >
+                                <Title number={String(index + 2)} title={x?.question} />
+                                <TextField
+                                  variant="standard" // <== changed this
+                                  InputProps={{
+                                    disableUnderline: true, // <== change this
+                                  }}
+                                  name="answer"
+                                  placeholder={'Enter your answer here'}
+                                  inputProps={{
+                                    style: { fontWeight: 'bold !important' },
+                                  }}
+                                  multiline
+                                  sx={{
+                                    backgroundColor: 'background.grey',
+                                    width: '100%',
+                                    minHeight: '60px',
+                                    borderRadius: '25px',
+                                    fontSize: '25px',
+                                    justifyContent: 'center',
+                                    padding: ' 0 20px',
+                                    fontWeight: 'bold !important',
+                                  }}
+                                  value={x.answer}
+                                  onChange={(e) => handleInputChangeFB(e, index)}
+                                />
+                              </Box>
+                            ))}
+
+                            <Box
+                              sx={{
+                                width: '100%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                marginTop: '50px',
+                              }}
+                            >
+                              {fbStu ? (
+                                <Button
+                                  disableRipple
+                                  variant="contained"
+                                  sx={{
+                                    fontWeight: '500',
+                                    fontSize: '20px',
+                                    padding: '10px 50px',
+                                    borderRadius: '10px',
+                                    backgroundColor: 'primary.main',
+                                    color: 'secondary.contrastText',
+                                    transition: 'all .5s',
+                                    boxShadow: '0 2px 3px #00000085',
+
+                                    '&:hover': {
+                                      backgroundColor: 'primary.main',
+                                      transform: 'translateY(3px)',
+                                    },
+                                  }}
+                                  onClick={() => UpdateFb()}
+                                >
+                                  SUBMIT
+                                </Button>
+                              ) : (
+                                <Button
+                                  disableRipple
+                                  variant="contained"
+                                  sx={{
+                                    fontWeight: '500',
+                                    fontSize: '20px',
+                                    padding: '10px 50px',
+                                    borderRadius: '10px',
+                                    backgroundColor: 'primary.main',
+                                    color: 'secondary.contrastText',
+                                    transition: 'all .5s',
+                                    boxShadow: '0 2px 3px #00000085',
+
+                                    '&:hover': {
+                                      backgroundColor: 'primary.main',
+                                      transform: 'translateY(3px)',
+                                    },
+                                  }}
+                                  onClick={() => CreateFb()}
+                                >
+                                  SUBMIT
+                                </Button>
+                              )}
+                            </Box>
+                          </form>
+                        </Box>
+                      </Box>
+                      <Snackbar
+                        open={showFB}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                      >
+                        <Alert
+                          action={
+                            <IconButton
+                              aria-label="close"
+                              color="inherit"
+                              size="small"
+                              onClick={() => {
+                                setShow(false);
+                              }}
+                            >
+                              <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                          }
+                          variant="filled"
+                          severity="success"
+                          sx={{ width: '100%' }}
+                        >
+                      {mess}
+                        </Alert>
+                      </Snackbar>
+                      <Snackbar
+                        open={showErrFB}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                      >
+                        <Alert
+                          action={
+                            <IconButton
+                              aria-label="close"
+                              color="inherit"
+                              size="small"
+                              onClick={() => {
+                                setShowErr(false);
+                              }}
+                            >
+                              <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                          }
+                          variant="filled"
+                          severity="error"
+                          sx={{ width: '100%' }}
+                        >
+                         {mess}
+                        </Alert>
+                      </Snackbar>
+                    </Box>
+                  ) : (
+                    <Box
+                      sx={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '50px',
                       }}
-                      type="submit"
                     >
-                      SUBMIT
-                    </Button>
-                  </Box>
+                      <Button
+                        disableRipple
+                        variant="contained"
+                        sx={{
+                          fontWeight: '500',
+                          fontSize: '20px',
+                          padding: '10px 50px',
+                          borderRadius: '10px',
+                          backgroundColor: 'primary.main',
+                          color: 'secondary.contrastText',
+                          transition: 'all .5s',
+                          boxShadow: '0 2px 3px #00000085',
+
+                          '&:hover': {
+                            backgroundColor: 'primary.main',
+                            transform: 'translateY(3px)',
+                          },
+                        }}
+                        type="submit"
+                      >
+                        SUBMIT
+                      </Button>
+                    </Box>
+                  )}
                 </form>
               </Box>
             </Box>
@@ -1014,9 +1276,20 @@ const RegisterInformationComponent = () => {
             </Snackbar>
           </Box>
         </Slide>
-      )  ||     <Box  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, height: "100vh", position:"relative", top: "50vh", left: "80vh" }}>
-      <CircularProgress />
-    </Box>}
+      )) || (
+        <Box
+          sx={{
+            color: '#fff',
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            height: '100vh',
+            position: 'relative',
+            top: '50vh',
+            left: '80vh',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 };

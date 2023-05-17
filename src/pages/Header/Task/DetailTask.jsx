@@ -38,6 +38,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
 import AssignMember from './AssignMember';
 import AssignMemberDetailTask from './AssignMemberDetailTask';
 import DetailCmt from './DetailCmt';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailTask(props) {
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -110,7 +111,7 @@ function DetailTask(props) {
 
   const fetchData = async () => {
    
-  await axios.get(`https://api.ic-fpt.click/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
+  await axios.get(`${API_URL}/task/getTaskDetaul/${props.task.id}`).then((response) => {
  
       setTask(response.data.responseSuccess[0]);
       setStaff(response.data.responseSuccess[0].assignTasks[0]?.staffs);
@@ -136,12 +137,12 @@ function DetailTask(props) {
     formData.append('State', 0);
     formData.append('Status', status);
     formData.append('ProjectId', props.task.projectId);
-    formData.append('MileStoneId', props.task.mileStoneId);
+    formData.append('PhaseId', props.task.phaseId);
 
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/task/update/${props.task.id}`,
+      url: `${API_URL}/task/update/${props.task.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -168,7 +169,7 @@ function DetailTask(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/comment/createCommentTask',
+      url: `${API_URL}/comment/createCommentTask`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -181,7 +182,7 @@ function DetailTask(props) {
   };
   const fetchDataComment = async () => {
 
-    await axios.get(`https://api.ic-fpt.click/api/v1/comment/GetCommentByTaskId/${props.task.id}`).then((response) => {
+    await axios.get(`${API_URL}/comment/GetCommentByTaskId/${props.task.id}`).then((response) => {
 
       setcmtTask(response.data.responseSuccess);
     });
@@ -195,12 +196,12 @@ function DetailTask(props) {
 
   const handleUpdateStatus = () => {
     axios
-      .post(`https://api.ic-fpt.click/api/v1/task/changeStatus/${props.task.id}`, data)
+      .post(`${API_URL}/task/changeStatus/${props.task.id}`, data)
      
   };
 
   const handleDeleteComment = () => {
-    axios.delete(`https://api.ic-fpt.click/api/v1/comment/delete/${id}`).then((response) => {
+    axios.delete(`${API_URL}/comment/delete/${id}`).then((response) => {
       if (response.data.isSuccess) {
     
         setTimeout(() => {
@@ -216,7 +217,7 @@ function DetailTask(props) {
   }
   const handleDelete = (id) => {
     axios
-      .post(`https://api.ic-fpt.click/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
+      .post(`${API_URL}/task/unassign/${props.task.id}?staffId=${id}`)
       .then((response) => {
         handleUpdateStatus();
         if (response.data.isSuccess) {

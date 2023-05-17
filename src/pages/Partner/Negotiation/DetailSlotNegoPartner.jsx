@@ -21,6 +21,7 @@ import RejectSlot from './RejectSlot';
 import DetailReason from './DetailReason';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailSlotNegoPartner(props) {
   const [open, setOpen] = useState(false);
@@ -59,7 +60,7 @@ function DetailSlotNegoPartner(props) {
     setReason(data);
   };
   const handleApproveSlot = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/slot/updateStatus/${props.slot.id}?Status=1`).then((response) => {
+    axios.put(`${API_URL}/slot/updateStatus/${props.slot.id}?Status=1`).then((response) => {
       if (response.data.isSuccess) {
         setShowSuccess(true);
         props.getDetail()
@@ -73,7 +74,7 @@ function DetailSlotNegoPartner(props) {
     });
   };
   const getDetail = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/slot/getDetail/${props.slot.id }`).then(response => {
+    await axios.get(`${API_URL}/slot/getDetail/${props.slot.id }`).then(response => {
       setSlot(response.data.responseSuccess[0])
       setTopic(response.data.responseSuccess[0]?.name);
       setTime(response.data.responseSuccess[0]?.timeAllocation);

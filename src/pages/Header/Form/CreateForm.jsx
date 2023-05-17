@@ -18,6 +18,7 @@ import {
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
@@ -29,6 +30,7 @@ import dayjs from 'dayjs';
 function CreateForm(props) {
   const [openRegis, setOpenRegis] = useState(null)
   const [closeRegis, setCLoseRegis] = useState(null)
+  const [title, setTitle] = useState('')
     const [inputList, setInputList] = useState([]);
     const [projects, setProjects] = useState([])
     const [project, setProject] = useState([])
@@ -74,7 +76,7 @@ function CreateForm(props) {
   };
   const fetchDataPrj = async () => {
     setLoading(true);
-    await axios.get(`https://api.ic-fpt.click/api/v1/project/getAllProject`).then((response) => {
+    await axios.get(`${API_URL}/project/getAllProject`).then((response) => {
    
       setProjects(response.data.responseSuccess.filter(prj => prj.checkNegotiationStatus && prj.projectStatus !== 2));
       setLoading(false);
@@ -85,105 +87,24 @@ function CreateForm(props) {
 
     // free memory when ever this component is unmounted
   }, []);
-const handleCreateForm2 = () => {
-    axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}`).then((response) => {
-          if (response.data.isSuccess) {
-            setShowSuccess(true);
-            setTimeout(() => {
-              window.location.reload()
-              setShowSuccess(false);
-  
-            }, 1000)
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-  
-          handleError(err?.response?.data.responseSuccess);
-        });
-  
-}
-const handleCreateForm3 = () => {
-  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}`).then((response) => {
-        if (response.data.isSuccess) {
-          setShowSuccess(true);
-          setTimeout(() => {
-            window.location.reload()
-            setShowSuccess(false);
 
-          }, 1000)
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-
-        handleError(err?.response?.data.responseSuccess);
-      });
-
-}
-const handleCreateForm4 = () => {
-  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}`).then((response) => {
-        if (response.data.isSuccess) {
-          setShowSuccess(true);
-          setTimeout(() => {
-            window.location.reload()
-            setShowSuccess(false);
-
-          }, 1000)
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-
-        handleError(err?.response?.data.responseSuccess);
-      });
-
-}
-const handleCreateForm5 = () => {
-  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}`).then((response) => {
-        if (response.data.isSuccess) {
-          setShowSuccess(true);
-          setTimeout(() => {
-            window.location.reload()
-            setShowSuccess(false);
-
-          }, 1000)
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-
-        handleError(err?.response?.data.responseSuccess);
-      });
-
-}
-const handleCreateForm6 = () => {
-  axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}&ContentHeader1=${inputList[0].title}&ContentHeader2=${inputList[1].title}&ContentHeader3=${inputList[2].title}&ContentHeader4=${inputList[3].title}&ContentHeader5=${inputList[4].title}`).then((response) => {
-        if (response.data.isSuccess) {
-          setShowSuccess(true);
-          setTimeout(() => {
-            window.location.reload()
-            setShowSuccess(false);
-
-          }, 1000)
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-
-        handleError(err?.response?.data.responseSuccess);
-      });
-
-}
   const handleCreateForm = () => {
-    
-    axios.post(`https://api.ic-fpt.click/api/v1/registration/create?ProjectId=${project}&DateOpenRegis=${openRegis.add(1, "day")}&DateCloseRegis=${closeRegis.add(1, "day")}
-    `).then((response) => {
+    const formData = new FormData();
+    formData.append('Title', title)
+    formData.append('DateOpenRegis',openRegis)
+    formData.append('DateCloseRegis', closeRegis)
+    formData.append('ProjectId', project)
+    inputList.map(question => formData.append('AddMoreOptinal', question.title))
+
+    axios({
+      method: 'POST',
+      data: formData,
+      url: `${API_URL}/registration/create`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+   .then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true);
             setTimeout(() => {
@@ -202,7 +123,7 @@ const handleCreateForm6 = () => {
     // setLoading(true);
     // axios
     //   .post(
-    //     `https://api.ic-fpt.click/api/v1/syllabus/create?Content=${content}&Description=${description}&CourseId=${props.courseID}`
+    //     `${API_URL}/syllabus/create?Content=${content}&Description=${description}&CourseId=${props.courseID}`
     //   )
     //   .then((response) => {
     //     if (response.data.isSuccess) {
@@ -218,22 +139,7 @@ const handleCreateForm6 = () => {
     //   });
   };
 
-  const handleCreate = () =>{
-   
-    if(inputList.length === 1){
-      handleCreateForm2()
-    }else if(inputList.length === 2){
-      handleCreateForm3()
-    }else if(inputList.length === 3){
-      handleCreateForm4()
-    }else if(inputList.length === 4){
-      handleCreateForm5()
-    }else if(inputList.length === 5){
-      handleCreateForm6()
-    }else {
-      handleCreateForm()
-    }
-  }
+ 
   const ITEM_HEIGHT = 46;
   const MOBILE_ITEM_HEIGHT = 58;
   const ITEM_PADDING_TOP = 18;
@@ -258,6 +164,7 @@ const handleCreateForm6 = () => {
 
         <DialogContent>
         <FormControl fullWidth>
+
                     <InputLabel id="demo-simple-select-autowidth-label">Project</InputLabel>
                     <Select
                       labelId="demo-simple-select-autowidth-label"
@@ -290,7 +197,19 @@ const handleCreateForm6 = () => {
                       ))}
                     </Select>
                   </FormControl>
+                  <TextField
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              fullWidth
+              multiline
+sx={{marginTop: 5}}
+              label="Form's title"
+         
+         
+            />
                   <Stack  sx={{ marginBottom: 4, marginTop: 4}} direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                  
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                    
@@ -338,40 +257,40 @@ const handleCreateForm6 = () => {
              </ol>
             </Stack>
           </Paper>
-        <Divider sx={{marginTop: 5}} variant="middle" />
+          <Divider sx={{marginTop: 5}} variant="middle" />
 
-          <Typography  sx={{marginTop: 3, marginBottom: 3}} variant='h6'>Add more filed (You can add maximum 5 field)</Typography>
-          { inputList.length < 5 && <Button sx={{marginBottom: 5}} variant='contained' onClick={handleAddClick}>Add Field</Button>}
-  
+<Typography  sx={{marginTop: 3, marginBottom: 3}} variant='h6'>Add more filed</Typography>
+<Button sx={{marginBottom: 5}} variant='contained' onClick={handleAddClick}>Add Field</Button>
 
-          {inputList.length ? (inputList.map((x, i) => (
-   
-          <Stack direction="column" spacing={2} key={i} style={{marginTop: 4}}>
-        <Divider sx={{marginTop: 2}} variant="middle" />
-               
-            <TextField
-              name="title"
-              placeholder="Enter Title"
-              value={x.title}
-              onChange={e => handleInputChange(e, i)}
-            />
-            <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
-         
-              {inputList.length && <Button variant='contained' color='error'
-       
-                onClick={() => handleRemoveClick(i)}>Remove</Button>}
-        
-            </Stack>
-          </Stack>
-        
-      ))) : null}
+
+{inputList.length ? (inputList.map((x, i) => (
+
+<Stack direction="column" spacing={2} key={i} style={{marginTop: 4}}>
+<Divider sx={{marginTop: 2}} variant="middle" />
+     
+  <TextField
+    name="title"
+    placeholder="Enter Title"
+    value={x.title}
+    onChange={e => handleInputChange(e, i)}
+  />
+  <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
+
+    {inputList.length && <Button variant='contained' color='error'
+
+      onClick={() => handleRemoveClick(i)}>Remove</Button>}
+
+  </Stack>
+</Stack>
+
+))) : null}
         </DialogContent>
         <DialogActions style={{ padding: 20 }}>
         {/* <Button variant="contained" onClick={() => handleCreate()} autoFocus>
               Create Form
             </Button> */}
-          { project.length && openRegis && closeRegis ? (
-            <Button variant="contained"  onClick={() => handleCreate()} autoFocus>
+          { project.length && openRegis && closeRegis && title.trim().length ? (
+            <Button variant="contained"  onClick={() => handleCreateForm()} autoFocus>
               Create Form
             </Button>
           ) : (

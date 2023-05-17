@@ -32,6 +32,7 @@ import dayjs from 'dayjs';
 import SuccessAlert from '../Alert/SuccessAlert';
 import ErrorAlert from '../Alert/ErrorAlert';
 import DetailCmt from '../Header/Task/DetailCmt';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 function DetailTaskMember(props) {
   const staff = JSON.parse(sessionStorage.getItem('user'));
@@ -97,7 +98,7 @@ function DetailTaskMember(props) {
     setCmt(data);
   };
   const handleDeleteComment = () => {
-    axios.delete(`https://api.ic-fpt.click/api/v1/comment/delete/${id}`).then((response) => {
+    axios.delete(`${API_URL}/comment/delete/${id}`).then((response) => {
       if (response.data.isSuccess) {
         setShowConfirmDelete(false)
         handleSuccess('Delete successfull!!!');
@@ -110,7 +111,7 @@ function DetailTaskMember(props) {
   }
   const fetchData = () => {
 
-    axios.get(`https://api.ic-fpt.click/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
+    axios.get(`${API_URL}/task/getTaskDetaul/${props.task.id}`).then((response) => {
  
       setTask(response.data.responseSuccess[0]);
       setTaskName(response.data.responseSuccess[0].taskName);
@@ -140,7 +141,7 @@ function DetailTaskMember(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/task/changeStatus`,
+      url: `${API_URL}/task/changeStatus`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -168,7 +169,7 @@ function DetailTaskMember(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/comment/createCommentTask',
+      url: `${API_URL}/comment/createCommentTask`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -180,7 +181,7 @@ function DetailTaskMember(props) {
   };
   const fetchDataComment = async () => {
 
-    await axios.get(`https://api.ic-fpt.click/api/v1/comment/GetCommentByTaskId/${props.task.id}`).then((response) => {
+    await axios.get(`${API_URL}/comment/GetCommentByTaskId/${props.task.id}`).then((response) => {
 
       setcmtTask(response.data.responseSuccess);
     });

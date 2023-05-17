@@ -29,6 +29,7 @@ import Scrollbar from '../../components/scrollbar/Scrollbar';
 import { UserListToolbar } from '../../sections/@dashboard/user';
 
 import ListSubTaskMember from './ListSubTaskMember';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 
 function TaskInitiationMember(props) {
@@ -46,19 +47,20 @@ function TaskInitiationMember(props) {
     setTask(data);
   };
   const handleDeleteTask = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`).then((response) => {
+    axios.put(`${API_URL}/course/delete/${id}`).then((response) => {
       window.location.reload(false);
     });
   };
 
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/task/getRootsTask`).then((response) => {
-      setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.mileStoneId === 1).filter((task) => task.status!== 5));
-      
+    await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
+      setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.phaseId === props.phase.phaseId).filter((task) => task.status!== 5));
+      console.log(tasks)
   
       
     });
   };
+  console.log(props)
 
   useEffect(() => {
     fetchData().catch((error) => {
@@ -130,8 +132,7 @@ const handleCloseConfirm = (data) => {
       },
     },
   ];
-  
-  console.log("task plan", props)
+
 
 
   return (

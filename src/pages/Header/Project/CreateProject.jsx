@@ -41,6 +41,7 @@ import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import CreateCourse from '../Course/CreateCourse';
 import DetailCate from '../Category/DetailCate';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -102,6 +103,13 @@ const [showCate, setShowCate] = useState(false)
   const [campuses, setCampuses] = useState([]);
   const [campus, setCampus] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [phases, setPhases] = useState([])
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [createNew, setCreateNew] = useState(false);
+  const [title, setTitle] = useState('')
+
+
+
 const [idCate, setIdCate] = useState()
 const regexMailFu = /[\w.-]+fptu@gmail\.com$/
   const handleError = (data) => {
@@ -129,37 +137,45 @@ const handleShowCate = (id) => {
   };
 
   const fetchDataCampus = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/campus/getAll`).then((response) => {
+    await axios.get(`${API_URL}/campus/getAll`).then((response) => {
       setCampuses(response.data.responseSuccess.filter((camp) => camp.partnerId === partner && camp.status));
     });
   };
   const fetchDataStaff = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
+    await axios.get(`${API_URL}/staff/getAll`).then((response) => {
       setStaffs(response.data.responseSuccess.filter(staff => staff.account.status && staff.account.role === 2 && regexMailFu.test(staff.account.email)));
       setLeader(response.data.responseSuccess.filter(staff => staff.account.status).find(staff => staff.id === user.staff.id).id)
     });
   };
 
   const fetchDataPartner = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
+    await axios.get(`${API_URL}/partner/getAllPartner`).then((response) => {
       setPartners(response.data.responseSuccess.filter(partner => partner.status));
     });
   };
 
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/course/getAllCourse`).then((response) => {
+    await axios.get(`${API_URL}/course/getAllCourse`).then((response) => {
       setCourses(response.data.responseSuccess.filter((course) => course.status));
     });
   };
 
   const fetchDataCate = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/categoryProject/getAllCate`).then((response) => {
+    await axios.get(`${API_URL}/program/getAllProgram`).then((response) => {
       setCates(response.data.responseSuccess.filter((cate) => cate.status));
     });
   };
 
+  const handleChangeSelect = (event, value) => setSelectedOptions(value);
+  const getPhase = () => {
+    axios.get(`${API_URL}/phase/getAllPhase`).then(response => {
+setPhases(response.data.responseSuccess)
+    })
+  }
+
   useEffect(() => {
     fetchData();
+    getPhase();
     fetchDataStaff();
     fetchDataPartner();
     fetchDataCate();
@@ -202,18 +218,15 @@ const handleShowCate = (id) => {
     formData.append('CampusId', campus);
     formData.append('CourseId', course);
     formData.append('PartnerId', partner);
-    formData.append('CategoryProjectId', cate);
-    formData.append('MileStoneId', `1`);
-    formData.append('MileStoneId', `2`);
-    formData.append('MileStoneId', `3`);
-    formData.append('MileStoneId', `4`);
-    formData.append('MileStoneId', `5`);
+    formData.append('ProgramId', cate);
+    selectedOptions?.map(phase =>   formData.append('PhaseId', phase.id) )
+
     setLoading(true);
 
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/project/create',
+      url: `${API_URL}/project/create`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -232,7 +245,7 @@ const handleShowCate = (id) => {
       });
   };
   const handleDeleteCate = () => {
-axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).then((response) => {
+axios.put(`${API_URL}/categoryProject/disable/${idCate}`).then((response) => {
 
   if (response.data.isSuccess) {
     setShowSuccessCate(true);
@@ -261,6 +274,44 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
   const handleOnChangeCampus = (e) => {
     setCampus(e.target.value);
   };
+
+
+  const handleCloseCreate = () => {
+    setCreateNew(false);
+  };
+  const CreatePhase = () => {
+    const formData = new FormData();
+    formData.append('PhaseName', title);
+    axios({
+      method: 'POST',
+      data: formData,
+      url: `${API_URL}/phase/create`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+
+        if (response.data.isSuccess) {
+          setShowSuccess(true);
+
+          setTimeout(() => {
+            handleCloseCreate()
+          setShowSuccess(false);
+
+          }, 2000)
+          getPhase()
+        }
+      })
+      .catch((err) => {
+        handleError("Create fail!!!!");
+        setTimeout(() => {
+          handleCloseCreate()
+
+
+        }, 2000)
+      });
+  }
   const ITEM_HEIGHT = 46;
   const MOBILE_ITEM_HEIGHT = 58;
   const ITEM_PADDING_TOP = 18;
@@ -296,12 +347,12 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                 />
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-autowidth-label">Category *</InputLabel>
+                    <InputLabel id="demo-simple-select-autowidth-label">Program *</InputLabel>
                     <Select
                       labelId="demo-simple-select-autowidth-label"
                       id="demo-simple-select-autowidth"
                       displayEmpty
-                      label="Category *"
+                      label="Program *"
                       value={cate}
                       name="cate"
                       onChange={handleOnChangeCate}
@@ -351,7 +402,7 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                             endIcon={<AddOutlinedIcon />}
                             variant="contained"
                           >
-                            Create Category
+                            Create Program
                           </Button>
                         </em>
                       </MenuItem>
@@ -552,6 +603,7 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                       ))}
                     </Select>
                   </FormControl>
+               
                   {/* <Autocomplete
                     fullWidth
                     onChange={handleChangePartner}
@@ -571,6 +623,28 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
                     renderInput={(params) => <TextField {...params} label="Campus" placeholder="Campus" />}
                   /> */}
                 </Stack>
+                <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
+                  <Autocomplete
+        multiple
+       style={{width: "85%"}}
+        id="tags-outlined"
+        options={phases}
+        getOptionLabel={(option) => option.phaseName}
+        onChange={handleChangeSelect}
+        filterSelectedOptions
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Phase"
+            placeholder="Phase"
+          />
+        )}
+      />
+     <Button  variant="contained" onClick={() => setCreateNew(true)} autoFocus>
+              New Phase
+            </Button>
+                  </Stack>
+                
                 <Stack direction="row" fullWidth spacing={2}>
                   <Stack
                     direction="row"
@@ -638,7 +712,7 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             {projectName.trim().length &&
-        
+        selectedOptions.length &&
             cate &&
             course &&
             leader &&
@@ -685,6 +759,37 @@ axios.put(`https://api.ic-fpt.click/api/v1/categoryProject/disable/${idCate}`).t
       <AssignPartner setPartner={setPartner} show={showAssignPartner} close={() => setShowAssignPartner(false)} />
       <CreateCourse show={showCreateCourse} close={() => setShowCreateCourse(false)} />
       <DetailCate show={showCate} close={() => setShowCate(false)} cate={id} getAll={fetchDataCate}/>
+
+      <Dialog
+        fullWidth
+        maxWidth="md"
+        open={createNew}
+        onClose={handleCloseCreate}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <form >
+          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+            <DialogTitle id="alert-dialog-title">Create Project Phase</DialogTitle>
+            <IconButton style={{ marginRight: 6 }} onClick={() => handleCloseCreate()}>
+              <CloseOutlinedIcon />
+            </IconButton>
+          </Stack>
+          <Divider variant="middle" />
+          <DialogContent>
+          <TextField id="outlined-basic" fullWidth label="Phase's title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
+          </DialogContent>
+          
+
+          <DialogActions style={{ padding: 20 }}>
+            <Button variant="contained" onClick={() => CreatePhase()} autoFocus>
+              Create Phase
+            </Button>
+          </DialogActions>
+        </form>
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Pharse Successful!'} />
+        <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+      </Dialog>
     </>
   );
 }

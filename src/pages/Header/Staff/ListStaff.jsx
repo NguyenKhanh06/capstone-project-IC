@@ -10,6 +10,7 @@ import DetailStaff from './DetailStaff';
 import CreateStaff from './CreateStaff';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function ListStaff(props) {
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -50,7 +51,7 @@ const handleShowDetail = (data) => {
 }
 
 const handleDeleteStaff = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${id}?Status=false`).then((response) => {
+    axios.put(`${API_URL}/account/changeStatusAccount/${id}?Status=false`).then((response) => {
      
         if (response.data.isSuccess) {
           setShowSuccess(true);
@@ -64,7 +65,7 @@ const handleDeleteStaff = () => {
 }
 
 const fetchData = async () => {
-  await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
+  await axios.get(`${API_URL}/staff/getAll`).then((response) => {
 
        setStaffs(response.data.responseSuccess.filter(staff => staff.account.role !== 4  && staff.account.status && staff.account.role !== 1 && regexMailFu.test(staff.account.email)))
    })

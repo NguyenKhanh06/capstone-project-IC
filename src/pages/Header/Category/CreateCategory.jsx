@@ -16,6 +16,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import Loading from '../../Loading';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateCategory(props) {
   const regex = /^[\w\s]*$/;
@@ -39,7 +40,7 @@ function CreateCategory(props) {
   };
 
   const handleCreateCategory = () => {
-    axios.post(`https://api.ic-fpt.click/api/v1/categoryProject/create?Name=${cateName}&Status=true`).then((response) => {
+    axios.post(`${API_URL}/program/create?Name=${cateName}&Status=true`).then((response) => {
 
       setCateName('');
       props.getAll();
@@ -66,7 +67,7 @@ function CreateCategory(props) {
     >
       <form>
         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <DialogTitle id="alert-dialog-title">Create Category</DialogTitle>
+          <DialogTitle id="alert-dialog-title">Create Program</DialogTitle>
           <IconButton style={{ marginRight: 6 }} onClick={() => handleClose()}>
             <CloseOutlinedIcon />
           </IconButton>
@@ -82,7 +83,7 @@ function CreateCategory(props) {
               fullWidth
               error={ !regex.test(cateName)}
               helperText={!regex.test(cateName) && "Can not input special character"}
-              label="Category Name"
+              label="Program Name"
               inputProps={{
                 maxLength: 25,
               }}
@@ -92,16 +93,16 @@ function CreateCategory(props) {
         <DialogActions style={{ padding: 20 }}>
           {cateName.trim().length && regex.test(cateName) ? (
             <Button variant="contained" onClick={() => handleCreateCategory()} autoFocus>
-              Create Category
+              Create Program
             </Button>
           ) : (
             <Button disabled variant="contained" onClick={() => handleCreateCategory()} autoFocus>
-              Create Category
+             Create Program
             </Button>
           )}
         </DialogActions>
       </form>
-      <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Category Successful!'} />
+      <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Program Successful!'} />
       <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
     </Dialog>
   );

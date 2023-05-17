@@ -31,6 +31,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
   import dayjs from 'dayjs';
   import SuccessAlert from '../../Alert/SuccessAlert';
   import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
   
   function DetailParentTask(props) {
     const regex = /^[\w\s]*$/
@@ -74,10 +75,10 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
       setOpen(props.close);
     };
   
-  
+
   
     // const fetchData = async () => {
-    //  await axios.get(`https://api.ic-fpt.click/api/v1/task/getTaskDetaul/${props.task.id}`).then((response) => {
+    //  await axios.get(`${API_URL}/task/getTaskDetaul/${props.task.id}`).then((response) => {
     //     setTask(response.data.responseSuccess[0]);
     //     setStaff(response.data.responseSuccess[0].assignTasks[0]?.staffs);
     //     setTaskName(response.data.responseSuccess[0].taskName);
@@ -97,47 +98,44 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
         setState(props.task.state);
       }
     }, [props.task]);
+
     const handleUpdate = () => {
-      const formData = new FormData();
-      formData.append('TaskName', taskName);
-      formData.append('Description', description);
-      formData.append('Deadline', deadline);
-      formData.append('DateCreate', props.task.deadLine);
-      formData.append('DateEnd', props.task.deadLine);
-      formData.append('State', state);
-      formData.append('Status', 0);
-      formData.append('ProjectId', props.task.projectId);
-      formData.append('MileStoneId', props.task.mileStoneId);
-  
-      axios({
-        method: 'PUT',
-        data: formData,
-        url: `https://api.ic-fpt.click/api/v1/task/update/${props.task.id}`,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-        .then((response) => {
+      console.log("update")
+//       const formData = new FormData();
+//       formData.append('TaskName', taskName);
+//       formData.append('Description', description);
+//       formData.append('Deadline', deadline);
+//       formData.append('DateCreate', props.task.deadLine);
+//       formData.append('DateEnd', props.task.deadLine);
+//       formData.append('State', state);
+//       formData.append('Status', 0);
+//       formData.append('ProjectId', props.task.projectId);
+//       formData.append('PhaseId', props.task.phaseId);
 
-          if (response.data.isSuccess) {
-            setShowSuccess(true);
+//       axios({
+//         method: 'PUT',
+//         data: formData,
+//         url: `${API_URL}/task/update/${props.task.id}`,
+//         headers: {
+//           'Content-Type': 'multipart/form-data',
+//         },
+//       })
+//         .then((response) => {
 
-            setTimeout(() => {
-window.location.reload()
-              }, 1000)
-          }
-        })
-        .catch((err) => {
-          handleError(err.response.data.responseSuccess);
-        });
+//           if (response.data.isSuccess) {
+//             setShowSuccess(true);
+
+//             setTimeout(() => {
+// window.location.reload()
+//               }, 1000)
+//           }
+//         })
+//         .catch((err) => {
+//           handleError(err.response.data.responseSuccess);
+//         });
   
-      // const handleDelete = (id) => {
-      //   axios.post(`https://api.ic-fpt.click/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
-      // }
+
   
-      const handleDelete = () => {
-        console.info('You clicked the delete icon.');
-      };
     };
   
 
@@ -155,7 +153,7 @@ window.location.reload()
           <form>
           <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-            <DialogTitle id="alert-dialog-title">Detail Task</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Detail Task </DialogTitle>
             {props.task.state === 0 ? (
                      <Chip label="To do" color="warning" />
                    ) : props.task.state === 1 ? (
@@ -233,7 +231,7 @@ window.location.reload()
             </DialogContent>
             <DialogActions style={{ paddingTop: 20, marginRight: 10 }}>
        
-              {disableBtn ? <Button variant="contained" onClick={() => setShowConfirmUpdate(true)} autoFocus>
+              {disableBtn ? <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
               Save
             </Button> : <Button disabled variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
               Save

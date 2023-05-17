@@ -18,6 +18,7 @@ import {
   import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
   import axios from 'axios';
   import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
   
   function DetailPrjMember(props) {
@@ -33,20 +34,20 @@ import {
       setOpen(true);
     };
     const fetchDataDoc = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
+      await axios.get(`${API_URL}/document/getAll`).then((response) => {
      
         setDoc(response.data.responseSuccess.filter((doc) => doc.projectId === props.project.project.id));
       });
     };
 
     const getdetailProject = async () => {
-    await  axios.get(`https://api.ic-fpt.click/api/v1/project/getDetail/${props.project.project.id}`).then((response) => {
+    await  axios.get(`${API_URL}/project/getDetail/${props.project.project.id}`).then((response) => {
         setProject(response.data.responseSuccess[0]);
     
       });
     };
     // const fetchDataDoc = async () => {
-    //   await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
+    //   await axios.get(`${API_URL}/document/getAll`).then((response) => {
     //     console.log(
     //       'doc',
     //       response.data.responseSuccess.find((doc) => doc.projectId === props.project.id)
@@ -73,7 +74,7 @@ import {
     const handleExportFile = (doc) => {
      
       axios({
-        url: `https://api.ic-fpt.click/api/v1/document/content/${doc.id}`,
+        url: `${API_URL}/document/content/${doc.id}`,
         method: 'GET',
         responseType: 'blob', // important
       }).then((response) => {

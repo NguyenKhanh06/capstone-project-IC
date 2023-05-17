@@ -43,6 +43,7 @@ import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import DetailParentTask from './DetailParentTask';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function ListSubTask(props) {
   const regex = /^[\w\s]*$/
@@ -164,7 +165,7 @@ function ListSubTask(props) {
     window.location.reload(false);
   }
 const handleDeleteTask = () => {
-  axios.put(`https://api.ic-fpt.click/api/v1/task/DisableTask/${id}`).then((response) => {
+  axios.put(`${API_URL}/task/DisableTask/${id}`).then((response) => {
 
     if (response.data.isSuccess) {
    setShowSuccess(true)
@@ -183,7 +184,7 @@ setTimeout(() => {
   });
 }
 const getChildTask = async () => {
- await axios.get(`https://api.ic-fpt.click/api/v1/task/GetChildTask/${props.state.id}`).then(response => {
+ await axios.get(`${API_URL}/task/GetChildTask/${props.state.id}`).then(response => {
  
     setChildTask(response.data.responseSuccess.filter(task => task.status !== 5))
   })
@@ -215,12 +216,12 @@ const getChildTask = async () => {
     formData.append('State', state);
     formData.append('Status', 0);
     formData.append('ProjectId', props.state.projectId);
-    formData.append('MileStoneId', props.state.mileStoneId);
+    formData.append('PhaseId', props.state.phaseId);
 
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/task/update/${props.state.id}`,
+      url: `${API_URL}/task/update/${props.state.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -243,7 +244,7 @@ const getChildTask = async () => {
       });
 
     // const handleDelete = (id) => {
-    //   axios.post(`https://api.ic-fpt.click/api/v1/task/unassign/${props.task.id}?staffId=${id}`)
+    //   axios.post(`${API_URL}/task/unassign/${props.task.id}?staffId=${id}`)
     // }
 
     const handleDelete = () => {
@@ -423,7 +424,7 @@ const getChildTask = async () => {
             <CreateSubTask
             deadline={props.state}
               project={props.project}
-              mileStoneID={props.state.mileStoneId}
+              mileStoneID={props.state.phaseId}
               taskID={props.state.id}
               show={showCreate}
               close={() => setShowCreate(false)}

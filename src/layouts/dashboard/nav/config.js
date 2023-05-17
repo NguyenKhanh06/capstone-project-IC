@@ -13,6 +13,7 @@ import DashboardTwoToneIcon from '@mui/icons-material/DashboardTwoTone';
 import CategoryTwoToneIcon from '@mui/icons-material/CategoryTwoTone';
 import SchoolTwoToneIcon from '@mui/icons-material/SchoolTwoTone';
 import SvgColor from '../../../components/svg-color';
+import FeedbackTwoToneIcon from '@mui/icons-material/FeedbackTwoTone';
 
 
 
@@ -64,6 +65,11 @@ const navConfig = [
     title: 'Registration Form',
     path: '/header/registration-form',
     icon: <AppRegistrationTwoToneIcon/>
+  },
+  {
+    title: 'Feedback Form',
+    path: '/header/feedback-form',
+    icon: <FeedbackTwoToneIcon/>
   },
   {
     title: 'Major',

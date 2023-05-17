@@ -31,6 +31,7 @@ import CancelProject from '../Project/CancelProject';
 import DetailSlotNego from './DetailSlotNego';
 import DetailReason from '../../Partner/Negotiation/DetailReason';
 import { DataGrid } from '@mui/x-data-grid';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailCourseNego(props) {
   const [open, setOpen] = useState(false);
@@ -61,7 +62,7 @@ function DetailCourseNego(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/syllabus/GetListSyllabusPartner/${props.id.partnerId}`).then((response) => {
+    await axios.get(`${API_URL}/syllabus/GetListSyllabusPartner/${props.id.partnerId}`).then((response) => {
   
  
 

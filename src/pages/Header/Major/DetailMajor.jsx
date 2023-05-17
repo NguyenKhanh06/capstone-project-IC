@@ -5,6 +5,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailMajor(props) {
     const [showConfirm, setShowConfirm] = useState(false);
@@ -44,7 +45,7 @@ function DetailMajor(props) {
         "majorFullName": activity,
         "status": true
       }
-    axios.put(`https://api.ic-fpt.click/api/v1/Major/update/${props.major.id}`, data).then((response) => {
+    axios.put(`${API_URL}/Major/update/${props.major.id}`, data).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(() => {

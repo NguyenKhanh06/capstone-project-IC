@@ -30,6 +30,7 @@ import {
   import { UserListToolbar } from '../../../sections/@dashboard/user';
   import CreateStudent from './CreateStudent';
   import DetailStudent from './DetailStudent';
+import { API_URL } from '../../../config/apiUrl/apis-url';
   
   function StudentCertificate(props) {
     const [order, setOrder] = useState('asc');
@@ -58,7 +59,7 @@ import {
       setShowConfirm(false)
     };
     const handleDeleteStudent = () => {
-      axios.delete(`https://api.ic-fpt.click/api/v1/student/delete/${id}`).then((response) => {
+      axios.delete(`${API_URL}/student/delete/${id}`).then((response) => {
         window.location.reload(false);
       });
     };
@@ -166,7 +167,7 @@ import {
     };
   
     const fetchData = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/student/getAllStudent`).then((response) => {
+      await axios.get(`${API_URL}/student/getAllStudent`).then((response) => {
         setStudents(response.data.responseSuccess);
    
       });
@@ -182,7 +183,7 @@ import {
       axios({
         method: 'POST',
         data: formData,
-        url: 'https://api.ic-fpt.click/api/v1/student/importStudent',
+        url: `${API_URL}/student/importStudent`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },

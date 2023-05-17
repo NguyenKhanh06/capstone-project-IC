@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import Iconify from '../../../components/iconify/Iconify';
 import CreatePartner from './CreatePartner';
 import DetailPartnerAd from './DetailPartnerAd';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function ListPartnerAd(props) {
     const [partners, setPartners] = useState([])
@@ -40,7 +41,7 @@ function ListPartnerAd(props) {
       setPartner(data);
     };
     const fetchData = async () => {
-        await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
+        await axios.get(`${API_URL}/partner/getAllPartner`).then((response) => {
           
           setPartners(response.data.responseSuccess.filter(partner => partner.status))
        
@@ -53,7 +54,7 @@ function ListPartnerAd(props) {
       }, []);
 
       const handleDeletePartner = () => {
-        axios.post(`https://api.ic-fpt.click/api/v1/partner/disable/${id}`).then((response) => {
+        axios.post(`${API_URL}/partner/disable/${id}`).then((response) => {
           if (response.data.isSuccess) {
             setShowSuccess(true);
             setTimeout(reload(), 5000);

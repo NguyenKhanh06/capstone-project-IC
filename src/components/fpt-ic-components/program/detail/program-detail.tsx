@@ -41,7 +41,7 @@ const ProgramDetailComponent: FC<Props> = ({ item }) => {
         <BaseBreadCrumbs
           previousLink={[
             { href: '/', name: 'Homepage' },
-            { href: '/program', name: 'Programs' },
+            { href: '/post', name: 'Posts' },
           ]}
           currentLink={item.title}
         />

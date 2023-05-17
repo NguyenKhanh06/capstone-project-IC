@@ -25,6 +25,7 @@ import dayjs from 'dayjs';
 import DetailReason from '../../Partner/Negotiation/DetailReason';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailSlotNego(props) {
   const [disableBtn, setDisable] = useState(false);
@@ -65,7 +66,7 @@ function DetailSlotNego(props) {
 
 
 const getDetail = async () => {
-  await axios.get(`https://api.ic-fpt.click/api/v1/slot/getDetail/${props.slot.id }`).then(response => {
+  await axios.get(`${API_URL}/slot/getDetail/${props.slot.id }`).then(response => {
     setSlot(response.data.responseSuccess[0])
     setTopic(response.data.responseSuccess[0]?.name);
     setTime(response.data.responseSuccess[0]?.timeAllocation);
@@ -97,7 +98,7 @@ const getDetail = async () => {
 
 
   const handleupdateStatus = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/slot/updateStatus/${props.slot.id}?Status=0`).then((response) => {
+    axios.put(`${API_URL}/slot/updateStatus/${props.slot.id}?Status=0`).then((response) => {
       props.getDetail()
     });
   };
@@ -105,7 +106,7 @@ const getDetail = async () => {
   const handleUpdateSlot = () => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/slot/update/${props.slot.id}?Name=${topic}&Detail=${detail}&TimeAllocation=${timeAllocation}&Type=${learningType}&SyllabusId=${props.slot.syllabusId}`
+        `${API_URL}/slot/update/${props.slot.id}?Name=${topic}&Detail=${detail}&TimeAllocation=${timeAllocation}&Type=${learningType}&SyllabusId=${props.slot.syllabusId}`
       )
       .then((response) => {
        

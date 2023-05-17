@@ -20,6 +20,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function AssignMemberDetailTask(props) {
   const [open, setOpen] = useState(null);
@@ -43,7 +44,7 @@ function AssignMemberDetailTask(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/project/getJoin/${props.project}`).then((response) => {
+    await axios.get(`${API_URL}/project/getJoin/${props.project}`).then((response) => {
     
       setStaffs(response.data.responseSuccess);
       //   const result = Object.values(response.data.responseSuccess).map(
@@ -67,7 +68,7 @@ function AssignMemberDetailTask(props) {
 
   const handleAssignTask = (id) => {
     axios
-      .post(`https://api.ic-fpt.click/api/v1/task/assignTask/${props.taskId}?StaffId=${id}`)
+      .post(`${API_URL}/task/assignTask/${props.taskId}?StaffId=${id}`)
       
       .then((response) => {
         if (response.data.isSuccess) {

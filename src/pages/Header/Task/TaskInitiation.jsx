@@ -34,6 +34,8 @@ import DetailTask from './DetailTask';
 import ListSubTask from './ListSubTask';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
+import DetailParentTask from './DetailParentTask';
 
 
 
@@ -66,7 +68,7 @@ function TaskInitiation(props) {
     window.location.reload(false);
   }
   const handleDeleteTask = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/task/DisableTask/${id}`).then((response) => {
+    axios.put(`${API_URL}/task/DisableTask/${id}`).then((response) => {
 
     if (response.data.isSuccess) {
    setShowSuccess(true)
@@ -81,10 +83,9 @@ function TaskInitiation(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/task/getRootsTask`).then((response) => {
-      setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.mileStoneId === 1).filter((task) => task.state !== 3 && task.status !== 5));
-     
-      
+    await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
+      setTasks(response.data.responseSuccess.filter((mil) => mil.projectId === props.state.id ).filter((milprj) => milprj.phaseId === props.phase.phaseId).filter((task) => task.state !== 3 && task.status !== 5));
+    
     });
   };
 
@@ -171,7 +172,7 @@ const handleCloseConfirm = (data) => {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Initiation Task
+           {props.phase.phase.phaseName} Task
           </Typography>
    
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => setShowCreate(true)}>
@@ -219,7 +220,8 @@ const handleCloseConfirm = (data) => {
       <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Delete Task Successful!'} />
       <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
     </Dialog>
-      <CreateTask deadline={props.state.mileStoneProject.find(mil => mil.mileStoneId === 1)} projectid={state?.id} mileStoneId={1} show={showCreate} close={() => setShowCreate(false)} getDetail={fetchData} />
+    
+      <CreateTask deadline={props.phase} projectid={state?.id} mileStoneId={props.phase.phaseId} show={showCreate} close={() => setShowCreate(false)} getDetail={fetchData} />
       <ListSubTask project={props.state} state={task} show={showDetail} close={() => setShowDetail(false)} getDetail={fetchData} />
     </>
   );

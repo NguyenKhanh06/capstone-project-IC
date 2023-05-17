@@ -48,7 +48,7 @@ import CreateCategory from './CreateCategory';
     };
 
     const fetchData = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/categoryProject/getAllCate`).then((response) => {
+      await axios.get(`${API_URL}/program/getAllProgram`).then((response) => {
     
         setCates(response.data.responseSuccess.filter(cate => cate.status)
           )
@@ -63,7 +63,7 @@ import CreateCategory from './CreateCategory';
     }, []);
   
 const handleDeleteCourse = () => {
-  axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`).then((response) => {
+  axios.put(`${API_URL}/course/delete/${id}`).then((response) => {
 window.location.reload(false)
   })
 }

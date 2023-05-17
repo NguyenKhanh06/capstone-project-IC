@@ -21,6 +21,7 @@ import React, { useEffect, useState } from 'react';
 import Loading from '../../Loading';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateStudent(props) {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
@@ -80,7 +81,7 @@ function CreateStudent(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/student/create',
+      url: `${API_URL}/student/create`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -112,7 +113,7 @@ function CreateStudent(props) {
   //   "status": true,
   // };
   // const handleCreateStudent = () => {
-  //   axios.post(`https://api.ic-fpt.click/api/v1/student/create`, data).then((response) => {
+  //   axios.post(`${API_URL}/student/create`, data).then((response) => {
   //     if (response.data.isSuccess) {
   //       setShowSuccess(true);
   //       setTimeout(reload(), 2000);
@@ -138,7 +139,7 @@ function CreateStudent(props) {
     }
   };
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/Major/getAllMajor`).then((response) => {
+    await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
      
       setMajors(response.data.responseSuccess.filter((course) => course.status));
     });

@@ -16,6 +16,7 @@ import { Formik } from 'formik';
 import Iconify from '../../components/iconify/Iconify';
 import ErrorAlert from '../Alert/ErrorAlert';
 import SuccessAlert from '../Alert/SuccessAlert';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 const LoginStaff = () => {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
@@ -50,7 +51,7 @@ const LoginStaff = () => {
   });
 
   // const getdetailStaff = (id) => {
-  //   axios.get(`https://api.ic-fpt.click/api/v1/staff/getStaffAccountId/${id}`).then((response) => {
+  //   axios.get(`${API_URL}/staff/getStaffAccountId/${id}`).then((response) => {
   //     sessionStorage.setItem('staff', JSON.stringify(response.data.responseSuccess));
 
   //   });
@@ -60,7 +61,7 @@ const LoginStaff = () => {
 
 
   const getdetailStudent = (id) => {
-    axios.get(`https://api.ic-fpt.click/api/v1/student/getStudentDetail/${id}`).then((response) => {
+    axios.get(`${API_URL}/student/getStudentDetail/${id}`).then((response) => {
       sessionStorage.setItem('user', JSON.stringify(response.data.responseSuccess[0]));
     });
   };
@@ -99,7 +100,7 @@ const LoginStaff = () => {
     });
   }
   const getDeputy = (id) => {
-    axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
+    axios.get(`${API_URL}/deputy/getAll`).then((response) => {
       sessionStorage.setItem(
         'deputy',
         JSON.stringify(response.data.responseSuccess.filter((dep) => dep.accountId === id)[0])
@@ -135,7 +136,7 @@ const LoginStaff = () => {
               axios({
                 method: 'POST',
                 data: formData,
-                url: 'https://api.ic-fpt.click/api/v1/authen/login',
+                url: `${API_URL}/authen/login`,
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },
@@ -280,7 +281,7 @@ const LoginStaff = () => {
             sessionStorage.setItem('student', JSON.stringify(decoded));
             if (regexMailFu.test(decoded.email)) {
               axios
-                .post(`https://api.ic-fpt.click/api/v1/authen/signin-google/${credentialResponse.credential}`)
+                .post(`${API_URL}/authen/signin-google/${credentialResponse.credential}`)
                 .then((response) => {
    
                   localStorage.setItem('token', response.data.responseSuccess.accountToken);
@@ -328,7 +329,7 @@ const LoginStaff = () => {
                 });
             } else if (regexMail.test(decoded.email)) {
               axios
-                .post(`https://api.ic-fpt.click/api/v1/student/signin-google/${credentialResponse.credential}`)
+                .post(`${API_URL}/student/signin-google/${credentialResponse.credential}`)
                 .then((response) => {
                   localStorage.setItem('token', response.data.responseSuccess.tokenToken);
 

@@ -25,6 +25,7 @@ import Loading from '../../Loading';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import CreateStaff from '../Staff/CreateStaff';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateAccountPartner(props) {
   const regex = /^[\w\s]*$/
@@ -65,7 +66,7 @@ function CreateAccountPartner(props) {
     setLoading(true)
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=4
+        `${API_URL}/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=4
         `
       )
       .then((response) => {
@@ -81,7 +82,7 @@ function CreateAccountPartner(props) {
   const CreateDeputy = (id) => {
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/deputy/create?AccountId=${id}&PartnerId=${props.partnerId}`
+        `${API_URL}/deputy/create?AccountId=${id}&PartnerId=${props.partnerId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

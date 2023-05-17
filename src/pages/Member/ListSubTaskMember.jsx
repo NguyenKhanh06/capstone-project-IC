@@ -35,6 +35,7 @@ import Scrollbar from '../../components/scrollbar/Scrollbar';
 import { UserListToolbar } from '../../sections/@dashboard/user';
 import DetailTaskMember from './DetailTaskMember';
 import DetailParentTaskMember from './DetailParentTaskMember';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 
 
@@ -151,7 +152,7 @@ function ListSubTaskMember(props) {
   };
 
   const getChildTask = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/task/GetChildTask/${props.state.id}`).then(response => {
+    await axios.get(`${API_URL}/task/GetChildTask/${props.state.id}`).then(response => {
 
        setChildTask(response.data.responseSuccess.filter(task => task?.assignTasks[0]?.staffId === staff?.staff.id).filter(task => task.status !== 5))
      })

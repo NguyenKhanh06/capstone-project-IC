@@ -14,6 +14,7 @@ import ThemeProvider from './theme';
 // components
 import { StyledChart } from './components/chart';
 import ScrollToTop from './components/scroll-to-top';
+import { useEffect, useState } from 'react';
 
 
 const token = localStorage.getItem('token');
@@ -36,6 +37,7 @@ if (token) {
 
 
 export default function App() {
+
   return (
     <GoogleOAuthProvider clientId="871108526539-b5v11q9qmnu1bbda312e1dnprh3p5asg.apps.googleusercontent.com">
       <link

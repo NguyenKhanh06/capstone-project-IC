@@ -25,6 +25,7 @@ import CreateMajor from './CreateMajor';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import DetailMajor from './DetailMajor';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
   
   function ListMajor(props) {
@@ -57,7 +58,7 @@ import DetailMajor from './DetailMajor';
       };
     
     const fetchData = async () => {
-      await axios.get(`https://api.ic-fpt.click/api/v1/Major/getAllMajor`).then((response) => {
+      await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
        
         setMajors(response.data.responseSuccess.filter((course) => course.status));
       });
@@ -68,7 +69,7 @@ import DetailMajor from './DetailMajor';
     }, []);
   
     const handleDeleteMajor = () => {
-      axios.put(`https://api.ic-fpt.click/api/v1/Major/disable/${id}`)  .then((response) => {
+      axios.put(`${API_URL}/Major/disable/${id}`)  .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
           setTimeout(() => {

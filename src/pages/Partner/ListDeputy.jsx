@@ -10,6 +10,7 @@ import DetailDeputyPartner from './DetailDeputyPartner';
 import SuccessAlert from '../Alert/SuccessAlert';
 import ErrorAlert from '../Alert/ErrorAlert';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 function ListDeputy(props) {
   const deputy = JSON.parse(sessionStorage.getItem('deputy'));
@@ -46,7 +47,7 @@ function ListDeputy(props) {
     setShowSuccess(true);
   };
   const getDeputy = async () => {
-   await axios.get(`https://api.ic-fpt.click/api/v1/deputy/getAll`).then((response) => {
+   await axios.get(`${API_URL}/deputy/getAll`).then((response) => {
       setDeputies(response.data.responseSuccess.filter((dep) => dep.partnerId === deputy.partnerId && dep.accountId !== deputy.accountId));
      
     });
@@ -60,7 +61,7 @@ function ListDeputy(props) {
   };
   const ChangeStatus = () => {
     axios
-      .put(`https://api.ic-fpt.click/api/v1/account/changeStatusAccount/${email}?Status=${status}`)
+      .put(`${API_URL}/account/changeStatusAccount/${email}?Status=${status}`)
       .then((response) => {
         if (response.data.isSuccess) {
           getDeputy()

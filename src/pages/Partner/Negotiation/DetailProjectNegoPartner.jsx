@@ -23,6 +23,7 @@ import CancelProject from '../../Header/Project/CancelProject';
 import DetailCourseNegoPartner from './DetailCourseNeogoPartner';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailProjectNegoPartner(props) {
   const [open, setOpen] = useState(false);
@@ -42,14 +43,14 @@ function DetailProjectNegoPartner(props) {
 
  
   const getdetailProject = () => {
-    axios.get(`https://api.ic-fpt.click/api/v1/project/getDetail/${props.project.id}`).then((response) => {
+    axios.get(`${API_URL}/project/getDetail/${props.project.id}`).then((response) => {
       setProject(response.data.responseSuccess[0])
     
     })
   }
  
   const fetchDataDoc = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
+    await axios.get(`${API_URL}/document/getAll`).then((response) => {
      
       setDoc(response.data.responseSuccess.filter((doc) => doc.projectId === props.project.id));
     });
@@ -84,7 +85,7 @@ function DetailProjectNegoPartner(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/document',
+      url: `${API_URL}/document`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -104,7 +105,7 @@ function DetailProjectNegoPartner(props) {
   };
   const handleExportFile = (documentPrj) => {
     axios({
-      url: `https://api.ic-fpt.click/api/v1/document/content/${documentPrj.id}`,
+      url: `${API_URL}/document/content/${documentPrj.id}`,
       method: 'GET',
       responseType: 'blob', // important
     }).then((response) => {

@@ -5,6 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import axios from 'axios';
 import DetailStudentRegister from './DetailStudentRegister';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function ListFormStudent(props) {
     const [students, setStudents] = useState(null);
@@ -19,7 +20,7 @@ function ListFormStudent(props) {
 
     const getDetail = async () => {
         await axios
-          .get(`https://api.ic-fpt.click/api/v1/registration/getDetailbyStudentId/${props?.studentID?.id}`)
+          .get(`${API_URL}/registration/getDetailbyStudentId/${props?.studentID?.id}`)
           .then((response) => {
          
             setStudents(response.data.responseSuccess);
@@ -57,6 +58,15 @@ getDetail()
       };
     
     const columns = [
+      {
+        field: 'title',
+        headerName: 'Title',
+        flex: 1,
+        valueGetter: (params) => {
+       
+          return params.row?.title
+        },
+      },
         {
           field: 'project',
           headerName: 'Project',

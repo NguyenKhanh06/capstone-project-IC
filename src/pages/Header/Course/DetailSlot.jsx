@@ -19,6 +19,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import React, { useEffect, useState } from 'react';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailSlot(props) {
   const regex = /^[\w\s]*$/
@@ -64,7 +65,7 @@ function DetailSlot(props) {
   const handleUpdateSlot = () => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/slot/update/${props.slot.id}?Name=${topic}&Detail=${detail}&TimeAllocation=${timeAllocation}&Type=${learningType}&SyllabusId=${props.slot.syllabusId}`
+        `${API_URL}/slot/update/${props.slot.id}?Name=${topic}&Detail=${detail}&TimeAllocation=${timeAllocation}&Type=${learningType}&SyllabusId=${props.slot.syllabusId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

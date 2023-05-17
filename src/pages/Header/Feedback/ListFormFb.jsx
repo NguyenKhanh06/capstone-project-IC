@@ -25,14 +25,16 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
   import DeleteIcon from '@mui/icons-material/Delete';
   import { useEffect, useState } from 'react';
   import Iconify from '../../../components/iconify/Iconify';
-import CreateForm from './CreateForm';
-import DetailForm from './DetailForm';
+
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import { API_URL } from '../../../config/apiUrl/apis-url';
+import CreateFormFb from './CreateFormFb';
+import DetailFormFb from './DetailFormFb';
+import DetailFeedBack from './DetailFeedBack';
 
   
-  function ListForm(props) {
+  function ListFormFb(props) {
     const [showCreate, setShowCreate] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
   
@@ -66,7 +68,7 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
     };
   
     const fetchData = async () => {
-      await axios.get(`${API_URL}/registration/getRootRegis`).then((response) => {
+      await axios.get(`${API_URL}/feedback/getRootFeedBack`).then((response) => {
 
         setForm(response.data.responseSuccess)
       });
@@ -105,41 +107,38 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
    
       },
       {
-        field: 'project',
-        headerName: 'Project',
+        field: 'registration',
+        headerName: 'Form',
         flex: 2,
-        valueGetter: (params) => {
-       
-          return params.row?.project?.projectName
-        },
+        valueGetter: (params) => params.row?.registration?.title,
       },
-      {
-        field: 'creator',
-        headerName: 'Creater',
-        flex: 1,
-      },
-      {
-        field: 'childrenRegistrations',
-        headerName: 'Total registed student',
-        flex: 2,
+    //   {
+    //     field: 'creator',
+    //     headerName: 'Creater',
+    //     flex: 1,
+    //   },
+      // {
+      //   field: 'childrenFeedBacKs',
+      //   headerName: 'Total feedback',
+      //   flex: 2,
 
-        valueGetter: (params) => {
+      //   valueGetter: (params) => {
        
-          return params.row?.childrenRegistrations?.length
-        },
-      },
-      {
-        field: 'status',
-        headerName: 'Status',
-        flex: 1,
-        renderCell: (params) => {
-          return (
-            <>
-            {params.row.status ? <Chip label="Active" color='success'/> : <Chip label='Deactive' color='error'/>}
-            </>
-          );
-        },
-      },
+      //     return params.row?.childrenFeedBacKs?.length
+      //   },
+      // },
+      // {
+      //   field: 'status',
+      //   headerName: 'Status',
+      //   flex: 1,
+      //   renderCell: (params) => {
+      //     return (
+      //       <>
+      //       {params.row.status ? <Chip label="Active" color='success'/> : <Chip label='Deactive' color='error'/>}
+      //       </>
+      //     );
+      //   },
+      // },
   
     
   
@@ -149,8 +148,7 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
         flex: 1,
         sortable: false,
         disableClickEventBubbling: true,
-        renderCell: (params) => {
-          return (
+        renderCell: (params) => (
             <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
               <Tooltip title="View Detail">
                 <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
@@ -158,7 +156,7 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
                 </IconButton>
               </Tooltip>
 
-              {params.row.status ? (<Tooltip title="Close form">
+              {/* {params.row.status ? (<Tooltip title="Close form">
            <IconButton onClick={() => handleShowConfirmUpdate(params.row.id, false)} aria-label="delete">
              <HighlightOffIcon color='error'/>
            </IconButton>
@@ -166,15 +164,14 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
            <IconButton onClick={() => handleShowConfirmUpdate(params.row.id, true)} aria-label="delete">
              <CheckCircleOutlineTwoToneIcon color='success'/>
            </IconButton>
-         </Tooltip>)}
+         </Tooltip>)} */}
               {/* <Tooltip title="Delete">
                 <IconButton onClick={() => handleShowConfirm(params.row.id)}>
                   <DeleteIcon color="error" />
                 </IconButton>
               </Tooltip> */}
             </Stack>
-          );
-        },
+          ),
       },
     ];
     return (
@@ -182,7 +179,7 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
         <Container>
           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-              Registration Form
+         Form Feedback
             </Typography>
             <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={() => setShowCreate(true)}>
               New Form
@@ -206,8 +203,8 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
             />}
           </Card>
         </Container>
-  <DetailForm show={showDetail} close={() => setShowDetail(false)} form={formDetail} />
-  <CreateForm show={showCreate} close={() => setShowCreate(false)}/>
+  <DetailFormFb show={showDetail} close={() => setShowDetail(false)} form={formDetail} />
+  <CreateFormFb show={showCreate} close={() => setShowCreate(false)}/>
         {/* <Dialog
           open={showConfirm}
           onClose={handleCloseConfirm}
@@ -252,5 +249,5 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
     );
   }
   
-  export default ListForm;
+  export default ListFormFb;
   

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailCampusPartner(props) {
   const [disableBtn, setDisableBtn] = useState(false)
@@ -43,7 +44,7 @@ function DetailCampusPartner(props) {
   const handleUpdateCampus = () => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/campus/update/${props.campus.id}?Name=${name}&Address=${address}&Status=true&PartnerId=${props.campus.partnerId}`
+        `${API_URL}/campus/update/${props.campus.id}?Name=${name}&Address=${address}&Status=true&PartnerId=${props.campus.partnerId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -58,7 +59,7 @@ function DetailCampusPartner(props) {
       })
   };
 //   const fetchData = async () => {
-//     await axios.get(`https://api.ic-fpt.click/api/v1/campus/getDetail/${props.campus.id}`).then((response) => {
+//     await axios.get(`${API_URL}/campus/getDetail/${props.campus.id}`).then((response) => {
 //      setCampus(response.data.responseSuccess)
 //      setName(response.data.responseSuccess[0].name)
 //      setAddress(response.data.responseSuccess[0].address)

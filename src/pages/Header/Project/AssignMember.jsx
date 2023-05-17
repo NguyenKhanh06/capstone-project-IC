@@ -44,6 +44,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
   import { UserListToolbar } from '../../../sections/@dashboard/user';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
   function AssignMember(props) {
@@ -76,7 +77,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
     };
   
    const unAssign = (staffId) =>{
-    axios.post(`https://api.ic-fpt.click/api/v1/project/unassign/${props.project.id}?staffId=${staffId}`).then((response) => {
+    axios.post(`${API_URL}/project/unassign/${props.project.id}?staffId=${staffId}`).then((response) => {
       if (response.data.isSuccess) {
         handleSuccess('Unassign successful!')
         setTimeout(() =>{
@@ -92,13 +93,13 @@ import ErrorAlert from '../../Alert/ErrorAlert';
     });
    }
     const fetchData = async () =>{
-     await axios.get(`https://api.ic-fpt.click/api/v1/staff/getAll`).then((response) => {
+     await axios.get(`${API_URL}/staff/getAll`).then((response) => {
   setStaffs(response.data.responseSuccess.filter(staff => staff.account.status && staff.account.role !== 0  && regexMailFu.test(staff.account.email)).filter(staflead => staflead.id !== props.project.leaderId))
       })
     }
 
     const fetchJoin = async () => {
-     await axios.get(`https://api.ic-fpt.click/api/v1/project/getJoin/${props.project.id}`).then((response) => {
+     await axios.get(`${API_URL}/project/getJoin/${props.project.id}`).then((response) => {
         setJoinPrj(response.data.responseSuccess)
     
       })
@@ -123,7 +124,7 @@ import ErrorAlert from '../../Alert/ErrorAlert';
       axios({
         method: 'POST',
         data: formData,
-        url: `https://api.ic-fpt.click/api/v1/project/assign/${props.project.id}`,
+        url: `${API_URL}/project/assign/${props.project.id}`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -178,6 +179,8 @@ import ErrorAlert from '../../Alert/ErrorAlert';
         },
       },
     ];
+    console.log("staffs", staffs)
+    console.log(joinprj)
     return (
         <Dialog
         fullWidth
@@ -271,7 +274,7 @@ sx={{marginBottom: 4}}
     
         id="tags-outlined"
         onChange={handleChangeSelect}
-        options={staffs}
+        options={staffs.filter((elem) => !joinprj.some((ele) => ele.staffId === elem.id))}
         getOptionLabel={(option) => option.staffCode}
         fullWidth
        

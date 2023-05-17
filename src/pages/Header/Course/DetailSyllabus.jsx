@@ -38,6 +38,7 @@ import CreateSlot from './CreateSlot';
 import DetailSlot from './DetailSlot';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailSyllabus(props) {
   const regex = /^[\w\s]*$/
@@ -55,6 +56,7 @@ function DetailSyllabus(props) {
   const [slotDetail, setSlotDetail] = useState([]);
   const [slotIndex, setSlotIndex] = useState('');
   const [filterName, setFilterName] = useState('');
+  const [note, setNote] = useState('')
   const [openConfirm, setOpenConfirm] = useState(false);
   const [id, setId] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
@@ -108,6 +110,7 @@ function DetailSyllabus(props) {
       getDetail()
       setContent(props.syllabus.content);
       setDescription(props.syllabus.description);
+      setNote(props.syllabus.note)
       setSlot(props.syllabus.slots?.filter((slot) => slot.status));
     }
   }, [props.syllabus]);
@@ -115,7 +118,7 @@ function DetailSyllabus(props) {
   const handleDeleteSlot = (id) => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/slot/disable/${id}
+        `${API_URL}/slot/disable/${id}
   `
       )
       .then((response) => {
@@ -128,14 +131,14 @@ function DetailSyllabus(props) {
       });
   };
 const getDetail= async () => {
- await axios.get(`https://api.ic-fpt.click/api/v1/syllabus/getDetail/${props.syllabus.id}`).then(response => {
+ await axios.get(`${API_URL}/syllabus/getDetail/${props.syllabus.id}`).then(response => {
     setSlot(response.data.responseSuccess[0]?.slots?.filter((slot) => slot.status))
   })
 }
   const handleUpdate = () => {
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/syllabus/update/${props.syllabus.id}?Content=${content}&Description=${description}&Status=true&CourseId=${props.syllabus.courseId}`
+        `${API_URL}/syllabus/update/${props.syllabus.id}?Content=${content}&Description=${description}&Note=${note}&Status=true&CourseId=${props.syllabus.courseId}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -295,6 +298,22 @@ setTimeout(() =>{
                  
                 }}
                 label="Description"
+             
+              />
+                   <TextField
+                value={note}
+                multiline
+                rows={5}
+                onChange={(e) => {
+                  setNote(e.target.value);
+                  setDisableBtn(true);
+                }}
+                fullWidth
+                inputProps={{
+                  maxLength: 1000,
+                 
+                }}
+                label="Note"
              
               />
              

@@ -34,6 +34,7 @@ import DetailSyllabus from './DetailSyllabus';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailCourse(props) {
   const regex = /^[\w\s]*$/;
@@ -100,7 +101,7 @@ function DetailCourse(props) {
 
 
   const getDetail = () => {
-    axios.get(`https://api.ic-fpt.click/api/v1/course/getDetail/${props.course.id}`).then((response) => {
+    axios.get(`${API_URL}/course/getDetail/${props.course.id}`).then((response) => {
       setCourse(response.data.responseSuccess[0]);
       setSyllabuses(response.data.responseSuccess[0]?.syllabus);
 
@@ -122,7 +123,7 @@ function DetailCourse(props) {
    
     axios
       .put(
-        `https://api.ic-fpt.click/api/v1/course/update/${props.course.id}?Activity=${activity}&Content=${courseContent}&CourseName=${skillName}&Status=true&DateCreate=${props.course.dateCreated}`
+        `${API_URL}/course/update/${props.course.id}?Activity=${activity}&Content=${courseContent}&CourseName=${skillName}&Status=true&DateCreate=${props.course.dateCreated}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -140,7 +141,7 @@ function DetailCourse(props) {
     axios
       .put(
         `
-https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${status}`
+${API_URL}/syllabus/changeStatusSyllabus/${id}?Status=${status}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -160,7 +161,7 @@ https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=${sta
 //     axios
 //       .put(
 //         `
-// https://api.ic-fpt.click/api/v1/syllabus/changeStatusSyllabus/${id}?Status=false`
+// ${API_URL}/syllabus/changeStatusSyllabus/${id}?Status=false`
 //       )
 //       .then(getDetail());
 //   };

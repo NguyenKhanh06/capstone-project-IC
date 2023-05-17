@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateCampus(props) {
   const regex = /^[\w\s]*$/
@@ -32,7 +33,7 @@ function CreateCampus(props) {
   const handleCreateCampus = () => {
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/campus/create?Name=${name}&Address=${address}&PartnerId=${props.PartnerID}`
+        `${API_URL}/campus/create?Name=${name}&Address=${address}&PartnerId=${props.PartnerID}`
       )
       .then((response) => {
         if (response.data.isSuccess) {

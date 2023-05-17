@@ -25,6 +25,7 @@ import CreateCourse from './CreateCourse';
 import DetailCourse from './DetailCourse';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function ListCourse(props) {
   const [message, setMessage] = useState('');
@@ -53,7 +54,7 @@ function ListCourse(props) {
   };
 
   const fetchData = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/course/getAllCourse`).then((response) => {
+    await axios.get(`${API_URL}/course/getAllCourse`).then((response) => {
    
       setCourses(response.data.responseSuccess.filter((course) => course.status));
     });
@@ -64,7 +65,7 @@ function ListCourse(props) {
   }, []);
 
   const handleDeleteCourse = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/course/delete/${id}`) .then((response) => {
+    axios.put(`${API_URL}/course/delete/${id}`) .then((response) => {
       if (response.data.isSuccess) {
         setShowSuccess(true);
         setTimeout(() =>{

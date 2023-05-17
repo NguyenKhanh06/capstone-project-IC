@@ -20,6 +20,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateSyllabus(props) {
   
@@ -29,6 +30,7 @@ function CreateSyllabus(props) {
   const [partner, setPartner] = useState(null);
 
   const [description, setDescription] = useState('');
+  const [note, setNote] = useState('');
   const [partners, setPartners] = useState([])
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -47,7 +49,7 @@ function CreateSyllabus(props) {
 
 
   const fetchDataPartner = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/partner/getAllPartner`).then((response) => {
+    await axios.get(`${API_URL}/partner/getAllPartner`).then((response) => {
       setPartners(response.data.responseSuccess);
     });
   };
@@ -57,7 +59,7 @@ function CreateSyllabus(props) {
     setLoading(true);
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/syllabus/create?Content=${content}&Description=${description}&CourseId=${props.courseID}&PartnerId=${partner}`
+        `${API_URL}/syllabus/create?Content=${content}&Description=${description}&CourseId=${props.courseID}&PartnerId=${partner}&Note=${note}`
       )
       .then((response) => {
         if (response.data.isSuccess) {
@@ -131,6 +133,20 @@ function CreateSyllabus(props) {
               onChange={(e) => setDescription(e.target.value)}
               fullWidth
               label="Description"
+              inputProps={{
+                maxLength: 1000,
+               
+              }}
+             
+            />
+            <TextField
+            required
+              value={note}
+              multiline
+              rows={5}
+              onChange={(e) => setNote(e.target.value)}
+              fullWidth
+              label="Note"
               inputProps={{
                 maxLength: 1000,
                

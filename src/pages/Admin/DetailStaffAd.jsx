@@ -25,6 +25,7 @@ import React, { useEffect, useState } from 'react';
 import Loading from '../Loading';
 import ErrorAlert from '../Alert/ErrorAlert';
 import SuccessAlert from '../Alert/SuccessAlert';
+import { API_URL } from '../../config/apiUrl/apis-url';
 
 function DetailStaffAd(props) {
 
@@ -78,7 +79,7 @@ const [password, setPassword] = useState('')
   };
 
   const getDetail = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/account/getDetail/${props.staff.accountId}`).then(response => {
+    await axios.get(`${API_URL}/account/getDetail/${props.staff.accountId}`).then(response => {
 
 setFullName(response.data.responseSuccess?.fullName)
 setEmail(response.data.responseSuccess?.email)
@@ -102,7 +103,7 @@ setAddress(props.staff?.account?.address)
   console.log(props.staff);
 
   const handleUpdateStaff = () => {
-    axios.put(`https://api.ic-fpt.click/api/v1/account/update/${props.staff.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${props.staff?.account?.role}`).then((response) => {
+    axios.put(`${API_URL}/account/update/${props.staff.accountId}?Email=${email}&Password=${password}&ConfirmPassword=${password}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=${props.staff?.account?.role}`).then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true)
      window.location.reload(false)

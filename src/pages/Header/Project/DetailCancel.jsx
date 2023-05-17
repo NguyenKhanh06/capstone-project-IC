@@ -20,6 +20,7 @@ import {
   import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
   
   function DetailCancel(props) {
@@ -40,19 +41,19 @@ import ErrorAlert from '../../Alert/ErrorAlert';
     };
 
     const getCancel = async  () => {
-        await axios.get(`https://api.ic-fpt.click/api/v1/cancel/getProjectCancel/${props.project.id}`).then(response => {
+        await axios.get(`${API_URL}/cancel/getProjectCancel/${props.project.id}`).then(response => {
       
 setCancel(response.data.responseSuccess[0])
         })
     }
     const getdetailProject = () => {
-      axios.get(`https://api.ic-fpt.click/api/v1/project/getDetail/${props.project.id}`).then((response) => {
+      axios.get(`${API_URL}/project/getDetail/${props.project.id}`).then((response) => {
         setProject(response.data.responseSuccess[0]);
       
       });
     };
     // const fetchDataDoc = async () => {
-    //   await axios.get(`https://api.ic-fpt.click/api/v1/document/getAll`).then((response) => {
+    //   await axios.get(`${API_URL}/document/getAll`).then((response) => {
     //     console.log(
     //       'doc',
     //       response.data.responseSuccess.find((doc) => doc.projectId === props.project.id)
@@ -79,7 +80,7 @@ setCancel(response.data.responseSuccess[0])
   
     // const handleExportFile = () => {
     //   axios({
-    //     url: `https://api.ic-fpt.click/api/v1/document/content/${doc.id}`,
+    //     url: `${API_URL}/document/content/${doc.id}`,
     //     method: 'GET',
     //     responseType: 'blob', // important
     //   }).then((response) => {
@@ -103,7 +104,7 @@ setCancel(response.data.responseSuccess[0])
     // };
     const handleDownload = () => {
       axios
-        .get(`https://api.ic-fpt.click/api/v1/cancel/content/${cancel?.id}`, {
+        .get(`${API_URL}/cancel/content/${cancel?.id}`, {
           responseType: 'blob',
         })
         .then((response) => {

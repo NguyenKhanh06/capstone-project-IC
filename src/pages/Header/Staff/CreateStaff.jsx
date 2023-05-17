@@ -25,6 +25,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
   import Loading from '../../Loading';
   import ErrorAlert from '../../Alert/ErrorAlert';
   import SuccessAlert from '../../Alert/SuccessAlert';
+import { API_URL } from '../../../config/apiUrl/apis-url';
   
   function CreateStaff(props) {
     const regex = /^[\w\s]*$/;
@@ -68,7 +69,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
       "staffCode": staff.email,
       "accountId": staff.accountId
     }
-    axios.post(`https://api.ic-fpt.click/api/v1/staff/create`, data).then((response) => {
+    axios.post(`${API_URL}/staff/create`, data).then((response) => {
       if (response.data.isSuccess) {
         setShowSuccess(true);
         setTimeout(reload(), 5000);
@@ -78,7 +79,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
     })
   }
     const handleCreateStaff = () => {
-        axios.post(`https://api.ic-fpt.click/api/v1/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=0
+        axios.post(`${API_URL}/account/create?Email=${email}&FullName=${fullName}&PhoneNumber=${phoneNumber}&Address=${address}&Status=true&Role=0
         `).then((response) => {
             if (response.data.isSuccess) {
               createStaff(response.data.responseSuccess)

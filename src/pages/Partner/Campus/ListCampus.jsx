@@ -30,6 +30,7 @@ import { UserListToolbar } from '../../../sections/@dashboard/user';
 import CreateCampus from '../../Header/Partner/CreateCampus';
 import DetailCampusPartner from './DetailCampusPartner';
 import CreateCampPartner from './CreateCampPartner';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function ListCampus(props) {
   const columns = [
@@ -98,7 +99,7 @@ function ListCampus(props) {
 
   const handleDeleteCampus = () => {
     axios
-      .put(`https://api.ic-fpt.click/api/v1/campus/disable/${id}`)
+      .put(`${API_URL}/campus/disable/${id}`)
       .then((response) => {
         if (response.data.isSuccess) {
           setShowSuccess(true);
@@ -112,7 +113,7 @@ function ListCampus(props) {
       });
   };
   const getCampus = async () => {
-    await axios.get(`https://api.ic-fpt.click/api/v1/campus/getAll`).then((response) => {
+    await axios.get(`${API_URL}/campus/getAll`).then((response) => {
       setCampuses(response.data.responseSuccess.filter((campus) => campus.partnerId === deputy.partnerId && campus.status));
     });
   };

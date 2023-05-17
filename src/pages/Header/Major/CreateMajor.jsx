@@ -5,6 +5,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateMajor(props) {
 
@@ -49,7 +50,7 @@ setSkillName(e.target.value)
  }
     axios
       .post(
-        `https://api.ic-fpt.click/api/v1/Major/create`, data
+        `${API_URL}/Major/create`, data
       )
       .then((response) => {
         if (response.data.isSuccess) {

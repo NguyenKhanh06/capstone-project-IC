@@ -15,6 +15,7 @@ import axios from 'axios';
 import SuccessAlert from '../../Alert/SuccessAlert';
 import ErrorAlert from '../../Alert/ErrorAlert';
 import Loading from '../../Loading';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
 function CancelProject(props) {
@@ -48,7 +49,7 @@ function CancelProject(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/project/changeStatus',
+      url: `${API_URL}/project/changeStatus`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -68,7 +69,7 @@ function CancelProject(props) {
     axios({
       method: 'POST',
       data: formData,
-      url: 'https://api.ic-fpt.click/api/v1/cancel/create',
+      url: `${API_URL}/cancel/create`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

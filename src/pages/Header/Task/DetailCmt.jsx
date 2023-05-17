@@ -87,7 +87,7 @@ function DetailCmt(props) {
     axios({
       method: 'PUT',
       data: formData,
-      url: `https://api.ic-fpt.click/api/v1/comment/updateTaskComment/${props.cmt.id}`,
+      url: `${API_URL}/comment/updateTaskComment/${props.cmt.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -118,7 +118,7 @@ function DetailCmt(props) {
   
   };
   const DeleteFile = () => {
-    axios.delete(`https://api.ic-fpt.click/api/v1/comment/deleteFile/${props.cmt.id}`).then((response) => {
+    axios.delete(`${API_URL}/comment/deleteFile/${props.cmt.id}`).then((response) => {
       if (response.data.isSuccess) {
         handleSuccess("Delete file successful!")
 

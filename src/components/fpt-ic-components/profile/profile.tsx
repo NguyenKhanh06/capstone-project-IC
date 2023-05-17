@@ -382,7 +382,7 @@ const ProfileComponent = () => {
               {infors &&
                 infors.map((infor, index) => (
                   <Link key={index} to="/register-information" state={infor}>
-                    <RightTitle NameText={infor?.project?.projectName} />
+                    <RightTitle NameText={infor?.title} />
                   </Link>
                 ))}
             </Box>

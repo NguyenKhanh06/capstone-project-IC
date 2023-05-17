@@ -4,6 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function CreateDateMil(props) {
     const [open, setOpen]= useState(false)
@@ -19,7 +20,7 @@ function CreateDateMil(props) {
             "dateBegin": fromDateInit,
             "dateEnd":toDateInit
         }
-        axios.put(`https://api.ic-fpt.click/api/v1/milestone/changeMileStoneDate/1`, data).then((response) => {
+        axios.put(`${API_URL}/milestone/changeMileStoneDate/1`, data).then((response) => {
            
         })
     }
