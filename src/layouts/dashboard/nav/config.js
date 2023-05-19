@@ -22,11 +22,11 @@ import FeedbackTwoToneIcon from '@mui/icons-material/FeedbackTwoTone';
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const navConfig = [
-  // {
-  //   title: 'dashboard',
-  //   path: '/header/app',
-  //   icon: <DashboardTwoToneIcon/>,
-  // },
+  {
+    title: 'dashboard',
+    path: '/header/app',
+    icon: <DashboardTwoToneIcon/>,
+  },
   {
     title: 'Project',
     path: '/header/project',

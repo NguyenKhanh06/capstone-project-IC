@@ -66,7 +66,7 @@ function ListProjectNego(props) {
       axios({
         method: 'POST',
         data: formData,
-        url: `${API_URLL}/document`,
+        url: `${API_URL}/document`,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -335,7 +335,7 @@ function ListProjectNego(props) {
             <DialogContentText id="alert-dialog-description">Import file before complete the Neogotiation? </DialogContentText>
             <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
             <Button style={{marginTop: 20}} color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                  Import Program file
+                 Update File
                   <input
                     onChange={onChangeFile}
                     id="input"

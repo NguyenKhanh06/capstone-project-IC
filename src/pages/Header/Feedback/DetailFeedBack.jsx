@@ -17,7 +17,7 @@ function DetailFeedBack(props) {
   const handleClose = () => {
     setOpen(props.close);
   };
-  console.log(props);
+
   return (
     <Dialog
       fullWidth

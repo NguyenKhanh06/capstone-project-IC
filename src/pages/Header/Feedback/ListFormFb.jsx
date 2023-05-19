@@ -43,7 +43,7 @@ import DetailFeedBack from './DetailFeedBack';
     const [showConfirm, setShowConfirm] = useState(false);
     const [status, setStatus] = useState(null)
     const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
-    const [id, setID] = useState('');
+    const [id, setID] = useState({});
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
     const [message, setMessage] = useState('');
@@ -52,11 +52,7 @@ import DetailFeedBack from './DetailFeedBack';
       setShowConfirm(false);
     };
 
-    const handleShowConfirmUpdate = (data, status) => {
-      setID(data);
-      setStatus(status)
-      setShowConfirmUpdate(true);
-    };
+
   
     const handleCloseConfirmUpdate = (data) => {
       setShowConfirmUpdate(false);
@@ -67,6 +63,11 @@ import DetailFeedBack from './DetailFeedBack';
       setFormDetail(data);
     };
   
+    const handleShowConfirmUpdate = (data, status) => {
+      setID(data);
+      setStatus(status)
+      setShowConfirmUpdate(true);
+    };
     const fetchData = async () => {
       await axios.get(`${API_URL}/feedback/getRootFeedBack`).then((response) => {
 
@@ -78,13 +79,35 @@ import DetailFeedBack from './DetailFeedBack';
       fetchData()
     }, []);
   
-    const handleDeleteCourse = () => {
-      axios.put(`${API_URL}/course/delete/${id}`).then((response) => {
-        window.location.reload(false);
-      });
-    };
+ 
   const handleChangeForm = () => {
     axios.put(`${API_URL}/registration/UpdateRegisStatus/${id}?status=${status}`).then((response) => {
+      if (response.data.isSuccess) {
+        setShowSuccess(true);
+        setTimeout(() => {
+ window.location.reload()
+        }, 1000)
+      }
+      setLoading(false);
+    })
+    .catch((err) => {
+      setLoading(false);
+
+    setShowError(true)
+    });
+  }
+
+  const UpdateForm = ()=>{
+    console.log(id)
+    const data ={
+   
+      "title": id?.title,
+      "description": id?.description,
+
+      "status": status,
+      "registrationId": id.registrationId
+    }
+    axios.put(`${API_URL}/feedback/UpdateFeedBackId/${id.id}`, data).then((response) => {
       if (response.data.isSuccess) {
         setShowSuccess(true);
         setTimeout(() => {
@@ -127,18 +150,18 @@ import DetailFeedBack from './DetailFeedBack';
       //     return params.row?.childrenFeedBacKs?.length
       //   },
       // },
-      // {
-      //   field: 'status',
-      //   headerName: 'Status',
-      //   flex: 1,
-      //   renderCell: (params) => {
-      //     return (
-      //       <>
-      //       {params.row.status ? <Chip label="Active" color='success'/> : <Chip label='Deactive' color='error'/>}
-      //       </>
-      //     );
-      //   },
-      // },
+      {
+        field: 'status',
+        headerName: 'Status',
+        flex: 1,
+        renderCell: (params) => {
+          return (
+            <>
+            {params.row.status ? <Chip label="Active" color='success'/> : <Chip label='Deactive' color='error'/>}
+            </>
+          );
+        },
+      },
   
     
   
@@ -156,15 +179,15 @@ import DetailFeedBack from './DetailFeedBack';
                 </IconButton>
               </Tooltip>
 
-              {/* {params.row.status ? (<Tooltip title="Close form">
-           <IconButton onClick={() => handleShowConfirmUpdate(params.row.id, false)} aria-label="delete">
+              {params.row.status ? (<Tooltip title="Close form">
+           <IconButton onClick={() => handleShowConfirmUpdate(params.row, false)} aria-label="delete">
              <HighlightOffIcon color='error'/>
            </IconButton>
          </Tooltip>) : (<Tooltip title="Open form">
-           <IconButton onClick={() => handleShowConfirmUpdate(params.row.id, true)} aria-label="delete">
+           <IconButton onClick={() => handleShowConfirmUpdate(params.row, true)} aria-label="delete">
              <CheckCircleOutlineTwoToneIcon color='success'/>
            </IconButton>
-         </Tooltip>)} */}
+         </Tooltip>)} 
               {/* <Tooltip title="Delete">
                 <IconButton onClick={() => handleShowConfirm(params.row.id)}>
                   <DeleteIcon color="error" />
@@ -238,7 +261,7 @@ import DetailFeedBack from './DetailFeedBack';
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseConfirmUpdate}>Cancel</Button>
-            <Button variant="contained" onClick={() => handleChangeForm()} autoFocus>
+            <Button variant="contained" onClick={() => UpdateForm()} autoFocus>
             Accept
             </Button>
           </DialogActions>

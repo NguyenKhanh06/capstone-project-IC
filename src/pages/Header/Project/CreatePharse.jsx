@@ -6,12 +6,17 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import React, { useEffect, useState } from 'react';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
@@ -60,8 +65,8 @@ function CreatePharse(props) {
 
   const [open, setOpen] = useState(false);
   const [createNew, setCreateNew] = useState(false);
-const [phases, setPhases] = useState([])
-const [phasesPrj, setPhasesPrj] = useState([])
+  const [phases, setPhases] = useState([]);
+  const [phasesPrj, setPhasesPrj] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [showSuccessUpdate, setShowSuccessUpdate] = useState(false);
@@ -69,18 +74,23 @@ const [phasesPrj, setPhasesPrj] = useState([])
   const [showSuccessAss, setShowSuccessAss] = useState(false);
   const [showErrorAss, setShowErrorAss] = useState(false);
   const [message, setMessage] = useState('');
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
-  const [viewDetail, setViewDetail] = useState(false)
-  const [idPhase, setIdPhase] = useState({})
+  const [viewDetail, setViewDetail] = useState(false);
+  const [idPhase, setIdPhase] = useState({});
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [fromDate, setFromDate] = useState(null)
-  const [toDate, setToDate] = useState(null)
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
 
-const handleViewDetail = (id) => {
-  setViewDetail(true)
-  setIdPhase(id)
-}
+  const [phase, setPhase] = useState('');
+  const [checkPhase, setCheckPhase] = useState(false);
+  const [formDatePhase, setFromPhase] = useState(null);
+  const [toDatePhase, setToPhase] = useState(null);
+
+  const handleViewDetail = (id) => {
+    setViewDetail(true);
+    setIdPhase(id);
+  };
 
   const handleError = (data) => {
     setShowError(true);
@@ -114,23 +124,22 @@ const handleViewDetail = (id) => {
     setCreateNew(false);
   };
   const getPhase = async () => {
-  await  axios.get(`${API_URL}/phase/getAllPhase`).then(response => {
-setPhases(response.data.responseSuccess)
-
-    })
-  }
+    await axios.get(`${API_URL}/phase/getAllPhase`).then((response) => {
+      setPhases(response.data.responseSuccess);
+    });
+  };
   const getPhaseById = async () => {
-   await axios.get(`${API_URL}/phase/getPhaseByProjectId/${props?.project?.id}`).then(response => {
-setPhasesPrj(response.data.responseSuccess)
-
-    })
-  }
+    await axios.get(`${API_URL}/phase/getPhaseByProjectId/${props?.project?.id}`).then((response) => {
+      setPhasesPrj(response.data.responseSuccess);
+    });
+  };
 
   const handleChangeSelect = (event, value) => setSelectedOptions(value);
   const assignPhase = () => {
     const formData = new FormData();
-    selectedOptions?.map(phase =>   formData.append('phaseId', phase.id) )
-
+    formData.append('PhaseName', title);
+    formData.append('DateBegin', formDatePhase.add(1, 'day'));
+    formData.append('DateEnd', toDatePhase.add(1, 'day'));
     axios({
       method: 'POST',
       data: formData,
@@ -140,81 +149,87 @@ setPhasesPrj(response.data.responseSuccess)
       },
     })
       .then((response) => {
-
         if (response.data.isSuccess) {
-   handleSuccessAss('Assign successful!')
-          getPhaseById()
+          handleSuccessAss('Create phase successful!');
+          getPhaseById();
           setTimeout(() => {
+            handleCloseCreate();
             setShowSuccessAss(false);
-          }, 2000)
-    
+          }, 2000);
+          getPhase();
+          // setTimeout(() => {
+          //   setShowSuccessAss(false);
+          // }, 2000);
         }
       })
       .catch((err) => {
-        handleErrorAss("Assign fail!!!!");
+        handleErrorAss('Create phase fail!!!!');
         setTimeout(() => {
           setShowErrorAss(false);
-        }, 2000)
-
+        }, 2000);
       });
-  }
-  
-const UnassignPhase = (id) => {
-  axios.post(`https://localhost:7115/api/v1/phase/removePhase/${props?.project?.id}?phaseId=${id}
-  `) .then((response) => {
-
-    if (response.data.isSuccess) {
-      handleSuccessAss('Unassign successful!')
-      getPhaseById()
-      setTimeout(() => {
-        setShowSuccessAss(false);
-      }, 2000)
-    }
-  })
-  .catch((err) => {
-    handleErrorAss("Unassign fail!!!!");
-    setTimeout(() => {
-      setShowErrorAss(false);
-    }, 2000)
-
-  });
-}
-
-  const CreatePhase = () => {
+  };
+  const assignPhase2 = () => {
     const formData = new FormData();
-    formData.append('PhaseName', title);
+    formData.append('PhaseId', phase);
     axios({
       method: 'POST',
       data: formData,
-      url: `${API_URL}/phase/create`,
+      url: `${API_URL}/phase/addPhase/${props?.project?.id}`,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
       .then((response) => {
-
         if (response.data.isSuccess) {
-          setShowSuccess(true);
+          handleSuccessAss('Create phase successful!');
+          getPhaseById();
           setTimeout(() => {
-            handleCloseCreate()
-          }, 2000)
-          getPhase()
+
+            setShowSuccessAss(false);
+          }, 2000);
+          getPhase();
+          // setTimeout(() => {
+          //   setShowSuccessAss(false);
+          // }, 2000);
         }
       })
       .catch((err) => {
-        handleError("Create fail!!!!");
-        setLoading(false);
+        handleErrorAss('Create phase fail!!!!');
         setTimeout(() => {
-          handleCloseCreate()
-        }, 2000)
+          setShowErrorAss(false);
+        }, 2000);
       });
-  }
-const ChangePhaseDate = (id) => {
-  const formData = new FormData();
-    formData.append('ProjectId',props?.project?.id);
-    formData.append('PhaseId',id);
-    formData.append('DateBegin',fromDate.add(1, 'day'));
-    formData.append('DateEnd',toDate.add(1, 'day'));
+  };
+  const UnassignPhase = (id) => {
+    axios
+      .post(
+        `https://localhost:7115/api/v1/phase/removePhase/${props?.project?.id}?phaseId=${id}
+  `
+      )
+      .then((response) => {
+        if (response.data.isSuccess) {
+          handleSuccessAss('Unassign successful!');
+          getPhaseById();
+          setTimeout(() => {
+            setShowSuccessAss(false);
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        handleErrorAss('Unassign fail!!!!');
+        setTimeout(() => {
+          setShowErrorAss(false);
+        }, 2000);
+      });
+  };
+
+  const ChangePhaseDate = (id) => {
+    const formData = new FormData();
+    formData.append('ProjectId', props?.project?.id);
+    formData.append('PhaseId', id);
+    formData.append('DateBegin', fromDate.add(1, 'day'));
+    formData.append('DateEnd', toDate.add(1, 'day'));
     axios({
       method: 'PUT',
       data: formData,
@@ -224,34 +239,32 @@ const ChangePhaseDate = (id) => {
       },
     })
       .then((response) => {
-
         if (response.data.isSuccess) {
-    handleSuccessUpdate("Update successful!")
+          handleSuccessUpdate('Update successful!');
           setTimeout(() => {
-         setViewDetail(false)
-         setShowSuccessUpdate(false)
-          }, 2000)
-          getPhaseById()
+            setViewDetail(false);
+            setShowSuccessUpdate(false);
+          }, 2000);
+          getPhaseById();
         }
       })
       .catch((err) => {
-        handleErrorUpdate("Update fail!!!!");
-  
+        handleErrorUpdate('Update fail!!!!');
+
         setTimeout(() => {
-          setViewDetail(false)
-          setShowErrorUpdate(false)
-        }, 2000)
+          setViewDetail(false);
+          setShowErrorUpdate(false);
+        }, 2000);
       });
-}
+  };
   useEffect(() => {
-   getPhase()
-   getPhaseById()
-   
+    getPhase();
+    getPhaseById();
   }, [props.project]);
   useEffect(() => {
-    setFromDate(idPhase?.dateBegin)
-    setToDate(idPhase?.dateEnd)
-   }, [idPhase]);
+    setFromDate(idPhase?.dateBegin);
+    setToDate(idPhase?.dateEnd);
+  }, [idPhase]);
 
   const columns = [
     {
@@ -259,10 +272,8 @@ const ChangePhaseDate = (id) => {
       headerName: 'Phase Name',
       flex: 1,
       valueGetter: (params) => {
-
-        return params.row.phase.phaseName;
+        return params.row?.phase?.phaseName;
       },
-    
     },
 
     {
@@ -270,16 +281,13 @@ const ChangePhaseDate = (id) => {
       headerName: 'Date Begin',
       flex: 1,
       valueFormatter: (params) => dayjs(params?.value).format('DD/MM/YYYY'),
-    
     },
     {
       field: 'dateEnd',
       headerName: 'Date End',
       flex: 1,
       valueFormatter: (params) => dayjs(params?.value).format('DD/MM/YYYY'),
-    
     },
-
 
     {
       headerName: 'Action',
@@ -290,12 +298,12 @@ const ChangePhaseDate = (id) => {
         return (
           <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
             <Tooltip title="View Detail">
-              <IconButton  aria-label="delete" onClick={() => handleViewDetail(params.row)}>
+              <IconButton aria-label="delete" onClick={() => handleViewDetail(params.row)}>
                 <RemoveRedEyeRoundedIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Unassign">
-              <IconButton onClick={() => UnassignPhase(params.row.phaseId)} >
+              <IconButton onClick={() => UnassignPhase(params.row.phaseId)}>
                 <DeleteIcon color="error" />
               </IconButton>
             </Tooltip>
@@ -304,8 +312,10 @@ const ChangePhaseDate = (id) => {
       },
     },
   ];
-
-
+  const ITEM_HEIGHT = 46;
+  const MOBILE_ITEM_HEIGHT = 58;
+  const ITEM_PADDING_TOP = 18;
+  const MENU_ITEMS = 6;
   return (
     <div>
       <Dialog
@@ -316,7 +326,7 @@ const ChangePhaseDate = (id) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <form >
+        <form>
           <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
             <DialogTitle id="alert-dialog-title">Assign Project Phase</DialogTitle>
             <IconButton style={{ marginRight: 6 }} onClick={() => handleClose()}>
@@ -325,93 +335,160 @@ const ChangePhaseDate = (id) => {
           </Stack>
           <Divider variant="middle" />
           <DialogContent>
-            <Autocomplete
-        multiple
-        id="tags-outlined"
-        options={phases.filter((elem) => !phasesPrj.some((ele) => ele.phaseId === elem.id))}
-        getOptionLabel={(option) => option.phaseName}
-        onChange={handleChangeSelect}
-        filterSelectedOptions
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Phase"
-            placeholder="Phase"
-          />
-        )}
-      />
-        <DataGrid
-            autoHeight
-            style={{ marginTop: 20 }}
-            rows={phasesPrj}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 10,
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Phase</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={phase}
+                label="Phase"
+                onChange={(e) => {
+                  setPhase(e.target.value);
+                }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: {
+                        xs: MOBILE_ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                        sm: ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                      },
+                    },
+                  },
+                }}
+              >
+                <em>
+                  <Button
+                    onClick={() => setCreateNew(true)}
+                    size="small"
+                    fullWidth
+                    endIcon={<AddOutlinedIcon />}
+                    variant="contained"
+                  >
+                    Create New Phase
+                  </Button>
+                </em>
+                {phases
+                  .filter((elem) => !phasesPrj.some((ele) => ele.phaseId === elem.id))
+                  .map((phase) => (
+                    <MenuItem value={phase.id}>{phase.phaseName}</MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+            <DataGrid
+              autoHeight
+              style={{ marginTop: 20 }}
+              rows={phasesPrj}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 10,
+                  },
                 },
-              },
-            }}
-            pageSizeOptions={[10]}
-            disableRowSelectionOnClick
-          />
+              }}
+              pageSizeOptions={[10]}
+              disableRowSelectionOnClick
+            />
           </DialogContent>
-          
 
           <DialogActions style={{ padding: 20 }}>
-            <Button variant="contained" onClick={() => setCreateNew(true)} autoFocus>
+            {phase ?  <Button variant="contained" onClick={() => assignPhase2()} autoFocus>
               New Phase
-            </Button>
-            <Button variant="contained" onClick={() =>  assignPhase()} autoFocus>
+            </Button> :  <Button disabled variant="contained" onClick={() => assignPhase2()} autoFocus>
+              New Phase
+            </Button>}
+           
+            {/* <Button variant="contained" onClick={() => assignPhase()} autoFocus>
               Add Phase
-            </Button>
+            </Button> */}
           </DialogActions>
         </form>
-        <SuccessAlert show={showSuccessAss} close={() => setShowSuccess(false)} message={message} />
-        <ErrorAlert show={showErrorAss} close={() => setShowError(false)} message={message} />
-
-
 
         <Dialog
-        fullWidth
-        maxWidth="md"
-        open={createNew}
-        onClose={handleCloseCreate}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <form >
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-            <DialogTitle id="alert-dialog-title">Create Project Phase</DialogTitle>
-            <IconButton style={{ marginRight: 6 }} onClick={() => handleCloseCreate()}>
-              <CloseOutlinedIcon />
-            </IconButton>
-          </Stack>
-          <Divider variant="middle" />
-          <DialogContent>
-          <TextField id="outlined-basic" fullWidth label="Phase's title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
-          </DialogContent>
-          
+          fullWidth
+          maxWidth="md"
+          open={createNew}
+          onClose={handleCloseCreate}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <form>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+              <DialogTitle id="alert-dialog-title">Create Project Phase</DialogTitle>
+              <IconButton style={{ marginRight: 6 }} onClick={() => handleCloseCreate()}>
+                <CloseOutlinedIcon />
+              </IconButton>
+            </Stack>
+            <Divider variant="middle" />
+            <DialogContent>
+              <Stack direction="column" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                {/* <Autocomplete
+              multiple
+              id="tags-outlined"
+              options={phases.filter((elem) => !phasesPrj.some((ele) => ele.phaseId === elem.id))}
+              getOptionLabel={(option) => option.phaseName}
+              onChange={handleChangeSelect}
+              filterSelectedOptions
+              renderInput={(params) => <TextField {...params} label="Phase" placeholder="Phase" />}
+            /> */}
+                <TextField
+                  id="outlined-basic"
+                  fullWidth
+                  label="Phase's title"
+                  variant="outlined"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                  <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      disablePast
+                      fullWidth
+                      label="From date"
+                      value={dayjs(formDatePhase)}
+                      onChange={(newValue) => {
+                        setFromPhase(newValue);
+                      }}
+                      format="DD/MM/YYYY"
+                    />
+                  </LocalizationProvider>
+                  <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      disablePast
+                      minDate={dayjs(formDatePhase)}
+                      fullWidth
+                      label="To date"
+                      value={dayjs(toDatePhase)}
+                      onChange={(newValue) => {
+                        setToPhase(newValue);
+                      }}
+                      format="DD/MM/YYYY"
+                    />
+                  </LocalizationProvider>
+                </Stack>
+              </Stack>
+            </DialogContent>
 
-          <DialogActions style={{ padding: 20 }}>
-            <Button variant="contained" onClick={() => CreatePhase()} autoFocus>
-              Create Phase
-            </Button>
-          </DialogActions>
-        
-        </form>
-        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Pharse Successful!'} />
-        <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
-      </Dialog>
-      <Dialog
-        fullWidth
-        maxWidth="md"
-        open={viewDetail}
-        onClose={() => setViewDetail(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-   
+            <DialogActions style={{ padding: 20 }}>
+              {title.trim().length && formDatePhase && toDatePhase ?  <Button variant="contained" onClick={() => assignPhase()} autoFocus>
+                Create Phase
+              </Button> :  <Button variant="contained" disabled onClick={() => assignPhase()} autoFocus>
+                Create Phase
+              </Button>}
+             
+            </DialogActions>
+          </form>
+          <SuccessAlert show={showSuccessAss} close={() => setShowSuccess(false)} message={message} />
+          <ErrorAlert show={showErrorAss} close={() => setShowError(false)} message={message} />
+        </Dialog>
+        <Dialog
+          fullWidth
+          maxWidth="md"
+          open={viewDetail}
+          onClose={() => setViewDetail(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
           <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
             <DialogTitle id="alert-dialog-title">{idPhase?.phase?.phaseName}</DialogTitle>
             <IconButton style={{ marginRight: 6 }} onClick={() => setViewDetail(false)}>
@@ -420,54 +497,49 @@ const ChangePhaseDate = (id) => {
           </Stack>
           <Divider variant="middle" />
           <DialogContent>
-{/* <Typography>{idPhase?.phase?.phaseName}</Typography> */}
-          {/* <TextField id="outlined-basic" fullWidth label="Phase's title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} /> */}
-          <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
-          <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        disablePast
-                     
-         
-                        sx={{ width: '40%' }}
-                        label="From date"
-                        value={dayjs(fromDate)}
-                        onChange={(newValue) => {
-                          setFromDate(newValue);
-                        }}
-                        format="DD/MM/YYYY"
-                      />
-                    </LocalizationProvider>
-                    <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        disablePast
-                      
-                        minDate={dayjs(fromDate)}
-                        sx={{ width: '40%' }}
-                        label="To date"
-                        value={dayjs(toDate)}
-                        onChange={(newValue) => {
-                          setToDate(newValue);
-                        }}
-                        format="DD/MM/YYYY"
-                      />
-                    </LocalizationProvider>
-
-                  </Stack>
+            {/* <Typography>{idPhase?.phase?.phaseName}</Typography> */}
+            {/* <TextField id="outlined-basic" fullWidth label="Phase's title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} /> */}
+            <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
+              <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  disablePast
+                  sx={{ width: '40%' }}
+                  label="From date"
+                  value={dayjs(fromDate)}
+                  onChange={(newValue) => {
+                    setFromDate(newValue);
+                  }}
+                  format="DD/MM/YYYY"
+                />
+              </LocalizationProvider>
+              <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  disablePast
+                  minDate={dayjs(fromDate)}
+                  sx={{ width: '40%' }}
+                  label="To date"
+                  value={dayjs(toDate)}
+                  onChange={(newValue) => {
+                    setToDate(newValue);
+                  }}
+                  format="DD/MM/YYYY"
+                />
+              </LocalizationProvider>
+            </Stack>
           </DialogContent>
-          
 
           <DialogActions style={{ padding: 20 }}>
-          
-          <Button onClick={() => ChangePhaseDate(idPhase?.phaseId)} variant="contained" autoFocus>
-                      Update Date
-                    </Button>
+            <Button onClick={() => ChangePhaseDate(idPhase?.phaseId)} variant="contained" autoFocus>
+              Update Date
+            </Button>
           </DialogActions>
-        
+
           <SuccessAlert show={showSuccessUpdate} close={() => setShowSuccessUpdate(false)} message={message} />
-        <ErrorAlert show={showErrorUpdate} close={() => setShowErrorUpdate(false)} message={message} />
+          <ErrorAlert show={showErrorUpdate} close={() => setShowErrorUpdate(false)} message={message} />
+        </Dialog>
+        <SuccessAlert show={showSuccessAss} close={() => setShowSuccess(false)} message={message} />
+        <ErrorAlert show={showErrorAss} close={() => setShowError(false)} message={message} />
       </Dialog>
-      </Dialog>
-    
     </div>
   );
 }

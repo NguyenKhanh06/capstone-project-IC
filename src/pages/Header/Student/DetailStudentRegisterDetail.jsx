@@ -84,9 +84,11 @@ function DetailStudentRegisterDetail(props) {
   // };
   const handleRegis = () => {
     for (let i = 0; i <= inputList.length; i += 1) {
-      axios.put(
-        `${API_URL}/registration/updateAnswer?RegistrationId=${props.studentID.id}&Id=${inputList[i]?.id}&Answer=${inputList[i]?.answer}`
-      ).then(res => console.log(res));
+      axios
+        .put(
+          `${API_URL}/registration/updateAnswer?RegistrationId=${props.studentID.id}&Id=${inputList[i]?.id}&Answer=${inputList[i]?.answer}`
+        )
+        .then((res) => console.log(res));
     }
   };
   const handleInputChange = (e, index) => {
@@ -94,7 +96,7 @@ function DetailStudentRegisterDetail(props) {
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
-    setDisableBtn(true)
+    setDisableBtn(true);
   };
 
   const getDetail = async () => {
@@ -258,7 +260,7 @@ function DetailStudentRegisterDetail(props) {
               </Stack>
             </Stack>
             <Divider variant="middle" sx={{ marginBottom: 6, marginTop: 4 }} />
-            <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2} >
+            <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
               <Typography variant="body1">Project:</Typography>
               <Typography variant="h6">{student?.project.projectName}</Typography>
             </Stack>

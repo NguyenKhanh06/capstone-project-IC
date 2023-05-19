@@ -148,7 +148,7 @@ function ListProject(props) {
           params.row.projectStatus === 2 && (
             <Chip label="Cancel" color="error" />
           ) ||  
-          <Chip label={ params.row?.projectPhase?.find(phase => phase.phase.status)?.phase?.phaseName} />
+          <Chip label={ params.row?.projectPhase?.find(phase => phase?.phase?.status)?.phase?.phaseName} />
          
         }
 

@@ -209,10 +209,10 @@ const [mess, setMess] = useState('')
   };
   const getDetailFb = async () => {
     await axios.get(`${API_URL}/feedback/getDetailByRes/${data.parentRegistrationsId}`).then((response) => {
-      getDetailFbByStudent(response.data.responseSuccess[0].id);
-      setFormFb(response.data.responseSuccess[0]);
-      setInputListFb(response.data.responseSuccess[0].feedBackAddOns);
-      setTitleFb(response.data.responseSuccess[0].title);
+      getDetailFbByStudent(response.data.responseSuccess.find(form => form.status).id);
+      setFormFb(response.data.responseSuccess.find(form => form.status));
+      setInputListFb(response.data.responseSuccess.find(form => form.status).feedBackAddOns);
+      setTitleFb(response.data.responseSuccess.find(form => form.status).title);
     });
   };
 

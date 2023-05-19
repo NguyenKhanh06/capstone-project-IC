@@ -306,16 +306,16 @@ function DetailForm(props) {
             </Stack>
           ))}
           <Divider sx={{ marginTop: 5 }} variant="middle" />
-
+{/* 
           <Typography sx={{ marginTop: 3, marginBottom: 3 }} variant="h6">
             Add more filed
           </Typography>
           <Button sx={{ marginBottom: 5 }} variant="contained" onClick={handleAddClick}>
             Add Field
-          </Button>
+          </Button> */}
         </Stack>
 
-        {inputList.length
+        {/* {inputList.length
           ? inputList.map((x, i) => (
               <Stack direction="column" spacing={2} key={i} style={{ marginTop: 4 }}>
                 <Divider sx={{ marginTop: 2 }} variant="middle" />
@@ -340,7 +340,7 @@ function DetailForm(props) {
           <Button sx={{ marginTop: 5 }} variant="contained" onClick={() => CreateOptionQuestion()}>
             Add Question
           </Button>
-        )) || <></>}
+        )) || <></>} */}
         <Divider sx={{ marginTop: 5 }} variant="middle" />
 
         <Typography sx={{ marginTop: 6, marginBottom: 4 }} variant="h6">

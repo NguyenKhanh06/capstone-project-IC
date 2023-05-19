@@ -1,5 +1,4 @@
 import {
-
   Button,
   Dialog,
   DialogActions,
@@ -12,9 +11,7 @@ import {
   InputAdornment,
   InputLabel,
   Link,
-
   ListItem,
-
   MenuItem,
   Select,
   Stack,
@@ -36,7 +33,7 @@ import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function DetailStudent(props) {
   const regexMail = /^[a-zA-Z0-9._%+-]+@fpt\.edu\.vn$/i;
-  const regex = /^[\w\s]*$/
+  const regex = /^[\w\s]*$/;
   const regexPhone = /(0[3|5|7|8|9])+([0-9]{7})\b/g;
 
   const [open, setOpen] = useState(false);
@@ -67,7 +64,6 @@ function DetailStudent(props) {
 
   const [CheckerrPhone, setErrPhone] = useState(false);
 
-
   const handleShowConfirm = (data) => {
     setID(data);
     setShowConfirm(true);
@@ -91,13 +87,13 @@ function DetailStudent(props) {
     setMessage(data);
     setShowSuccess(true);
   };
- 
+
   useEffect(() => {
     if (props.student !== null) {
       setFullName(props.student.fullName);
       setRollNumber(props.student.rollNumber);
       setMemberCode(props.student.memberCode);
-   setMajorID(props.student.majorId)
+      setMajorID(props.student.majorId);
       setBatch(props.student.batch);
       setSemester(props.student.semeter);
       setStudentStatus(props.student.studentStatus);
@@ -108,31 +104,29 @@ function DetailStudent(props) {
     }
   }, [props.student]);
 
-
   // const handleUpdateStudent = () => {};
   // console.log(props.student);
   const data = {
-    "rollNumber": rollNumber,
-    "memberCode": memberCode,
-    "fullName": fullName,
-    "oldRollNumber": props.student.rollNumber,
-    "majorId": majorID,
-    "batch": batch,
-    "semeter": semester,
-    "upStatus": studentStatus,
-    "email": email,
-    "phoneNumber": phoneNumber,
-    "address": address,
-    "status": true
-  }
+    rollNumber: rollNumber,
+    memberCode: memberCode,
+    fullName: fullName,
+    oldRollNumber: props.student.rollNumber,
+    majorId: majorID,
+    batch: batch,
+    semeter: semester,
+    upStatus: studentStatus,
+    email: email,
+    phoneNumber: phoneNumber,
+    address: address,
+    status: true,
+  };
   const handleUpdateStudent = () => {
     axios
       .put(`${API_URL}/student/update/${props.student.id}`, data)
       .then((response) => {
-
         if (response.data.isSuccess) {
           window.location.reload(false);
-        
+
           handleSuccess('Update Student Successfull!!!');
         }
       })
@@ -146,25 +140,25 @@ function DetailStudent(props) {
 
   // };
 
-const deleteFile = (name) => {
-  axios.delete(`${API_URL}/student/deleteGrading/${props.student.id}`)   .then((response) => {
- 
-    if (response.data.isSuccess) {
-      handleSuccess('Delete File Successfull!!!');
+  const deleteFile = (name) => {
+    axios
+      .delete(`${API_URL}/student/deleteGrading/${props.student.id}`)
+      .then((response) => {
+        if (response.data.isSuccess) {
+          handleSuccess('Delete File Successfull!!!');
 
-      setTimeout(() => {
-        window.location.reload()
-             }, 1000)
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
 
-      // setTimeout(reload(), 3000)
-    } 
-  })
-  .catch((err) => {
-    
-    handleError('Delete File fail!!');
-    setLoading(false);
-  });
-}
+          // setTimeout(reload(), 3000)
+        }
+      })
+      .catch((err) => {
+        handleError('Delete File fail!!');
+        setLoading(false);
+      });
+  };
 
   const getAllFile = () => {
     axios.get(`${API_URL}/student/GetGradingStudentId/${props.student.id}`).then((response) => {
@@ -173,11 +167,9 @@ const deleteFile = (name) => {
   };
 
   useEffect(() => {
-    if(props.student){
+    if (props.student) {
       getAllFile();
-  
     }
-
   }, [props.student]);
 
   const handleImportFile = (id) => {
@@ -192,22 +184,20 @@ const deleteFile = (name) => {
       },
     })
       .then((response) => {
-    
         if (response.data.isSuccess) {
           handleSuccess('Upload File Successfull!!!');
           setTimeout(() => {
-     window.location.reload()
-          }, 1000)
+            window.location.reload();
+          }, 1000);
 
           // setTimeout(reload(), 3000)
-        } 
+        }
       })
       .catch((err) => {
-       
         handleError('Upload File fail!!');
         setTimeout(() => {
-          window.location.reload()
-               }, 1000)
+          window.location.reload();
+        }, 1000);
         setLoading(false);
       });
   };
@@ -250,13 +240,10 @@ const deleteFile = (name) => {
   };
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
-
   };
 
-  
   const handleChangeMajor = (e) => {
-
-    setMajorID(e.target.value)
+    setMajorID(e.target.value);
     setDisableBtn(true);
   };
   const handleChangeBatch = (e) => {
@@ -298,34 +285,29 @@ const deleteFile = (name) => {
     if (regexMail.test(email)) {
       setErr(false);
       setDisableBtn(true);
-
     } else {
       setErr(true);
     }
   };
   const handleChangePhone = (e) => {
-    setPhoneNumber(e.target.value)
+    setPhoneNumber(e.target.value);
     if (regexPhone.test(phoneNumber)) {
       setErrPhone(false);
-      setDisableBtn(true)
+      setDisableBtn(true);
     } else {
       setErrPhone(true);
-      setDisableBtn(false)
-
+      setDisableBtn(false);
     }
-
-  }
+  };
 
   const fetchData = async () => {
     await axios.get(`${API_URL}/Major/getAllMajor`).then((response) => {
-     
       setMajors(response.data.responseSuccess.filter((course) => course.status));
     });
   };
 
-
   useEffect(() => {
-    fetchData()
+    fetchData();
   }, []);
   const ITEM_HEIGHT = 46;
   const MOBILE_ITEM_HEIGHT = 58;
@@ -354,32 +336,38 @@ const deleteFile = (name) => {
             <Stack direction="column" spacing={3.5}>
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                 <TextField value={fullName} onChange={handleChangeName} required fullWidth label="Full Name" />
-                <TextField value={memberCode} onChange={handleChangeCode} required fullWidth label="Member Code"
-                    error={ !regex.test(memberCode)}
-                    helperText={!regex.test(memberCode) && "Can not input special character"} />
+                <TextField
+                  value={memberCode}
+                  onChange={handleChangeCode}
+                  required
+                  fullWidth
+                  label="Member Code"
+                  error={!regex.test(memberCode)}
+                  helperText={!regex.test(memberCode) && 'Can not input special character'}
+                />
               </Stack>
 
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                 <TextField
-                   value={email}
-                   onChange={handleChangeEmail}
-                   onBlur={onblurMail}
-                   required
-                   fullWidth
-                   label="Email"
-                   error={Checkerr}
-                   helperText={Checkerr && 'Please input email fpt'}
+                  value={email}
+                  onChange={handleChangeEmail}
+                  onBlur={onblurMail}
+                  required
+                  fullWidth
+                  label="Email"
+                  error={Checkerr}
+                  helperText={Checkerr && 'Please input email fpt'}
                 />
-                  <TextField
-                    value={phoneNumber}
-                    onChange={handleChangePhone}
-                    required
-                    fullWidth
-                    inputProps={{ maxLength: 10 }}
-                    label="Phone Number"
-                    error={CheckerrPhone}
-                    helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
-                  />
+                <TextField
+                  value={phoneNumber}
+                  onChange={handleChangePhone}
+                  required
+                  fullWidth
+                  inputProps={{ maxLength: 10 }}
+                  label="Phone Number"
+                  error={CheckerrPhone}
+                  helperText={CheckerrPhone && 'Phone number must be 10 digits only'}
+                />
               </Stack>
               <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
                 <TextField
@@ -389,10 +377,9 @@ const deleteFile = (name) => {
                   label="Roll Number"
                   value={rollNumber}
                   onChange={handleChangeRoll}
-                  error={ !regex.test(rollNumber)}
-                  helperText={!regex.test(rollNumber) && "Can not input special character"}
-                  inputProps={{ maxLength: 9}}
-
+                  error={!regex.test(rollNumber)}
+                  helperText={!regex.test(rollNumber) && 'Can not input special character'}
+                  inputProps={{ maxLength: 9 }}
                 />
 
                 <Stack>
@@ -409,49 +396,54 @@ const deleteFile = (name) => {
                 </Stack>
               </Stack>
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
- 
-              <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Major</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={majorID}
-                      label="Major"
-                      onChange={handleChangeMajor}
-                      defaultValue= {props.student.majorId}
-                      MenuProps={{
-                        PaperProps: {
-                          sx: {
-                            maxHeight: {
-                              xs: MOBILE_ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
-                              sm: ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP
-                            }
-                          }
-                        }
-                      }}
-                    >
-                      
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Major</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={majorID}
+                    label="Major"
+                    onChange={handleChangeMajor}
+                    defaultValue={props.student.majorId}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: {
+                          maxHeight: {
+                            xs: MOBILE_ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                            sm: ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                          },
+                        },
+                      },
+                    }}
+                  >
+                    {majors.map((major, index) => (
+                      <MenuItem key={index} value={major.id}>
+                        {major.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
-                      {majors.map((major, index) => (
-                  
- <MenuItem key={index} value={major.id}>{major.name}</MenuItem>
-                      ))}
-                   
-                    </Select>
-                  </FormControl>
-               
-                   
-                <TextField value={batch} type="number" onChange={handleChangeBatch} required fullWidth label="Batch"
-                 
-                
-                error={ !regex.test(batch)}
-                helperText={!regex.test(batch) && "Can not input special character"}
+                <TextField
+                  value={batch}
+                  type="number"
+                  onChange={handleChangeBatch}
+                  required
+                  fullWidth
+                  label="Batch"
+                  error={!regex.test(batch)}
+                  helperText={!regex.test(batch) && 'Can not input special character'}
                 />
               </Stack>
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-                <TextField value={semester} onChange={handleChangeSemester} required fullWidth label="Semester"
-                error={ !regex.test(semester)}
-                helperText={!regex.test(semester) && "Can not input special character"}
+                <TextField
+                  value={semester}
+                  onChange={handleChangeSemester}
+                  required
+                  fullWidth
+                  label="Semester"
+                  error={!regex.test(semester)}
+                  helperText={!regex.test(semester) && 'Can not input special character'}
                 />
                 {/* <TextField
                   value={studentStatus}
@@ -460,31 +452,37 @@ const deleteFile = (name) => {
                   fullWidth
                   label="Student status"
                 /> */}
-                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Student Status</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={studentStatus}
-                      label="Student Status"
-                      defaultValue={props.student.studentStatus}
-                      onChange={handleChangeStatus}
-                    >
-                      <MenuItem value="HD">Active</MenuItem>
-                      <MenuItem value="KHD">Deactive</MenuItem>
-                    </Select>
-                    </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Student Status</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={studentStatus}
+                    label="Student Status"
+                    defaultValue={props.student.studentStatus}
+                    onChange={handleChangeStatus}
+                  >
+                    <MenuItem value="HD">Active</MenuItem>
+                    <MenuItem value="KHD">Deactive</MenuItem>
+                  </Select>
+                </FormControl>
               </Stack>
 
-              <TextField value={address} multiline onChange={handleChangeAddress} required fullWidth label="Address" 
-                   inputProps={{ maxLength: 200 }}
-                   InputProps={{
-                     endAdornment: (
-                       <InputAdornment position="end" style={{ position: 'absolute', right: 10, bottom: 25 }}>
-                         {address?.length}/200
-                       </InputAdornment>
-                     ),
-                   }}
+              <TextField
+                value={address}
+                multiline
+                onChange={handleChangeAddress}
+                required
+                fullWidth
+                label="Address"
+                inputProps={{ maxLength: 200 }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end" style={{ position: 'absolute', right: 10, bottom: 25 }}>
+                      {address?.length}/200
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Stack>
             <Divider style={{ marginTop: 20 }} variant="middle" />
@@ -492,44 +490,44 @@ const deleteFile = (name) => {
             <DialogTitle>File Student's Mark</DialogTitle>
 
             {props?.student?.gradingUrl ? (
-             <ListItem disableGutters divider>
-             <Link href={listFile.gradingUrl}>  <Button
-                    color="warning"
-
-                    variant="contained"
-                    startIcon={<FileDownloadOutlinedIcon />}
-            
-                  >
+              <ListItem disableGutters divider>
+                <Link href={listFile?.gradingUrl}>
+                  {' '}
+                  <Button color="warning" variant="contained" startIcon={<FileDownloadOutlinedIcon />}>
                     Download File
-                  </Button></Link>
-           
-             <Tooltip title="Delete File">
-           <IconButton onClick={() => setShowConfirmDelete(true)}>
-             <DeleteIcon color="error" />
-           </IconButton>
-         </Tooltip> 
-           </ListItem>
-            ):  <>
-            
-            <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-            Import File
-            <input onChange={(e) => setFileStudent(e.target.files[0])} id="input" accept='.pdf' hidden type="file" />
-          </Button>
-          <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>
-            </> }
+                  </Button>
+                </Link>
+
+                <Tooltip title="Delete File">
+                  <IconButton onClick={() => setShowConfirmDelete(true)}>
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                </Tooltip>
+              </ListItem>
+            ) : (
+              <>
+                <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
+                  Update File
+                  <input
+                    onChange={(e) => setFileStudent(e.target.files[0])}
+                    id="input"
+                    accept=".pdf"
+                    hidden
+                    type="file"
+                  />
+                </Button>
+                <p style={{ marginTop: 10, color: 'red' }}>(Just accept file with size under 20MB)</p>
+              </>
+            )}
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-           
-
-              {disableBtn && !CheckerrPhone
-              
-              && regex.test(rollNumber) && 
+              {disableBtn &&
+              !CheckerrPhone &&
+              regex.test(rollNumber) &&
               regex.test(memberCode) &&
-
- regex.test(batch) &&
-   regex.test(semester)
-              ? (
+              regex.test(batch) &&
+              regex.test(semester) ? (
                 <Button variant="contained" onClick={() => setShowConfirm(true)} autoFocus>
                   Save
                 </Button>
@@ -580,7 +578,7 @@ const deleteFile = (name) => {
           </DialogActions>
 
           <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
-      <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+          <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
         </Dialog>
         <Dialog
           open={showConfirmDelete}
@@ -596,19 +594,18 @@ const deleteFile = (name) => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseConfirmDelete}>Cancel</Button>
-            <Button variant="contained" color='error' onClick={() => deleteFile()} autoFocus>
-     Delete
+            <Button variant="contained" color="error" onClick={() => deleteFile()} autoFocus>
+              Delete
             </Button>
           </DialogActions>
 
           <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
-      <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+          <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
         </Dialog>
-        
-      <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
-      <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
-      </Dialog>
 
+        <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={message} />
+        <ErrorAlert show={showError} close={() => setShowError(false)} message={message} />
+      </Dialog>
     </div>
   );
 }

@@ -81,7 +81,7 @@ const RegisterComponent = () => {
   const [show, setShow] = useState(false);
   const [showErr, setShowErr] = useState(false);
   const [inputList, setInputList] = useState([]);
-  
+
   const containerRef = useRef(null);
   const formik = useFormik({
     initialValues: {
@@ -122,18 +122,18 @@ const RegisterComponent = () => {
       // {ProgramForm && (ProgramForm?.contentHeader4&& ProgramForm?.contentHeader3 && ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1) &&  console.log(4)}
 
       const formData = new FormData();
-      formData.append('Title', Program['title'])
-      formData.append('ParentId',Program['id'])
+      formData.append('Title', Program['title']);
+      formData.append('ParentId', Program['id']);
 
-      formData.append('ProjectId', Program['projectId'])
-      formData.append('NumberPassPort',values.PassportNumber)
-      formData.append('ScocialLink',values.FacebookLink)
-      formData.append('DateExpired',values.ExpirationDate)
-      formData.append('DateOfBirth',values.DOB)
-      formData.append('StudentId',student.id)
-    
+      formData.append('ProjectId', Program['projectId']);
+      formData.append('NumberPassPort', values.PassportNumber);
+      formData.append('ScocialLink', values.FacebookLink);
+      formData.append('DateExpired', values.ExpirationDate);
+      formData.append('DateOfBirth', values.DOB);
+      formData.append('StudentId', student.id);
+
       // inputList.map(question => formData.append('AddMoreOptinal', question.question))
-  
+
       axios({
         method: 'POST',
         data: formData,
@@ -141,33 +141,37 @@ const RegisterComponent = () => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      })
-        .then((response) => {
-          const data = {
-            memberCode: student.memberCode,
-            oldRollNumber: student.oldRollNumber,
-            batch: student.batch,
-            semeter: student.semeter,
-            upStatus: student.studentStatus,
-            address: student.address,
-            rollNumber: values.RollNumber,
-            fullName: values.FullName,
-            majorId: Major.id,
-            email: student.email,
-            phoneNumber: values.PhoneNumber,
-            status: true,
-          };
-          if (response.data.isSuccess) {
-            setShow(true);
-          handleRegis(response.data.responseSuccess.registrationAddOn)
-            handleUpdateStudent(data);
+      }).then((response) => {
+        const data = {
+          memberCode: student.memberCode,
+          oldRollNumber: student.oldRollNumber,
+          batch: student.batch,
+          semeter: student.semeter,
+          upStatus: student.studentStatus,
+          address: student.address,
+          rollNumber: values.RollNumber,
+          fullName: values.FullName,
+          majorId: Major.id,
+          email: student.email,
+          phoneNumber: values.PhoneNumber,
+          status: true,
+        };
+        handleUpdateStudent(data);
+        if (response.data.isSuccess) {
+          
+          setShow(true);
+        
+          handleRegis(response.data.responseSuccess.registrationAddOn);
 
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
-          }
-        })
-      
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }else{
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }
+      });
     },
 
     //if register function succesful, redirect to login page
@@ -177,10 +181,14 @@ const RegisterComponent = () => {
   });
 
   const handleRegis = (res) => {
-
-  for(let i = 0; i <= res.length; i += 1){
-    axios.put(`${API_URL}/registration/updateAnswer?RegistrationId=${res[i]?.registrationId}&Id=${res[i]?.id}&Answer=${inputList[i]?.answer}`).then(response => console.log(response))
-  }
+    for (let i = 0; i <= res?.length; i += 1) {
+      console.log("res", res[i])
+      axios
+        .put(
+          `${API_URL}/registration/updateAnswer?RegistrationId=${res[i]?.registrationId}&Id=${res[i]?.id}&Answer=${inputList[i]?.answer}`
+        )
+        .then((response) => console.log(response));
+    }
     // if(ProgramForm?.contentHeader1){
     // }
     // else if(ProgramForm?.contentHeader2 && ProgramForm?.contentHeader1){
@@ -199,19 +207,18 @@ const RegisterComponent = () => {
     axios
       .put(`${API_URL}/student/update/${student.id}`, data)
       .then((response) => {
-
         if (response.data.isSuccess) {
           setShow(true);
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 2000);
         }
       })
       .catch((err) => {
         setShowErr(true);
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 2000);
       });
   };
   const getAllForm = async () => {
@@ -222,14 +229,13 @@ const RegisterComponent = () => {
   const getDetailForm = async (id) => {
     await axios.get(`${API_URL}/registration/GetDetailResId/${id}`).then((response) => {
       setProgramForm(response.data.responseSuccess[0]);
-     
-      console.log(response.data.responseSuccess[0])
+
+      console.log(response.data.responseSuccess[0]);
       // addList(response.data.responseSuccess[0])
       // for (const element in response.data.responseSuccess[0].registrationAddOn) {
       //   console.log(element);
       // }
-      setInputList(response.data.responseSuccess[0].registrationAddOn)
-
+      setInputList(response.data.responseSuccess[0].registrationAddOn);
     });
   };
 
@@ -284,13 +290,11 @@ const RegisterComponent = () => {
   useEffect(() => {
     getAllForm();
     getAllMajor();
-    setMajor(student?.major)
+    setMajor(student?.major);
   }, []);
   useEffect(() => {
     if (Program) {
-      getDetailForm(Program.id)
-   
-
+      getDetailForm(Program.id);
     }
   }, [Program]);
   const handleInputChange = (e, index) => {
@@ -302,7 +306,7 @@ const RegisterComponent = () => {
 
   return (
     <>
-      {(forms && Majors) && (
+      {(forms && Majors && (
         <Slide
           direction="up"
           in={true}
@@ -318,7 +322,6 @@ const RegisterComponent = () => {
           >
             <Box
               sx={{
-            
                 width: '80%',
                 height: '100%',
                 backgroundColor: ' #F8F8F8',
@@ -331,7 +334,6 @@ const RegisterComponent = () => {
             >
               <Box
                 sx={{
-                  
                   height: '200px',
                   width: '100%',
                   borderTopRightRadius: '30px',
@@ -355,53 +357,53 @@ const RegisterComponent = () => {
                   width: 'auto',
                 }}
               >
-                {student && <form onSubmit={formik.handleSubmit}>
-         
-            <Title number={'1'} title={'Program *'} />
-            <Autocomplete
-              componentsProps={{
-                paper: {
-                  sx: {
-                    fontWeight: 'bold',
-                  },
-                },
-              }}
-              options={forms}
-              getOptionLabel={(option) => option['title']}
-              sx={{ border: 'none !important', fontWeight: 'bold', width: '43%' }}
-              onChange={(event, newValue) => {
-                setInputList([])
-                setProgram(newValue);
+                {(student && (
+                  <form onSubmit={formik.handleSubmit}>
+                    <Title number={'1'} title={'Program *'} />
+                    <Autocomplete
+                      componentsProps={{
+                        paper: {
+                          sx: {
+                            fontWeight: 'bold',
+                          },
+                        },
+                      }}
+                      options={forms}
+                      getOptionLabel={(option) => option['title']}
+                      sx={{ border: 'none !important', fontWeight: 'bold', width: '43%' }}
+                      onChange={(event, newValue) => {
+                        setInputList([]);
+                        setProgram(newValue);
 
-                formik.setFieldValue('Program', newValue !== null ? newValue['id'].toString() : '');
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                  sx={{
-                    borderRadius: '25px',
-                    backgroundColor: '#D9D9D9',
-                    margin: '10px 0 0 20px',
-                    border: 'none !important',
-                    '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                    '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                      border: 'none !important',
-                    },
-                    '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      border: 'none !important',
-                    },
-                    '& .MuiSvgIcon-root': {
-                      color: 'primary.main',
-                    },
-                  }}
-                  placeholder="Select Program"
-                />
-              )}
-              noOptionsText="This program not found"
-            />
+                        formik.setFieldValue('Program', newValue !== null ? newValue['id'].toString() : '');
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
+                          sx={{
+                            borderRadius: '25px',
+                            backgroundColor: '#D9D9D9',
+                            margin: '10px 0 0 20px',
+                            border: 'none !important',
+                            '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                            '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                              border: 'none !important',
+                            },
+                            '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              border: 'none !important',
+                            },
+                            '& .MuiSvgIcon-root': {
+                              color: 'primary.main',
+                            },
+                          }}
+                          placeholder="Select Program"
+                        />
+                      )}
+                      noOptionsText="This program not found"
+                    />
 
-            {/* {!student?.major &&Boolean(formik.touched.Program && formik.errors.Program) && (
+                    {/* {!student?.major &&Boolean(formik.touched.Program && formik.errors.Program) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
                   {formik.touched.Program && formik.errors.Program}
@@ -409,221 +411,216 @@ const RegisterComponent = () => {
               </Box>
             )} */}
 
-            <Box sx={{ display: 'flex', width: '100%' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'2'} title={'Full name *'} />
-                <InputBar
-                  inputName="FullName"
-                  width={'90%'}
-                  {...formik.getFieldProps('FullName')}
-                  error={Boolean(formik.touched.FullName && formik.errors.FullName)}
-                  helperText={formik.touched.FullName && formik.errors.FullName}
-                />
-              </Box>
-              
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'3'} title={'Roll number *'} />
-                  <InputBar
-                inputName="RollNumber"
-                width={'90%'}
-                check={student?.rollNumber}
-                {...formik.getFieldProps('RollNumber')}
-                error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
-                helperText={formik.touched.RollNumber && formik.errors.RollNumber}
-              />
-                
-           
-              </Box>
-            </Box>
-            <Title number={'4'} title={'Major *'} />
-            {!student?.major && (
-              <Autocomplete
-                componentsProps={{
-                  paper: {
-                    sx: {
-                      fontWeight: 'bold',
-                    },
-                  },
-                }}
+                    <Box sx={{ display: 'flex', width: '100%' }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: '50%',
+                        }}
+                      >
+                        <Title number={'2'} title={'Full name *'} />
+                        <InputBar
+                          inputName="FullName"
+                          width={'90%'}
+                          {...formik.getFieldProps('FullName')}
+                          error={Boolean(formik.touched.FullName && formik.errors.FullName)}
+                          helperText={formik.touched.FullName && formik.errors.FullName}
+                        />
+                      </Box>
 
-                defaultValue={student?.major}
-                disablePortal
-                
-                options={Majors}
-                getOptionLabel={(option) => option['majorFullName']}
-                sx={{ border: 'none !important', fontWeight: 'bold' }}
-                onChange={(event, newValue) => {
-                  setMajor(newValue);
-                  formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
-                }}
-                
-                renderInput={(params) => (
-                  <TextField
-         
-                    {...params}
-                    inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
-                    sx={{
-                      width: '93.5%',
-                      borderRadius: '25px',
-                      backgroundColor: '#D9D9D9',
-                      margin: '10px 0 0 20px',
-                      border: 'none !important',
-                      '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                      '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                        border: 'none !important',
-                      },
-                      '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        border: 'none !important',
-                      },
-                      '& .MuiSvgIcon-root': {
-                        color: 'primary.main',
-                      },
-                    }}
-                    placeholder="Select Major"
-                  />
-                )}
-                noOptionsText="This major not found"
-              />
-            ) ||    <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">{student?.major.majorFullName}</Typography> }
-            
-           {/* {Boolean(formik.touched.Major && formik.errors.Major) && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: '50%',
+                        }}
+                      >
+                        <Title number={'3'} title={'Roll number *'} />
+                        <InputBar
+                          inputName="RollNumber"
+                          width={'90%'}
+                          check={student?.rollNumber}
+                          {...formik.getFieldProps('RollNumber')}
+                          error={Boolean(formik.touched.RollNumber && formik.errors.RollNumber)}
+                          helperText={formik.touched.RollNumber && formik.errors.RollNumber}
+                        />
+                      </Box>
+                    </Box>
+                    <Title number={'4'} title={'Major *'} />
+                    {(!student?.major && (
+                      <Autocomplete
+                        componentsProps={{
+                          paper: {
+                            sx: {
+                              fontWeight: 'bold',
+                            },
+                          },
+                        }}
+                        defaultValue={student?.major}
+                        disablePortal
+                        options={Majors}
+                        getOptionLabel={(option) => option['majorFullName']}
+                        sx={{ border: 'none !important', fontWeight: 'bold' }}
+                        onChange={(event, newValue) => {
+                          setMajor(newValue);
+                          formik.setFieldValue('Major', newValue !== null ? newValue['id'].toString() : '');
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            inputProps={{ ...params.inputProps, style: { fontWeight: 'bold' } }}
+                            sx={{
+                              width: '93.5%',
+                              borderRadius: '25px',
+                              backgroundColor: '#D9D9D9',
+                              margin: '10px 0 0 20px',
+                              border: 'none !important',
+                              '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                              '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                                border: 'none !important',
+                              },
+                              '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                border: 'none !important',
+                              },
+                              '& .MuiSvgIcon-root': {
+                                color: 'primary.main',
+                              },
+                            }}
+                            placeholder="Select Major"
+                          />
+                        )}
+                        noOptionsText="This major not found"
+                      />
+                    )) || (
+                      <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
+                        {student?.major.majorFullName}
+                      </Typography>
+                    )}
+
+                    {/* {Boolean(formik.touched.Major && formik.errors.Major) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
                   {formik.touched.Major && formik.errors.Major}
                 </Typography>
               </Box>
             )} */}
-            <Box
-              sx={{
-                display: 'flex',
-                width: '100%',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  width: '50%',
-                  flexDirection: 'column',
-                }}
-              >
-                <Title number={'5'} title={'Date of birth'} />
-                <Box height={12}></Box>
-                <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    sx={{
-                      input: { fontWeight: 'bold' },
-                      margin: '0 0 0 20px',
-                      padding: '0 20px 0 5px',
-                      width: '90%',
-                      borderRadius: '25px',
-                      '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                      '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                        border: 'none !important',
-                      },
-                      '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        border: 'none !important',
-                      },
-                    }}
-                    value={DOB}
-                    onChange={(newValue) => {
-                      setDOB(newValue);
-                      formik.setFieldValue('DOB', newValue);
-                    }}
-                    format="DD/MM/YYYY"
-                  />
-                </LocalizationProvider>
-                {Boolean(formik.touched.DOB && formik.errors.DOB) && (
-                  <Box sx={{ margin: ' 10px 0 0 20px' }}>
-                    <Typography color={'red'} fontSize="14px">
-                      {formik.touched.DOB && formik.errors.DOB}
-                    </Typography>
-                  </Box>
-                )}
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '50%',
-                }}
-              >
-                <Title number={'6'} title={'Phone number *'} />
-               <InputBar
-                inputName="PhoneNumber"
-                width={'90%'}
-                check={student?.phoneNumber}
-             
-                {...formik.getFieldProps('PhoneNumber')}
-                error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
-                helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
-              />
-                
-               
-              </Box>
-            </Box>
-            <Title number={'7'} title={'Passport number'} />
-            <InputBar
-              inputName="PassportNumber"
-              width={'95%'}
-              {...formik.getFieldProps('PassportNumber')}
-              // error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
-              // helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
-            />
-            <Title number={'8'} title={'Expiration date'} />
-            <Box height={12}></Box>
-            <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
-              <DatePicker
-                sx={{
-                  input: { fontWeight: 'bold' },
-                  margin: '0 0 0 20px',
-                  padding: '0 20px 0 5px',
-                  width: '93.5%',
-                  borderRadius: '25px',
-                  '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
-                  '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                    border: 'none !important',
-                  },
-                  '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    border: 'none !important',
-                  },
-                }}
-                value={ExpirationDate}
-                onChange={(newValue) => {
-                  setExpirationDate(newValue);
-                  formik.setFieldValue('ExpirationDate', newValue);
-                }}
-                format="DD/MM/YYYY"
-              />
-            </LocalizationProvider>
-            {/* {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          width: '50%',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <Title number={'5'} title={'Date of birth'} />
+                        <Box height={12}></Box>
+                        <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            sx={{
+                              input: { fontWeight: 'bold' },
+                              margin: '0 0 0 20px',
+                              padding: '0 20px 0 5px',
+                              width: '90%',
+                              borderRadius: '25px',
+                              '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                              '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                                border: 'none !important',
+                              },
+                              '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                border: 'none !important',
+                              },
+                            }}
+                            value={DOB}
+                            onChange={(newValue) => {
+                              setDOB(newValue);
+                              formik.setFieldValue('DOB', newValue);
+                            }}
+                            format="DD/MM/YYYY"
+                          />
+                        </LocalizationProvider>
+                        {Boolean(formik.touched.DOB && formik.errors.DOB) && (
+                          <Box sx={{ margin: ' 10px 0 0 20px' }}>
+                            <Typography color={'red'} fontSize="14px">
+                              {formik.touched.DOB && formik.errors.DOB}
+                            </Typography>
+                          </Box>
+                        )}
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: '50%',
+                        }}
+                      >
+                        <Title number={'6'} title={'Phone number *'} />
+                        <InputBar
+                          inputName="PhoneNumber"
+                          width={'90%'}
+                          check={student?.phoneNumber}
+                          {...formik.getFieldProps('PhoneNumber')}
+                          error={Boolean(formik.touched.PhoneNumber && formik.errors.PhoneNumber)}
+                          helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
+                        />
+                      </Box>
+                    </Box>
+                    <Title number={'7'} title={'Passport number'} />
+                    <InputBar
+                      inputName="PassportNumber"
+                      width={'95%'}
+                      {...formik.getFieldProps('PassportNumber')}
+                      // error={Boolean(formik.touched.PassportNumber && formik.errors.PassportNumber)}
+                      // helperText={formik.touched.PassportNumber && formik.errors.PassportNumber}
+                    />
+                    <Title number={'8'} title={'Expiration date'} />
+                    <Box height={12}></Box>
+                    <LocalizationProvider size="small" dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        sx={{
+                          input: { fontWeight: 'bold' },
+                          margin: '0 0 0 20px',
+                          padding: '0 20px 0 5px',
+                          width: '93.5%',
+                          borderRadius: '25px',
+                          '.MuiOutlinedInput-notchedOutline': { border: 'none !important' },
+                          '&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+                            border: 'none !important',
+                          },
+                          '&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            border: 'none !important',
+                          },
+                        }}
+                        value={ExpirationDate}
+                        onChange={(newValue) => {
+                          setExpirationDate(newValue);
+                          formik.setFieldValue('ExpirationDate', newValue);
+                        }}
+                        format="DD/MM/YYYY"
+                      />
+                    </LocalizationProvider>
+                    {/* {Boolean(formik.touched.ExpirationDate && formik.errors.ExpirationDate) && (
               <Box sx={{ margin: ' 10px 0 0 20px' }}>
                 <Typography color={'red'} fontSize="14px">
                   {formik.touched.ExpirationDate && formik.errors.ExpirationDate}
                 </Typography>
               </Box>
             )} */}
-            <Title number={'9'} title={'Personal Facebook link *'} />
-            <InputBar
-              inputName="FacebookLink"
-              width={'95%'}
-              {...formik.getFieldProps('FacebookLink')}
-              error={Boolean(formik.touched.FacebookLink && formik.errors.FacebookLink)}
-              helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
-            />
-            {/* <Title number={'10'} title={'Passport image *'} />
+                    <Title number={'9'} title={'Personal Facebook link *'} />
+                    <InputBar
+                      inputName="FacebookLink"
+                      width={'95%'}
+                      {...formik.getFieldProps('FacebookLink')}
+                      error={Boolean(formik.touched.FacebookLink && formik.errors.FacebookLink)}
+                      helperText={formik.touched.FacebookLink && formik.errors.FacebookLink}
+                    />
+                    {/* <Title number={'10'} title={'Passport image *'} />
       {!PassportImage ||
         (PassportImage.length < 1 && (
           <Box
@@ -763,83 +760,87 @@ const RegisterComponent = () => {
         </Box>
       )} */}
 
-          {inputList?.map((x, index) => (
-            <Box
-            key={index}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              width: '50%',
-            }}
-          >
-            <Title number={String(9 + index + 1)} title={x?.question} />
-            <TextField
-             variant="standard" // <== changed this
-             InputProps={{
-               disableUnderline: true, // <== change this
-             }}
-    name="answer"
-    placeholder={'Enter your answer here'}
-    inputProps={{
-      style: { fontWeight: 'bold !important' },
-    }}
-   multiline
-    sx={{
-      backgroundColor: 'background.grey',
-      width:'100vh',
-     minHeight: '60px',
-      borderRadius: '25px',
-      fontSize: '25px',
-      justifyContent: 'center',
-      padding: ' 0 20px',
-      fontWeight: 'bold !important',
-    }}
-    value={x.answer}
-    onChange={e => handleInputChange(e, index)}
-  />
-            {/* <TextField onChange={() => } /> */}
-            {/* <InputBar
+                    {inputList?.map((x, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: '50%',
+                        }}
+                      >
+                        <Title number={String(9 + index + 1)} title={x?.question} />
+                        <TextField
+                          variant="standard" // <== changed this
+                          InputProps={{
+                            disableUnderline: true, // <== change this
+                          }}
+                          name="answer"
+                          placeholder={'Enter your answer here'}
+                          inputProps={{
+                            style: { fontWeight: 'bold !important' },
+                          }}
+                          multiline
+                          sx={{
+                            backgroundColor: 'background.grey',
+                            width: '100vh',
+                            minHeight: '60px',
+                            borderRadius: '25px',
+                            fontSize: '25px',
+                            justifyContent: 'center',
+                            padding: ' 0 20px',
+                            fontWeight: 'bold !important',
+                          }}
+                          value={x.answer}
+                          onChange={(e) => handleInputChange(e, index)}
+                        />
+                        {/* <TextField onChange={() => } /> */}
+                        {/* <InputBar
               inputName={form?.question}
               width={'90%'}
               {...formik.getFieldProps(form?.question)}
             /> */}
-          </Box>
-          )) }
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: '50px',
-              }}
-            >
-              <Button
-                disableRipple
-                variant="contained"
-                sx={{
-                  fontWeight: '500',
-                  fontSize: '20px',
-                  padding: '10px 50px',
-                  borderRadius: '10px',
-                  backgroundColor: 'primary.main',
-                  color: 'secondary.contrastText',
-                  transition: 'all .5s',
-                  boxShadow: '0 2px 3px #00000085',
+                      </Box>
+                    ))}
+                    <Box
+                      sx={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '50px',
+                      }}
+                    >
+                      <Button
+                        disableRipple
+                        variant="contained"
+                        sx={{
+                          fontWeight: '500',
+                          fontSize: '20px',
+                          padding: '10px 50px',
+                          borderRadius: '10px',
+                          backgroundColor: 'primary.main',
+                          color: 'secondary.contrastText',
+                          transition: 'all .5s',
+                          boxShadow: '0 2px 3px #00000085',
 
-                  '&:hover': {
-                    backgroundColor: 'primary.main',
-                    transform: 'translateY(3px)',
-                  },
-                }}
-                type="submit"
-              >
-                SUBMIT
-              </Button>
-            </Box>
-          </form> || <Box sx={{height: "100vh"}}>
-          <Typography style={{marginTop: "5%"}} variant='h6' >Please <Link to={"/login"}>Login</Link> before regis any program!</Typography>
-          </Box> }
-             
+                          '&:hover': {
+                            backgroundColor: 'primary.main',
+                            transform: 'translateY(3px)',
+                          },
+                        }}
+                        type="submit"
+                      >
+                        SUBMIT
+                      </Button>
+                    </Box>
+                  </form>
+                )) || (
+                  <Box sx={{ height: '100vh' }}>
+                    <Typography style={{ marginTop: '5%' }} variant="h6">
+                      Please <Link to={'/login'}>Login</Link> before regis any program!
+                    </Typography>
+                  </Box>
+                )}
               </Box>
             </Box>
             <Snackbar
@@ -898,9 +899,20 @@ const RegisterComponent = () => {
             </Snackbar>
           </Box>
         </Slide>
-      )||     <Box  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, height: "100vh", position:"relative", top: "50vh", left: "80vh" }}>
-      <CircularProgress />
-    </Box>}
+      )) || (
+        <Box
+          sx={{
+            color: '#fff',
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            height: '100vh',
+            position: 'relative',
+            top: '50vh',
+            left: '80vh',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 };

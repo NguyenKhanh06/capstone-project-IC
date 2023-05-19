@@ -251,9 +251,9 @@ import DetailFeedBack from './DetailFeedBack';
       })
       .catch((err) => {
         handleError('Update fail!!!!');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+             setTimeout(() => {
+              window.location.reload();
+            }, 1000);
       });
     }
 
