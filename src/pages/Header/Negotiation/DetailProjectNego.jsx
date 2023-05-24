@@ -230,7 +230,7 @@ function DetailProjectNego(props) {
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
                 {
                   props.project.checkNegotiationStatus ?        <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                  Import Course Result
+                 Update file Course Result
                   <input
                     onChange={onChangeFile}
                     id="input"
@@ -239,7 +239,7 @@ function DetailProjectNego(props) {
                     type="file"
                   />
                 </Button> :        <Button disabled color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                  Import Course Result
+                  Update File Course Result
                   <input
                     onChange={onChangeFile}
                     id="input"

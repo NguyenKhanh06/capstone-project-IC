@@ -18,7 +18,7 @@ import {
 import { PieChart, Pie, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar, Cell } from 'recharts';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Chart from './Header/Chart';
+
 import { API_URL } from '../config/apiUrl/apis-url';
 import DetailStudentRegister from './Header/Student/DetailStudentRegister';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
@@ -52,6 +52,8 @@ export default function DashboardAppPage() {
   const [projects, setProjects] = useState([]);
   const [project, setProject] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [Subtask, setSubTask] = useState([]);
+  const [taskName, setTaskName] = useState('');
   const [showRegis, setShowRegis] = useState(false);
   const [regis, setRegis] = useState([]);
   const [student, setStudent] = useState([]);
@@ -59,8 +61,8 @@ export default function DashboardAppPage() {
     setShowRegis(true);
     setStudent(data);
   };
-  const fetchRegis = async () => {
-    await axios.get(`${API_URL}/registration/getDetailbyProjectId/${project}`).then((response) => {
+  const fetchRegis = async (taskid) => {
+    await axios.get(`${API_URL}/registration/getDetailbyProjectId/${taskid}`).then((response) => {
       setRegis(response.data.responseSuccess);
     });
   };
@@ -71,13 +73,18 @@ export default function DashboardAppPage() {
       console.log(response.data.responseSuccess);
     });
   };
-  const fetchDataTask = async () => {
+  const fetchDataTask = async (taskid) => {
     await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
       setTasks(
         response.data.responseSuccess
-          .filter((mil) => mil.projectId === project)
+          .filter((mil) => mil.projectId === taskid)
           .filter((task) => task.state !== 3 && task.status !== 5)
       );
+    });
+  };
+  const fetchDataChildTask = async (taskid) => {
+    await axios.get(`${API_URL}/task/GetChildTask/${taskid}`).then((response) => {
+      setSubTask(response.data.responseSuccess.filter((task) => task.status !== 5));
     });
   };
 
@@ -89,15 +96,26 @@ export default function DashboardAppPage() {
     { title: 'Process', lengthTask: tasks.filter((task) => task.state === 1).length },
     { title: 'Done', lengthTask: tasks.filter((task) => task.state === 2).length },
   ];
+  const dataSubchart = [
+    {
+      title: 'Todo',
+      lengthTask: Subtask?.filter((task) => task.status === 0).length,
+    },
+    { title: 'Process', lengthTask: Subtask?.filter((task) => task.status === 1).length },
+    { title: 'Review', lengthTask: Subtask?.filter((task) => task.status === 2).length },
+    { title: 'Reject', lengthTask: Subtask?.filter((task) => task.status === 3).length },
+    { title: 'Done', lengthTask: Subtask?.filter((task) => task.status === 4).length },
+  ];
 
   useEffect(() => {
     fetchData();
   }, []);
-  useEffect(() => {
-    fetchRegis();
-    fetchDataTask();
-    console.log(project);
-  }, [project]);
+  // useEffect(() => {
+  //   fetchDataTask();
+  //   fetchRegis();
+
+  //   console.log(tasks);
+  // }, [project]);
 
   const columns = [
     {
@@ -152,6 +170,7 @@ export default function DashboardAppPage() {
   const ITEM_PADDING_TOP = 18;
   const MENU_ITEMS = 6;
   const COLORS = ['#FFC107', '#2065D1', '#54D62C'];
+  const COLOR = ['#FFC107', '#2065D1', '#af19fa', '#ff0400', '#54D62C'];
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -185,6 +204,8 @@ export default function DashboardAppPage() {
             label="Project"
             onChange={(e) => {
               setProject(e.target.value);
+              fetchDataTask(e.target.value);
+              fetchRegis(e.target.value);
             }}
             MenuProps={{
               PaperProps: {
@@ -203,10 +224,122 @@ export default function DashboardAppPage() {
           </Select>
         </FormControl>
 
-{tasks.length ? (
+        {tasks.length ? (
+          <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
+            <div style={{ textAlign: 'left' }}>
+              <Divider variant="middle" sx={{ marginBottom: 5 }} />
+              <Typography variant="h3" sx={{ marginBottom: 5 }}>
+                All Task
+              </Typography>
+              <div>
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center
+              "
+                  spacing={2}
+                >
+                  <PieChart width={300} height={300}>
+                    <Pie
+                      dataKey="lengthTask"
+                      isAnimationActive={false}
+                      data={datachart}
+                      // cx={120}
+                      // cy={200}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      fill="#8884d8"
+                      label={renderCustomizedLabel}
+                    >
+                      {tasks.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                  <Stack
+                    direction="column"
+                    justifyContent="flex-start"
+                    alignItems="flex-start
+              "
+                    spacing={2}
+                  >
+                    <Stack
+                      Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center
+              "
+                      spacing={2}
+                    >
+                      <div style={{ width: '30px', height: '20px', backgroundColor: '#FFC107' }} />
+                      <Typography>To do ({tasks.filter((task) => task.state === 0).length})</Typography>
+                    </Stack>
+                    <Stack
+                      Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center
+              "
+                      spacing={2}
+                    >
+                      <div style={{ width: '30px', height: '20px', backgroundColor: '#2065D1' }} />
+                      <Typography>Process ({tasks.filter((task) => task.state === 1).length})</Typography>
+                    </Stack>
+                    <Stack
+                      Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center
+              "
+                      spacing={2}
+                    >
+                      <div style={{ width: '30px', height: '20px', backgroundColor: '#54D62C' }} />
+                      <Typography>Done ({tasks.filter((task) => task.state === 2).length})</Typography>
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </div>
+            </div>
+            {/* <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Tasks</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={taskName}
+                label="Tasks"
+                onChange={(e) => {
+                  setTaskName(e.target.value);
+                  fetchDataChildTask(e.target.value);
+                }}
+                sx={{ width: '50%' }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: {
+                        xs: MOBILE_ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                        sm: ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                      },
+                    },
+                  },
+                }}
+              >
+                {tasks.map((task) => (
+                  <MenuItem value={task.id}>{task.taskName}</MenuItem>
+                ))}
+              </Select>
+            </FormControl> */}
+          </Stack>
+        ) : (
+          <></>
+        )}
+        {/* {(Subtask?.length && (
           <div style={{ textAlign: 'left' }}>
-               <Divider variant='middle' sx={{ marginBottom: 5}}/>
-            <Typography variant='h3' sx={{ marginBottom: 5}}>All Task</Typography>
+            <Divider variant="middle" sx={{ marginBottom: 5, marginTop: 5 }} />
+            <Typography variant="h3" sx={{ marginBottom: 5 }}>
+              All Sub Task
+            </Typography>
             <div>
               <Stack
                 direction="row"
@@ -219,7 +352,7 @@ export default function DashboardAppPage() {
                   <Pie
                     dataKey="lengthTask"
                     isAnimationActive={false}
-                    data={datachart}
+                    data={dataSubchart}
                     // cx={120}
                     // cy={200}
                     cx="50%"
@@ -228,9 +361,10 @@ export default function DashboardAppPage() {
                     fill="#8884d8"
                     label={renderCustomizedLabel}
                   >
-                    {tasks.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
+                    {Subtask.map((entry, index) => (
+                  
+                        <Cell key={`cell-${index}`} fill={COLOR[index % COLOR.length]} />
+                      ))}
                   </Pie>
                   <Tooltip />
                 </PieChart>
@@ -250,7 +384,7 @@ export default function DashboardAppPage() {
                     spacing={2}
                   >
                     <div style={{ width: '30px', height: '20px', backgroundColor: '#FFC107' }} />
-                    <Typography>To do</Typography>
+                    <Typography>To do ({Subtask?.filter((task) => task.status === 0).length})</Typography>
                   </Stack>
                   <Stack
                     Stack
@@ -261,7 +395,29 @@ export default function DashboardAppPage() {
                     spacing={2}
                   >
                     <div style={{ width: '30px', height: '20px', backgroundColor: '#2065D1' }} />
-                    <Typography>Process</Typography>
+                    <Typography>Process ({Subtask?.filter((task) => task.status === 1).length})</Typography>
+                  </Stack>
+                  <Stack
+                    Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center
+              "
+                    spacing={2}
+                  >
+                    <div style={{ width: '30px', height: '20px', backgroundColor: '#af19fa' }} />
+                    <Typography>Review ({Subtask?.filter((task) => task.status === 2).length})</Typography>
+                  </Stack>
+                  <Stack
+                    Stack
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center
+              "
+                    spacing={2}
+                  >
+                    <div style={{ width: '30px', height: '20px', backgroundColor: '#ff0400' }} />
+                    <Typography>Reject ({Subtask?.filter((task) => task.status === 3).length})</Typography>
                   </Stack>
                   <Stack
                     Stack
@@ -272,17 +428,17 @@ export default function DashboardAppPage() {
                     spacing={2}
                   >
                     <div style={{ width: '30px', height: '20px', backgroundColor: '#54D62C' }} />
-                    <Typography>Done</Typography>
+                    <Typography>Done ({Subtask?.filter((task) => task.status === 4).length})</Typography>
                   </Stack>
                 </Stack>
               </Stack>
             </div>
           </div>
-        ) : (
-          <></>
-        )}
-        <Divider variant='middle' sx={{ marginBottom: 5}}/>
-        <Typography variant='h3' sx={{ marginBottom: 5}}>Form registration (Total registration: {regis?.length}) </Typography>
+        )) || <></>} */}
+        <Divider variant="middle" sx={{ marginBottom: 5 }} />
+        <Typography variant="h3" sx={{ marginBottom: 5 }}>
+          Form registration (Total registration: {regis?.length}){' '}
+        </Typography>
         <Card>
           {regis && (
             <DataGrid
@@ -302,7 +458,6 @@ export default function DashboardAppPage() {
           )}
         </Card>
 
-       
         {/* <DetailStudentRegister show={showRegis} close={() => setShowRegis(false)} studentID = {student.id}/> */}
       </Container>
     </>

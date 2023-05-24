@@ -43,6 +43,7 @@ import RegisterInformation from './pages/FPTIC/Information/index'
 import History from './pages/Admin/History';
 import AuthGuard from './components/fpt-ic-components/guards/auth-guard';
 import ListFormFb from './pages/Header/Feedback/ListFormFb';
+import Dashboard from './Dashboard';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -79,7 +80,7 @@ export default function Router() {
       element: <DashboardLayoutPartner />,
       children: [
         { element: <Navigate to="/partner/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
+        { path: 'app', element: <Dashboard /> },
         { path: 'project', element: <ListProjectNegoPartner/> },
         { path: 'campus', element: <ListCampus/> },
         { path: 'deputy', element: <ListDeputy/> },
@@ -92,7 +93,7 @@ export default function Router() {
       element: <DashboardLayoutMember />,
       children: [
         { element: <Navigate to="/staff/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
+        { path: 'app', element: <Dashboard /> },
         { path: 'list-task-cancel', element: <ListTaskCancel />},
         { path: 'projects', element: <ListProjectMember/> },
         { path: 'member/list-task', element: <ListTaskMember />},
@@ -110,7 +111,7 @@ export default function Router() {
       element: <DashboardLayoutAdmin />,
       children: [
         { element: <Navigate to="/admin/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
+        { path: 'app', element: <Dashboard /> },
         { path: 'partner', element: <ListPartnerAd /> },
         { path: 'staff', element: <Role /> },
         { path: 'changelog', element: <History /> },

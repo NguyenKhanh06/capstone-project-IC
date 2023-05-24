@@ -225,7 +225,7 @@ function DetailProjectNegoPartner(props) {
                 Download File Contract
               </Button>  */}
               {props.project?.checkNegotiationStatus ?   <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                Update Mark For Student
+                Update File Mark For Student
                 <input
                   onChange={onChangeFile}
                   id="input"
@@ -234,7 +234,7 @@ function DetailProjectNegoPartner(props) {
                   type="file"
                 />
               </Button> :   <Button disabled color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-            Update Course Result
+            Update File Course Result
                 <input
                   onChange={onChangeFile}
                   id="input"
