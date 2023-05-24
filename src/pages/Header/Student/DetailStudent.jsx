@@ -185,7 +185,7 @@ function DetailStudent(props) {
     })
       .then((response) => {
         if (response.data.isSuccess) {
-          handleSuccess('Upload File Successfull!!!');
+          handleSuccess('Update File Successfull!!!');
           setTimeout(() => {
             window.location.reload();
           }, 1000);
@@ -194,7 +194,7 @@ function DetailStudent(props) {
         }
       })
       .catch((err) => {
-        handleError('Upload File fail!!');
+        handleError('Update File fail!!');
         setTimeout(() => {
           window.location.reload();
         }, 1000);
