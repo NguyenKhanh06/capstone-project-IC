@@ -47,7 +47,7 @@ function DetailCate(props) {
   const getDetail = async () => {
     await axios.get(`${API_URL}/program/getDetail/${props.cate.id}`).then((response) => {
       setCateName(response.data.responseSuccess[0]?.name);
-      setDes(response.data.responseSuccess[0]?.description);
+      setDes(response.data?.responseSuccess[0]?.description);
     });
   };
   const handleUpdateCategory = () => {

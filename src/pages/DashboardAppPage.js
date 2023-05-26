@@ -23,6 +23,8 @@ import { API_URL } from '../config/apiUrl/apis-url';
 import DetailStudentRegister from './Header/Student/DetailStudentRegister';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import { DataGrid } from '@mui/x-data-grid';
+import dayjs from 'dayjs';
+import { Box } from '@mui/system';
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
@@ -100,7 +102,28 @@ export default function DashboardAppPage() {
 
   ];
 
+  const column = [
+    {
+      field: 'taskName',
+      headerName: 'Task Name',
+      flex: 3,
+    },
 
+    {
+      field: 'dateCreated',
+      headerName: 'Create Date',
+      flex: 2,
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
+    },
+    {
+      field: 'deadLine',
+      headerName: 'Deadline',
+      flex:2,
+      valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
+    },
+   
+ 
+  ];
   useEffect(() => {
     fetchData();
   }, []);
@@ -220,7 +243,7 @@ export default function DashboardAppPage() {
 
         {tasks.length ? (
           <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
-            <div style={{ textAlign: 'left' }}>
+            <div>
               <Divider variant="middle" sx={{ marginBottom: 5 }} />
               <Typography variant="h3" sx={{ marginBottom: 5 }}>
                 All Task
@@ -233,7 +256,7 @@ export default function DashboardAppPage() {
               "
                   spacing={2}
                 >
-                  <PieChart width={400} height={400}>
+                  <PieChart width={300} height={300}>
                     <Pie
                       dataKey="lengthTask"
                       isAnimationActive={false}
@@ -260,9 +283,9 @@ export default function DashboardAppPage() {
                     spacing={2}
                   >
                     <Stack
-                      Stack
+                   
                       direction="row"
-                      justifyContent="center"
+                      justifyContent="space-around"
                       alignItems="center
               "
                       spacing={2}
@@ -315,8 +338,29 @@ export default function DashboardAppPage() {
                       <Typography>Done ({tasks.filter((task) => task.state === 2 || task.status ===4).length})</Typography>
                     </Stack>
                   </Stack>
+                 
                 </Stack>
+                <DataGrid
+              sx={{position: "relative", left: "120%", bottom:"35vh"}}
+              autoHeight
+              
+              rows={tasks}
+              columns={column}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 10,
+                  },
+                },
+                sorting: {
+                  sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+                },
+              }}
+              pageSizeOptions={[10]}
+              disableRowSelectionOnClick
+            />
               </div>
+            
             </div>
             {/* <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Tasks</InputLabel>
@@ -350,6 +394,7 @@ export default function DashboardAppPage() {
         ) : (
           <></>
         )}
+      
         {/* {(Subtask?.length && (
           <div style={{ textAlign: 'left' }}>
             <Divider variant="middle" sx={{ marginBottom: 5, marginTop: 5 }} />
@@ -451,8 +496,8 @@ export default function DashboardAppPage() {
             </div>
           </div>
         )) || <></>} */}
-        <Divider variant="middle" sx={{ marginBottom: 5 }} />
-        {regis?.length ? <>   <Typography variant="h3" sx={{ marginBottom: 5 }}>
+
+        {regis?.length ? <Box sx={{ marginBottom: 5, marginTop: "-18%" }}>   <Typography variant="h3" sx={{ marginBottom: 5 }}>
           Registration (Total registration: {regis?.length}){' '}
         </Typography>
         <Card>
@@ -473,7 +518,7 @@ export default function DashboardAppPage() {
             />
           )}
         </Card>
-</> : <></>}
+</Box> : <></>}
      
         {/* <DetailStudentRegister show={showRegis} close={() => setShowRegis(false)} studentID = {student.id}/> */}
       </Container>
