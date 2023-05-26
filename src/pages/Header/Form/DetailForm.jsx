@@ -298,11 +298,11 @@ function DetailForm(props) {
           {detailForm?.registrationAddOn?.map((form, index) => (
             <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} key={index}>
               <Typography>{form?.question}</Typography>
-              <Tooltip title="Delete question">
+              {/* <Tooltip title="Delete question">
                 <IconButton onClick={() => removeQuestion(form.id)} aria-label="delete">
                   <DeleteIcon color="error" />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
             </Stack>
           ))}
           <Divider sx={{ marginTop: 5 }} variant="middle" />

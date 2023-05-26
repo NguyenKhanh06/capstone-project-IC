@@ -22,6 +22,7 @@ function CreateCategory(props) {
   const regex = /^[\w\s]*$/;
   const [open, setOpen] = useState(false);
   const [cateName, setCateName] = useState('');
+  const [des, setDes] = useState('')
 
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -40,7 +41,7 @@ function CreateCategory(props) {
   };
 
   const handleCreateCategory = () => {
-    axios.post(`${API_URL}/program/create?Name=${cateName}&Status=true`).then((response) => {
+    axios.post(`${API_URL}/program/create?Name=${cateName}&Description=${des}&Status=true`).then((response) => {
 
       setCateName('');
       props.getAll();
@@ -87,6 +88,15 @@ function CreateCategory(props) {
               inputProps={{
                 maxLength: 25,
               }}
+            />
+               <TextField
+              value={des}
+              onChange={(e) => setDes(e.target.value)}
+           multiline
+              fullWidth
+           
+              label="Program description"
+             
             />
           </Stack>
         </DialogContent>

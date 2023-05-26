@@ -342,7 +342,7 @@ function DetailPost(props) {
               />
             )}
             <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-              Import Poster
+              Update Poster
               <input onChange={onSelectFile} id="input" hidden accept="image/*" type="file" />
             </Button>
 
@@ -386,7 +386,7 @@ function DetailPost(props) {
             </Stack>
 
             <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-              Import Another Images
+              Update Another Images
               <input onChange={handleFileChangeSub} multiple id="input" hidden accept="image/*" type="file" />
             </Button>
             

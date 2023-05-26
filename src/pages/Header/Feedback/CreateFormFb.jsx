@@ -166,7 +166,7 @@ function CreateFormFb(props) {
               labelId="demo-simple-select-autowidth-label"
               id="demo-simple-select-autowidth"
               displayEmpty
-              label="Registartion Form"
+              label="Form Feedback"
               value={form}
               name="form"
               onChange={(e) => setForm(e.target.value)}
@@ -208,7 +208,7 @@ function CreateFormFb(props) {
                 fullWidth
                 multiline
                 sx={{ marginTop: 5 }}
-                label="Form's title"
+                label="Form's feedback title"
               />
               <TextField
                 value={des}
@@ -273,11 +273,11 @@ function CreateFormFb(props) {
               </Button> */}
           {form.length && title.trim().length && des.trim().length ? (
             <Button variant="contained" onClick={() => handleCreateForm()} autoFocus>
-              Create Form
+              Create Form Feedback
             </Button>
           ) : (
             <Button disabled variant="contained" autoFocus>
-              Create Form
+              Create Form Feedback
             </Button>
           )}
         </DialogActions>

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Link, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { PieChart, Pie, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar, Cell } from 'recharts';
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Paper, Stack } from '@mui/material';
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Divider, Paper, Stack } from '@mui/material';
 import ListProject from '../Project/ListProject';
 import TaskInitiation from './TaskInitiation';
 import { UserListToolbar } from '../../../sections/@dashboard/user';
@@ -67,7 +67,7 @@ function ListTask(props) {
     });
   };
   const fetchData = async () => {
-    await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
+    await axios.get(`${API_URL}/task/getAllTask`).then((response) => {
       setTasks(
         response.data.responseSuccess
           .filter((mil) => mil.projectId === state.id)
@@ -75,21 +75,23 @@ function ListTask(props) {
       );
     });
   };
-
   const datachart = [
     {
       title: 'Todo',
-      lengthTask: tasks.filter((task) => task.state === 0).length,
+      lengthTask: tasks.filter((task) => task.state === 0 || task.status === 0).length,
     },
-    { title: 'Process', lengthTask: tasks.filter((task) => task.state === 1).length },
-    { title: 'Done', lengthTask: tasks.filter((task) => task.state === 2).length },
+    { title: 'Process', lengthTask: tasks.filter((task) => task.state === 1 || task.status === 1).length },
+    { title: 'Review', lengthTask: tasks?.filter((task) => task.status === 2).length },
+    { title: 'Reject', lengthTask: tasks?.filter((task) => task.status === 3).length },
+    { title: 'Done', lengthTask: tasks.filter((task) => task.state === 2 || task.status === 4).length },
+
   ];
 
   useEffect(() => {
     fetchData();
     getPhase();
   }, []);
-  const COLORS = ['#FFC107', '#2065D1', '#54D62C'];
+  const COLORS = ['#FFC107', '#2065D1', '#af19fa', '#ff0400', '#54D62C'];
   const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -153,82 +155,138 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
             </Stack>
           </Paper>
         </Stack> */}
-        {tasks.length ? (   <div style={{ textAlign: 'left' }}>
-          <h2>List task</h2>
-          <div>
-            <Stack
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center
+  {tasks.length ? (
+          <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
+            <div style={{ textAlign: 'left' }}>
+             
+              <Typography variant="h3" sx={{ marginBottom: 5 }}>
+                All Task
+              </Typography>
+              <div>
+                <Stack
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center
               "
-              spacing={2}
-            >
-   
-              <PieChart width={300} height={300}>
-                <Pie
-                  dataKey="lengthTask"
-                  isAnimationActive={false}
-                  data={datachart}
-                  // cx={120}
-                  // cy={200}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-          
-                  fill="#8884d8"
-          
-                  label={renderCustomizedLabel}
+                  spacing={2}
                 >
-                  {tasks.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-              <Stack
-                direction="column"
-                justifyContent="flex-start"
-                alignItems="flex-start
+                  <PieChart width={300} height={300}>
+                    <Pie
+                      dataKey="lengthTask"
+                      isAnimationActive={false}
+                      data={datachart}
+                      // cx={120}
+                      // cy={200}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      fill="#8884d8"
+                      label={renderCustomizedLabel}
+                    >
+                      {tasks.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                  <Stack
+                    direction="column"
+                    justifyContent="flex-start"
+                    alignItems="flex-start
               "
-                spacing={2}
+                    spacing={2}
+                  >
+                    <Stack
+                      Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center
+              "
+                      spacing={2}
+                    >
+                      <div style={{ width: '40px', height: '30px', backgroundColor: '#FFC107' }} />
+                      <Typography>To do ({tasks.filter((task) => task.state === 0 || task.status === 0).length})</Typography>
+                    </Stack>
+                    <Stack
+                      Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center
+              "
+                      spacing={2}
+                    >
+                      <div style={{ width: '40px', height: '30px', backgroundColor: '#2065D1' }} />
+                      <Typography>Process ({tasks.filter((task) => task.state === 1 || task.status === 1).length})</Typography>
+                    </Stack>
+                    <Stack
+                      Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center
+              "
+                      spacing={2}
+                    >
+                      <div style={{ width: '40px', height: '30px', backgroundColor: '#af19fa' }} />
+                      <Typography>Review ({tasks.filter((task) => task.status === 2).length})</Typography>
+                    </Stack>
+                    <Stack
+                      Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center
+              "
+                      spacing={2}
+                    >
+                      <div style={{ width: '40px', height: '30px', backgroundColor: '#ff0400' }} />
+                      <Typography>Reject({tasks.filter((task) => task.status === 3).length})</Typography>
+                    </Stack>
+                    <Stack
+                      Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center
+              "
+                      spacing={2}
+                    >
+                      <div style={{ width: '40px', height: '30px', backgroundColor: '#54D62C' }} />
+                      <Typography>Done ({tasks.filter((task) => task.state === 2 || task.status ===4).length})</Typography>
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </div>
+            </div>
+            {/* <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Tasks</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={taskName}
+                label="Tasks"
+                onChange={(e) => {
+                  setTaskName(e.target.value);
+                  fetchDataChildTask(e.target.value);
+                }}
+                sx={{ width: '50%' }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: {
+                        xs: MOBILE_ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                        sm: ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
+                      },
+                    },
+                  },
+                }}
               >
-                <Stack
-                  Stack
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center
-              "
-                  spacing={2}
-                >
-                  <div style={{ width: '30px', height: '20px', backgroundColor: '#FFC107' }} />
-                  <Typography>To do</Typography>
-                </Stack>
-                <Stack
-                  Stack
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center
-              "
-                  spacing={2}
-                >
-                  <div style={{ width: '30px', height: '20px', backgroundColor: '#2065D1' }} />
-                  <Typography>Process</Typography>
-                </Stack>
-                <Stack
-                  Stack
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center
-              "
-                  spacing={2}
-                >
-                  <div style={{ width: '30px', height: '20px', backgroundColor: '#54D62C' }} />
-                  <Typography>Done</Typography>
-                </Stack>
-              </Stack>
-            </Stack>
-          </div>
-        </div>) : (<></>)}
+                {tasks.map((task) => (
+                  <MenuItem value={task.id}>{task.taskName}</MenuItem>
+                ))}
+              </Select>
+            </FormControl> */}
+          </Stack>
+        ) : (
+          <></>
+        )}
      
         <Tabs
           value={value}

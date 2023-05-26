@@ -198,7 +198,7 @@ function CreateBlog(props) {
               <img src={preview} alt="poster" style={{ maxWidth: '50%', marginLeft: '25%', borderRadius: 10 }} />
             )}
             <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-              Import Poster
+              Update Poster
               <input onChange={onSelectFile} id="input" hidden accept="image/*" type="file" />
             </Button>
             <p style={{marginTop: 10, color: "red"}}>(Just accept file with size under 20MB)</p>

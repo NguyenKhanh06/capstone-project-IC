@@ -296,21 +296,21 @@ import DetailFeedBack from './DetailFeedBack';
             {detailForm?.feedBackAddOns?.map((form, index) => (
               <Stack justifyContent="center" alignItems="center" direction="row" spacing={2} key={index}>
                 <Typography>{form?.question}</Typography>
-                <Tooltip title="Delete question">
+                {/* <Tooltip title="Delete question">
                   <IconButton onClick={() => removeQuestion(form.id)} aria-label="delete">
                     <DeleteIcon color="error" />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </Stack>
             ))}
             <Divider sx={{ marginTop: 5 }} variant="middle" />
-  
+{/*   
             <Typography sx={{ marginTop: 3, marginBottom: 3 }} variant="h6">
               Add more filed
-            </Typography>
-            <Button sx={{ marginBottom: 5 }} variant="contained" onClick={handleAddClick}>
+            </Typography> */}
+            {/* <Button sx={{ marginBottom: 5 }} variant="contained" onClick={handleAddClick}>
               Add Field
-            </Button>
+            </Button> */}
           </Stack>
   
           {inputList.length
@@ -334,11 +334,11 @@ import DetailFeedBack from './DetailFeedBack';
                 </Stack>
               ))
             : null}
-          {(inputList.length && (
+          {/* {(inputList.length && (
             <Button sx={{ marginTop: 5 }} variant="contained" onClick={() => CreateOptionQuestion()}>
               Add Question
             </Button>
-          )) || <></>}
+          )) || <></>} */}
           <Divider sx={{ marginTop: 5 }} variant="middle" />
   
           <Typography sx={{ marginTop: 6, marginBottom: 4 }} variant="h6">

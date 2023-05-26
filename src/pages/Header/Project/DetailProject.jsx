@@ -420,7 +420,7 @@ function DetailProject(props) {
                       <MenuItem>
                         <em>
                           <Button
-                            onClick={() => setShowCreate(true)}
+                            onClick={() => setShowCreateCate(true)}
                             size="small"
                             fullWidth
                             endIcon={<AddOutlinedIcon />}
