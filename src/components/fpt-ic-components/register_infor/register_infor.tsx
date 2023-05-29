@@ -969,7 +969,7 @@ setTimeout(() => {
                               {titleFb}
                             </Typography>
 
-                            <Title number={'1'} title={'Description'} />
+                            <Title number={'2'} title={'Description'} />
 
                             <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
                               {formFb['description']}
@@ -982,7 +982,7 @@ setTimeout(() => {
                                   width: '50%',
                                 }}
                               >
-                                <Title number={'2'} title={'Full name'} />
+                                <Title number={'3'} title={'Full name'} />
                                 <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
                                   {student?.fullName}
                                 </Typography>
@@ -994,7 +994,7 @@ setTimeout(() => {
                                   width: '50%',
                                 }}
                               >
-                                <Title number={'3'} title={'Roll number'} />
+                                <Title number={'4'} title={'Roll number'} />
                                 <Typography style={{ marginTop: 4, marginLeft: 12 }} variant="h5">
                                   {student?.rollNumber}
                                 </Typography>
@@ -1007,7 +1007,7 @@ setTimeout(() => {
                                 width: '50%',
                               }}
                             >
-                              <Title number="1" title={'Feed back about program'} />
+                              <Title number="5" title={'Feed back about program'} />
                               <TextField
                                 variant="standard" // <== changed this
                                 InputProps={{
@@ -1042,7 +1042,7 @@ setTimeout(() => {
                                   width: '50%',
                                 }}
                               >
-                                <Title number={String(index + 2)} title={x?.question} />
+                                <Title number={String(index + 6)} title={x?.question} />
                                 <TextField
                                   variant="standard" // <== changed this
                                   InputProps={{

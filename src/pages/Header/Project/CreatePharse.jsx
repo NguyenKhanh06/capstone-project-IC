@@ -228,8 +228,8 @@ function CreatePharse(props) {
     const formData = new FormData();
     formData.append('ProjectId', props?.project?.id);
     formData.append('PhaseId', id);
-    formData.append('DateBegin', fromDate.add(1, 'day'));
-    formData.append('DateEnd', toDate.add(1, 'day'));
+    formData.append('DateBegin', fromDate);
+    formData.append('DateEnd', toDate);
     axios({
       method: 'PUT',
       data: formData,

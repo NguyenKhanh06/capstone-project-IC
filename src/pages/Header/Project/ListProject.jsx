@@ -30,7 +30,7 @@ import CreateProject from './CreateProject';
 import DetailProject from './DetailProject';
 import Loading from '../../Loading';
 import DetailCancel from './DetailCancel';
-import { API_URL } from '../../../config/apiUrl/apis-url'
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 function ListProject(props) {
   const regexMailFu = /[\w.-]+fptu@gmail\.com$/;
@@ -65,10 +65,17 @@ function ListProject(props) {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    })
-     
+    });
   };
-
+  const UpdatePhase = (id, phaseid) => {
+    const dataPhase = {
+      projectId: id,
+      phaseId: phaseid,
+      status: true,
+    };
+    console.log(dataPhase);
+    axios.put(`${API_URL}/phase/updateStatusPhase`, dataPhase);
+  };
   const columns = [
     {
       field: 'projectName',
@@ -109,15 +116,15 @@ function ListProject(props) {
       headerName: 'Campus',
       flex: 1,
       valueGetter: (params) => {
- 
         return params.value.name;
       },
-    }, {
+    },
+    {
       field: 'name',
       headerName: 'Partner',
       flex: 1,
       valueGetter: (params) => {
-        return params.row.partner?.name
+        return params.row.partner?.name;
       },
     },
 
@@ -126,14 +133,13 @@ function ListProject(props) {
     //   headerName: 'Milestone',
 
     //   renderCell: (params) => (
-     
+
     //     <>
     //       {params.row.projectStatus === 2 && (
     //         <Chip label="Cancel" color="error" />
     //       )
     //     }
 
-       
     //     </>
     //   ),
     // },
@@ -142,24 +148,36 @@ function ListProject(props) {
       headerName: 'Phase',
 
       renderCell: (params) => (
-
         <>
-        {
-          params.row.projectStatus === 2 && (
+          {params.row.projectStatus === 2 ? (
             <Chip label="Cancel" color="error" />
-          ) ||  
-          <Chip label={ params.row?.projectPhase?.find(phase => phase?.phase?.status)?.phase?.phaseName} />
-         
-        }
+          ) : (
+            <>
+              <Chip
+                label={
+                  params.row?.projectPhase
+                    .filter(
+                      (phase) =>
+                        dayjs(phase?.dateBegin)?.month() <= dayjs(new Date()).month() &&
+                        dayjs(new Date()).month() <= dayjs(phase?.dateEnd)?.month()
+                    )
+                    ?.find(
+                      (phase) =>
+                        dayjs(phase?.dateBegin).date() <= dayjs(new Date()).date() &&
+                        dayjs(phase?.dateBegin)?.month() <= dayjs(new Date()).month() <= dayjs(phase?.dateEnd)?.month()
+                    )?.phase?.phaseName
+                }
+              />
 
-       
+            </>
+          )}
         </>
       ),
     },
     {
       field: 'action',
       headerName: 'Action',
-   
+
       flex: 1,
 
       disableClickEventBubbling: true,
@@ -172,7 +190,6 @@ function ListProject(props) {
           spacing={1}
           divider={<Divider orientation="vertical" flexItem />}
         >
-          
           {params.row.projectStatus !== 2 ? (
             <Tooltip title="View Detail">
               <IconButton onClick={() => handleViewDetail(params.row)} aria-label="delete">
@@ -191,12 +208,16 @@ function ListProject(props) {
             <>
               {/* <Button onClick={() => console.log(params.row?.tasks.filter( task =>  dayjs(new Date()).month() + 1 - (dayjs(task?.deadLine).month() + 1) === 0 &&
               dayjs(task ?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
-              dayjs(task ?.deadLine).year() - dayjs(new Date()).year() >= 0 && task?.state !== 3 &&task?.state !== 2 &&  task?.status !== 4))}>p</Button> */}
-         
-              {' '}
-              {params.row?.tasks.filter( task =>  dayjs(new Date()).month() + 1 - (dayjs(task?.deadLine).month() + 1) === 0 &&
-              dayjs(task ?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
-              dayjs(task ?.deadLine).year() - dayjs(new Date()).year() >= 0 &&   task?.state !== 3 &&task?.state !== 2 &&  task?.status !== 4).length?  (
+              dayjs(task ?.deadLine).year() - dayjs(new Date()).year() >= 0 && task?.state !== 3 &&task?.state !== 2 &&  task?.status !== 4))}>p</Button> */}{' '}
+              {params.row?.tasks.filter(
+                (task) =>
+                  dayjs(new Date()).month() + 1 - (dayjs(task?.deadLine).month() + 1) === 0 &&
+                  dayjs(task?.deadLine).date() - dayjs(new Date()).date() <= 3 &&
+                  dayjs(task?.deadLine).year() - dayjs(new Date()).year() >= 0 &&
+                  task?.state !== 3 &&
+                  task?.state !== 2 &&
+                  task?.status !== 4
+              ).length ? (
                 <Tooltip title="Task List - Have task need do complete">
                   <IconButton
                     color="error"
@@ -257,15 +278,12 @@ function ListProject(props) {
                 </IconButton>
               </Tooltip>
             )} */}
-            
         </Stack>
       ),
     },
   ];
   const handleDeleteProject = () => {
-    axios.put(`${API_URL}/project/disable/${id}`).then((response) => {
-
-    });
+    axios.put(`${API_URL}/project/disable/${id}`).then((response) => {});
   };
 
   const handleViewDetail = (data) => {
@@ -279,16 +297,13 @@ function ListProject(props) {
   const fetchData = async () => {
     setLoading(true);
     await axios.get(`${API_URL}/project/getAllProject`).then((response) => {
-   
       setProjects(response.data.responseSuccess);
       setLoading(false);
     });
   };
 
   useEffect(() => {
-    fetchData().catch((error) => {
-    
-    });
+    fetchData().catch((error) => {});
   }, []);
 
   function NoRowsOverlay() {
@@ -313,24 +328,24 @@ function ListProject(props) {
 
         <Card>
           <Box sx={{ height: 'auto', width: '100%' }}>
-          <DataGrid
-                autoHeight
-                rows={projects}
-                columns={columns}
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 10,
-                    },
+            <DataGrid
+              autoHeight
+              rows={projects}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 10,
                   },
-                  sorting: {
-                    sortModel: [{ field: 'dateCreated', sort: 'desc' }],
-                  },
-                }}
-                components={{ NoRowsOverlay }}
-                pageSizeOptions={[10]}
-                disableRowSelectionOnClick
-              />
+                },
+                sorting: {
+                  sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+                },
+              }}
+              components={{ NoRowsOverlay }}
+              pageSizeOptions={[10]}
+              disableRowSelectionOnClick
+            />
           </Box>
         </Card>
       </Container>

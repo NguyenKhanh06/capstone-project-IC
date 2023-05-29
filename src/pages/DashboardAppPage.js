@@ -242,7 +242,7 @@ export default function DashboardAppPage() {
         </FormControl>
 
         {tasks.length ? (
-          <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
+          <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2} sx={{marginBottom: '10%'}}>
             <div>
               <Divider variant="middle" sx={{ marginBottom: 5 }} />
               <Typography variant="h3" sx={{ marginBottom: 5 }}>
@@ -497,7 +497,7 @@ export default function DashboardAppPage() {
           </div>
         )) || <></>} */}
 
-        {regis?.length ? <Box sx={{ marginBottom: 5, marginTop: "-18%" }}>   <Typography variant="h3" sx={{ marginBottom: 5 }}>
+        {regis?.length ? <Box sx={{ marginBottom: 5, marginTop: 10 }}>   <Typography variant="h3" sx={{ marginBottom: 5 }}>
           Registration (Total registration: {regis?.length}){' '}
         </Typography>
         <Card>

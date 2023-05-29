@@ -782,9 +782,12 @@ axios.put(`${API_URL}/categoryProject/disable/${idCate}`).then((response) => {
           
 
           <DialogActions style={{ padding: 20 }}>
-            <Button variant="contained" onClick={() => CreatePhase()} autoFocus>
+            {title.trim().length ? <Button variant="contained" onClick={() => CreatePhase()} autoFocus>
               Create Phase
-            </Button>
+            </Button> : <Button disabled variant="contained" onClick={() => CreatePhase()} autoFocus>
+              Create Phase
+            </Button>}
+            
           </DialogActions>
         </form>
         <SuccessAlert show={showSuccess} close={() => setShowSuccess(false)} message={'Create Pharse Successful!'} />
