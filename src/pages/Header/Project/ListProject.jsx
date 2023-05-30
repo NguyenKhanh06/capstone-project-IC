@@ -156,15 +156,10 @@ function ListProject(props) {
               <Chip
                 label={
                   params.row?.projectPhase
-                    .filter(
-                      (phase) =>
-                        dayjs(phase?.dateBegin)?.month() <= dayjs(new Date()).month() &&
-                        dayjs(new Date()).month() <= dayjs(phase?.dateEnd)?.month()
-                    )
+                    
                     ?.find(
                       (phase) =>
-                        dayjs(phase?.dateBegin).date() <= dayjs(new Date()).date() &&
-                        dayjs(phase?.dateBegin)?.month() <= dayjs(new Date()).month() <= dayjs(phase?.dateEnd)?.month()
+                        new Date(phase?.dateBegin) <= new Date() && new Date() <=  new Date(phase?.dateEnd) 
                     )?.phase?.phaseName
                 }
               />

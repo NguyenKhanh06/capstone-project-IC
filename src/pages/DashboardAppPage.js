@@ -106,19 +106,19 @@ export default function DashboardAppPage() {
     {
       field: 'taskName',
       headerName: 'Task Name',
-      flex: 3,
+      flex: 1,
     },
 
     {
       field: 'dateCreated',
       headerName: 'Create Date',
-      flex: 2,
+      flex: 1,
       valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
     {
       field: 'deadLine',
       headerName: 'Deadline',
-      flex:2,
+      flex:1,
       valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
    
@@ -242,260 +242,137 @@ export default function DashboardAppPage() {
         </FormControl>
 
         {tasks.length ? (
-          <Stack direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={2} sx={{marginBottom: '10%'}}>
-            <div>
-              <Divider variant="middle" sx={{ marginBottom: 5 }} />
-              <Typography variant="h3" sx={{ marginBottom: 5 }}>
-                All Task
-              </Typography>
-              <div>
-                <Stack
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="center
-              "
-                  spacing={2}
-                >
-                  <PieChart width={300} height={300}>
-                    <Pie
-                      dataKey="lengthTask"
-                      isAnimationActive={false}
-                      data={datachart}
-                      // cx={120}
-                      // cy={200}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      fill="#8884d8"
-                      label={renderCustomizedLabel}
-                    >
-                      {tasks.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                  <Stack
-                    direction="column"
-                    justifyContent="flex-start"
-                    alignItems="flex-start
-              "
-                    spacing={2}
-                  >
-                    <Stack
-                   
-                      direction="row"
-                      justifyContent="space-around"
-                      alignItems="center
-              "
-                      spacing={2}
-                    >
-                      <div style={{ width: '40px', height: '30px', backgroundColor: '#FFC107' }} />
-                      <Typography>To do ({tasks.filter((task) => task.state === 0 || task.status === 0).length})</Typography>
-                    </Stack>
-                    <Stack
-                      Stack
-                      direction="row"
-                      justifyContent="center"
-                      alignItems="center
-              "
-                      spacing={2}
-                    >
-                      <div style={{ width: '40px', height: '30px', backgroundColor: '#2065D1' }} />
-                      <Typography>Process ({tasks.filter((task) => task.state === 1 || task.status === 1).length})</Typography>
-                    </Stack>
-                    <Stack
-                      Stack
-                      direction="row"
-                      justifyContent="center"
-                      alignItems="center
-              "
-                      spacing={2}
-                    >
-                      <div style={{ width: '40px', height: '30px', backgroundColor: '#af19fa' }} />
-                      <Typography>Review ({tasks.filter((task) => task.status === 2).length})</Typography>
-                    </Stack>
-                    <Stack
-                      Stack
-                      direction="row"
-                      justifyContent="center"
-                      alignItems="center
-              "
-                      spacing={2}
-                    >
-                      <div style={{ width: '40px', height: '30px', backgroundColor: '#ff0400' }} />
-                      <Typography>Reject({tasks.filter((task) => task.status === 3).length})</Typography>
-                    </Stack>
-                    <Stack
-                      Stack
-                      direction="row"
-                      justifyContent="center"
-                      alignItems="center
-              "
-                      spacing={2}
-                    >
-                      <div style={{ width: '40px', height: '30px', backgroundColor: '#54D62C' }} />
-                      <Typography>Done ({tasks.filter((task) => task.state === 2 || task.status ===4).length})</Typography>
-                    </Stack>
-                  </Stack>
-                 
-                </Stack>
-                <DataGrid
-              sx={{position: "relative", left: "120%", bottom:"35vh"}}
-              autoHeight
-              
-              rows={tasks}
-              columns={column}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 10,
-                  },
-                },
-                sorting: {
-                  sortModel: [{ field: 'dateCreated', sort: 'desc' }],
-                },
-              }}
-              pageSizeOptions={[10]}
-              disableRowSelectionOnClick
-            />
-              </div>
-            
-            </div>
-            {/* <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Tasks</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={taskName}
-                label="Tasks"
-                onChange={(e) => {
-                  setTaskName(e.target.value);
-                  fetchDataChildTask(e.target.value);
-                }}
-                sx={{ width: '50%' }}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      maxHeight: {
-                        xs: MOBILE_ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
-                        sm: ITEM_HEIGHT * MENU_ITEMS + ITEM_PADDING_TOP,
-                      },
-                    },
-                  },
-                }}
+          <>    <Typography variant="h3" sx={{ marginBottom: 2, marginTop: 8 }}>
+          All Task
+        </Typography>
+        <Divider variant="middle" sx={{ marginBottom: 5 }} />
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={"10%"} sx={{marginBottom: '5%'}}>
+        
+   
+    
+ 
+          <Stack
+    
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center
+        "
+            spacing={2}
+          >
+            <PieChart width={250} height={250}>
+              <Pie
+                dataKey="lengthTask"
+                isAnimationActive={false}
+                data={datachart}
+                // cx={120}
+                // cy={200}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                fill="#8884d8"
+                label={renderCustomizedLabel}
               >
-                {tasks.map((task) => (
-                  <MenuItem value={task.id}>{task.taskName}</MenuItem>
+                {tasks.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
-              </Select>
-            </FormControl> */}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+            <Stack
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start
+        "
+              spacing={2}
+            >
+              <Stack
+             
+                direction="row"
+                justifyContent="space-around"
+                alignItems="center
+        "
+                spacing={2}
+              >
+                <div style={{ width: '25px', height: '20px', backgroundColor: '#FFC107' }} />
+                <Typography>To do ({tasks.filter((task) => task.state === 0 || task.status === 0).length})</Typography>
+              </Stack>
+              <Stack
+                Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center
+        "
+                spacing={2}
+              >
+                <div style={{ width: '25px', height: '20px', backgroundColor: '#2065D1' }} />
+                <Typography>Process ({tasks.filter((task) => task.state === 1 || task.status === 1).length})</Typography>
+              </Stack>
+              <Stack
+                Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center
+        "
+                spacing={2}
+              >
+                <div style={{ width: '25px', height: '20px', backgroundColor: '#af19fa' }} />
+                <Typography>Review ({tasks.filter((task) => task.status === 2).length})</Typography>
+              </Stack>
+              <Stack
+                Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center
+        "
+                spacing={2}
+              >
+                <div style={{ width: '25px', height: '20px', backgroundColor: '#ff0400' }} />
+                <Typography>Reject({tasks.filter((task) => task.status === 3).length})</Typography>
+              </Stack>
+              <Stack
+                Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center
+        "
+                spacing={2}
+              >
+                <div style={{ width: '25px', height: '20px', backgroundColor: '#54D62C' }} />
+                <Typography>Done ({tasks.filter((task) => task.state === 2 || task.status ===4).length})</Typography>
+              </Stack>
+            </Stack>
+           
           </Stack>
+          <DataGrid
+     
+        autoHeight
+        
+        rows={tasks}
+        columns={column}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+          sorting: {
+            sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+          },
+        }}
+        pageSizeOptions={[10]}
+        disableRowSelectionOnClick
+      />
+
+     
+    </Stack>
+        </>
+         
         ) : (
           <></>
         )}
       
-        {/* {(Subtask?.length && (
-          <div style={{ textAlign: 'left' }}>
-            <Divider variant="middle" sx={{ marginBottom: 5, marginTop: 5 }} />
-            <Typography variant="h3" sx={{ marginBottom: 5 }}>
-              All Sub Task
-            </Typography>
-            <div>
-              <Stack
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center
-              "
-                spacing={2}
-              >
-                <PieChart width={300} height={300}>
-                  <Pie
-                    dataKey="lengthTask"
-                    isAnimationActive={false}
-                    data={dataSubchart}
-                    // cx={120}
-                    // cy={200}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    fill="#8884d8"
-                    label={renderCustomizedLabel}
-                  >
-                    {Subtask.map((entry, index) => (
-                  
-                        <Cell key={`cell-${index}`} fill={COLOR[index % COLOR.length]} />
-                      ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-                <Stack
-                  direction="column"
-                  justifyContent="flex-start"
-                  alignItems="flex-start
-              "
-                  spacing={2}
-                >
-                  <Stack
-                    Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center
-              "
-                    spacing={2}
-                  >
-                    <div style={{ width: '30px', height: '20px', backgroundColor: '#FFC107' }} />
-                    <Typography>To do ({Subtask?.filter((task) => task.status === 0).length})</Typography>
-                  </Stack>
-                  <Stack
-                    Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center
-              "
-                    spacing={2}
-                  >
-                    <div style={{ width: '30px', height: '20px', backgroundColor: '#2065D1' }} />
-                    <Typography>Process ({Subtask?.filter((task) => task.status === 1).length})</Typography>
-                  </Stack>
-                  <Stack
-                    Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center
-              "
-                    spacing={2}
-                  >
-                    <div style={{ width: '30px', height: '20px', backgroundColor: '#af19fa' }} />
-                    <Typography>Review ({Subtask?.filter((task) => task.status === 2).length})</Typography>
-                  </Stack>
-                  <Stack
-                    Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center
-              "
-                    spacing={2}
-                  >
-                    <div style={{ width: '30px', height: '20px', backgroundColor: '#ff0400' }} />
-                    <Typography>Reject ({Subtask?.filter((task) => task.status === 3).length})</Typography>
-                  </Stack>
-                  <Stack
-                    Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center
-              "
-                    spacing={2}
-                  >
-                    <div style={{ width: '30px', height: '20px', backgroundColor: '#54D62C' }} />
-                    <Typography>Done ({Subtask?.filter((task) => task.status === 4).length})</Typography>
-                  </Stack>
-                </Stack>
-              </Stack>
-            </div>
-          </div>
-        )) || <></>} */}
+        
+      <Divider variant="middle" sx={{ marginBottom: 5 }} />
 
         {regis?.length ? <Box sx={{ marginBottom: 5, marginTop: 10 }}>   <Typography variant="h3" sx={{ marginBottom: 5 }}>
           Registration (Total registration: {regis?.length}){' '}
