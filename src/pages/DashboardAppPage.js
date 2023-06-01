@@ -54,6 +54,7 @@ export default function DashboardAppPage() {
   const [projects, setProjects] = useState([]);
   const [project, setProject] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [tasksSub, setTasksSub] = useState([]);
   const [Subtask, setSubTask] = useState([]);
   const [taskName, setTaskName] = useState('');
   const [showRegis, setShowRegis] = useState(false);
@@ -80,25 +81,42 @@ export default function DashboardAppPage() {
       setTasks(
         response.data.responseSuccess
           .filter((mil) => mil.projectId === taskid)
+          .filter((task) => task.state !== 3 && task.status !== 5 ).filter(task => task.parentId !== null)
+      );
+   
+    });
+  };
+  const fetchDataRootTask = async (taskid) => {
+    await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
+    
+      setTasksSub(
+        response.data.responseSuccess
+          .filter((mil) => mil.projectId === taskid )
           .filter((task) => task.state !== 3 && task.status !== 5)
       );
     });
   };
-  const fetchDataChildTask = async (taskid) => {
-    await axios.get(`${API_URL}/task/GetChildTask/${taskid}`).then((response) => {
-      setSubTask(response.data.responseSuccess.filter((task) => task.status !== 5));
-    });
-  };
+ 
 
   const datachart = [
     {
       title: 'Todo',
-      lengthTask: tasks.filter((task) => task.state === 0 || task.status === 0).length,
+      lengthTask: tasks.filter((task) => task.status === 0).length,
     },
-    { title: 'Process', lengthTask: tasks.filter((task) => task.state === 1 || task.status === 1).length },
+    { title: 'Process', lengthTask: tasks.filter((task) => task.status === 1).length },
     { title: 'Review', lengthTask: tasks?.filter((task) => task.status === 2).length },
     { title: 'Reject', lengthTask: tasks?.filter((task) => task.status === 3).length },
-    { title: 'Done', lengthTask: tasks.filter((task) => task.state === 2 || task.status === 4).length },
+    { title: 'Done', lengthTask: tasks.filter((task) =>  task.status === 4).length },
+
+  ];
+  const datachartState = [
+    {
+      title: 'Todo',
+      lengthTask: tasksSub.filter((task) =>  task.state === 0).length,
+    },
+    { title: 'Process', lengthTask: tasksSub.filter((task) =>task.state === 1).length },
+
+    { title: 'Done', lengthTask: tasksSub.filter((task) => task.state === 2 ).length },
 
   ];
 
@@ -187,7 +205,7 @@ export default function DashboardAppPage() {
   const ITEM_PADDING_TOP = 18;
   const MENU_ITEMS = 6;
   const COLORS = ['#FFC107', '#2065D1', '#af19fa', '#ff0400', '#54D62C'];
-  const COLOR = ['#FFC107', '#2065D1', '#af19fa', '#ff0400', '#54D62C'];
+  const COLOR = ['#FFC107', '#2065D1', '#54D62C'];
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -222,6 +240,7 @@ export default function DashboardAppPage() {
             onChange={(e) => {
               setProject(e.target.value);
               fetchDataTask(e.target.value);
+              fetchDataRootTask(e.target.value);
               fetchRegis(e.target.value);
             }}
             MenuProps={{
@@ -240,10 +259,117 @@ export default function DashboardAppPage() {
             ))}
           </Select>
         </FormControl>
-
-        {tasks.length ? (
+        {tasksSub.length ? (
           <>    <Typography variant="h3" sx={{ marginBottom: 2, marginTop: 8 }}>
           All Task
+        </Typography>
+        <Divider variant="middle" sx={{ marginBottom: 5 }} />
+        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={"10%"} sx={{marginBottom: '5%'}}>
+        
+   
+    
+ 
+          <Stack
+    
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center
+        "
+            spacing={2}
+          >
+            <PieChart width={250} height={250}>
+              <Pie
+                dataKey="lengthTask"
+                isAnimationActive={false}
+                data={datachartState}
+                // cx={120}
+                // cy={200}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                fill="#8884d8"
+                label={renderCustomizedLabel}
+              >
+                {tasksSub.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLOR[index % COLOR.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+            <Stack
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start
+        "
+              spacing={2}
+            >
+              <Stack
+             
+                direction="row"
+                justifyContent="space-around"
+                alignItems="center
+        "
+                spacing={2}
+              >
+                <div style={{ width: '25px', height: '20px', backgroundColor: '#FFC107' }} />
+                <Typography>To do ({tasksSub.filter((task) => task.state === 0 ).length})</Typography>
+              </Stack>
+              <Stack
+                Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center
+        "
+                spacing={2}
+              >
+                <div style={{ width: '25px', height: '20px', backgroundColor: '#2065D1' }} />
+                <Typography>Process ({tasksSub.filter((task) => task.state === 1 ).length})</Typography>
+              </Stack>
+
+              <Stack
+                Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center
+        "
+                spacing={2}
+              >
+                <div style={{ width: '25px', height: '20px', backgroundColor: '#54D62C' }} />
+                <Typography>Done ({tasksSub.filter((task) => task.state === 2 ).length})</Typography>
+              </Stack>
+            </Stack>
+           
+          </Stack>
+          <DataGrid
+     
+        autoHeight
+        
+        rows={tasks}
+        columns={column}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+          sorting: {
+            sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+          },
+        }}
+        pageSizeOptions={[10]}
+        disableRowSelectionOnClick
+      />
+
+     
+    </Stack>
+        </>
+         
+        ) : (
+          <></>
+        )}
+        {tasks.length ? (
+          <>    <Typography variant="h3" sx={{ marginBottom: 2, marginTop: 8 }}>
+          All SubTask
         </Typography>
         <Divider variant="middle" sx={{ marginBottom: 5 }} />
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={"10%"} sx={{marginBottom: '5%'}}>
@@ -294,7 +420,7 @@ export default function DashboardAppPage() {
                 spacing={2}
               >
                 <div style={{ width: '25px', height: '20px', backgroundColor: '#FFC107' }} />
-                <Typography>To do ({tasks.filter((task) => task.state === 0 || task.status === 0).length})</Typography>
+                <Typography>To do ({tasks.filter((task) =>task.status === 0).length})</Typography>
               </Stack>
               <Stack
                 Stack
@@ -305,7 +431,7 @@ export default function DashboardAppPage() {
                 spacing={2}
               >
                 <div style={{ width: '25px', height: '20px', backgroundColor: '#2065D1' }} />
-                <Typography>Process ({tasks.filter((task) => task.state === 1 || task.status === 1).length})</Typography>
+                <Typography>Process ({tasks.filter((task) =>  task.status === 1).length})</Typography>
               </Stack>
               <Stack
                 Stack
@@ -338,7 +464,7 @@ export default function DashboardAppPage() {
                 spacing={2}
               >
                 <div style={{ width: '25px', height: '20px', backgroundColor: '#54D62C' }} />
-                <Typography>Done ({tasks.filter((task) => task.state === 2 || task.status ===4).length})</Typography>
+                <Typography>Done ({tasks.filter((task) => task.status ===4).length})</Typography>
               </Stack>
             </Stack>
            
@@ -347,7 +473,7 @@ export default function DashboardAppPage() {
      
         autoHeight
         
-        rows={tasks}
+        rows={tasksSub}
         columns={column}
         initialState={{
           pagination: {
@@ -372,6 +498,7 @@ export default function DashboardAppPage() {
         )}
       
         
+     
       <Divider variant="middle" sx={{ marginBottom: 5 }} />
 
         {regis?.length ? <Box sx={{ marginBottom: 5, marginTop: 10 }}>   <Typography variant="h3" sx={{ marginBottom: 5 }}>
