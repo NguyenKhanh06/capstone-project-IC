@@ -344,7 +344,7 @@ export default function DashboardAppPage() {
      
         autoHeight
         
-        rows={tasks}
+        rows={tasksSub}
         columns={column}
         initialState={{
           pagination: {
@@ -473,7 +473,7 @@ export default function DashboardAppPage() {
      
         autoHeight
         
-        rows={tasksSub}
+        rows={tasks}
         columns={column}
         initialState={{
           pagination: {
