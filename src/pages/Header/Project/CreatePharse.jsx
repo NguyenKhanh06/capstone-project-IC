@@ -204,7 +204,7 @@ function CreatePharse(props) {
   const UnassignPhase = (id) => {
     axios
       .post(
-        `https://localhost:7115/api/v1/phase/removePhase/${props?.project?.id}?phaseId=${id}
+        `${API_URL}/phase/removePhase/${props?.project?.id}?phaseId=${id}
   `
       )
       .then((response) => {
@@ -228,8 +228,14 @@ function CreatePharse(props) {
     const formData = new FormData();
     formData.append('ProjectId', props?.project?.id);
     formData.append('PhaseId', id);
-    formData.append('DateBegin', fromDate);
-    formData.append('DateEnd', toDate);
+    if(idPhase?.dateBegin !== null && idPhase?.dateBegin !== null){
+      formData.append('DateBegin', fromDate);
+      formData.append('DateEnd', toDate);
+    }else{
+      formData.append('DateBegin', fromDate.add(1, 'day'));
+      formData.append('DateEnd', toDate.add(1, 'day'));
+    }
+ 
     axios({
       method: 'PUT',
       data: formData,

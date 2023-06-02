@@ -22,6 +22,7 @@ import { DataGrid } from '@mui/x-data-grid';
   import { useEffect, useState } from 'react';
   import Iconify from '../../../components/iconify/Iconify';
 import CreateCategory from './CreateCategory';
+import { API_URL } from '../../../config/apiUrl/apis-url';
 
 
   function ListCate(props) {

@@ -116,8 +116,8 @@ function ListProjectNego(props) {
           idPrj.estimateTimeEnd
         )}&DateCreate=${dayjs(idPrj.dateCreated)}&ProjectStatus=${idPrj.projectStatus}&LeaderId=${
           idPrj.leaderId
-        }&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&CategoryProjectId=${
-          idPrj.categoryProjectId
+        }&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&ProgramId=${
+          idPrj.programId
         }&CampusId=${idPrj.campusId}&CheckNegotiationStatus=true`
       )
       .then((response) => {
@@ -141,7 +141,7 @@ function ListProjectNego(props) {
           idPrj.leaderId
         }&CourseId=${idPrj.courseId}&PartnerId=${idPrj.partnerId}&OfficalTimeStart=${dayjs(
           idPrj.officalTimeStart
-        )}&OfficalTimeEnd=${dayjs(idPrj.officalTimeEnd)}&CategoryProjectId=${idPrj.categoryProjectId}&CampusId=${
+        )}&OfficalTimeEnd=${dayjs(idPrj.officalTimeEnd)}&ProgramId=${idPrj.programId}&CampusId=${
           idPrj.campusId
         }&CheckNegotiationStatus=true`
       )

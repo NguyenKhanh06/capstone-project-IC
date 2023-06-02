@@ -15,7 +15,7 @@ import {
 // components
 
 // sections
-import { PieChart, Pie, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar, Cell } from 'recharts';
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -25,6 +25,11 @@ import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import { DataGrid } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import { Box } from '@mui/system';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
@@ -81,22 +86,20 @@ export default function DashboardAppPage() {
       setTasks(
         response.data.responseSuccess
           .filter((mil) => mil.projectId === taskid)
-          .filter((task) => task.state !== 3 && task.status !== 5 ).filter(task => task.parentId !== null)
+          .filter((task) => task.state !== 3 && task.status !== 5)
+          .filter((task) => task.parentId !== null)
       );
-   
     });
   };
   const fetchDataRootTask = async (taskid) => {
     await axios.get(`${API_URL}/task/getRootsTask`).then((response) => {
-    
       setTasksSub(
         response.data.responseSuccess
-          .filter((mil) => mil.projectId === taskid )
+          .filter((mil) => mil.projectId === taskid)
           .filter((task) => task.state !== 3 && task.status !== 5)
       );
     });
   };
- 
 
   const datachart = [
     {
@@ -106,18 +109,50 @@ export default function DashboardAppPage() {
     { title: 'Process', lengthTask: tasks.filter((task) => task.status === 1).length },
     { title: 'Review', lengthTask: tasks?.filter((task) => task.status === 2).length },
     { title: 'Reject', lengthTask: tasks?.filter((task) => task.status === 3).length },
-    { title: 'Done', lengthTask: tasks.filter((task) =>  task.status === 4).length },
-
+    { title: 'Done', lengthTask: tasks?.filter((task) => task.status === 4).length },
   ];
+  const data = {
+    labels: ['To do', 'Process', 'Done'],
+    datasets: [
+      {
+        label: 'Total Task',
+        data: [
+          tasksSub?.filter((task) => task.state === 0).length,
+          tasksSub?.filter((task) => task.state === 1).length,
+          tasksSub?.filter((task) => task.state === 2).length,
+        ],
+        backgroundColor: ['#FFC107', '#2065D1', '#54D62C'],
+        borderColor: ['#FFC107', '#2065D1', '#54D62C'],
+        borderWidth: 1,
+      },
+    ],
+  };
+  const dataSub = {
+    labels: ['To do', 'Process', 'Review', 'Reject', 'Done'],
+    datasets: [
+      {
+        label: 'Total Task',
+        data: [
+          tasks.filter((task) => task.status === 0).length,
+          tasks.filter((task) => task.status === 1).length,
+          tasks.filter((task) => task.status === 2).length,
+          tasks.filter((task) => task.status === 3).length,
+          tasks.filter((task) => task.status === 4).length
+        ],
+        backgroundColor: ['#FFC107', '#2065D1', '#af19fa', '#ff0400', '#54D62C'],
+        borderColor: ['#FFC107', '#2065D1', '#af19fa', '#ff0400', '#54D62C'],
+        borderWidth: 1,
+      },
+    ],
+  };
   const datachartState = [
     {
       title: 'Todo',
-      lengthTask: tasksSub.filter((task) =>  task.state === 0).length,
+      lengthTaskState: tasksSub?.filter((task) => task.state === 0).length,
     },
-    { title: 'Process', lengthTask: tasksSub.filter((task) =>task.state === 1).length },
+    { title: 'Process', lengthTaskState: tasksSub?.filter((task) => task.state === 1).length },
 
-    { title: 'Done', lengthTask: tasksSub.filter((task) => task.state === 2 ).length },
-
+    { title: 'Done', lengthTaskState: tasksSub?.filter((task) => task.state === 2).length },
   ];
 
   const column = [
@@ -136,11 +171,9 @@ export default function DashboardAppPage() {
     {
       field: 'deadLine',
       headerName: 'Deadline',
-      flex:1,
+      flex: 1,
       valueFormatter: (params) => dayjs(params.value).format('DD/MM/YYYY'),
     },
-   
- 
   ];
   useEffect(() => {
     fetchData();
@@ -224,12 +257,12 @@ export default function DashboardAppPage() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Hi, Welcome {user.fullName}
         </Typography>
-{/* {tasks?.length < 0  || regis?.length <0 ? <img
+        {/* {tasks?.length < 0  || regis?.length <0 ? <img
           src="https://tuanfpt.blob.core.windows.net/folder-excel/loogo-PhotoRoom.png-PhotoRoom.png"
           alt="login"
           style={{ width: '30%', height: '40%', margin: 'auto' }}
         /> : <></>} */}
-    
+
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Project</InputLabel>
           <Select
@@ -260,270 +293,127 @@ export default function DashboardAppPage() {
           </Select>
         </FormControl>
         {tasksSub.length ? (
-          <>    <Typography variant="h3" sx={{ marginBottom: 2, marginTop: 8 }}>
-          All Task
-        </Typography>
-        <Divider variant="middle" sx={{ marginBottom: 5 }} />
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={"10%"} sx={{marginBottom: '5%'}}>
-        
-   
-    
- 
-          <Stack
-    
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center
-        "
-            spacing={2}
-          >
-            <PieChart width={250} height={250}>
-              <Pie
-                dataKey="lengthTask"
-                isAnimationActive={false}
-                data={datachartState}
-                // cx={120}
-                // cy={200}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                fill="#8884d8"
-                label={renderCustomizedLabel}
-              >
-                {tasksSub.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLOR[index % COLOR.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
+          <>
+            {' '}
+            <Typography variant="h3" sx={{ marginBottom: 2, marginTop: 8 }}>
+              All Task
+            </Typography>
+            <Divider variant="middle" sx={{ marginBottom: 5 }} />
             <Stack
-              direction="column"
-              justifyContent="flex-start"
-              alignItems="flex-start
-        "
-              spacing={2}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              spacing={'10%'}
+              sx={{ marginBottom: '5%' }}
             >
               <Stack
-             
                 direction="row"
-                justifyContent="space-around"
+                justifyContent="flex-start"
                 alignItems="center
         "
                 spacing={2}
               >
-                <div style={{ width: '25px', height: '20px', backgroundColor: '#FFC107' }} />
-                <Typography>To do ({tasksSub.filter((task) => task.state === 0 ).length})</Typography>
+                <Pie style={{ width: 300, height: 300 }} data={data} />
               </Stack>
-              <Stack
-                Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center
-        "
-                spacing={2}
-              >
-                <div style={{ width: '25px', height: '20px', backgroundColor: '#2065D1' }} />
-                <Typography>Process ({tasksSub.filter((task) => task.state === 1 ).length})</Typography>
-              </Stack>
-
-              <Stack
-                Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center
-        "
-                spacing={2}
-              >
-                <div style={{ width: '25px', height: '20px', backgroundColor: '#54D62C' }} />
-                <Typography>Done ({tasksSub.filter((task) => task.state === 2 ).length})</Typography>
-              </Stack>
+              <DataGrid
+                autoHeight
+                rows={tasksSub}
+                columns={column}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  },
+                  sorting: {
+                    sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+                  },
+                }}
+                pageSizeOptions={[5]}
+                disableRowSelectionOnClick
+              />
             </Stack>
-           
-          </Stack>
-          <DataGrid
-     
-        autoHeight
-        
-        rows={tasksSub}
-        columns={column}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-          sorting: {
-            sortModel: [{ field: 'dateCreated', sort: 'desc' }],
-          },
-        }}
-        pageSizeOptions={[10]}
-        disableRowSelectionOnClick
-      />
-
-     
-    </Stack>
-        </>
-         
+          </>
         ) : (
           <></>
         )}
         {tasks.length ? (
-          <>    <Typography variant="h3" sx={{ marginBottom: 2, marginTop: 8 }}>
-          All SubTask
-        </Typography>
-        <Divider variant="middle" sx={{ marginBottom: 5 }} />
-        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={"10%"} sx={{marginBottom: '5%'}}>
-        
-   
-    
- 
-          <Stack
-    
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center
-        "
-            spacing={2}
-          >
-            <PieChart width={250} height={250}>
-              <Pie
-                dataKey="lengthTask"
-                isAnimationActive={false}
-                data={datachart}
-                // cx={120}
-                // cy={200}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                fill="#8884d8"
-                label={renderCustomizedLabel}
-              >
-                {tasks.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
+          <>
+            {' '}
+            <Typography variant="h3" sx={{ marginBottom: 2, marginTop: 8 }}>
+              All SubTask
+            </Typography>
+            <Divider variant="middle" sx={{ marginBottom: 5 }} />
             <Stack
-              direction="column"
-              justifyContent="flex-start"
-              alignItems="flex-start
-        "
-              spacing={2}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              spacing={'10%'}
+              sx={{ marginBottom: '5%' }}
             >
               <Stack
-             
                 direction="row"
-                justifyContent="space-around"
+                justifyContent="flex-start"
                 alignItems="center
         "
                 spacing={2}
               >
-                <div style={{ width: '25px', height: '20px', backgroundColor: '#FFC107' }} />
-                <Typography>To do ({tasks.filter((task) =>task.status === 0).length})</Typography>
+                <Pie style={{ width: 300, height: 300 }} data={dataSub} />
               </Stack>
-              <Stack
-                Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center
-        "
-                spacing={2}
-              >
-                <div style={{ width: '25px', height: '20px', backgroundColor: '#2065D1' }} />
-                <Typography>Process ({tasks.filter((task) =>  task.status === 1).length})</Typography>
-              </Stack>
-              <Stack
-                Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center
-        "
-                spacing={2}
-              >
-                <div style={{ width: '25px', height: '20px', backgroundColor: '#af19fa' }} />
-                <Typography>Review ({tasks.filter((task) => task.status === 2).length})</Typography>
-              </Stack>
-              <Stack
-                Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center
-        "
-                spacing={2}
-              >
-                <div style={{ width: '25px', height: '20px', backgroundColor: '#ff0400' }} />
-                <Typography>Reject({tasks.filter((task) => task.status === 3).length})</Typography>
-              </Stack>
-              <Stack
-                Stack
-                direction="row"
-                justifyContent="center"
-                alignItems="center
-        "
-                spacing={2}
-              >
-                <div style={{ width: '25px', height: '20px', backgroundColor: '#54D62C' }} />
-                <Typography>Done ({tasks.filter((task) => task.status ===4).length})</Typography>
-              </Stack>
+              <DataGrid
+                autoHeight
+                rows={tasks}
+                columns={column}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  },
+                  sorting: {
+                    sortModel: [{ field: 'dateCreated', sort: 'desc' }],
+                  },
+                }}
+                pageSizeOptions={[5]}
+                disableRowSelectionOnClick
+              />
             </Stack>
-           
-          </Stack>
-          <DataGrid
-     
-        autoHeight
-        
-        rows={tasks}
-        columns={column}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-          sorting: {
-            sortModel: [{ field: 'dateCreated', sort: 'desc' }],
-          },
-        }}
-        pageSizeOptions={[10]}
-        disableRowSelectionOnClick
-      />
-
-     
-    </Stack>
-        </>
-         
+          </>
         ) : (
           <></>
         )}
-      
-        
-     
-      <Divider variant="middle" sx={{ marginBottom: 5 }} />
 
-        {regis?.length ? <Box sx={{ marginBottom: 5, marginTop: 10 }}>   <Typography variant="h3" sx={{ marginBottom: 5 }}>
-          Registration (Total registration: {regis?.length}){' '}
-        </Typography>
-        <Card>
-          {regis && (
-            <DataGrid
-              autoHeight
-              rows={regis}
-              columns={columns}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 10,
-                  },
-                },
-              }}
-              pageSizeOptions={[10]}
-              disableRowSelectionOnClick
-            />
-          )}
-        </Card>
-</Box> : <></>}
-     
+        <Divider variant="middle" sx={{ marginBottom: 5 }} />
+
+        {regis?.length ? (
+          <Box sx={{ marginBottom: 5, marginTop: 10 }}>
+            {' '}
+            <Typography variant="h3" sx={{ marginBottom: 5 }}>
+              Registration (Total registration: {regis?.length}){' '}
+            </Typography>
+            <Card>
+              {regis && (
+                <DataGrid
+                  autoHeight
+                  rows={regis}
+                  columns={columns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 10,
+                      },
+                    },
+                  }}
+                  pageSizeOptions={[10]}
+                  disableRowSelectionOnClick
+                />
+              )}
+            </Card>
+          </Box>
+        ) : (
+          <></>
+        )}
+
         {/* <DetailStudentRegister show={showRegis} close={() => setShowRegis(false)} studentID = {student.id}/> */}
       </Container>
     </>
