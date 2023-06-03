@@ -108,7 +108,8 @@ function DetailTask(props) {
     // setOpen(props.close);
     // props.reset
   };
-
+console.log("ủe", user)
+console.log("ủe", member)
   const fetchData = async () => {
    
   await axios.get(`${API_URL}/task/getTaskDetaul/${props.task.id}`).then((response) => {
@@ -329,62 +330,200 @@ fetchDataComment()
                   format="DD/MM/YYYY"
                 />
               </LocalizationProvider>
-              <FormControl style={{ width: '50%' }}>
-                <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                {props.task.status === 2 || props.task.status === 3 ? (
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={status}
-                    label="Status"
-                    onChange={(e) => {
-                      setStatus(e.target.value);
-                      setDisable(true);
-                    }}
-                    defaultValue={props.task.status}
-                  >
-                    <MenuItem style={{ display: 'none' }} value={0}>
-                      To Do
-                    </MenuItem>
-                    <MenuItem style={{ display: 'none' }} value={1}>
-                      Process
-                    </MenuItem>
-                    <MenuItem style={{ display: 'none' }} value={2}>
-                      Review
-                    </MenuItem>
-                    <MenuItem value={3}>Reject</MenuItem>
-                    <MenuItem value={4}>Done</MenuItem>
-                  </Select>
-                ) : (
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={status}
-                    label="Status"
-                    onChange={(e) => {
-                      setStatus(e.target.value);
-                      setDisable(true);
-                    }}
-                    defaultValue={props.task.status}
-                  >
-                    <MenuItem style={{ display: 'none' }} value={0}>
-                      To Do
-                    </MenuItem>
-                    <MenuItem style={{ display: 'none' }} value={1}>
-                      Process
-                    </MenuItem>
-                    <MenuItem style={{ display: 'none' }} value={2}>
-                      Review
-                    </MenuItem>
-                    <MenuItem style={{ display: 'none' }} value={3}>
-                      Reject
-                    </MenuItem>
-                    <MenuItem style={{ display: 'none' }} value={4}>
-                      Done
-                    </MenuItem>
-                  </Select>
-                )}
-              </FormControl>
+              {user?.staff?.id === member?.staffId ? (
+                  <FormControl style={{ width: '50%' }}>
+                  <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                  {props.task.status === 3 ? (
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={status}
+                      label="Status"
+                      onChange={(e) => {
+                        setStatus(e.target.value);
+                        setDisable(true);
+                      }}
+                      defaultValue={props.task.status}
+                    >
+                      <MenuItem disabled style={{ display: 'none' }} value={0}>
+                        To Do
+                      </MenuItem>
+                      <MenuItem value={1}>Process</MenuItem>
+                      <MenuItem style={{ display: 'none' }} value={2}>
+                        Review
+                      </MenuItem>
+                      <MenuItem disabled style={{ display: 'none' }} value={3}>
+                        Reject
+                      </MenuItem>
+                      <MenuItem disabled style={{ display: 'none' }} value={4}>
+                        Done
+                      </MenuItem>
+                    </Select>
+                  ) : props.task.status === 0 ? (
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={status}
+                      label="Status"
+                      onChange={(e) => {
+                        setStatus(e.target.value);
+                        setDisable(true);
+                      }}
+                      defaultValue={props.task.status}
+                    >
+                      <MenuItem disabled style={{ display: 'none' }} value={0}>
+                        To Do
+                      </MenuItem>
+                      <MenuItem value={1}>Process</MenuItem>
+                      <MenuItem style={{ display: 'none' }} value={2}>
+                        Review
+                      </MenuItem>
+                      <MenuItem disabled style={{ display: 'none' }} value={3}>
+                        Reject
+                      </MenuItem>
+                      <MenuItem disabled style={{ display: 'none' }} value={4}>
+                        Done
+                      </MenuItem>
+                    </Select>
+                  ) : props.task.status === 1 ? (
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={status}
+                      label="Status"
+                      onChange={(e) => {
+                        setStatus(e.target.value);
+                        setDisable(true);
+                      }}
+                      defaultValue={props.task.status}
+                    >
+                      <MenuItem disabled style={{ display: 'none' }} value={0}>
+                        To Do
+                      </MenuItem>
+                      <MenuItem style={{ display: 'none' }} value={1}>
+                        Process
+                      </MenuItem>
+                      <MenuItem value={2}>Review</MenuItem>
+                      <MenuItem disabled style={{ display: 'none' }} value={3}>
+                        Reject
+                      </MenuItem>
+                      <MenuItem disabled style={{ display: 'none' }} value={4}>
+                        Done
+                      </MenuItem>
+                    </Select>
+                  ) : props.task.status === 2 ? (
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={status}
+                      label="Status"
+                      onChange={(e) => {
+                        setStatus(e.target.value);
+                        setDisable(true);
+                      }}
+                      defaultValue={props.task.status}
+                    >
+                      <MenuItem disabled style={{ display: 'none' }} value={0}>
+                        To Do
+                      </MenuItem>
+                      <MenuItem style={{ display: 'none' }} value={1}>
+                        Process
+                      </MenuItem>
+                      <MenuItem style={{ display: 'none' }} value={2}>Review</MenuItem>
+                      <MenuItem   value={3}>
+                        Reject
+                      </MenuItem>
+                      <MenuItem  value={4}>
+                        Done
+                      </MenuItem>
+                    </Select>
+                  ):(
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={status}
+                      label="Status"
+                      onChange={(e) => {
+                        setStatus(e.target.value);
+                        setDisable(true);
+                      }}
+                      defaultValue={props.task.status}
+                    >
+                      <MenuItem disabled style={{ display: 'none' }} value={0}>
+                        To Do
+                      </MenuItem>
+                      <MenuItem style={{ display: 'none' }} value={1}>
+                        Process
+                      </MenuItem>
+                      <MenuItem style={{ display: 'none' }} value={2}>
+                        Review
+                      </MenuItem>
+                      <MenuItem disabled style={{ display: 'none' }} value={3}>
+                        Reject
+                      </MenuItem>
+                      <MenuItem disabled style={{ display: 'none' }} value={4}>
+                        Done
+                      </MenuItem>
+                    </Select>
+                  )}
+                </FormControl>
+              ) :              <FormControl style={{ width: '50%' }}>
+              <InputLabel id="demo-simple-select-label">Status</InputLabel>
+              {props.task.status === 2 || props.task.status === 3 ? (
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={status}
+                  label="Status"
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    setDisable(true);
+                  }}
+                  defaultValue={props.task.status}
+                >
+                  <MenuItem style={{ display: 'none' }} value={0}>
+                    To Do
+                  </MenuItem>
+                  <MenuItem style={{ display: 'none' }} value={1}>
+                    Process
+                  </MenuItem>
+                  <MenuItem style={{ display: 'none' }} value={2}>
+                    Review
+                  </MenuItem>
+                  <MenuItem value={3}>Reject</MenuItem>
+                  <MenuItem value={4}>Done</MenuItem>
+                </Select>
+              ) : (
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={status}
+                  label="Status"
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    setDisable(true);
+                  }}
+                  defaultValue={props.task.status}
+                >
+                  <MenuItem style={{ display: 'none' }} value={0}>
+                    To Do
+                  </MenuItem>
+                  <MenuItem style={{ display: 'none' }} value={1}>
+                    Process
+                  </MenuItem>
+                  <MenuItem style={{ display: 'none' }} value={2}>
+                    Review
+                  </MenuItem>
+                  <MenuItem style={{ display: 'none' }} value={3}>
+                    Reject
+                  </MenuItem>
+                  <MenuItem style={{ display: 'none' }} value={4}>
+                    Done
+                  </MenuItem>
+                </Select>
+              )}
+            </FormControl>}
+ 
               <TextField
                 placeholder="Task Description"
                 value={description}
