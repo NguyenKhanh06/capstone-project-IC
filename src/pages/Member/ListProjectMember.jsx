@@ -170,17 +170,25 @@ function ListProjectMember(props) {
       headerName: 'Phase',
 
       renderCell: (params) => (
-
         <>
-        {
-          params.row.project.projectStatus === 2 && (
+        {console.log(params)}
+          {params.row.project.projectStatus === 2 ? (
             <Chip label="Cancel" color="error" />
-          ) ||  
-          <Chip label={ params.row?.project?.projectPhase?.find(phase => phase?.phase?.status)?.phase?.phaseName} />
-         
-        }
+          ) : (
+            <>
+              <Chip
+                label={
+                  params.row?.project.projectPhase
+                    
+                    ?.find(
+                      (phase) =>
+                        new Date(phase?.dateBegin) <= new Date() && new Date() <=  new Date(phase?.dateEnd) 
+                    )?.phase?.phaseName
+                }
+              />
 
-       
+            </>
+          )}
         </>
       ),
     },

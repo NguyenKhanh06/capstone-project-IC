@@ -340,7 +340,7 @@ function DetailStudentRegister(props) {
                   <></>
                 )}
                 <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                  Import Passport Image
+                  Update Passport Image
                   <input onChange={onSelectFile} id="input" hidden accept="image/*" type="file" />
                 </Button>
               </Stack>
@@ -358,7 +358,7 @@ function DetailStudentRegister(props) {
                   <></>
                 )}
                 <Button color="secondary" variant="contained" component="label" startIcon={<FileUploadOutlinedIcon />}>
-                  Import Payment Image
+                 Update Payment Image
                   <input onChange={onSelectFile2} id="input" hidden accept="image/*" type="file" />
                 </Button>
               </Stack>

@@ -65,6 +65,7 @@ function AssignMemberDetailTask(props) {
    
     });
   }, []);
+  console.log(props)
 
   const handleAssignTask = (id) => {
     axios
